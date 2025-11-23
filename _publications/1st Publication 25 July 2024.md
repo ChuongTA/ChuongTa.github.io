@@ -8,7 +8,6 @@ date: 2024-07-25
 venue: 'International Journal of Hydrogen Energy'
 impact_factor: '8.3'
 doi: 'https://doi.org/10.1016/j.ijhydene.2024.04.033'
-paperurl: 'https://academicpages.github.io/files/paper2.pdf'
 citation: 'Dang-Chuong Ta; Thanh-Hoang Le; Hoang-Luong Pham. (2024). "An Assessment of the Potential for Large-Scale Hydrogen Export from Vietnam to Asian Countries: Techno-Economic Analysis, Transport Options, and Energy Carrier Comparison.'
 ---
 
