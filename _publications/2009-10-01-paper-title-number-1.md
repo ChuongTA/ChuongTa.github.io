@@ -1,14 +1,16 @@
 ---
-title: "Paper Title Number 1"
+title: "An Assessment of the Potential for Large-Scale Hydrogen Export from Vietnam to Asian Countries: Techno-Economic Analysis, Transport Options, and Energy Carrier Comparison"
 collection: publications
 category: manuscripts
-permalink: /publication/2009-10-01-paper-title-number-1
-excerpt: 'This paper is about the number 1. The number 2 is left for future work.'
-date: 2009-10-01
-venue: 'Journal 1'
-slidesurl: 'https://academicpages.github.io/files/slides1.pdf'
-paperurl: 'https://academicpages.github.io/files/paper1.pdf'
-bibtexurl: 'https://academicpages.github.io/files/bibtex1.bib'
-citation: 'Your Name, You. (2009). &quot;Paper Title Number 1.&quot; <i>Journal 1</i>. 1(1).'
+permalink: /publication/2024-04-01-hydrogen-export
+excerpt: 'Techno-economic comparison of export pathways and energy carriers for large-scale hydrogen export from Vietnam to Asia.'
+date: 2024-04-01
+venue: 'International Journal of Hydrogen Energy'
+impact_factor: '8.3'
+doi: 'https://doi.org/10.1016/j.ijhydene.2024.04.033'
+citation: 'Dang-Chuong Ta; Thanh-Hoang Le; Hoang-Luong Pham. (2024). "An Assessment of the Potential for Large-Scale Hydrogen Export from Vietnam to Asian Countries: Techno-Economic Analysis, Transport Options, and Energy Carrier Comparison." <i>International Journal of Hydrogen Energy</i>. Impact Factor: 8.3. [https://doi.org/10.1016/j.ijhydene.2024.04.033](https://doi.org/10.1016/j.ijhydene.2024.04.033)'
 ---
-The contents above will be part of a list of publications, if the user clicks the link for the publication than the contents of section will be rendered as a full page, allowing you to provide more information about the paper for the reader. When publications are displayed as a single page, the contents of the above "citation" field will automatically be included below this section in a smaller font.
+Dang-Chuong Ta; Thanh-Hoang Le; Hoang-Luong Pham  
+“An Assessment of the Potential for Large-Scale Hydrogen Export from Vietnam to Asian Countries: Techno-Economic Analysis, Transport Options, and Energy Carrier Comparison,”  
+*International Journal of Hydrogen Energy*, Impact Factor: 8.3.  
+DOI: [10.1016/j.ijhydene.2024.04.033](https://doi.org/10.1016/j.ijhydene.2024.04.033)
