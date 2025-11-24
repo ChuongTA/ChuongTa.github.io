@@ -7,7 +7,7 @@ permalink: /projects/liege-projects/
 
 # Liège Projects
 
-![Liège Assignment](_projects/_project1/Liege_class.jpg)
+![Liège Assignment](_project1/Liege_class.jpg)
 
 About this course: Data and Forecasting in Microgrids is my favourite course in DENSYS. From this I started love programming which is the thing I was very scary in the past. But now, I love it 😊.
 
@@ -29,7 +29,7 @@ This project was completed as part of the Energy Systems module, taught by:
 
 ## Documentation
 
-- [Download assignment report (PDF)](_projects/_project1/Report_Liege_Niayesh_Chuong_Andras.pdf)
+- [Download assignment report (PDF)](_project1/Report_Liege_Niayesh_Chuong_Andras.pdf)
 
 ## Technologies Used
 
