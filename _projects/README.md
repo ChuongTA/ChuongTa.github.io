@@ -7,10 +7,10 @@ Click on any project to view its details.
 
 ## Projects List
 
-### [Project1](./Project1/)
-![Project1 Preview](./Project1/screenshot.png)
+### [Project1](./project1/)
+![Project1 Preview](./project1/Liege_class.jpg)
 **Short description:**  
-A web app that analyzes emoji usage in social media posts.
+Operational planning, sizing, and optimization assignment for Université de Liège.
 
 ---
 
