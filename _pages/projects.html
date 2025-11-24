@@ -5,16 +5,29 @@ permalink: /projects/
 author_profile: true
 ---
 
+<div class="wordwrap">
+  Below are projects completed during my MSc in DENSYS, as well as future projects I am excited to undertake.
+</div>
+
 {% include base_path %}
 
-<div class="project-gallery">
-  {% for project in site.projects %}
-    <div class="project-card">
-      <a href="{{ project.url }}">
-        <img src="{{ project.image | default: '/images/default.jpg' }}" alt="{{ project.title }}">
-        <h3>{{ project.title }}</h3>
-      </a>
-      <p>{{ project.excerpt }}</p>
-    </div>
+{% if site.project_category %}
+  {% for category in site.project_category %}
+    {% assign title_shown = false %}
+    {% for post in site.projects %}
+      {% if post.category != category[0] %}
+        {% continue %}
+      {% endif %}
+      {% unless title_shown %}
+        <h2>{{ category[1].title }}</h2><hr />
+        {% assign title_shown = true %}
+      {% endunless %}
+      {% include archive-single.html %}
+    {% endfor %}
   {% endfor %}
-</div>
+{% else %}
+  {% for post in site.projects %}
+    {% include archive-single.html %}
+  {% endfor %}
+{% endif %}
+
