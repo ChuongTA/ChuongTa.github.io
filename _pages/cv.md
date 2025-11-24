@@ -18,8 +18,8 @@ redirect_from:
   <div style="color: var(--global-text-color-light); font-size: 0.9em;">
     <em>Last updated: November 22, 2025</em><br>
     <em style="margin-top: 0.5em; display: inline-block;">
-      <a href="(https://scholar.google.com/citations?user=IjhRqAsAAAAJ&hl=vi)" target="_blank" style="color: var(--global-link-color);">Google Scholar</a> | 
-      <a href="(https://github.com/ChuongTA)" target="_blank" style="color: var(--global-link-color);">GitHub</a> | 
+      <a href="https://scholar.google.com/citations?user=IjhRqAsAAAAJ&amp;hl=vi" target="_blank" style="color: var(--global-link-color);">Google Scholar</a> | 
+      <a href="https://github.com/ChuongTA" target="_blank" style="color: var(--global-link-color);">GitHub</a> | 
       <a href="mailto:chuong.tadang.hust@gmail.com" style="color: var(--global-link-color);">Email</a>
     </em>
   </div>
