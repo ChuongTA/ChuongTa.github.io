@@ -2,10 +2,8 @@
 title: "Liège Projects"
 layout: single
 author_profile: true
-permalink: /projects/liege-projects/
+permalink: /projects/_project1/
 ---
-
-# Liège Projects
 
 ![Liège Assignment](_project1/Liege_class.jpg)
 
