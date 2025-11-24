@@ -5,7 +5,7 @@ excerpt: "Case-Based Module: Evaluating algae-derived Sustainable Aviation Fuel 
 image: /images/SAF.png
 layout: single
 author_profile: true
-permalink: /projects/projec2.md
+permalink: /projects/project2.md
 ---
 
 ![Algae SAF Project](/images/SAF.png)
