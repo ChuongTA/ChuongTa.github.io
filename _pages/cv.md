@@ -9,56 +9,25 @@ redirect_from:
 
 {% include base_path %}
 
-Education
-======
-* Ph.D in Version Control Theory, GitHub University, 2018 (expected)
-* M.S. in Jekyll, GitHub University, 2014
-* B.S. in GitHub, GitHub University, 2012
+<div style="text-align: center; margin: 3em 0;">
+  <div style="margin-bottom: 2em;">
+    <a href="{{ base_path }}/files/Chuong Dang TA - CV - Msc DENSYS.pdf" target="_blank" style="display: inline-block; padding: 1em 2em; background: var(--global-link-color); color: white; text-decoration: none; border-radius: 8px; font-size: 1.1em; font-weight: 600; transition: opacity 0.2s;">
+      📄 Download my CV (PDF)
+    </a>
+  </div>
+  <div style="color: var(--global-text-color-light); font-size: 0.9em;">
+    <em>Last updated: November 22, 2025</em><br>
+    <em style="margin-top: 0.5em; display: inline-block;">
+      <a href="https://scholar.google.com/citations?user=5HTk1mgAAAAJ&hl=en" target="_blank" style="color: var(--global-link-color);">Google Scholar</a> | 
+      <a href="https://github.com/duc-anh-2002" target="_blank" style="color: var(--global-link-color);">GitHub</a> | 
+      <a href="mailto:nguyenducanh909.bkhn@gmail.com" style="color: var(--global-link-color);">Email</a>
+    </em>
+  </div>
+</div>
 
-Work experience
-======
-* Spring 2024: Academic Pages Collaborator
-  * GitHub University
-  * Duties includes: Updates and improvements to template
-  * Supervisor: The Users
-
-* Fall 2015: Research Assistant
-  * GitHub University
-  * Duties included: Merging pull requests
-  * Supervisor: Professor Hub
-
-* Summer 2015: Research Assistant
-  * GitHub University
-  * Duties included: Tagging issues
-  * Supervisor: Professor Git
-  
-Skills
-======
-* Skill 1
-* Skill 2
-  * Sub-skill 2.1
-  * Sub-skill 2.2
-  * Sub-skill 2.3
-* Skill 3
-
-Publications
-======
-  <ul>{% for post in site.publications reversed %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Talks
-======
-  <ul>{% for post in site.talks reversed %}
-    {% include archive-single-talk-cv.html  %}
-  {% endfor %}</ul>
-  
-Teaching
-======
-  <ul>{% for post in site.teaching reversed %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Service and leadership
-======
-* Currently signed in to 43 different slack teams
+<div style="max-width: 800px; margin: 0 auto; padding: 2em; background: rgba(122, 132, 136, 0.03); border-radius: 8px; border: 2px dashed var(--global-border-color);">
+  <p style="text-align: center; color: var(--global-text-color-light); margin: 0;">
+    <strong>View the full CV</strong> by clicking the download button above, or 
+    <a href="{{ base_path }}/files/Academic_CV.pdf" target="_blank" style="color: var(--global-link-color);">open it directly in a new tab</a>.
+  </p>
+</div>
