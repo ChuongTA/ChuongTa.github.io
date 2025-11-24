@@ -7,8 +7,8 @@ Click on any project to view its details.
 
 ## Projects List
 
-### [Project1](_projects/_project1)
-![Project1 Preview](_projects/_project1/Liege_class.jpg)
+### [Project1](_project1)
+![Project1 Preview](_project1/Liege_class.jpg)
 **Short description:**  
 Operational planning, sizing, and optimization assignment for Université de Liège.
 
