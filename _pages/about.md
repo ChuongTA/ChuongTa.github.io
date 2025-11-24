@@ -10,9 +10,20 @@ Hi! My name is Chuong Dang Ta. [translate:Chương] is my Vietnamese name, and y
 
 Currently, I am pursuing a Master’s degree in Decentralised Smart Energy Systems (DENSYS), studying at Université de Lorraine, Nancy, France and Politecnico di Torino, Italy. I expect to graduate in September 2025. Professionally, I’m driven by challenges in Offshore Wind and Power-to-X, a passion amplified by my years at PVN—Vietnam’s Oil & Gas corporation—now pivoting toward renewables. My goal is to return and help advance this transformation.
 
-My interest in wind energy has grown significantly over the last five months, prompting me to build a focused learning plan specializing in wind energy and machine learning. I have hands-on experience with [PyWake](https://topfarm.pages.windenergy.dtu.dk/PyWake/), an open-source, Python-based wind farm simulation tool developed at DTU, which computes flow fields, power production of individual turbines, and Annual Energy Production (AEP) for entire wind farms. I modeled a project using PyWake that gave me practical insights into wind farm aerodynamics. I also intend to learn [TOPFARM](https://topfarm.pages.windenergy.dtu.dk/), a Python package from DTU Wind Energy that wraps PyWake with OpenMDAO, enabling wind farm optimization for both onshore and offshore projects.
+Recently, I watched a great video on how to learn machine learning, and it made me realize that most people skip the fundamentals and jump straight into a bootcamp. Here’s a meme that captures this tendency. Personally, I really enjoy learning from textbooks on topics that interest me—it’s one of the best ways to build a concrete foundation of understanding!
 
-In terms of machine learning, I am currently strengthening my foundational mathematical skills in Linear Algebra, Calculus, Statistics, Probability, and Statistical Learning. In the coming months, I plan to focus more deeply on Data Science applications relevant to Wind Energy, beginning with two initial books and progressing to "An Introduction to Statistical Learning with Applications in Python" and "Data Science in Wind Energy”.
+My interest in wind energy has grown significantly over the last five months, prompting me to build a focused learning plan specializing in wind energy and machine learning. I really enjoy learning about subjects that fascinate me by reading textbooks. They provide a strong base for anyone who wants to deepen their knowledge.
+
+![CFD learners skipping steps](images/CFDmeme.jpg)  
+*Many learners leap straight to tools like Ansys/Comsol in CFD, skipping mathematics and core fundamentals.*
+
+![The ML learning curve meme](images/MachineLearningMeme.jpg)  
+*Most people rush into ML bootcamps without core concepts; textbook learning helps reach true expertise.*
+
+
+I have hands-on experience with [PyWake](https://topfarm.pages.windenergy.dtu.dk/PyWake/), an open-source, Python-based wind farm simulation tool developed at DTU, which computes flow fields, power production of individual turbines, and Annual Energy Production (AEP) for entire wind farms. I modeled a project using PyWake that gave me practical insights into wind farm aerodynamics. I also intend to learn [TOPFARM](https://topfarm.pages.windenergy.dtu.dk/), a Python package from DTU Wind Energy that wraps PyWake with OpenMDAO, enabling wind farm optimization for both onshore and offshore projects.
+
+In terms of machine learning, I am currently strengthening my foundational mathematical skills in Linear Algebra, Calculus, Statistics, Probability, and Statistical Learning through the book [Mathematics for Machine learning](https://mml-book.github.io/book/mml-book.pdf). In the coming months, I plan to focus more deeply on Data Science applications relevant to Wind Energy, beginning with two initial books and progressing to [An Introduction to Statistical Learning with Applications in Python](https://www.statlearning.com/)  and [Data Science in Wind Energy](https://library.oapen.org/handle/20.500.12657/101466).
 
 
 ---
@@ -21,7 +32,7 @@ In terms of machine learning, I am currently strengthening my foundational mathe
 <div class="education-item" style="margin: 1.5em 0; padding: 1.25em; border-left: 4px solid var(--global-link-color); padding-left: 1.5em; background: linear-gradient(to right, rgba(122, 132, 136, 0.03), transparent); border-radius: 4px;">
   <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; margin-bottom: 0.5em;">
     <div style="flex: 1; min-width: 250px;">
-      <h3 style="margin: 0 0 0.5em 0; font-size: 1.15em; font-weight: bold;">Université de Lorraine, Nancy / Politecnico di Torino</h3>
+      <h3 style="margin: 0 0 0.5em 0; font-size: 1.15em; font-weight: bold;">Université de Lorraine, Nancy and  Politecnico di Torino, Turin</h3>
       <p style="margin: 0.25em 0; color: var(--global-text-color-light);">MSc in Decentralised Smart Energy Systems (DENSYS)</p>
       <div style="margin-top: 0.75em;">
         <span style="background: var(--global-link-color); color: white; padding: 0.25em 0.75em; border-radius: 12px; font-size: 0.85em; font-weight: 600;">
@@ -30,13 +41,12 @@ In terms of machine learning, I am currently strengthening my foundational mathe
       </div>
     </div>
     <div style="text-align: right; color: var(--global-text-color-light); white-space: nowrap; margin-left: 1em; margin-top: 0.25em;">
-      <em>Sept 2024 – Sept 2025</em><br>
+      <em>Sept 2024 – Sept 2026</em><br>
       <em>France & Italy</em>
     </div>
   </div>
   <p style="margin-top: 0.75em; margin-bottom: 0; color: var(--global-text-color-light); font-size: 0.95em;">
-    <strong>Selected Coursework:</strong> Wind and Ocean Energy Plants, Optimal Local Design Energy Networks, Smart Electricity Systems, Chemical and Electrochemical Processes<br>
-    <strong>Current Thesis:</strong> Machine learning applications for wind farm optimization & Power-to-X systems
+    <strong>Selected Coursework:</strong> Wind and Ocean Energy Plants, Data and Forecasting in Microgrids, Optimal Local Design Energy Networks, Smart Electricity Systems, Chemical and Electrochemical Processes<br>
   </p>
 </div>
 
