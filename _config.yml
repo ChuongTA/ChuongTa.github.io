@@ -290,13 +290,12 @@ defaults:
       layout: talk
       author_profile: true
       share: true
-  #_project
-  # _talks
+  #_projects
   - scope:
       path: ""
-      type: talks
+      type: projects
     values:
-      layout: talk
+      layout: projects
       author_profile: true
       share: true
 
