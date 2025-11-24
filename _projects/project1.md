@@ -1,10 +1,3 @@
----
-title: "Liège Projects"
-layout: single
-author_profile: true
-permalink: /projects/_project1/
----
-
 ![Liège Assignment](_project1/Liege_class.jpg)
 
 About this course: Data and Forecasting in Microgrids is my favourite course in DENSYS. From this I started love programming which is the thing I was very scary in the past. But now, I love it 😊.
