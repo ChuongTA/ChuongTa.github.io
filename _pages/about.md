@@ -8,9 +8,9 @@ redirect_from:
 ---
 Hi! My name is Chuong Dang Ta. [translate:Chương] is my Vietnamese name, and yes, it’s tough for foreigners to pronounce (but no hard feelings toward my parents for that 😅).
 
-Currently, I am pursuing a Master’s degree in Decentralised Smart Energy Systems (DENSYS), studying at Université de Lorraine, Nancy, France and Politecnico di Torino, Italy. I expect to graduate in September 2026. Professionally, I’m driven by challenges in Offshore Wind and Power-to-X, a passion amplified by the time I worked as Junior Researcher at PVN—Vietnam’s Oil & Gas corporation—now pivoting toward renewables. My goal is to return and help advance this transformation.
+Currently, I am pursuing a Master’s degree in Decentralised Smart Energy Systems (DENSYS), studying at Université de Lorraine, Nancy, France and Politecnico di Torino, Italy. I expect to graduate in September 2026. Professionally, I’m driven by challenges in Offshore Wind and Power-to-X, a passion amplified by the time I worked as Junior Researcher at PVN-Vietnam’s Oil & Gas corporation, now pivoting toward renewable energy. My goal is to return and help advance this transformation.
 
-Recently, I watched a great video on how to learn machine learning, and it made me realize that most people skip the fundamentals and jump straight into a bootcamp. Here’s a meme that captures this tendency. Personally, I really enjoy learning from textbooks on topics that interest me—it’s one of the best ways to build a concrete foundation of understanding!
+Recently, I watched a great video on how to learn machine learning, and it made me realize that most people skip the fundamentals and jump straight into a bootcamp. Here’s a meme that captures this tendency. Personally, I really enjoy learning from textbooks on topics that interest me-it’s one of the best ways to build a concrete foundation of understanding!
 
 ![CFD learners skipping steps](images/CFDmeme.jpg)  
 *Many learners leap straight to tools like Ansys/Comsol in CFD, skipping mathematics and core fundamentals.*
@@ -117,7 +117,7 @@ Optimization: MILP, MINLP, genetic algorithms, and machine learning for wind far
 ## Honors & Awards
 
 - Erasmus Mundus Scholarship (DENSYS, EU)
-- JNED Award, nuclear research – Japan, 2023
+- JNED Award, with site visits to nuclear power plants and research facilities in Japan, 2023
 - Merit Scholarship (BSc at HUST, Vietnam)
 
 ---
