@@ -27,7 +27,7 @@ This project was completed as part of the Energy Systems module, taught by:
 
 ## Documentation
 
-- [Download assignment report (PDF)](../files/projects/liege-projects/Report_Liege_Niayesh_Chuong_Andras.pdf)
+- [Download assignment report (PDF)](_projects/_project1/Report_Liege_Niayesh_Chuong_Andras.pdf)
 
 ## Technologies Used
 
