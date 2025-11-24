@@ -23,7 +23,7 @@ baseurl                  : "" # the subpath of your site, e.g. "/blog"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "ID Photo.jpg"
+  avatar           : "ID_Photo.png"
   name             : "Chuong Dang TA"
   pronouns         : "he/him"  
   bio              : "DENSYS-Erasmus Mundus Joint Master Degree || Offshore Wind + Power to X Enthusiast"
