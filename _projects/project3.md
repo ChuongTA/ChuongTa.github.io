@@ -29,8 +29,8 @@ This project evaluates diverse biomass-to-liquid (BtL) conversion pathways for s
 
 ## Documentation
 
-- [Download project report (PDF, written in LaTeX)](files/BiomasstoLiquid_Chuong_Elisalome_DENSYS_2024_Submisison.pdf)
-- [Download LaTex code](files/LaTex_code_Chuong_Elisalome_DENSYS_2024.zip)
+- [Download project report (PDF, written in LaTeX)](/files/BiomasstoLiquid_Chuong_Elisalome_DENSYS_2024_Submisison.pdf)
+- [Download LaTex code](/files/LaTex_code_Chuong_Elisalome_DENSYS_2024.zip)
 
 ## Technologies and Skills Used
 
