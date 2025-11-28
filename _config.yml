@@ -233,7 +233,8 @@ collections:
   projects:
     output: true
     permalink: /:collection/:path/
-  MachineLearning:
+  collections:
+    ml:
     output: true
     permalink: /:collection/:path/
 
