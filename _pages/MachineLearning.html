@@ -11,22 +11,11 @@ author_profile: true
 
 {% include base_path %}
 
-{% if site.ml_categories %}
-  {% for category in site.ml_categories %}
-    {% assign title_shown = false %}
-    {% for post in site.MachineLearning %}
-      {% if post.category != category[0] %}
-        {% continue %}
-      {% endif %}
-      {% unless title_shown %}
-        <h2>{{ category[1].title }}</h2><hr />
-        {% assign title_shown = true %}
-      {% endunless %}
-      {% include archive-single.html %}
-    {% endfor %}
-  {% endfor %}
-{% else %}
-  {% for post in site.ml %}
+{% if site.MachineLearning %}
+  {% for post in site.MachineLearning %}
     {% include archive-single.html %}
   {% endfor %}
+{% else %}
+  <p>No Machine Learning posts found. Check your _config.yml collection name and folder _MachineLearning/.</p>
 {% endif %}
+
