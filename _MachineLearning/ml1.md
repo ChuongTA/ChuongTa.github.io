@@ -4,6 +4,7 @@ category: densys
 excerpt: "This is my 1st post about Machine Learning (ML). This is a topic I learnt from the book \"An Introduction to Statistical Learning\"."
 image: /images/Naive_Bayes.png
 layout: single
+usemathjax: true
 author_profile: true
 permalink: /MachineLearning/ml1.md/
 ---
