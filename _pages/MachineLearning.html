@@ -14,7 +14,7 @@ author_profile: true
 {% if site.ml_categories %}
   {% for category in site.ml_categories %}
     {% assign title_shown = false %}
-    {% for post in site.ml %}
+    {% for post in site.MachineLearning %}
       {% if post.category != category[0] %}
         {% continue %}
       {% endif %}
