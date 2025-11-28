@@ -7,7 +7,7 @@ author_profile: true
 permalink: /MachineLearning/Naive_Bayes/
 ---
 In this post, I use the Naive Bayes classifier to predict whether a day in a North Sea wind farm will become a storm day 🌪️.
-
+For more information of Naive Bayes, read this post on (DataCamp)[https://databasecamp.de/en/ml/naive-bayes-algorithm].
 My features are wind speed 💨, air pressure 🌡️, and clound cover ☁️, each recorded as simple categories such as high, medium, low.
 
 From a small historical dataset, we estimate the probabilities of a storm, then use Naive Bayes to compute how likely a new day with given conditions (wind speed, pressure, clounds) will turn into a storm.
