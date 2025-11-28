@@ -286,4 +286,6 @@ P(\text{storm = yes} \mid X)
 $$
 
 So after Laplace smoothing, the model predicts a storm with probability about \(73\%\) for  
-\(X = (\text{low wind}, \text{low pressure}, \text{high cloud})\) – much better than the zero probability from the unsmoothed model 🎯
+$$
+X = (\text{low wind}, \text{low pressure}, \text{high cloud})
+$$– much better than the zero probability from the unsmoothed model 🎯
