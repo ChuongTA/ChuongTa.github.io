@@ -5,7 +5,7 @@ excerpt: "This is my 1st post about Machine Learning (ML). This is a topic I lea
 image: /images/Naive_Bayes.png
 layout: single
 author_profile: true
-permalink: /MachineLearning/ml1/
+permalink: /MachineLearning/ml1.md/
 usemathjax: true
 ---
 
