@@ -1,0 +1,32 @@
+---
+layout: archive
+title: "Learn Machine Learning"
+permalink: /MachineLearning/
+author_profile: true
+---
+
+<div class="wordwrap">
+  This page collects all my posts on topics I find interesting about how to learn Machine Learning. 😁💻.
+</div>
+
+{% include base_path %}
+
+{% if site.ml_categories %}
+  {% for category in site.ml_categories %}
+    {% assign title_shown = false %}
+    {% for post in site.ml %}
+      {% if post.category != category[0] %}
+        {% continue %}
+      {% endif %}
+      {% unless title_shown %}
+        <h2>{{ category[1].title }}</h2><hr />
+        {% assign title_shown = true %}
+      {% endunless %}
+      {% include archive-single.html %}
+    {% endfor %}
+  {% endfor %}
+{% else %}
+  {% for post in site.ml %}
+    {% include archive-single.html %}
+  {% endfor %}
+{% endif %}
