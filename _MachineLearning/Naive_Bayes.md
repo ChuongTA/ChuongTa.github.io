@@ -1,10 +1,10 @@
 ---
 title: "Naive Bayes - Prediction probability Storm days "
 category: densys
-excerpt: "This is my 1st post about Machine Learning (ML). This is a topic what I learnt in the book " An Introduction of Statistical Learning!"
+excerpt: "This is my 1st post about Machine Learning (ML). This is a topic I learnt from the book \"An Introduction to Statistical Learning\"."
 layout: single
 author_profile: true
-permalink: /MachineLearning/Naive Bayes.md/
+permalink: /MachineLearning/Naive_Bayes.md/
 ---
 In this post, I use the Naive Bayes classifier to predict whether a day in a North Sea wind farm will become a storm day 🌪️.
 
