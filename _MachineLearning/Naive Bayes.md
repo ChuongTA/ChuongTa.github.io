@@ -162,12 +162,90 @@ Using the prior \(P(\text{yes}) = 0.5\),
 = \frac{4}{147}.
 \]
 
-We would compute a similar smoothed likelihood for the “storm = no” class and then normalize both scores to get
+### Laplace smoothing for the storm prediction example
+
+In the previous section, the unsmoothed Naive Bayes model gave
+
+\[
+P(\text{storm = yes} \mid X) = 0
+\]
+
+for \(X = (\text{low wind}, \text{low pressure}, \text{high cloud})\), because
+
+\[
+P(\text{low wind} \mid \text{storm = yes}) = 0.
+\]
+
+To avoid this zero‑probability problem, we use **Laplace smoothing** with \(\alpha = 1\).
+
+For a categorical feature value \(x\) and class \(y\),
+
+\[
+P_{\text{Laplace}}(x \mid y)
+= \frac{\text{count}(x, y) + \alpha}{\text{count}(y) + \alpha \cdot K},
+\]
+
+where \(K\) is the number of possible values of that feature.
+
+In our dataset:
+
+- Wind speed categories: \(K_{\text{wind}} = 3\) (low, medium, high)
+- Pressure categories: \(K_{\text{pressure}} = 3\) (low, normal, high)
+- Cloud categories: \(K_{\text{cloud}} = 2\) (low, high)
+- Storm = yes days: \(\text{count}(\text{yes}) = 4\)
+
+Now compute the smoothed conditional probabilities for the class “storm = yes”.
+
+1. Wind speed:
+
+\[
+P_{\text{L}}(\text{low wind} \mid \text{yes})
+= \frac{0 + 1}{4 + 1 \cdot 3}
+= \frac{1}{7}.
+\]
+
+2. Pressure:
+
+\[
+P_{\text{L}}(\text{low pressure} \mid \text{yes})
+= \frac{3 + 1}{4 + 1 \cdot 3}
+= \frac{4}{7}.
+\]
+
+3. Cloud:
+
+\[
+P_{\text{L}}(\text{high cloud} \mid \text{yes})
+= \frac{3 + 1}{4 + 1 \cdot 2}
+= \frac{4}{6}
+= \frac{2}{3}.
+\]
+
+The smoothed likelihood of \(X\) under “storm = yes” is
+
+\[
+P_{\text{L}}(X \mid \text{yes})
+= \frac{1}{7} \cdot \frac{4}{7} \cdot \frac{2}{3}
+= \frac{8}{147}.
+\]
+
+Using the prior \(P(\text{yes}) = 0.5\), we get the (unnormalized) score
+
+\[
+\text{score}(\text{yes} \mid X)
+= P(\text{yes}) \cdot P_{\text{L}}(X \mid \text{yes})
+= 0.5 \cdot \frac{8}{147}
+= \frac{4}{147}.
+\]
+
+We would do the same computation for the “storm = no” class and then normalize the two scores:
 
 \[
 P(\text{storm = yes} \mid X)
-\quad\text{and}\quad
-P(\text{storm = no} \mid X).
+=
+\frac{\text{score}(\text{yes} \mid X)}
+     {\text{score}(\text{yes} \mid X) + \text{score}(\text{no} \mid X)}.
 \]
 
-The key point: with Laplace smoothing, the probability for “storm = yes” is **no longer zero**, even though we never observed a low‑wind storm day in the training data.[1][3][7]
+The important point is that after Laplace smoothing, the probability for “storm = yes” is **no longer zero**, even though we never observed a low‑wind storm day in the training data.
+training data.[1][3][7]
