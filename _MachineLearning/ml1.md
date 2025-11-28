@@ -65,15 +65,15 @@ $$
 
 From the dataset:
 
-- Total days: \(8\)  
-- Storm “yes”: \(4 \Rightarrow P(\text{yes}) = 4/8 = 0.5\)  
-- Storm “no”: \(4 \Rightarrow P(\text{no}) = 4/8 = 0.5\)
+- Total days: $$8$$  
+- Storm “yes”: $$4 \Rightarrow P(\text{yes}) = 4/8 = 0.5$$  
+- Storm “no”: $$4 \Rightarrow P(\text{no}) = 4/8 = 0.5$$  
 
 Looking only at the 4 storm‑yes days:
 
-- WindSpeed = low with storm = yes: \(0/4 \Rightarrow P(\text{low wind} \mid \text{yes}) = 0\)  
-- Pressure = low with storm = yes: \(3/4 \Rightarrow P(\text{low pressure} \mid \text{yes}) = 0.75\)  
-- Cloud = high with storm = yes: \(3/4 \Rightarrow P(\text{high cloud} \mid \text{yes}) = 0.75\)
+- WindSpeed = low with storm = yes: $$0/4 \Rightarrow P(\text{low wind} \mid \text{yes}) = 0$$  
+- Pressure = low with storm = yes: $$3/4 \Rightarrow P(\text{low pressure} \mid \text{yes}) = 0.75$$  
+- Cloud = high with storm = yes: $$3/4 \Rightarrow P(\text{high cloud} \mid \text{yes}) = 0.75$$  
 
 Substituting into the Naive Bayes likelihood:
 
@@ -118,9 +118,9 @@ $$
 X = (\text{low wind}, \text{low pressure}, \text{high cloud}).
 $$
 
-To avoid this, we apply **Laplace smoothing** with \(\alpha = 1\).
+To avoid this, we apply **Laplace smoothing** with $$\alpha = 1$$.
 
-For a categorical feature value \(x\) and class \(y\),
+For a categorical feature value $$x$$ and class $$y$$,
 
 $$
 P_{\text{Laplace}}(x \mid y)
@@ -128,14 +128,14 @@ P_{\text{Laplace}}(x \mid y)
 \frac{\text{count}(x, y) + \alpha}{\text{count}(y) + \alpha \cdot K},
 $$
 
-where \(K\) is the number of possible values of that feature.
+where $$K$$ is the number of possible values of that feature.
 
 In our example:
 
-- Wind speed categories: \(K_{\text{wind}} = 3\) (low, medium, high)  
-- Pressure categories: \(K_{\text{pressure}} = 3\) (low, normal, high)  
-- Cloud categories: \(K_{\text{cloud}} = 2\) (low, high)  
-- Storm = yes days: \(\text{count}(\text{yes}) = 4\)
+- Wind speed categories: $$K_{\text{wind}} = 3$$ (low, medium, high)  
+- Pressure categories: $$K_{\text{pressure}} = 3$$ (low, normal, high)  
+- Cloud categories: $$K_{\text{cloud}} = 2$$ (low, high)  
+- Storm = yes days: $$\text{count}(\text{yes}) = 4$$  
 
 Now compute the smoothed likelihoods for the storm = yes class.
 
@@ -171,7 +171,7 @@ P_{\text{L}}(\text{high cloud} \mid \text{yes})
 \frac{2}{3}.
 $$
 
-The smoothed likelihood for \(X\) under storm = yes is
+The smoothed likelihood for $$X$$ under storm = yes is
 
 $$
 P_{\text{L}}(X \mid \text{yes})
@@ -181,7 +181,7 @@ P_{\text{L}}(X \mid \text{yes})
 \frac{8}{147}.
 $$
 
-Using the prior \(P(\text{yes}) = 0.5\),
+Using the prior $$P(\text{yes}) = 0.5$$,
 
 $$
 \text{score}(\text{yes} \mid X)
@@ -203,7 +203,7 @@ For the 4 “storm = no” days we have:
 - Pressure values: high, normal, normal, high  
 - Cloud values: low, low, low, high  
 
-With \(\alpha = 1\):
+With $$\alpha = 1$$:
 
 Wind speed (3 categories):
 
@@ -237,7 +237,7 @@ P_{\text{L}}(\text{high cloud} \mid \text{no})
 \frac{1}{3}.
 $$
 
-Thus the smoothed likelihood for \(X\) under “no” is
+Thus the smoothed likelihood for $$X$$ under “no” is
 
 $$
 P_{\text{L}}(X \mid \text{no})
@@ -247,7 +247,7 @@ P_{\text{L}}(X \mid \text{no})
 \frac{3}{147}.
 $$
 
-With prior \(P(\text{no}) = 0.5\),
+With prior $$P(\text{no}) = 0.5$$,
 
 $$
 \text{score}(\text{no} \mid X)
@@ -285,7 +285,10 @@ P(\text{storm = yes} \mid X)
 \approx 0.73.
 $$
 
-So after Laplace smoothing, the model predicts a storm with probability about 73% for  
+So after Laplace smoothing, the model predicts a storm with probability about 73% for
+
 $$
-X = (\text{low wind}, \text{low pressure}, \text{high cloud})
-$$– much better than the zero probability from the unsmoothed model 🎯
+X = (\text{low wind}, \text{low pressure}, \text{high cloud}),
+$$
+
+much better than the zero probability from the unsmoothed model.
