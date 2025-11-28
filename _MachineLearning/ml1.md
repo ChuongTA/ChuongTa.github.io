@@ -8,7 +8,7 @@ author_profile: true
 permalink: /MachineLearning/ml1.md/
 ---
 In this post, I use the Naive Bayes classifier to predict whether a day in a North Sea wind farm will become a storm day 🌪️.
-For more information of Naive Bayes, read this post on (DataCamp)[https://databasecamp.de/en/ml/naive-bayes-algorithm].
+For more information of Naive Bayes, read this post on [DataCamp](https://databasecamp.de/en/ml/naive-bayes-algorithm).
 
 ![Naive_Bayes](/images/Naive_Bayes.png)
 My features are wind speed 💨, air pressure 🌡️, and clound cover ☁️, each recorded as simple categories such as high, medium, low.
