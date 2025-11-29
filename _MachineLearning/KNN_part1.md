@@ -137,21 +137,29 @@ Two points are close only if *all* feature differences are small.
 
 ![Cosine Distance](/images/Cosine_distance.png)
 
-Cosine similarity measures the angle between two vectors:
+Cosine similarity says “how similar” two vectors are by comparing the angle between them.  
+A value close to 1 means the vectors point in almost the same direction (very similar),  
+0 means they are orthogonal (unrelated), and −1 means they point in opposite directions (very dissimilar).
+
+The formula is
+
 $$
-\text{cosine\_sim}(x, y)
-=
-\frac{x \cdot y}{\lVert x \rVert \,\lVert y \rVert}.
+\text{cosine\_sim}(x, y) = \frac{x \cdot y}{\lVert x \rVert \, \lVert y \rVert},
 $$
 
-A corresponding distance is often defined as
+where:
+
+- \(x \cdot y\) is the dot product (multiply each coordinate and sum).
+- \(\lVert x \rVert\) and \(\lVert y \rVert\) are the lengths (norms) of the two vectors.
+
+A common cosine “distance” turns similarity into a dissimilarity score:
+
 $$
-d_{\text{cosine}}(x, y)
-=
-1 - \text{cosine\_sim}(x, y).
+d_{\text{cosine}}(x, y) = 1 - \text{cosine\_sim}(x, y).
 $$
 
-This focuses on **direction** rather than magnitude and is common for text or high‑dimensional sparse data.
+Here, \(\text{cosine\_sim}(x, y)\) is the similarity measure, and \(d_{\text{cosine}}(x, y)\) is 0 when vectors are identical in direction and grows as they become less aligned.
+
 
 ---
 
