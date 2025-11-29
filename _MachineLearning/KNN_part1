@@ -1,0 +1,119 @@
+---
+title: "K-Nearest Neighbours (KNN) Algorithm - Part 1 "
+category: densys
+excerpt: K‑Nearest Neighbors (KNN) is a simple, non‑parametric machine learning algorithm that makes predictions based on the labels of the closest data points in the training set. It is supervised (it needs labeled examples) and can be used for both classification and regression tasks."
+image: /images/Naive_Bayes.png
+layout: single
+author_profile: true
+permalink: /MachineLearning/KNN_part1.md/
+usemathjax: true
+---
+![K-Nearest Neighbour (KNN) steps - [source](https://utsavdesai26.medium.com/step-by-step-guide-to-the-knn-algorithm-understanding-the-fundamentals-and-applications-45a8cd87b9a4)](/images/KNN_part_1.png)
+
+1. Definition of KNN
+K-Nearest Neighbour (KNN) is a simple, non-parametric machine learning algorithm that makes predictuons based on the lables of the closet data points in the training set. It is supervised (it needs labled examples) and can be used for both classification and regression tasks.
+
+KNN assumes that points that are "close" in feature space tend to have similar labels or values. All training examples are stored; no explicit model is fitted in advance, which is why KNN is often called a **lazy learner** or **instance-based**. For a new input, the algorithms:
+- Measures the distance between the new point and every point in the training data.
+- Selects the K closet points (The K"nearest neighbours")
+- Classification: assigns the most common class among those neighbours.
+   Regression: predicts the average (or weighted average) of their target values.
+Because it makes very few assumptions about the data distribution, KNN is considered non‑parametric and can model complex decision boundaries if there is enough data and features are well scaled.
+
+2. What is "K" in K-Nearest Neighbour?
+The K in K-Nearst Neihbour is a hyperparameter that tells the algorithm how many neighbours to look at when making a prediction. If $K = 1$, the alogrithm uses only the single closet training point; the new point simply get that neighbour's label (for classificaiton) or value (regression). For larger K (3,5,10,...), the algorithm considers more neighbours, with smooths predictions.
+-Very Small K:
+  - The decision boundary become very wiggly and can change a lot if one training smaple changes.
+  - This is **low bias, high variance** and usually risks overfitting, because the model chases the noise in the training set.
+-Larger K:
+  - The prediction is an average over many neighbours.
+  - The decision boundary smoother and less sensitive to simple noisy points.
+  - This is **higher bias, lower variance**; the model may miss local structure and give overly "blurry" predictions.
+
+When does KNN underfit?
+**Underfitting happens" when K is so large that KNN become too simple and cannot capture the true pattern in the data.
+
+From the above explaination, choosing the k values should be carefully.
+
+There are some statiscal methods for selecting K, which are show below:
+- Cross-Validation: [Cross-Validation](https://www.geeksforgeeks.org/machine-learning/cross-validation-machine-learning/) is a good way to find the best value of k is by using k-fold cross-validation. This means dividing the dataset into k parts. The model is trained on some of these parts and tested on the remaining ones. This process is repeated for each part. The k value that gives the highest average accuracy during these tests is usually the best one to use.
+- Elbow Method: In [Elbow Method](https://www.geeksforgeeks.org/machine-learning/elbow-method-for-optimal-value-of-k-in-kmeans/) we draw a graph showing the error rate or accuracy for different k values. As k increases the error usually drops at first. But after a certain point error stops decreasing quickly. The point where the curve changes direction and looks like an "elbow" is usually the best choice for k.
+- Odd Values for k: It’s a good idea to use an odd number for k especially in classification problems. This helps avoid ties when deciding which class is the most common among the neighbors.
+[Source](https://www.geeksforgeeks.org/machine-learning/k-nearest-neighbours/)
+
+3. Distance metrics used in KNN
+KNN needs a way to measure how similar or different two data points are, which is done with a distance metric in feature space. The choice of metric can significantly affect which points are considered neighbours and therefore the final predictions.
+
+3.1 Euclidean distance
+![Euclidean and Manhattan distance](/images/Euclidean_distance_Mahattan_distance.png)
+[source](https://www.google.com/url?sa=i&url=https%3A%2F%2Fai.plainenglish.io%2Feuclidean-vs-manhattan-distance-in-machine-learning-9e93e1e16790&psig=AOvVaw3dWJrNFcaIM0rO9ZlCf50x&ust=1764537816710000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCPDR0cymmJEDFQAAAAAdAAAAABAE)
+The most common choice. For two points  
+$$(x = (x_1, \dots, x_n)\) and \(y = (y_1, \dots, y_n)$$:
+
+$$
+d_{\text{euclid}}(x, y)
+= \sqrt{\sum_{j=1}^{n}(x_j - y_j)^2}.
+$$
+
+This is the usual straight‑line distance. It works well for continuous, **scaled** features.
+
+3.2. Manhattan distance
+
+Also called $$(L_1)$$ or city‑block distance:
+
+$$
+d_{\text{manhattan}}(x, y)
+= \sum_{j=1}^{n} |x_j - y_j|.
+$$
+
+Think of moving along a grid of streets instead of diagonally. It can be more robust to outliers than Euclidean distance.
+
+3.3. Minkowski distance
+![Minkowski distance](/images/Minkowski.jpg)
+[Source](https://www.linkedin.com/posts/paulo-henrique-alves-97238625_minkowski-distance-is-a-mathematical-measure-activity-7099059022057644032-PliG/)
+A general form that includes both Euclidean and Manhattan:
+
+$$
+d_{\text{minkowski}}(x, y)
+= \left(\sum_{j=1}^{n} |x_j - y_j|^p\right)^{1/p}.
+$$
+
+- \(p = 1\) → Manhattan distance  
+- \(p = 2\) → Euclidean distance  
+!
+By changing \(p\), you control how strongly large differences are penalized.
+
+3.4. Chebyshev distance
+
+Chebyshev distance looks only at the largest coordinate difference:
+
+$$
+d_{\text{chebyshev}}(x, y)
+= \max_j |x_j - y_j|.
+$$
+
+Two points are close only if *all* feature differences are small.
+
+3.5. Cosine distance / similarity
+![Cosine Distance](/images/Cosine_distance.png)
+[Source](https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.linkedin.com%2Fpulse%2Fcosine-similarity-classification-michael-lin&psig=AOvVaw21p6hmu8CZ73xaENZnBXxU&ust=1764538107735000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCNCYzeymmJEDFQAAAAAdAAAAABAE)
+Cosine similarity measures the angle between two vectors:
+
+$$
+\text{cosine\_sim}(x, y)
+= \frac{x \cdot y}{\lVert x \rVert \lVert y \rVert}.
+$$
+
+A corresponding distance is often
+
+$$
+d_{\text{cosine}}(x, y) = 1 - \text{cosine\_sim}(x, y).
+$$
+
+This focuses on **direction** rather than magnitude and is common for text or high‑dimensional sparse data.
+
+3.6. Distances for categorical data
+
+For binary or categorical features, metrics like **Hamming distance** (fraction of positions that differ) or **Jaccard distance** (based on set overlap) are often better.
+
+In practice, Euclidean distance is a good default for numeric, scaled features, but for text, binary attributes, or unusual feature structures, trying other metrics can improve KNN performance.
