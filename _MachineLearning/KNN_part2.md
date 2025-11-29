@@ -2,7 +2,7 @@ text
 ---
 title: "KNN for Wind Power Prediction 🌬️⚡"
 layout: single
-permalink: /MachineLearning/KNN_part2/
+permalink: /MachineLearning/KNN_part2.md/
 usemathjax: true
 category: densys
 ---
