@@ -350,4 +350,4 @@ new_pred = knn.predict(new_point_scaled)[0]
 ![Result](/images/output_off_example_KNN.png)
 
 
-You can also download code through [this link](/files/KNN_part2_pratice.ipynb)
+You can also download code through [this link](/files/KNN_part2_pratice.zip)
