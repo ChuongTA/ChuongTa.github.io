@@ -276,3 +276,78 @@ It creates ALL combinations:
 - (ws=2, ti=0.02), (ws=3, ti=0.02), (ws=4, ti=0.02)
 - (ws=2, ti=0.03), (ws=3, ti=0.03), (ws=4, ti=0.03)
 
+FIX AIR DENSITY
+```
+rho_fixed = np.full_like(WS, 1.225)  # Constant air density
+```
+result:
+```
+rho_fixed = [[1.225, 1.225, 1.225],
+             [1.225, 1.225, 1.225]]
+```
+Now we have 3D data in 2D arrays:
+- WS: Wind speed variations
+- TI: Turbulence variations
+- rho_fixed: Constant air density
+
+Prepare for prediction
+A problem arises KNN expects 1D feature arrays, but we have 2D grids, then a solution is:
+                     Convert 2D → 1D → predict → 1D → 2D
+```
+grid_X = np.column_stack([WS.ravel(), rho_fixed.ravel(), TI.ravel()])
+```
+What ```.ravel()``` does:
+Before ```.ravel()```:
+```
+WS = [[2, 3, 4],        # 2x3 grid
+      [2, 3, 4]]
+      
+WS.ravel() = [2, 3, 4, 2, 3, 4]  # Flattened to 1D
+```
+After ```column_stack```:
+```
+grid_X = [
+    [2,   1.225, 0.02],   # Combination 1
+    [3,   1.225, 0.02],   # Combination 2  
+    [4,   1.225, 0.02],   # Combination 3
+    [2,   1.225, 0.03],   # Combination 4
+    [3,   1.225, 0.03],   # Combination 5
+    [4,   1.225, 0.03]    # Combination 6
+]
+```
+Make predictins
+```
+grid_X_scaled = scaler.transform(grid_X)      # Scale the features
+grid_pred_1d = knn.predict(grid_X_scaled)     # Get predictions (1D array)
+```
+Predictions come back as 1D:
+```
+grid_pred_1d = [150, 450, 800, 140, 430, 780]  # Power predictions for each point
+```
+then, reshape back to 2D for plotting:
+```
+grid_pred = grid_pred_1d.reshape(WS.shape)
+```
+What ```.reshape()``` does:
+```
+# Before reshape (1D):
+grid_pred_1d = [150, 450, 800, 140, 430, 780]
+
+# After reshape to WS.shape (which is 2x3):
+grid_pred = [[150, 450, 800],
+             [140, 430, 780]]
+```
+1.8 Making new predictions
+```
+new_point = np.array([[11.5, 1.24, 0.08]])  # ws, density, turbulence
+new_point_scaled = scaler.transform(new_point)
+new_pred = knn.predict(new_point_scaled)[0]
+```
+
+- Create new data point as 2D array
+- Scale using SAME scaler as training data
+- Predict and extract single value with [0]
+![Result](/images/output_off_example_KNN.png)
+
+
+You can also download code through this link:
