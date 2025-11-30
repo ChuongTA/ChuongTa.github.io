@@ -1,3 +1,4 @@
+---
 title: "KNN Regression – Wind Power Prediction 🌬️⚡"
 category: densys
 excerpt: "This post demonstrates how to model wind turbine power using KNN regression with simulated wind-farm data."
