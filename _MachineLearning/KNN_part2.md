@@ -1,8 +1,6 @@
-<img width="727" height="284" alt="image" src="https://github.com/user-attachments/assets/336cd7e1-4c41-4380-b00a-dabf77aeb504" />---
 title: "KNN Regression – Wind Power Prediction 🌬️⚡"
 category: densys
 excerpt: "This post demonstrates how to model wind turbine power using KNN regression with simulated wind-farm data."
-image: /images/KNN_WindPower.png
 layout: single
 author_profile: true
 permalink: /MachineLearning/KNN_part2.md/
