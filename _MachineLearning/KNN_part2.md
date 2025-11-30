@@ -1,5 +1,5 @@
 ---
-title: "KNN Regression – Wind Power Prediction 🌬️⚡"
+title: "KNN Regression Part 2 – Wind Power Prediction 🌬️⚡"
 category: densys
 excerpt: "This post demonstrates how to model wind turbine power using KNN regression with simulated wind-farm data."
 layout: single
@@ -56,8 +56,8 @@ def power_curve(ws):
     return p
 ```
 the function ```np.piecewise``` creates a piecewise function with different rules for different wind speed ranges:
-| Wind Speed  | Power Output   | Explanation                    |
-|------------|----------------|--------------------------------|
+| Wind Speed | Power Output   | Explanation                    |
+|------------|----------------|------------------------------- |
 | < 3 m/s    | 0 kW           | Cut-in speed not reached       |
 | 3–13 m/s   | Cubic increase | Power ≈ (wind speed)^3         |
 | 13–25 m/s  | 3,000 kW       | Rated power (maximum)          |
@@ -350,4 +350,4 @@ new_pred = knn.predict(new_point_scaled)[0]
 ![Result](/images/output_off_example_KNN.png)
 
 
-You can also download code through this link:
+You can also download code through (this link)[/files/KNN_part2_pratice.ipynb]:
