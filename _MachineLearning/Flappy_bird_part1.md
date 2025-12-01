@@ -12,7 +12,7 @@ usemathjax: true
 
 Watch the live demo:
 
-<iframe width="100%" height="100" src="https://www.youtube.com/embed/C-xz9ifUJ9A" 
+<iframe width="60%" height="60" src="https://www.youtube.com/embed/C-xz9ifUJ9A" 
         title="Flappy Bird by [Your Name]" frameborder="0" allowfullscreen 
         style="max-width: 800px;"></iframe>
 
