@@ -28,7 +28,7 @@ Let's jump into the coding instructions!
 ---
 You can also follow video tutorials from these channels:
 - [Kenny Yip Coding (English)](https://www.youtube.com/watch?v=OCE2Es_Y5X0)
-- [CodeXplore](https://www.youtube.com/watch?v=mFbdfXWmLU8)
+- [CodeXplore( in Vietnamese)](https://www.youtube.com/watch?v=mFbdfXWmLU8)
 
 Additional resources:
 - [Source code from Code with Curious](https://codewithcurious.com/projects/flappy-bird-game-using-python/)
