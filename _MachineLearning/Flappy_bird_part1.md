@@ -8,13 +8,14 @@ author_profile: true
 permalink: /MachineLearning/Flappy_bird_part1.md/
 usemathjax: true
 ---
-![Flappy Bird gameplay demo](/Files/Flappy_bird/flappy bird.png)
+![Flappy Bird demo](/Files/Flappy_bird/flappy bird.png){width=300px height=170px}
 
-Watch the live demo:
+<div style="max-width: 450px; margin: 10px auto;">
+  <iframe width="100%" height="200" src="https://www.youtube.com/embed/C-xz9ifUJ9A?rel=0" 
+          frameborder="0" allowfullscreen>
+  </iframe>
+</div>
 
-<iframe width="60%" height="60" src="https://www.youtube.com/embed/C-xz9ifUJ9A" 
-        title="Flappy Bird by [Your Name]" frameborder="0" allowfullscreen 
-        style="max-width: 800px;"></iframe>
 
 
 Have you heard of *Flappy Bird* before? It's a famous mobile game developed by a Vietnamese creator in 2014. His name is Dong Nguyen (also known as Nguyen Ha Dong). He was born in Hanoi and studied at Hanoi University of Science and Technology (HUST)—the same university I attended.
