@@ -8,7 +8,8 @@ author_profile: true
 permalink: /MachineLearning/Flappy_bird_part1.md/
 usemathjax: true
 ---
-![Flappy Bird demo](/Files/Flappy_bird/flappy bird.png){width=300px height=170px}
+<img src="/Files/Flappy_bird/flappy bird.png" width="350" height="200" 
+     style="max-width: 100%; border-radius: 8px; display: block; margin: 0 auto 20px;">
 
 <div style="max-width: 450px; margin: 10px auto;">
   <iframe width="100%" height="200" src="https://www.youtube.com/embed/C-xz9ifUJ9A?rel=0" 
