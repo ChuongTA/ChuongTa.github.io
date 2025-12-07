@@ -1,7 +1,7 @@
 ---
 title: "Flappy bird Game Part 1 🐦"
 category: densys
-excerpt: "In this post, I will guide you through creating a Flappy Bird game, originally developed by Vietnamese creator Nguyen Ha Dong. In part 2, I will build a deep learning model to make Flappy Bird play eternally.
+excerpt: "In this post, I will guide you through creating a Flappy Bird game, originally developed by Vietnamese creator Dong Ha NGUYEN. In part 2, I will explain a simple Aritifical Neural Network (ANN) model to make Flappy Bird A.I.
 "
 layout: single
 author_profile: true
