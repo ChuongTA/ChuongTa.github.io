@@ -8,7 +8,7 @@ author_profile: true
 permalink: /MachineLearning/Flappy_bird_part2.md/
 usemathjax: true
 ---
-![AI trained flappy bird](https://github.com/YourRepo/assets/my_animation.gif)
+![AI trained flappy bird](/images/Flappy_bird/AI_Flappy_bird.gif)
 
 
 We often treat Machine Learning libraries like TensorFlow or PyTorch as " Black bockes". We feed data in, and magic come out. However, to have better understanding on deep learning, one must understand the mathematics happening under the hood.
@@ -358,3 +358,5 @@ child.brain.mutate(0.15)
 And that's the whole journey! We started with an empty screen and ended up with a bird that taught itself how to fly perfectly.
 
 I hope you enjoy this code. Happy coding! 🎉
+
+You can download the code through this [link](\files/Flapp_bird_file/AI_Trained_Flappy_Bird.zip)
