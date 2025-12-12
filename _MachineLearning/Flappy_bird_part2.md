@@ -170,18 +170,19 @@ $$\text{Collision} \iff \text{Bird.Hitbox} \cap (\text{Pipe.TopHitbox} \lor \tex
 ```
 # rect is the Bird's hitbox
 # top_rect / bottom_rect are the Pipe's hitboxes
-
 def collides(self, rect):
     # Check Top Pipe OR Bottom Pipe
     return rect.colliderect(top_rect) or rect.colliderect(bottom_rect)
 ```
 
 # Step 2: Artificial Neural Network
+
 We don't use "If/Else" statements to tell the bird how to play. We give it a brain and let it decide. We are not using a pre-built library like TensorFlow; we are building a raw mathematical model from scratch using **Linear Algebra**.
 
 This is a Feed-Forward Neural Network. It takes information in, processes it through layers of math, and spits out a binary decision: **Jump or Don't Jump**.
 
 ## 2.1 The architecture (topology)
+
 The brain is structured in three layers. Data flows in one direction (Left to Right).
 - Input layer (5 Neurons): The "Sensors". These receive raw data from the game.
 - Hidden layer (8 Neurons): The "Processors". These neurons find patterns in the data (e.g., "The pipe is close AND I am too low")
@@ -215,6 +216,7 @@ def think(self, bird_y, bird_vel, pipe_gap_top, pipe_gap_bottom, pipe_dist):
     ]])
     return self.brain.forward(inputs)
 ```
+
 ![The inputs of ANN](/images/Flappy_bird/Game_input.jpg)
 
 ## 2.3 The math: forward propagation
