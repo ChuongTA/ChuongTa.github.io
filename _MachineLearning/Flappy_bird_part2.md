@@ -180,7 +180,7 @@ We don't use "If/Else" statements to tell the bird how to play. We give it a bra
 
 This is a Feed-Forward Neural Network. It takes information in, processes it through layers of math, and spits out a binary decision: **Jump or Don't Jump**.
 
-2.1 The architecture (topology)
+## 2.1 The architecture (topology)
 The brain is structured in three layers. Data flows in one direction (Left to Right).
 - Input layer (5 Neurons): The "Sensors". These receive raw data from the game.
 - Hidden layer (8 Neurons): The "Processors". These neurons find patterns in the data (e.g., "The pipe is close AND I am too low")
@@ -193,7 +193,9 @@ class NeuralNetwork:
         # ... initializes weights and biases based on layer_sizes
 ```
 ![Flappy bird ANN topology](/images/Flappy_bird/Topology.jpg)
+
 ## 2.2 The input (The senses)
+
 A neural network cannot understand "graphics." It needs normalized numbers (usually between 0 and 1) to do math efficiently. This is essential because it prevents large numbers (like 500 for Y-position) from dominating the smaller numbers (like 0.7 for velocity) during the network's calculations. In the Agent.think method, we feed it 5 specific numbers:
 - Bird Y: $\frac{y}{height}$ (Where am I verticaly?)
 - Bird Velocity: $\frac{vel}{20}$ (Am I falling fast?)
@@ -215,6 +217,7 @@ def think(self, bird_y, bird_vel, pipe_gap_top, pipe_gap_bottom, pipe_dist):
 ![The inputs of ANN](/images/Flappy_bird/Game_input.jpg)
 
 ## 2.3 The math: forward propagation
+
 How does the brain turn those 5 numbers into a decision? It uses Matrix Multiplication.
 
 ## Layer 1: Input $\rightarrow$ Hidden
@@ -236,13 +239,17 @@ For the hidden layer, we use the Hyperbolic Tangent (Tanh) function.
 $$H = \tanh(Z_1)$$
 Tanh is perfect here because it outputs numbers between -1 and 1.This allows the brain to understand negative relationships. For example, if the bird's "Velocity" is a high positive number (falling fast), the brain can produce a strong negative signal (-1) that essentially says, "This is bad, we need to correct this."
 
-##Layer 2: Hidden $\rightarrow$ Output
+## Layer 2: Hidden $\rightarrow$ Output
+
 Now that the hidden neurons have processed the raw data into features (like "danger is close"), they pass that info to the final Output Neuron.
+
 ### a. The Linear Step
+
 We repeat the weighted sum process. The output neuron takes the results from the hidden layer ($H$), weighs them based on which hidden neurons are most trustworthy, and adds a final bias.
 $$Z_2 = (H \cdot W_2) + B_2$$2. 
 
 ### b. The Activation (Sigmoid)
+
 For the final step, we don't want a negative number. We are making a binary decision (Yes/No), so we want a probability between 0% and 100%.
 We use the Sigmoid function, which squashes any number into the range 0 to 1.
 $$\text{Output} = \frac{1}{1 + e^{-Z_2}}$$
@@ -272,9 +279,11 @@ def forward(self, x):
     return output[0][0] > 0.5
 ```
 ![The inputs of ANN](/images/Flappy_bird/Single_neuron_mathematical_model.jpg)
+
 ![The activation graph](/images/Flappy_bird/Activation_graph.jpg)
 
 ## 2.4 Mutability and Copying
+
 The final part of the NeuralNetwork class provides the tools necessary for the evolution process in Step 3.
 Code implementation:
 ```
@@ -287,6 +296,7 @@ def copy(self):
 ```
 
 # Step 3: Genetic Algorithm (The evolution)
+
 The Genetic Algorithm (GA) simulates the process of natural selection to optimize the weights and biases (the "genes") of the Neural Networds. Instead of finding the perfect solution through complex math, the GA finds  the best solution through trials, error, and survival of the fittest.
 
 The learning framework can be shown:
@@ -312,6 +322,7 @@ Fitness is the quantitative measure of an agent's success. It is the reward sign
 
 Logic: How the Agent Earns Rewards
 An agent's goal is to maximize its survival time and score.
+
 | Reward Action | Fitness Increment | Code Reference |
 |---|---|---|
 | **Survival** | +0.1 per frame | `agent.fitness += 0.1` (in `run_generation` loop) |
@@ -323,6 +334,7 @@ $$\text{Fitness} = (\text{Frames Survived} \times 0.1) + (\text{Pipes Passed} \t
 Goal: The heavy multiplier on the score (10) encourages the agents to pass pipes, while the time reward (0.1) encourages them to simply survive longer.
 
 ## 3.3 Selection (Survival of the Fittest)
+
 After the generation ends, we identify the best-performing agents to be the parents of the next generation.
 - Sorting: The entire population is sorted from best to worst based on their final fitness score.
 ```
@@ -335,6 +347,7 @@ for i in range(10): new_pop.append(population[i].copy())
 ```
 
 ### 3.4 Reproduction and Mutation
+
 This is the creative phase where the new, potentially smarter generation is created by filling the remaining slots (140 agents).
 
 The Code's Role
