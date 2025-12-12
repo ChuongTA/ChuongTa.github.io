@@ -40,11 +40,11 @@ The 1st thing to understad is the map. In mathclass, *Y goes up*. In computer gr
 - Y increases: Moving down (towards the floor).
 - Y decreases: Moving up (toward the ceiling).
 In the code:
-`
+```
 WINDOW_WIDTH = 900
 WINDOW_HEIGHT = 600
 FLOOR_Y = 512
-`
+```
 We define the boundaries. The bird must stay between `Y=0` (Ceiling) and `Y= 512` (Floor).
 
 ## 1.2 Loading images
@@ -162,6 +162,7 @@ for pipe in pipes:
         # agent.fitness += 10
 ```
 ## 1.5 Collision dection (the hitbox)
+
 How do we know if the bird died? We use Rectangles (Rects). Every object in the game has an invisible box around it called a Hitbox.
 We ask the computer a simple geometry question: "Does Box A overlap with Box B?"
 In the Code: Pygame does the heavy math for us with `colliderect`:
@@ -221,7 +222,9 @@ def think(self, bird_y, bird_vel, pipe_gap_top, pipe_gap_bottom, pipe_dist):
 How does the brain turn those 5 numbers into a decision? It uses Matrix Multiplication.
 
 ## Layer 1: Input $\rightarrow$ Hidden
+
 First, the raw data travels from the sensors (Input Layer) to the processing unit (Hidden Layer).
+
 ### a, The Weighted Sum (The Linear Step)
 Every connection between an input and a neuron has a Weight ($W$). Think of weight as "importance"
 - If a weight is high, the neuron pays close attention to that input.
