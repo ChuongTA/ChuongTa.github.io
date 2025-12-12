@@ -8,6 +8,8 @@ author_profile: true
 permalink: /MachineLearning/Flappy_bird_part2.md/
 usemathjax: true
 ---
+![AI trained flappy bird](https://github.com/YourRepo/assets/my_animation.gif)
+
 
 We often treat Machine Learning libraries like TensorFlow or PyTorch as " Black bockes". We feed data in, and magic come out. However, to have better understanding on deep learning, one must understand the mathematics happening under the hood.
 
@@ -287,9 +289,72 @@ def copy(self):
 # Step 3: Genetic Algorithm (The evolution)
 The Genetic Algorithm (GA) simulates the process of natural selection to optimize the weights and biases (the "genes") of the Neural Networds. Instead of finding the perfect solution through complex math, the GA finds  the best solution through trials, error, and survival of the fittest.
 
+The learning framework can be shown:
+
 | Generation | Action | Result |
+|\(G_n\) |---|---|
+| **Play**| 150 birds play the game. | We get 150 Fitness Scores. |
+| **Select** | Sort by Fitness; save the top 10. | The best strategies survive. |
+| **Evolve** | Clone the top performers; apply mutation. | New population \(G_{n+1}\) is created, slightly smarter than \(G_n\). |
+| **Repeat** |  Loop to the next generation. | Over many generations, the agents evolve a near-perfect strategy for playing Flappy Bird. |
+
+## 3.1 Initializsation 
+The process begins in the evolve() function, which runs the simulation over many generations. 
+- Population Creation: We start with an initial group of agents. Each agent has a unique, randomly initialized brain. In this code, we create 150 unique birds, all with slightly different, random jumping habits.
+```
+population = [Agent() for _ in range(150)]
+```
+- Simulation: The run_generation() function is the main game loop, where the entire population plays simultaneously.
+- End Condition: A generation ends only when all 150 agents die (hitting a pipe, the floor, or the ceiling).
+
+## 3.2 The fitness function (Evaluation)
+Fitness is the quantitative measure of an agent's success. It is the reward signal that tells the GA which agents are "good."
+
+Logic: How the Agent Earns Rewards
+An agent's goal is to maximize its survival time and score.
+| Reward Action | Fitness Increment | Code Reference |
 |---|---|---|
-| \(G_n\) | **Play**: 150 birds play the game. | We get 150 Fitness Scores. |
-|  | **Select**: Sort by Fitness; save the top 10. | The best strategies survive. |
-|  | **Evolve**: Clone the top performers; apply mutation. | New population \(G_{n+1}\) is created, slightly smarter than \(G_n\). |
-|  | **Repeat**: Loop to the next generation. | Over many generations, the agents evolve a near-perfect strategy for playing Flappy Bird. |
+| **Survival** | +0.1 per frame | `agent.fitness += 0.1` (in `run_generation` loop) |
+| **Scoring** | +10 per pipe passed | `agent.fitness += 10` (when `pipe.passed` is set to True) |
+
+The total fitness is calculated as:
+$$\text{Fitness} = (\text{Frames Survived} \times 0.1) + (\text{Pipes Passed} \times 10)$$
+
+Goal: The heavy multiplier on the score (10) encourages the agents to pass pipes, while the time reward (0.1) encourages them to simply survive longer.
+
+## 3.3 Selection (Survival of the Fittest)
+After the generation ends, we identify the best-performing agents to be the parents of the next generation.
+- Sorting: The entire population is sorted from best to worst based on their final fitness score.
+```
+population.sort(key=lambda x: x.fitness, reverse=True)
+```
+- Elitism (Top Champions): The very best individuals are copied exactly into the new population. This ensures the best genetic material is never accidentally lost. The top 10 birds are granted eternal life (copied) into the next generation.
+```
+new_pop = []
+for i in range(10): new_pop.append(population[i].copy())
+```
+
+### 3.4 Reproduction and Mutation
+This is the creative phase where the new, potentially smarter generation is created by filling the remaining slots (140 agents).
+
+The Code's Role
+The remaining slots are filled by cloning and mutating brains from the top performers.
+
+- Parent Selection: Agents are selected as parents from the top 30 performers (`population[:30]`). Using a larger pool than just the top 10 introduces diversity.
+```
+parent = random.choice(population[:30])
+child = parent.copy()
+```
+- Mutation: The copied brain (`child.brain`) is slightly altered. This is the source of all improvement and diversity.
+```
+child.brain.mutate(0.15)
+```
+- Mutation Rate: The value 0.15 means there is a $15\%$ chance that any single weight or bias will be slightly altered.
+- The Tweak: If a weight/bias is selected for mutation, a small amount of random Gaussian noise is added to it.
+- $$\text{Weight}_{\text{new}} = \text{Weight}_{\text{old}} + (\text{RandomNoise} \times 0.5)$$
+- This ensures that the brain doesn't change drastically; it just jiggles a bit, leading to new behavioral strategies.
+
+# 🌟 Wrapping up
+And that's the whole journey! We started with an empty screen and ended up with a bird that taught itself how to fly perfectly.
+
+I hope you enjoy this code. Happy coding! 🎉
