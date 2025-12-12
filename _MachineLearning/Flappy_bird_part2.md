@@ -287,9 +287,9 @@ def copy(self):
 # Step 3: Genetic Algorithm (The evolution)
 The Genetic Algorithm (GA) simulates the process of natural selection to optimize the weights and biases (the "genes") of the Neural Networds. Instead of finding the perfect solution through complex math, the GA finds  the best solution through trials, error, and survival of the fittest.
 
-Generation,Action,Result
-Gn​,,
-Play,150 birds play the game.,We get 150 Fitness Scores.
-Select,Sort by Fitness; save the top 10.,The best strategies survive.
-Evolve,Clone the top performers; apply mutation.,"New population Gn+1​ is created, slightly smarter than Gn​."
-Repeat,Loop to the next generation.,"Over many generations, the agents evolve a near-perfect strategy for playing Flappy Bird."
+| Generation | Action | Result |
+|---|---|---|
+| \(G_n\) | **Play**: 150 birds play the game. | We get 150 Fitness Scores. |
+|  | **Select**: Sort by Fitness; save the top 10. | The best strategies survive. |
+|  | **Evolve**: Clone the top performers; apply mutation. | New population \(G_{n+1}\) is created, slightly smarter than \(G_n\). |
+|  | **Repeat**: Loop to the next generation. | Over many generations, the agents evolve a near-perfect strategy for playing Flappy Bird. |
