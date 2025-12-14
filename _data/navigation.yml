@@ -14,6 +14,8 @@ main:
     url: /projects/
   - title: "Machine Learning"
     url: /MachineLearning/
+  - title: "Wind Energy"
+    url: /WindEnergy/
 
   # - title: "Talks"
   #   url: /talks/    
