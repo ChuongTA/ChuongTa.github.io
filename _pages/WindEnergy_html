@@ -1,0 +1,12 @@
+---
+layout: archive
+title: "Wind Energy"
+permalink: /Wind Energy/
+author_profile: true
+---
+
+<div class="wordwrap">
+  This page collects all my posts on topics I find interesting about wind energy ✇🌫⚡❄️.
+</div>
+
+{% include base_path %}
