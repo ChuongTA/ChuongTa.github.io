@@ -1,20 +1,23 @@
 ---
 layout: archive
 title: "Wind Energy"
-permalink: /WindEnergy/
+permalink: /wind-energy/
 author_profile: true
 ---
 
 <div class="wordwrap">
-  This page collects all my posts on topics I find interesting about wind energy ✇🌫⚡❄️.
+  This page gathers all my posts related to wind energy, covering topics I find particularly interesting—ranging from atmospheric physics and forecasting to power systems and cold-climate effects ✇🌫⚡❄️.
 </div>
 
 {% include base_path %}
 
-{% if site.WindEnergy %}  
-{% for post in site.WindEnergy %}
+{% if site.WindEnergy and site.WindEnergy.size > 0 %}
+  {% for post in site.WindEnergy %}
     {% include archive-single.html %}
   {% endfor %}
 {% else %}
-  <p>No Wind Energy posts found. Check your _config.yml collection name and folder _WindEnergyg/.</p>
+  <p>
+    No Wind Energy posts found. Please check that the collection name in
+    <code>_config.yml</code> and the folder <code>_WindEnergy/</code> are correctly defined.
+  </p>
 {% endif %}
