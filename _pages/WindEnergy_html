@@ -11,7 +11,8 @@ author_profile: true
 
 {% include base_path %}
 
-{% if site.WindEnergy %}  {% for post in site.WindEnergy %}
+{% if site.WindEnergy %}  
+{% for post in site.WindEnergy %}
     {% include archive-single.html %}
   {% endfor %}
 {% else %}
