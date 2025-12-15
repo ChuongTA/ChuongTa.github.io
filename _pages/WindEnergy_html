@@ -8,5 +8,11 @@ author_profile: true
 <div class="wordwrap">
   This page collects all my posts on topics I find interesting about wind energy ✇🌫⚡❄️.
 </div>
-
 {% include base_path %}
+
+{% if site.WindEnergy %}  {% for post in site.WindEnergy %}
+    {% include archive-single.html %}
+  {% endfor %}
+{% else %}
+  <p>No Wind Energy posts found. Check your _config.yml collection name and folder _WindEnergyg/.</p>
+{% endif %}
