@@ -10,13 +10,13 @@ usemathjax: true
 
 In the Nordic countries, the wind energy capacity is substantially higher in winter due stronger wind and higher air density. Therefore, countries with a high wind potential and intensive cold climates to advance wind power development. 
 
-![Average wind speed in the world in winter [1](https://climate.copernicus.eu/esotc/2022/wind-solar-energy-resources)](/files/Icing_formation/Wind_speed_winter_in_europe.png)
-*Figure 1: Global average wind speed during winter months.*
+![Average wind speed in the world in winter](/files/Icing_formation/Wind_speed_winter_in_europe.png)
+*Figure 1: Average wind speed in the world in winter [1](https://climate.copernicus.eu/esotc/2022/wind-solar-energy-resources)*
 
-![Countries by january average low temperature [2](https://www.reddit.com/r/europe/comments/kob7to/countries_by_january_average_low_temperatures_of/)](/files/Icing_formation/temperature_in_january.jpg)
-*Figure 2: Geographic distribution of average low temperatures in January.*
+![Countries by january average low temperature](/files/Icing_formation/temperature_in_january.jpg)
+*Figure 2: Countries by january average low temperature [2](https://www.reddit.com/r/europe/comments/kob7to/countries_by_january_average_low_temperatures_of/)*
 
-By 2050, wind energy capacity in cold climate regions throughout Scandinavia, North America, Europe and Asia is projected to reach approximately [250-400 GW] (estimated based on current growth trajectories from the 200+ GW installed by 2024). In spite of that, wind turbines in severely cold climates must withstand challenging conditions, particularly frequent subzero temperatures and ice formation.
+By 2050, wind energy capacity in cold climate regions throughout Scandinavia, North America, Europe and Asia is projected to reach approximately [250-400 GW] (estimated based on current growth trajectories from the 200+ GW installed by 2024). In spite of that, wind turbines in severely cold climates must withstand challenging conditions, particularly frequent subzero temperatures and ice formation(https://windren.se/WW2021/14_2_21_Karlsson_IEA_Wind_Task_19_Cold_climate_wind_market_study_Public.pdf).
 
 In addition to average air temperatures below zero Celcius degree for large part of the year, high humidity levels promote ice formation and accumation on wind-expose structures and wind farm access routes. Generally speaking, the term "icing" describes ice accumulation from atmospheric precipitation and marine spray. This accretion stationary and dynamic turbine parts by modifying aerodynamic profile performance and adding mass to contaminated components.
 
@@ -37,8 +37,8 @@ Liquid water content (LWC), median volumetric diameter (MVD), and Ambient temper
 - Liquid water content (LWC) is defined as the mass of water contained in a unit volume of air. It acts as the "fuel" for the accretion process. Higher LWC values effectively increase the flux of water mass impinging on the blade surface, leading to rapid ice buildup and a shorter duration required to reach critical power loss thresholds.
 - Median Volumetric Diameter (MVD) is the droplet size that divides the total water volume in half. If the MVD is 200 micrometers, it means 50% of the water volume comes from droplets smaller than 200 μm, and 50% from droplets larger than 200 μm. This differs from simply counting droplets because larger droplets contain much more water than smaller ones. Larger droplets (high MVD) possess greater inertia, meaning they are less likely to follow the streamline deflection around the airfoil and more likely to impact the blade surface ballistically. Conversely, smaller droplets maybe swept around the leading edge by aerodynamic forces, reducing the collision efficiency. MVD is therefore a determinant of both rate of accretion and the limit of impingement - how far back along the chord the ice can form.
 
-![Median volumetric diameter.[4](https://pesticidestewardship.org/pesticide-drift/understanding-droplet-size/)](/files/Icing_formation/vmd-ncsu.gif)
-*Figure 3: Representation of Median Volumetric Diameter (MVD) in droplet distributions.*
+![Median volumetric diameter.](/files/Icing_formation/vmd-ncsu.gif)
+*Figure 3: Median volumetric diameter [4](https://pesticidestewardship.org/pesticide-drift/understanding-droplet-size/)*
 
 - Ambient temperature and phase change: The temperature describe the thermodynamic solidification process. It determines the "sticking fraction" (how much water adheres) and the freezing rate. This thermal balance is what differentiates the two primary ice types: rime and glaze.
 
@@ -87,15 +87,15 @@ Rime ice forms under conditions of low temperature (typically $$<-10^\circ C$$) 
 - Characteristics: Rime ice appears opaque, milky, and rough. It has a low density, typically ranging from 200 to 600 $$kg/m^3$$.
 - Aerodynamic Implication: Because it freezes on impact, rime ice tends to conform to the leading edge, growing forward into the wind. While it preserves the general airfoil shape better than glaze, its rough surface texture acts as a powerful trip mechanism for the boundary layer, inducing premature turbulence.
 
-![Rime ice [5](https://www.aere.iastate.edu/~huhui/WT-icing.html)](/files/Icing_formation/Heavy_of_rime_ice_in_wind_blade.png)
-*Figure 4: Heavy rime ice accumulation on a wind turbine blade.*
+![Rime ice](/files/Icing_formation/Heavy_of_rime_ice_in_wind_blade.png)
+*Figure 4: Heavy of rime ice in wind blade [5](https://www.aere.iastate.edu/~huhui/WT-icing.html)*
 
 ### b, Glaze ice
 
 Glaze ice, frequently referred to as clear ice, forms when supercooled precipitation strikes a cold surface and freezes. During this process, the release of latent heat prevents the water from freezing instantly, allowing it to flow and expand over the surface. This continuous liquid film prevents air pockets from becoming trapped, resulting in a dense, transparent, and uniform ice structure. Because it is clear and does not crumble, glaze ice is often difficult to spot with the naked eye. It typically has a high density of around $$900 \text{ kg/m}^3$$and forms in temperatures between$$0^{\circ}\text{C}$$and$$-6^{\circ}\text{C}$$, often in the presence of freezing rain. This phenomenon is similar to the "black ice" found on roadways, which is notoriously hard to detect due to its thinness and transparency. 
 
-![Glaze Ice [6](https://en.wikipedia.org/wiki/Glaze_%28ice%29)](/files/Icing_formation/glaze_ice.jpg)
-*Figure 5: Glaze ice formation resulting in a transparent and dense layer.*
+![Glaze Ice](/files/Icing_formation/glaze_ice.jpg)
+*Figure 5: Glaze ice [6](https://en.wikipedia.org/wiki/Glaze_%28ice%29)*
 
 ### c, Mixed ice and wet snow
 When temperatures fluctuate between 0 °C and 3°C, snow crystals with a high water content can adhere and bond to structures. When the temperature drops, accumulated wet snow freezes to form ice that has a density varying between 300 and 600 kg/m3. Visually, it resembles rime.
@@ -104,8 +104,8 @@ When temperatures fluctuate between 0 °C and 3°C, snow crystals with a high wa
 
 At very low temperatures, the likelihood of ice formation diminishes, as the water droplets no longer exist in a supercooled state. However, another phenomenon may occur, namely the solid condensation of water vapor in the air. This type of ice, known as hoar frost, is produced when relative air humidity is high (above 90%) and winds are low. Although this type of ice is responsible for corona losses on power transmission lines, its density and bond strength are low, which limits the mechanical loads imparted on the structures. As a result, hoar frost is also less dangerous in terms of ice shed. 
 
-![Freezing fog (hoar frost) on top of a wind turbine [7](https://www.reddit.com/r/mildlyinteresting/comments/ke87j9/freezing_fog_hoar_frost_on_top_of_a_wind_turbine/)](/files/Icing_formation/Freezing_fog.png)
-*Figure 6: Hoar frost (freezing fog) accumulation on a turbine.*
+![Freezing fog (hoar frost) on top of a wind turbine](/files/Icing_formation/Freezing_fog.png)
+*Figure 6: Freezing fog (hoar frost) on top of a wind turbine [7](https://www.reddit.com/r/mildlyinteresting/comments/ke87j9/freezing_fog_hoar_frost_on_top_of_a_wind_turbine/)*
 
 ### Consequences of icing formation on wind turbines
 
@@ -115,8 +115,8 @@ A critical debate in the literature, illuminated by recent CFD studies, concerns
 - Structural: Added mass of ice (up to 50% of blade weight). Uneven ice accretion and mass imbalance. Also, it increases Loads and Fatigue: Higher static and dynamic loads; reduced fatigue lifetime on components. Vibrations: Excessive vibrations due to rotor unbalance. Reduced Natural Frequency: Natural frequencies decrease, risking resonance.
 - Operational/Safety: Ice accumulation on sensors. Ice chunks detaching (shedding). Technical Unavailability: WT stoppage, downtime, and reduced availability. Safety Hazard: Ice throw/fall risks to personnel and nearby asset.
 
-![Icing formation in wind turbine consequences [7](https://www.aere.iastate.edu/~huhui/WT-icing.html)](/files/Icing_formation/WT_icing_consequences.jpg)
-*Figure 7: Impact and consequences of icing on wind turbine operation.*
+![Icing formation in wind turbine consequences](/files/Icing_formation/WT_icing_consequences.jpg)
+*Figure 7: Icing formation in wind turbine consequences [8](https://www.aere.iastate.edu/~huhui/WT-icing.html)*
 
 ### 5. De-icing methods
 The de-icing methods are described in the table below: 
