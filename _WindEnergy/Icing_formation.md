@@ -105,6 +105,7 @@ When temperatures fluctuate between 0 °C and 3°C, snow crystals with a high wa
 At very low temperatures, the likelihood of ice formation diminishes, as the water droplets no longer exist in a supercooled state. However, another phenomenon may occur, namely the solid condensation of water vapor in the air. This type of ice, known as hoar frost, is produced when relative air humidity is high (above 90%) and winds are low. Although this type of ice is responsible for corona losses on power transmission lines, its density and bond strength are low, which limits the mechanical loads imparted on the structures. As a result, hoar frost is also less dangerous in terms of ice shed. 
 
 ![Freezing fog (hoar frost) on top of a wind turbine](/files/Icing_formation/Freezing_fog.png)
+
 *Figure 6: Freezing fog (hoar frost) on top of a wind turbine [7](https://www.reddit.com/r/mildlyinteresting/comments/ke87j9/freezing_fog_hoar_frost_on_top_of_a_wind_turbine/)*
 
 ### Consequences of icing formation on wind turbines
@@ -136,7 +137,7 @@ The de-icing methods are described in the table below:
 | **Anti-freeze Chemicals** | Passive/Active | Application of chemicals to lower the freezing point of water. This method is noted to have environmental pollution risks. | [Habibi et al.](https://doi.org/10.1016/j.coldregions.2016.04.011)|
 
 ### 6. How forcasting help
-This information is compiled from two primary research sources: **Martini et al. (2021)** [[Source Link](https://doi.org/10.3390/en14165207)] and **Ye & Ezzat (2024)** [[Source Link](https://doi.org/10.1016/j.renene.2024.120879)].
+This information is compiled from two primary research sources: [Martini (2021)](https://doi.org/10.3390/en14165207)] and [Ye & Ezzat (2024)](https://doi.org/10.1016/j.renene.2024.120879)].
 
 Forecasting is a critical tool for wind farm operations in cold climates, primarily helping to mitigate the significant economic and safety impacts of ice accretion on wind turbine blades. Based on these papers, forecasting provides essential support through two primary modes: **diagnostic** (detection) and **prognostic** (prediction).
 
