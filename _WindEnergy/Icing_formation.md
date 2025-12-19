@@ -1,4 +1,4 @@
-<img width="2448" height="3264" alt="image" src="https://github.com/user-attachments/assets/1dcc1e0e-6776-472c-8ab6-90ef1bdf94d6" />---
+---
 title: "Icing formation in Wind turbines in Cold climate region (part 1)"
 category: densys
 excerpt: "In this first post of wind energy, I will walk you through the topic icing formation. In the cold climate regions, icing on wind turbines is significant problem, impacting both performance and physical reliability...
