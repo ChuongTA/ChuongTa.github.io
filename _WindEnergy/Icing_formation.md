@@ -85,7 +85,7 @@ Rime ice forms under conditions of low temperature (typically $<-10^\circ C$) an
 - Characteristics: Rime ice appears opaque, milky, and rough. It has a low density, typically ranging from 200 to 600 $kg/m^3$
 - Aerodynamic Implication: Because it freezes on impact, rime ice tends to conform to the leading edge, growing forward into the wind. While it preserves the general airfoil shape better than glaze, its rough surface texture acts as a powerful trip mechanism for the boundary layer, inducing premature turbulence.
 
-![Rime ice [5][files/Icing_formation/Heavy_of_rime_ice_in_wind_blade.png](https://www.aere.iastate.edu/~huhui/WT-icing.html)](files/Icing_formation/Heavy_of_rime_ice_in_wind_blade.png)
+![Rime ice [5][files/Icing_formation/Heavy_of_rime_ice_in_wind_blade.png](https://www.aere.iastate.edu/~huhui/WT-icing.html)](/files/Icing_formation/Heavy_of_rime_ice_in_wind_blade.png)
 
 ### b, Glaze ice
 
@@ -101,7 +101,7 @@ When temperatures fluctuate between 0 °C and 3°C, snow crystals with a high wa
 ### d, Hoar frost 
 
 At very low temperatures, the likelihood of ice formation diminishes, as the water droplets no longer exist in a supercooled state. However, another phenomenon may occur, namely the solid condensation of water vapor in the air. This type of ice, known as hoar frost, is produced when relative air humidity is high (above 90%) and winds are low. Although this type of ice is responsible for corona losses on power transmission lines, its density and bond strength are low, which limits the mechanical loads imparted on the structures[9]. As a result, hoar frost is also less dangerous in terms of ice shed. 
-![Freezing fog (hoar frost) on top of a wind turbine [7](https://www.reddit.com/r/mildlyinteresting/comments/ke87j9/freezing_fog_hoar_frost_on_top_of_a_wind_turbine/)](!files/Icing_formation/Freezing_fog.png)
+![Freezing fog (hoar frost) on top of a wind turbine [7](https://www.reddit.com/r/mildlyinteresting/comments/ke87j9/freezing_fog_hoar_frost_on_top_of_a_wind_turbine/)](/files/Icing_formation/Freezing_fog.png)
 
 ### Consequences of icing formation on wind turbines
 
