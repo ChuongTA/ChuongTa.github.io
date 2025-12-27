@@ -24,6 +24,9 @@ This raises a natural question:
 
 The marine boundary layer extends from the sea surface to somewhere between several hundred meters and about 1.5 km, depending on conditions. What defines this layer is direct coupling with the ocean surface through turbulent mixing - momentum exchange via surface friction, heat transfer, and moisture addition through evaporation all shape the properties within this zone [4](https://acp.copernicus.org/articles/21/10965/2021/).
 
+![MBL](/files/Wind_farms_and_clouds_interact/MBL.jpg)
+*Figure 2: Marine Boundary Layer [[5]](https://asr.science.energy.gov/news/program-news/post/13377))*
+
 Several features characterize the marine boundary layers:
 - Well-mixed by turbulence, with eddies continuosly stirring and homogenizing the air.
 - The top is frequently capped by a temperature inversion - a thin layer where temperature increases rather than decreases with height. This inversion acts a a lid, suppresssing vertical mixing and effectively separating the boundary layer from the free troposhere above.
@@ -33,7 +36,7 @@ The vertical wind profile in neutral conditions (neither strongly heated nor coo
 
 $$U(z) = \frac{u_s}{\kappa} \ln\left(\frac{z-d}{z_0}\right)$$
 
-where $$U(z)$$ is mean horizontal wind speed at height $$z$$, $$u_*$$ is the friction velocity (characterizing surface stress), $$\kappa \approx 0.4$$ is von Kármán's constant, $$d$$ is displacement height (zero over flat ocean), and $$z_0$$ is aerodynamic roughness length, which depends on wave state [5](https://docs.nrel.gov/docs/fy20osti/78009.pdf).
+where $$U(z)$$ is mean horizontal wind speed at height $$z$$, $$u_*$$ is the friction velocity (characterizing surface stress), $$\kappa \approx 0.4$$ is von Kármán's constant, $$d$$ is displacement height (zero over flat ocean), and $$z_0$$ is aerodynamic roughness length, which depends on wave state [6](https://docs.nrel.gov/docs/fy20osti/78009.pdf).
 
 Offshore wind turbines, with hub heights around 100–150 m, sit squarely within this layer. Crucially, the same turbulent processes that establish the wind profile also control the formation and evolution of clouds at the boundary layer top—which means the marine boundary layer is the shared physical domain where wind farms and stratocumulus can influence one another.
 
@@ -41,25 +44,28 @@ Offshore wind turbines, with hub heights around 100–150 m, sit squarely within
 
 ## 3.1 Formation and climate role
 
-Marine straocumulus are low-altitude, horizontally extensive clouds forming as relatively uniform dects or broken patches, typically gray or white when viewed from below and residing below 2 km altitude. They predominantly form near the top of the marine boundary layer, where rising moist air reaches saturation. The ocean surface continuously supplies moisture through evaporation; as this moist air is mixed upward by turbulence and encounters cooler temperatures near the inversion, water vapor condenses into cloud droplets [6](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2014JD022939).
+Marine straocumulus are low-altitude, horizontally extensive clouds forming as relatively uniform dects or broken patches, typically gray or white when viewed from below and residing below 2 km altitude. They predominantly form near the top of the marine boundary layer, where rising moist air reaches saturation. The ocean surface continuously supplies moisture through evaporation; as this moist air is mixed upward by turbulence and encounters cooler temperatures near the inversion, water vapor condenses into cloud droplets [7](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2014JD022939).
 
-These clouds cover roughly 20% of Earth's oceans at any given time, with particularly persistent decks forming over the eastern subtropical oceans where cold ocean currents meet stable air aloft. Their climate significance stems from their high albedo—they reflect substantial incoming solar radiation while emitting relatively weak thermal infrared, producing strong net cooling. Sensitivity studies consistently find that even modest reductions in marine stratocumulus coverage produce substantial positive radiative forcing [7](http://www.srderoode.nl/pubs/Wind_Energy_Clouds.pdf).
+![Stratocumulus clouds](/files/Wind_farms_and_clouds_interact/Stratocumulus_clounds.jpg)
+*Figure 3: Vertical profiles of radiative infrared cooling flux (orange) and temperature change (green) for a nocturnal stratocumulus cloud layer at equatorial latitudes. Upward sensible heat and moisture fluxes from the ocean surface provide the buoyancy and water vapor required for cloud formation, and radiative cooling from the cloud top provides downward entrainment and mixing of dry air from aloft to feed cloud thickening [8](https://www.sciencedirect.com/science/article/pii/B9780128170922000023)*
+
+These clouds cover roughly 20% of Earth's oceans at any given time, with particularly persistent decks forming over the eastern subtropical oceans where cold ocean currents meet stable air aloft. Their climate significance stems from their high albedo—they reflect substantial incoming solar radiation while emitting relatively weak thermal infrared, producing strong net cooling. Sensitivity studies consistently find that even modest reductions in marine stratocumulus coverage produce substantial positive radiative forcing [9](http://www.srderoode.nl/pubs/Wind_Energy_Clouds.pdf).
 
 ## 3.2 Maintenance mechanisms
 
 Several competing physical processes determine whether stratocumulus clouds thicken, thin, or dissipate. Understanding these processes is essential for predicting how external perturbations—such as those from wind farms—might affect clouds.
 
-Cloud-top radiative cooling: This is the dominant process maintaining many marine stratocumulus decks. Cloud droplets are efficient emitters of longwave (thermal infrared) radiation. At night, or even during daytime when longwave effects dominate, the cloud top emits radiation upward to space but receives little downward radiation from the dry air above. This creates a strong radiative cooling rate at the cloud top, often exceeding 5–10 K per hour.[8](https://acp.copernicus.org/articles/22/12241/2022/).
+Cloud-top radiative cooling: This is the dominant process maintaining many marine stratocumulus decks. Cloud droplets are efficient emitters of longwave (thermal infrared) radiation. At night, or even during daytime when longwave effects dominate, the cloud top emits radiation upward to space but receives little downward radiation from the dry air above. This creates a strong radiative cooling rate at the cloud top, often exceeding 5–10 K per hour.[10](https://acp.copernicus.org/articles/22/12241/2022/).
 
 The cooled air at cloud top becomes denser than the air below. This density difference creates negative buoyancy—the cold air sinks. As it sinks, warmer air rises to replace it, creating convective overturning that generates turbulence throughout the cloud layer and often throughout the entire boundary layer depth. This radiatively driven turbulence is crucial for maintaining cloud layer properties and keeping it well-mixed.
 
-Entrainment: While cloud-top cooling generates the turbulence that maintains clouds, that same turbulence can also contribute to cloud erosion through a process called entrainment. Turbulent motions at the boundary layer top can penetrate upward into the capping inversion, mixing parcels of warm, dry air from the free troposphere downward into the cloudy boundary layer.
+*Entrainment*: While cloud-top cooling generates the turbulence that maintains clouds, that same turbulence can also contribute to cloud erosion through a process called entrainment. Turbulent motions at the boundary layer top can penetrate upward into the capping inversion, mixing parcels of warm, dry air from the free troposphere downward into the cloudy boundary layer.
 
 When warm, dry air mixes into the cloud layer, two things happen. First, the warm air adds heat, which must be distributed throughout the layer. Second, and more importantly, the dry air is far from saturation, so when it mixes with cloudy air, cloud droplets evaporate to humidify the dry air. This evaporation removes cloud liquid water, thinning the cloud. If entrainment is strong enough relative to other moisture sources, it can erode and eventually eliminate the stratocumulus deck.
 
-Surface moisture supply: The ocean surface provides the fundamental moisture source sustaining the boundary layer and its clouds. Evaporation rates depend on wind speed (stronger winds enhance evaporation), sea surface temperature, and the humidity of near-surface air (drier air allows more evaporation). This upward moisture flux partially counteracts the drying effect of entrainment from above.
+*Surface moisture supply*: The ocean surface provides the fundamental moisture source sustaining the boundary layer and its clouds. Evaporation rates depend on wind speed (stronger winds enhance evaporation), sea surface temperature, and the humidity of near-surface air (drier air allows more evaporation). This upward moisture flux partially counteracts the drying effect of entrainment from above.
 
-The critical balance: Stratocumulus persistence results from a delicate balance between processes that promote cloud formation (moisture supply from below, cooling-driven mixing) and processes that erode clouds (entrainment of dry air from above). Small perturbations to any of these—particularly changes in turbulence intensity and spatial distribution—can tip the balance toward cloud thickening or dissipation.
+*The critical balance*: Stratocumulus persistence results from a delicate balance between processes that promote cloud formation (moisture supply from below, cooling-driven mixing) and processes that erode clouds (entrainment of dry air from above). Small perturbations to any of these—particularly changes in turbulence intensity and spatial distribution—can tip the balance toward cloud thickening or dissipation.
 
 # 4. Offshore wind farms and wake dynamics
 
@@ -67,9 +73,12 @@ The critical balance: Stratocumulus persistence results from a delicate balance 
 
 Behind each operating turbine, the extraction of momentum produces a wake characterized by two primary features: reduced wind speed and enhanced turbulence. The velocity deficit (reduction in wind speed compared to ambient conditions) is strongest immediately behind the rotor and gradually recovers with distance downstream as momentum is mixed back into the wake by turbulence.
 
-Near the turbine, the wake exhibits organized structures including helical tip vortices shed from blade tips (similar to wingtip vortices behind aircraft). These coherent structures gradually break down through turbulent cascade processes as they propagate downwind. Simultaneously, the wake expands radially as turbulent mixing transports momentum from surrounding faster-moving air into the slower wake region [9](https://www.windtech-international.com/articles/wind-farm-wake).
+Near the turbine, the wake exhibits organized structures including helical tip vortices shed from blade tips (similar to wingtip vortices behind aircraft). These coherent structures gradually break down through turbulent cascade processes as they propagate downwind. Simultaneously, the wake expands radially as turbulent mixing transports momentum from surrounding faster-moving air into the slower wake region [11](https://www.windtech-international.com/articles/wind-farm-wake).
 
-The recovery rate depends critically on atmospheric turbulence intensity. In highly turbulent conditions (unstable atmosphere, strong convection), vigorous mixing rapidly restores wake velocity, and wakes recover within 10–15 rotor diameters. In stable, low-turbulence conditions (common at night over cool oceans), mixing is weak and wakes can persist with measurable velocity deficits for 30–50 km downstream [10](https://businessnorway.com/articles/wake-effects-and-how-they-impact-wind-turbine-performance).
+The recovery rate depends critically on atmospheric turbulence intensity. In highly turbulent conditions (unstable atmosphere, strong convection), vigorous mixing rapidly restores wake velocity, and wakes recover within 10–15 rotor diameters. In stable, low-turbulence conditions (common at night over cool oceans), mixing is weak and wakes can persist with measurable velocity deficits for 30–50 km downstream [12](https://businessnorway.com/articles/wake-effects-and-how-they-impact-wind-turbine-performance).
+
+![Wake_effect](/files/Wind_farms_and_clouds_interact/wake_effect.png)
+*Figure 4: Horns Rev wind farm in salt spray weather [13](https://www.mdpi.com/2077-1312/13/2/208)*
 
 ## 4.2 Wind farm array effects
 In wind farms containing multiple turbine rows, wake interactions become complex. Downstream turbines operate within the wakes of upstream turbines, experiencing reduced wind speeds and altered turbulence. This leads to several important effects:
@@ -128,11 +137,11 @@ The interaction between wind farms and stratocumulus is not unidirectional. Clou
 
 Stratocumulus clouds exert strong control over marine boundary layer structure through their radiative properties, which vary dramatically between day and night:
 
-Nighttime conditions: At night, without solar radiation, cloud tops undergo intense longwave radiative cooling to space, with cooling rates frequently exceeding 5–10 K per hour. This creates a very cold, dense layer of air at the cloud top. The cold air sinks vigorously (it's negatively buoyant), while warmer air from below rises to replace it, establishing strong convective overturning throughout the cloud layer and often throughout the entire boundary layer depth. [21](https://acp.copernicus.org/articles/22/12241/2022/)
+**Nighttime conditions**: At night, without solar radiation, cloud tops undergo intense longwave radiative cooling to space, with cooling rates frequently exceeding 5–10 K per hour. This creates a very cold, dense layer of air at the cloud top. The cold air sinks vigorously (it's negatively buoyant), while warmer air from below rises to replace it, establishing strong convective overturning throughout the cloud layer and often throughout the entire boundary layer depth. [21](https://acp.copernicus.org/articles/22/12241/2022/)
 ​
 This radiatively driven turbulence creates a well-mixed boundary layer with relatively uniform potential temperature, high turbulence intensity, and efficient vertical transport of momentum. High-momentum air from above the boundary layer (or from upper portions of the boundary layer) is efficiently mixed downward toward turbine rotor heights. Similarly, the strong turbulence breaks down turbine wakes more rapidly, allowing faster wake recovery.
 
-Daytime conditions: During daytime, solar radiation absorption by cloud droplets and by the ocean surface partially or fully compensates for longwave cooling at the cloud top. The net radiative cooling weakens substantially, reducing the buoyancy forcing for convection. Additionally, if the subcloud layer becomes slightly warmer than the cloud layer (due to solar heating from below or through the cloud), the boundary layer can become "decoupled"—the cloud layer maintains its own dynamics driven by weakened cloud-top cooling, while the subcloud layer becomes more stable with suppressed turbulent mixing [22](https://www.sciencedirect.com/topics/earth-and-planetary-sciences/stratocumulus-clouds).
+**Daytime conditions**: During daytime, solar radiation absorption by cloud droplets and by the ocean surface partially or fully compensates for longwave cooling at the cloud top. The net radiative cooling weakens substantially, reducing the buoyancy forcing for convection. Additionally, if the subcloud layer becomes slightly warmer than the cloud layer (due to solar heating from below or through the cloud), the boundary layer can become "decoupled"—the cloud layer maintains its own dynamics driven by weakened cloud-top cooling, while the subcloud layer becomes more stable with suppressed turbulent mixing [22](https://www.sciencedirect.com/topics/earth-and-planetary-sciences/stratocumulus-clouds).
 ​
 In decoupled conditions, vertical transport of momentum is much less efficient. High-momentum air from aloft has difficulty reaching down to turbine heights. Turbine wakes recover more slowly due to weaker mixing.
 
@@ -169,11 +178,11 @@ This is not a one-way street where turbines affect clouds or clouds affect turbi
 
 Studying the coupled wind farm-cloud-boundary layer system presents significant methodological challenges due to the range of relevant scales and the complexity of interacting physical processes:
 
-Spatial scales: The system involves processes from turbulent eddies of meters (blade-scale turbulence, small cloud eddies) to tens of kilometers (wind farm extent, large-scale cloud organization).
+**Spatial scales**: The system involves processes from turbulent eddies of meters (blade-scale turbulence, small cloud eddies) to tens of kilometers (wind farm extent, large-scale cloud organization).
 
-Temporal scales: Relevant timescales range from seconds (turbulent eddy turnover, blade rotation) to hours (cloud evolution, diurnal cycles of radiation).
+**Temporal scales**: Relevant timescales range from seconds (turbulent eddy turnover, blade rotation) to hours (cloud evolution, diurnal cycles of radiation).
 
-Physical processes: Multiple coupled processes interact: fluid dynamics (three-dimensional turbulent flow), turbulent transport (momentum, heat, moisture), radiative transfer (longwave and shortwave), thermodynamics (saturation, condensation, evaporation), and turbine aerodynamics (thrust, power extraction).
+**Physical processes**: Multiple coupled processes interact: fluid dynamics (three-dimensional turbulent flow), turbulent transport (momentum, heat, moisture), radiative transfer (longwave and shortwave), thermodynamics (saturation, condensation, evaporation), and turbine aerodynamics (thrust, power extraction).
 
 This complexity means simple analytical solutions or reduced models are insufficient without first establishing fundamental understanding through detailed simulation.
 
