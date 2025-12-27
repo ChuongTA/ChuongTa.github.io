@@ -179,12 +179,9 @@ This is not a one-way street where turbines affect clouds or clouds affect turbi
 # 7.1 The Simulation Challenge
 
 Studying the coupled wind farm-cloud-boundary layer system presents significant methodological challenges due to the range of relevant scales and the complexity of interacting physical processes:
-
-**Spatial scales**: The system involves processes from turbulent eddies of meters (blade-scale turbulence, small cloud eddies) to tens of kilometers (wind farm extent, large-scale cloud organization).
-
-**Temporal scales**: Relevant timescales range from seconds (turbulent eddy turnover, blade rotation) to hours (cloud evolution, diurnal cycles of radiation).
-
-**Physical processes**: Multiple coupled processes interact: fluid dynamics (three-dimensional turbulent flow), turbulent transport (momentum, heat, moisture), radiative transfer (longwave and shortwave), thermodynamics (saturation, condensation, evaporation), and turbine aerodynamics (thrust, power extraction).
+- **Spatial scales**: The system involves processes from turbulent eddies of meters (blade-scale turbulence, small cloud eddies) to tens of kilometers (wind farm extent, large-scale cloud organization).
+- **Temporal scales**: Relevant timescales range from seconds (turbulent eddy turnover, blade rotation) to hours (cloud evolution, diurnal cycles of radiation).
+- **Physical processes**: Multiple coupled processes interact: fluid dynamics (three-dimensional turbulent flow), turbulent transport (momentum, heat, moisture), radiative transfer (longwave and shortwave), thermodynamics (saturation, condensation, evaporation), and turbine aerodynamics (thrust, power extraction).
 
 This complexity means simple analytical solutions or reduced models are insufficient without first establishing fundamental understanding through detailed simulation.
 
@@ -229,9 +226,9 @@ $$\frac{\partial \tilde{\theta}}{\partial t} + \tilde{u}_j \frac{\partial \tilde
 
 where $$q_{\theta}^{\text{SGS}}$$ is subgrid heat flux, $$Q_{\theta}^{\text{rad}}$$ accounts for radiative heating/cooling (critically important at cloud tops where strong longwave cooling occurs), $$Q_{\theta}^{\text{surf}}$$ represents surface heat flux, and $$Q_{\theta}^{\text{phase}}$$ accounts for latent heat release/absorption from condensation/evaporation.
 
-Cloud microphysics: LES for stratocumulus typically employs simplified bulk microphysical schemes. The simplest approach assumes instantaneous adjustment to saturation: if a grid cell's water vapor exceeds saturation mixing ratio, the excess immediately condenses to liquid cloud water; if cloud water exists in a subsaturated cell, it immediately evaporates. More sophisticated schemes include prognostic equations for cloud droplet number concentration, but simplified approaches often suffice for studying stratocumulus dynamics and radiative effects.
+**Cloud microphysics**: LES for stratocumulus typically employs simplified bulk microphysical schemes. The simplest approach assumes instantaneous adjustment to saturation: if a grid cell's water vapor exceeds saturation mixing ratio, the excess immediately condenses to liquid cloud water; if cloud water exists in a subsaturated cell, it immediately evaporates. More sophisticated schemes include prognostic equations for cloud droplet number concentration, but simplified approaches often suffice for studying stratocumulus dynamics and radiative effects.
 
-Radiative transfer: Accurately representing longwave radiative cooling at cloud tops is essential for realistic stratocumulus simulation. LES codes incorporate radiative transfer schemes that compute heating/cooling rates based on the vertical distribution of temperature, water vapor, and cloud liquid water. These schemes capture the key physics—efficient upward emission by cloud droplets, weak downward emission from dry air above—while remaining computationally tractable for high-resolution simulations.
+**Radiative transfer**: Accurately representing longwave radiative cooling at cloud tops is essential for realistic stratocumulus simulation. LES codes incorporate radiative transfer schemes that compute heating/cooling rates based on the vertical distribution of temperature, water vapor, and cloud liquid water. These schemes capture the key physics—efficient upward emission by cloud droplets, weak downward emission from dry air above—while remaining computationally tractable for high-resolution simulations.
 
 ## 7.4 Typical LES Configuration
 A representative LES setup for studying offshore wind farm interaction with marine stratocumulus includes:
