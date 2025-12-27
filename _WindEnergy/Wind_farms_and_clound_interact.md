@@ -25,6 +25,7 @@ This raises a natural question:
 The marine boundary layer extends from the sea surface to somewhere between several hundred meters and about 1.5 km, depending on conditions. What defines this layer is direct coupling with the ocean surface through turbulent mixing - momentum exchange via surface friction, heat transfer, and moisture addition through evaporation all shape the properties within this zone [4](https://acp.copernicus.org/articles/21/10965/2021/).
 
 ![MBL](/files/Wind_farms_and_clouds_interact/MBL.jpg)
+
 *Figure 2: Marine Boundary Layer [[5]](https://asr.science.energy.gov/news/program-news/post/13377))*
 
 Several features characterize the marine boundary layers:
@@ -47,6 +48,7 @@ Offshore wind turbines, with hub heights around 100–150 m, sit squarely within
 Marine straocumulus are low-altitude, horizontally extensive clouds forming as relatively uniform dects or broken patches, typically gray or white when viewed from below and residing below 2 km altitude. They predominantly form near the top of the marine boundary layer, where rising moist air reaches saturation. The ocean surface continuously supplies moisture through evaporation; as this moist air is mixed upward by turbulence and encounters cooler temperatures near the inversion, water vapor condenses into cloud droplets [7](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2014JD022939).
 
 ![Stratocumulus clouds](/files/Wind_farms_and_clouds_interact/Stratocumulus_clounds.jpg)
+
 *Figure 3: Vertical profiles of radiative infrared cooling flux (orange) and temperature change (green) for a nocturnal stratocumulus cloud layer at equatorial latitudes. Upward sensible heat and moisture fluxes from the ocean surface provide the buoyancy and water vapor required for cloud formation, and radiative cooling from the cloud top provides downward entrainment and mixing of dry air from aloft to feed cloud thickening [8](https://www.sciencedirect.com/science/article/pii/B9780128170922000023)*
 
 These clouds cover roughly 20% of Earth's oceans at any given time, with particularly persistent decks forming over the eastern subtropical oceans where cold ocean currents meet stable air aloft. Their climate significance stems from their high albedo—they reflect substantial incoming solar radiation while emitting relatively weak thermal infrared, producing strong net cooling. Sensitivity studies consistently find that even modest reductions in marine stratocumulus coverage produce substantial positive radiative forcing [9](http://www.srderoode.nl/pubs/Wind_Energy_Clouds.pdf).
