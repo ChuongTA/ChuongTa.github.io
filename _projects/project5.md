@@ -1,5 +1,5 @@
 ---
-title: "Wind Farm Repowering: Veggerslev, Denmark"
+title: "Wind Farm Repowering: Veggerslev, Denmark 🇩🇰"
 category: densys
 excerpt: "Repowering feasibility study replacing three aging Vestas V44-600 turbines with single modern V82-1.65 MW turbine, achieving 33% energy increase and 38% LCOE reduction."
 layout: single
