@@ -62,4 +62,4 @@ This study evaluates repowering the **Veggerslev wind farm** in Norddjurs, Denma
 
 ---
 
-*Demonstrates how modern turbine technology revitalizes aging wind assets with superior energy production and strong financial returns* [file:68].
+
