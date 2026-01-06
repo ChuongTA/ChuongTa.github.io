@@ -19,16 +19,16 @@ Wind and Ocean Energy Plants course (01TVKND), A.Y. 2025/26
 
 ## Project Overview
 
-This study evaluates repowering the **Veggerslev wind farm** in Norddjurs, Denmark by replacing three aging **Vestas V44-600 turbines** (1.8 MW, commissioned 1998) with a single modern **Vestas V82-1.65 MW turbine** at 80m hub height [file:68]. Results demonstrate **33.3% increase in annual energy production** (4,750→6,331 MWh/year), **38.4% LCOE reduction** ($67.7→$41.7/MWh), positive NPV of $1.38M, IRR of 11.2%, and 7.87-year payback period [file:68].
+This study evaluates repowering the **Veggerslev wind farm** in Norddjurs, Denmark by replacing three aging **Vestas V44-600 turbines** (1.8 MW, commissioned 1998) with a single modern **Vestas V82-1.65 MW turbine** at 80m hub height [file:68]. Results demonstrate **33.3% increase in annual energy production** (4,750→6,331 MWh/year), **38.4% LCOE reduction** ($67.7→$41.7/MWh), positive NPV of $1.38M, IRR of 11.2%, and 7.87-year payback period.
 
 ---
 
 ## What We Did
 
-- **Wind Climate Analysis:** WAsP modeling and logarithmic wind profile analysis showing strongest winds from west/southwest (4.6-13.87 m/s) [file:68]
-- **Performance Simulation:** Compared original farm (4.75 GWh AEP, 30.1% capacity factor) vs. repowered (6.33 GWh AEP, 43.7% capacity factor) [file:68]
-- **Grid Connection Design:** 7.5 km MV cable and 30 kV/132 kV transformer achieving 93.6% efficiency [file:68]
-- **Economic Evaluation:** LCOE, NPV, IRR, and payback analysis over 20-year lifetime with 5.5% WACC [file:68]
+- **Wind Climate Analysis:** WAsP modeling and logarithmic wind profile analysis showing strongest winds from west/southwest (4.6-13.87 m/s).
+- **Performance Simulation:** Compared original farm (4.75 GWh AEP, 30.1% capacity factor) vs. repowered (6.33 GWh AEP, 43.7% capacity factor) .
+- **Grid Connection Design:** 7.5 km MV cable and 30 kV/132 kV transformer achieving 93.6% efficiency.
+- **Economic Evaluation:** LCOE, NPV, IRR, and payback analysis over 20-year lifetime with 5.5% WACC.
 
 ---
 
