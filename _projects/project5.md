@@ -43,7 +43,7 @@ This study evaluates repowering the **Veggerslev wind farm** in Norddjurs, Denma
 | IRR (%) | 3.1 | 11.2 | +8.1 pp |
 | Payback (years) | 14.7 | 7.87 | -46.5% |
 
-**Technical Drivers:** Higher hub height (80m vs 40m), improved capacity factor (43.7% vs 30.1%), modern reliability (98% vs 93% availability), reduced OPEX (67.3% reduction) [file:68].
+**Technical Drivers:** Higher hub height (80m vs 40m), improved capacity factor (43.7% vs 30.1%), modern reliability (98% vs 93% availability), reduced OPEX (67.3% reduction).
 
 ---
 
@@ -58,7 +58,7 @@ This study evaluates repowering the **Veggerslev wind farm** in Norddjurs, Denma
 
 ## Documentation
 
-- [Download Full Report (PDF)](/files/PW1_project/Team No.3- PW1 - Repowering of a wind farm Veggerslev.pdf)
+- [Download Full Report (PDF)](/files/PW1_project/Team_no_3.pdf)
 
 ---
 
