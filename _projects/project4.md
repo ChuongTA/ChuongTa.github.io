@@ -1,5 +1,5 @@
 ---
-title: "Machine Learning-Enhanced Life Cycle Assessment of Offshore Wind Farms"
+title: "Machine Learning-Enhanced Life Cycle Assessment of Offshore Wind Farms ♻️💻"
 category: densys
 excerpt: "Integrated LCA-ML framework achieving 12,600× computational acceleration for rapid environmental optimization of North Sea offshore wind turbines."
 layout: single
