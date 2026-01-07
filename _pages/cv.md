@@ -11,12 +11,12 @@ redirect_from:
 
 <div style="text-align: center; margin: 3em 0;">
   <div style="margin-bottom: 2em;">
-    <a href="{{ base_path }}/files/Chuong_CV.pdf" target="_blank" style="display: inline-block; padding: 1em 2em; background: var(--global-link-color); color: white; text-decoration: none; border-radius: 8px; font-size: 1.1em; font-weight: 600; transition: opacity 0.2s;">
+    <a href="{{ base_path }}/files/CV_07_01_2026.pdf" target="_blank" style="display: inline-block; padding: 1em 2em; background: var(--global-link-color); color: white; text-decoration: none; border-radius: 8px; font-size: 1.1em; font-weight: 600; transition: opacity 0.2s;">
       📄 Download my CV (PDF)
     </a>
   </div>
   <div style="color: var(--global-text-color-light); font-size: 0.9em;">
-    <em>Last updated: November 22, 2025</em><br>
+    <em>Last updated: January 7th, 2026</em><br>
     <em style="margin-top: 0.5em; display: inline-block;">
       <a href="https://scholar.google.com/citations?user=IjhRqAsAAAAJ&amp;hl=vi" target="_blank" style="color: var(--global-link-color);">Google Scholar</a> | 
       <a href="https://github.com/ChuongTA" target="_blank" style="color: var(--global-link-color);">GitHub</a> | 
