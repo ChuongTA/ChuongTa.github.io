@@ -23,11 +23,11 @@ permalink: /projects/project6.md/
 
 ## Executive Summary
 
-This study evaluates a **120 kW biogas-fed Solid Oxide Fuel Cell (SOFC) system** integrated into the Novara wastewater treatment plant serving 102,000 inhabitants [file:59]. Aspen Plus simulation demonstrated net electrical output of **116.88 kW** and thermal recovery of **26.66 kW** at 90°C, achieving superior efficiency compared to conventional combustion technologies. The techno-economic analysis over 20 years revealed total CAPEX of **€944,155** (€7,868/kW) and annual OPEX of **€120,926**, with **5-year stack replacement cycles** representing a significant recurring cost of €252,000 [file:59].
+This study evaluates a **120 kW biogas-fed Solid Oxide Fuel Cell (SOFC) system** integrated into the Novara wastewater treatment plant serving 102,000 inhabitants. Aspen Plus simulation demonstrated net electrical output of **116.88 kW** and thermal recovery of **26.66 kW** at 90°C, achieving superior efficiency compared to conventional combustion technologies. The techno-economic analysis over 20 years revealed total CAPEX of **€944,155** (€7,868/kW) and annual OPEX of **€120,926**, with **5-year stack replacement cycles** representing a significant recurring cost of €252,000.
 
-The base case yielded **NPV of €80,559, IRR of 6.27%, and payback period of 16.33 years**, indicating marginal economic viability under current assumptions. Sensitivity analysis identified **energy prices as the most critical parameter**: a 50% price reduction renders the project unviable (NPV < -1,000 k€), while a 100% increase produces NPV exceeding +2,500 k€ with 3-4 year payback [file:59][file:61]. Stack replacement costs show moderate sensitivity, with the project tolerating up to 30-40% cost increases before becoming uneconomical. Extending stack lifetime from 5 to 10 years provides modest NPV improvements but does not fundamentally alter project economics.
+The base case yielded **NPV of €80,559, IRR of 6.27%, and payback period of 16.33 years**, indicating marginal economic viability under current assumptions. Sensitivity analysis identified **energy prices as the most critical parameter**: a 50% price reduction renders the project unviable (NPV < -1,000 k€), while a 100% increase produces NPV exceeding +2,500 k€ with 3-4 year payback. Stack replacement costs show moderate sensitivity, with the project tolerating up to 30-40% cost increases before becoming uneconomical. Extending stack lifetime from 5 to 10 years provides modest NPV improvements but does not fundamentally alter project economics.
 
-The project demonstrates **technical feasibility but operates within narrow economic margins**, making long-term power purchase agreements and stack cost optimization essential for commercial viability [file:59].
+The project demonstrates **technical feasibility but operates within narrow economic margins**, making long-term power purchase agreements and stack cost optimization essential for commercial viability.
 
 ---
 
@@ -69,7 +69,7 @@ The integrated plant converts raw biogas from the Novara WWTP into high-grade en
 
 ![Figure 5. Cumulative cash flow diagram](/files/Polygeneration_report/NPV_PBT_base_case.png)
 
-The cumulative cash flow analysis reveals initial investment of €944,155 with negative cash flow for the first 16 years, including periodic €252,000 stack replacements every 5 years [file:59][file:63].
+The cumulative cash flow analysis reveals initial investment of €944,155 with negative cash flow for the first 16 years, including periodic €252,000 stack replacements every 5 years.
 
 ---
 
@@ -77,11 +77,11 @@ The cumulative cash flow analysis reveals initial investment of €944,155 with 
 
 ![Figure 6. Sensitivity analysis of key parameters on NPV](/files/Polygeneration_report/sensitivity_analysis_NPV.png)
 
-Energy prices demonstrate the strongest influence on project economics, with steep blue line indicating dramatic NPV shifts from -1,000 k€ to +2,500 k€ across tested range [file:61].
+Energy prices demonstrate the strongest influence on project economics, with steep blue line indicating dramatic NPV shifts from -1,000 k€ to +2,500 k€ across tested range.
 
 ![Figure 7. Sensitivity analysis of parameters on Payback Period](/files/Polygeneration_report/sensitivity_analysis_PBT.png)
 
-Payback period analysis confirms energy prices as most critical parameter, with base case at 16.33 years extending beyond 20-year lifetime at -50% prices while dropping to 3-4 years at +100% prices [file:64].
+Payback period analysis confirms energy prices as most critical parameter, with base case at 16.33 years extending beyond 20-year lifetime at -50% prices while dropping to 3-4 years at +100% prices.
 
 ---
 
