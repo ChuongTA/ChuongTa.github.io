@@ -9,4 +9,4 @@ usemathjax: true
 ---
 
 This is a guideline how I study for wind and ocean energy plants (I will move this to blog section later)
-Link for Onenote file: https://drive.google.com/file/d/1Vnq5vwHzIYUnYvjKz9we9X3epwd7EP9A/view?usp=sharing
+Link for Onenote file: [Link](https://drive.google.com/file/d/1Vnq5vwHzIYUnYvjKz9we9X3epwd7EP9A/view?usp=sharing)
