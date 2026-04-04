@@ -1,0 +1,43 @@
+Field                                             	                Value 	unit
+Dataset name                                      	       ExampleDataset 	 
+Production losses due to icing                    	              10900.3 	kWh
+Relative production losses due to icing           	                  0.3 	%
+Losses due to icing related stops                 	             114255.5 	kWh
+Relative losses due to icing related stops        	                  3.0 	%
+Icing during production                           	                 68.3 	h
+Icing during production (% of total data)         	                  0.8 	%
+Turbine stopped during production                 	                637.7 	h
+Turbine stopped production (% of total data)      	                  7.3 	%
+Over production hours                             	                122.3 	h
+Over production hours (% of total)                	                  1.4 	%
+Ice detector icing hours                          	                  0.0 	h
+Ice detector icing hours (% of total data)        	                  0.0 	%
+Losses during ice detector alarms                 	                  0.0 	h
+Relative losses during ice detector alarm (% of total data)	                  0.0 	h
+SCADA forced stops                                	                  7.5 	h
+Time Based Availability (TBA)                     	                 99.9 	%
+Loss during SCADA stops                           	               1971.0 	kWh
+Relative losses during SCADA stops (% of total)   	                  0.1 	%
+Power curve uncertainty                           	                 12.0 	%
+Production upper limit (std.dev)                  	                110.9 	%
+Production lower limit (std.dev)                  	                 88.9 	%
+Production P90                                    	                114.2 	%
+Production P10                                    	                 86.1 	%
+Theoretical mean production                       	            4109750.6 	kWh
+Observed power production                         	            3837724.6 	kWh
+Total Losses                                      	             272026.0 	kWh
+Energy Based Availability (EBA)                   	                 93.4 	%
+Data start time                                   	  2003-01-01 00:00:00 	 
+Data stop time                                    	  2003-12-31 00:00:00 	 
+Total amount of data                              	               8736.0 	h
+Reference data start time                         	  2003-02-18 08:00:00 	 
+Reference data stop time                          	  2003-11-12 18:20:00 	 
+Total amount of data in reference dataset         	               6418.3 	h
+Data availability                                 	                 90.4 	%
+Sample count in original data                     	                47389 	 
+Sample count in after filtering                   	                46813 	 
+Data size after filtering                         	                 98.8 	%
+Sample count in reference data                    	                13817 	 
+Reference dataset as % of original data           	                 29.2 	%
+ 	 	 
+ 	 	 
