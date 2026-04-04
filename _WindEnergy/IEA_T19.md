@@ -25,9 +25,9 @@ usemathjax: true
 1. [Background & Motivation](#1-background--motivation)
 2. [Method Overview](#2-method-overview)
 3. [Input Data](#3-input-data)
-4. [Step 1 — Reference Power Curve](#4-step-1--reference-power-curve)
-5. [Step 2 — Icing Event Classification](#5-step-2--icing-event-classification)
-6. [Step 3 — Production Loss Quantification](#6-step-3--production-loss-quantification)
+4. [Step 1: Reference Power Curve](#4-step-1--reference-power-curve)
+5. [Step 2: Icing Event Classification](#5-step-2--icing-event-classification)
+6. [Step 3: Production Loss Quantification](#6-step-3--production-loss-quantification)
 7. [Outputs](#7-outputs)
 8. [Installation & Usage](#8-installation--usage)
 9. [Example Results (ExampleDataset, 2003)](#9-example-results-exampledataset-2003)
@@ -111,7 +111,7 @@ The code processes **one turbine at a time**. For a multi-turbine site, a separa
 
 This repository is demonstrated using the **ExampleDataset** — a synthetic one-year SCADA time series at 10-minute resolution covering the full year 2003. The dataset has the following structure:
 
-```csv
+```python
 Timestamp,Wind speed [m/s],Wind direction [deg],Ambient temperature [C],output power [kW],Status,State,Ice detected,IPS
 1.1.2003 0:00,9.7,42.1,-15.7,1387,OK,OK,NO,OFF
 1.1.2003 0:10,9.3,44.9,-15.6,990,OK,OK,NO,OFF
@@ -132,7 +132,7 @@ This dataset is included in the official IEA Task 19 repository and is freely av
 
 ---
 
-## 4. Step 1 — Reference Power Curve
+## 4. Step 1: Reference Power Curve
 
 The reference power curve is the cornerstone of the method. Every icing event is detected by comparing the full time series against this baseline. The baseline must represent the turbine's clean, ice-free aerodynamic performance — so the data used to build it is filtered strictly.
 
@@ -187,11 +187,9 @@ wind direction bin size = 360  ; single direction bin by default
 
 A minimum of **6 hours** of data per bin is recommended for a statistically representative result. Bins with too few samples are interpolated linearly from adjacent bins to avoid gaps in the reference curve.
 
-> 📷 **[Insert figure: Power curve plot showing P10, P50, P90 thresholds and scatter of clean reference data — from ExampleDataset]**
-
 ---
 
-## 5. Step 2 — Icing Event Classification
+## 5. Step 2: Icing Event Classification
 
 With the reference thresholds computed, the **full dataset** (all temperatures, all operational states) is scanned chronologically to detect icing events. Three distinct classes are defined.
 
@@ -273,13 +271,13 @@ $$P < P_{90}(v_\text{bin})$$
 
 | Class | Name | Temperature | Power Condition | Duration Threshold | Quantified? |
 |-------|------|-------------|-----------------|-------------------|-------------|
-| **IEa** | Reduced production | $T < 0°C$ | $P < P_{10}$ | ≥ 30 min | ✅ kWh + % |
-| **IEb** | Icing shutdown | $T < 0°C$ | $P < P_{10}$ then $P \approx 0$ | 10 min + 20 min | ✅ kWh + % |
-| **IEc** | Overproduction | $T < 0°C$ | $P > P_{90}$ | ≥ 30 min | ⚠️ Duration only |
+| **IEa** | Reduced production | $T < 0°C$ | $P < P_{10}$ | ≥ 30 min | kWh + % |
+| **IEb** | Icing shutdown | $T < 0°C$ | $P < P_{10}$ then $P \approx 0$ | 10 min + 20 min | kWh + % |
+| **IEc** | Overproduction | $T < 0°C$ | $P > P_{90}$ | ≥ 30 min | Duration only |
 
 ---
 
-## 6. Step 3 — Production Loss Quantification
+## 6. Step 3: Production Loss Quantification
 
 Production losses are evaluated exclusively for **IEa and IEb events**.
 
@@ -314,7 +312,7 @@ $$
 where:
 - $E_{\mathrm{ref}}$ is the total expected energy based on the reference power curve over the same period.
 
-> ⚠️ **IEc is not energy-quantified.** When the anemometer is iced, the measured wind speed is unreliable — there is no valid reference power to compare against. Only the **total duration in hours** of IEc events is reported. If IEc hours are significant, $E_\text{ice}$ from IEa + IEb should be treated as a **lower bound** on true total icing losses.
+> **IEc is not energy-quantified.** When the anemometer is iced, the measured wind speed is unreliable — there is no valid reference power to compare against. Only the **total duration in hours** of IEc events is reported. If IEc hours are significant, $E_\text{ice}$ from IEa + IEb should be treated as a **lower bound** on true total icing losses.
 
 ---
 
@@ -364,12 +362,12 @@ Text file with the computed reference power curve, structured as a table indexed
 
 ### 7.5 Plots
 
-Two interactive plots:
-
-- **Time series view:** Full timeline with IEa, IEb, IEc events colour-coded on top of measured power.
 - **Power curve scatter:** Wind speed vs. power scatter, with reference P10/P50/P90 overlaid and icing events highlighted by class.
 
-> 📷 **[Insert figure: ExampleDataset power curve scatter — blue: standard production, red: IEa losses (0.3%), black: IEb stops (3.0%), green: IEc overproduction (1.4% of total time)]**
+![ExampleDataset power curve scatter — blue: standard production, red: IEa losses (0.3%), black: IEb stops (3.0%), green: IEc overproduction (1.4% of total time)](/files/IEA_task19/results/ExampleDataset_pc.png)
+
+
+*Figure 1:(ExampleDataset power curve scatter — blue: standard production, red: IEa losses (0.3%), black: IEb stops (3.0%), green: IEc overproduction (1.4% of total time))*
 
 ---
 
@@ -494,8 +492,6 @@ Aggregating individual turbine results into farm-level statistics requires separ
 
 The ExampleDataset covers a full calendar year (2003) for a single wind turbine. Running the counter on this dataset produces the following output.
 
-> 📷 **[Insert figure: ExampleDataset power curve — showing standard production (blue dots), icing losses (red dots), icing stops (black dots), overproduction (green dots), with P10 (dashed) and P90 (dash-dot) reference lines]**
-
 Key findings for the ExampleDataset (year 2003):
 
 | Metric | Value |
@@ -509,37 +505,26 @@ The dataset illustrates the typical pattern seen at cold-climate sites: **stands
 
 ---
 
-## 10. Limitations
+## 10. Further Development
 
-- **One turbine, one power curve.** The method is designed for individual turbine analysis. Each turbine must be processed independently. There is no built-in farm aggregation.
+This repository implements the IEA Task 19 ice loss method **at the individual turbine level**, strictly following the official Release 2.2 specification — intended as a clean, reproducible baseline.
 
-- **IEC is duration-only.** When the nacelle anemometer is iced, wind speed data is corrupted. No valid reference power can be computed, so IEc events cannot be energy-quantified. Total icing losses may be underestimated when IEc hours are large.
+The extensions below are developed as part of an my ongoing MSc thesis: *"Icing Power Loss Forecasting for Wind Farms in Cold Climates Using Machine Learning"* carried out at **[rebase.energy](https://www.rebase.energy)**, Stockholm. They are **not part of this repository** and will be referenced here upon publication.
 
-- **Manual review recommended for IEb.** Some turbines shut down due to icing before the power output crosses the $P_{10}$ boundary — particularly models sensitive to rotor imbalance. The algorithm will miss these. Reviewing wintertime fault logs and adding manually-identified ice stops is recommended practice.
+### Extended Filtering Pipeline
 
-- **No icing sensor required** — but if one is available, it can be configured via the `[Icing]` section of the `.ini` file to add a validation layer and separate IPS-related statistics.
+An enhanced multi-layer filtering pipeline is built on top of the IEA baseline to improve reference curve purity across heterogeneous turbine models and multi-year SCADA archives. Details are confidential and will be disclosed upon thesis publication.
 
-- **Temperature threshold is fixed at +3°C** for the reference dataset filter. This is conservative and appropriate for most cold-climate sites, but may need adjustment for sites with specific climate characteristics.
+### Wind Farm Aggregation
 
----
+IEA Task 19 defines icing classes at the turbine level only, no farm-scale specification exists. The thesis addresses this directly, including signal aggregation logic and a majority-threshold label strategy to filter isolated single-turbine anomalies from genuine farm-wide icing events.
 
-## 11. Further Development
+### Machine Learning Integration
 
-This repository implements the **IEA Task 19 ice loss method at the individual turbine level**, as specified in the official Release 2.2 documentation. It is designed to be a reproducible, standardized baseline.
+The IEA Task 19 output serves as ground truth for a downstream ML pipeline evaluating QRF, XGBoost, TCN, and the TIGER framework for day-ahead icing power loss forecasting.
 
-Natural extensions that go beyond the current scope include:
-
-- **Wind farm aggregation** — collapsing per-turbine icing timelines into a consistent farm-level signal. Meteorological signals (wind speed, temperature) should be averaged across turbines; power and loss signals should be summed. Icing labels at the farm level require careful definition since "the farm is icing" is not the same as "all turbines are icing simultaneously."
-
-- **Integration with Numerical Weather Prediction (NWP) data** — pairing SCADA-derived icing labels with NWP temperature, humidity, and wind fields enables ice loss *forecasting* in addition to retrospective detection.
-
-- **Larger datasets** — the original tool was designed for single-site, single-year analysis. Applying it across multiple turbines, multiple farms, and multi-year SCADA archives introduces challenges around heterogeneous signal naming, varying data availability, and computational scaling.
-
-> Work on these extensions — including wind farm aggregation, advanced pre-processing pipelines, and machine learning-based icing forecasting — is ongoing as part of MSc research at **rebase.energy**, Stockholm. Results will be referenced here upon publication.
-
----
-
-## 12. References
+> Full results will be published upon thesis completion — June 2026.
+## 11. References
 
 1. **IEA Wind Task 19 (2019).** *Task 19 Ice Loss, Release 2.2.* VTT Technical Research Centre of Finland. Author: Timo Karlsson — [timo.karlsson@vtt.fi](mailto:timo.karlsson@vtt.fi)
    - Repository: [https://github.com/IEAWind-Task19/IceLossMethod](https://github.com/IEAWind-Task19/IceLossMethod)
