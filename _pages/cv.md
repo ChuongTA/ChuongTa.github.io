@@ -11,7 +11,7 @@ redirect_from:
 
 <div style="text-align: center; margin: 3em 0;">
   <div style="margin-bottom: 2em;">
-    <a href="{{ base_path }}/files/CV_07_01_2026.pdf" target="_blank" style="display: inline-block; padding: 1em 2em; background: var(--global-link-color); color: white; text-decoration: none; border-radius: 8px; font-size: 1.1em; font-weight: 600; transition: opacity 0.2s;">
+    <a href="{{ base_path }}/files/CV.pdf" target="_blank" style="display: inline-block; padding: 1em 2em; background: var(--global-link-color); color: white; text-decoration: none; border-radius: 8px; font-size: 1.1em; font-weight: 600; transition: opacity 0.2s;">
       📄 Download my CV (PDF)
     </a>
   </div>
