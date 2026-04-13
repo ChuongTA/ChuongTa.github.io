@@ -16,7 +16,7 @@ redirect_from:
     </a>
   </div>
   <div style="color: var(--global-text-color-light); font-size: 0.9em;">
-    <em>Last updated: January 7th, 2026</em><br>
+    <em>Last updated: April 13th, 2026</em><br>
     <em style="margin-top: 0.5em; display: inline-block;">
       <a href="https://scholar.google.com/citations?user=IjhRqAsAAAAJ&amp;hl=vi" target="_blank" style="color: var(--global-link-color);">Google Scholar</a> | 
       <a href="https://github.com/ChuongTA" target="_blank" style="color: var(--global-link-color);">GitHub</a> | 
