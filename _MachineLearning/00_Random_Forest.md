@@ -24,7 +24,7 @@ The core idea is simple: instead of training one decision tree, Random Forest tr
 
 By combining many trees, Random Forest improves accuracy and reduces overfitting compared to a single decision tree.
 
-![RF algorithm explained](/files/00_Tranditional_ML/Figures/00_RF/pic1.png _Figure 3.5: RF algorithm explained. The dataset is split into multiple bootstrap samples, each used to train a separate decision tree. The final result is produced by majority voting (classification) or averaging (regression). (Figure adapted from [Jain, A.](https://medium.com/@abhishekjaindore24/everything-about-random-forest-90c106d63989))_
+![RF algorithm explained](/files/00_Tranditional_ML/Figures/00_RF/pic1.png) _Figure 3.5: RF algorithm explained. The dataset is split into multiple bootstrap samples, each used to train a separate decision tree. The final result is produced by majority voting (classification) or averaging (regression). (Figure adapted from [Jain, A.](https://medium.com/@abhishekjaindore24/everything-about-random-forest-90c106d63989))_
 
 ---
 
