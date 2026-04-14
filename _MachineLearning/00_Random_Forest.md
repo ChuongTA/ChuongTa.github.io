@@ -1,13 +1,17 @@
-
 ---
-
-## title: "Random Forest - Methodology 🌲" category: densys excerpt: "This post explains how Random Forest works, step by step. It covers bootstrap sampling, random feature selection, decision tree growth, and aggregation." image: /images/Random_Forest.png layout: single author_profile: true permalink: /MachineLearning/ml2.md/ usemathjax: true
-
+title: "Random Forest - Methodology 🌲" 
+category: densys 
+excerpt: "This post explains how Random Forest works, step by step. It covers bootstrap sampling, random feature selection, decision tree growth, and aggregation." 
+image: /images/Random_Forest.png 
+layout: single 
+author_profile: true 
+permalink: /MachineLearning/00_Random_Forest.md/ 
+usemathjax: true
+---
 # Random Forest: Methodology
 
 > **Series:** Machine Learning Algorithms | **Part:** 1 of 2 (Theory)
 
----
 
 ## 1. What is Random Forest?
 
@@ -20,7 +24,7 @@ The core idea is simple: instead of training one decision tree, Random Forest tr
 
 By combining many trees, Random Forest improves accuracy and reduces overfitting compared to a single decision tree.
 
-![RF algorithm explained](https://claude.ai/images/pic1.png) _Figure 3.5: RF algorithm explained. The dataset is split into multiple bootstrap samples, each used to train a separate decision tree. The final result is produced by majority voting (classification) or averaging (regression). (Figure adapted from [Jain, A.](https://medium.com/@abhishekjaindore24/everything-about-random-forest-90c106d63989))_
+![RF algorithm explained](/files/00_Tranditional_ML/Figures/00_RF/pic1.png _Figure 3.5: RF algorithm explained. The dataset is split into multiple bootstrap samples, each used to train a separate decision tree. The final result is produced by majority voting (classification) or averaging (regression). (Figure adapted from [Jain, A.](https://medium.com/@abhishekjaindore24/everything-about-random-forest-90c106d63989))_
 
 ---
 
