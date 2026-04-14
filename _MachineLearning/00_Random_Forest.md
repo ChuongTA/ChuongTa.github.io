@@ -76,6 +76,7 @@ $$\text{SSE} = \sum_{i \in \text{left}} (y_{i} - \bar{y}_{L})^{2} + \sum_{i \in 
 
 _Where $\bar{y}_{L}$ and $\bar{y}_{R}$ are the mean target values of the left and right child nodes after the split. A smaller SSE means a better split._
 
+
 > **Key insight:** A single overfitted tree has high variance. It is very sensitive to small changes in the training data. However, when many such trees are averaged together in the next step, the variance decreases by roughly a factor of $1/B$, while the bias stays approximately the same.
 
 ---
