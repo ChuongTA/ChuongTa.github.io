@@ -12,10 +12,10 @@ Currently, I am pursuing a Master's degree in Decentralised Smart Energy Systems
 
 Recently, I watched a great video on how to learn machine learning, and it made me realize that most people skip the fundamentals and jump straight into a bootcamp. Here's a meme that captures this tendency. Personally, I really enjoy learning from textbooks on topics that interest me — it's one of the best ways to build a concrete foundation of understanding!
 
-![CFD learners skipping steps](images/CFDmeme.jpg)  
+![CFD learners skipping steps](/images/CFDmeme.jpg)  
 *Many learners leap straight to tools like Ansys/Comsol in CFD, skipping mathematics and core fundamentals.*
 
-![The ML learning curve meme](images/MachineLearningMeme.jpg)  
+![The ML learning curve meme](/images/MachineLearningMeme.jpg)  
 *Most people rush into ML bootcamps without core concepts; textbook learning helps reach true expertise.*
 
 
