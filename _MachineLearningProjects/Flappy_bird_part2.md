@@ -8,7 +8,7 @@ author_profile: true
 permalink: /MachineLearning/Flappy_bird_part2.md/
 usemathjax: true
 ---
-![AI trained flappy bird](/_MachineLearningProjects/Flappy_bird/Flappy_bird/AI_Flappy_bird.gif)
+![AI trained flappy bird](/MachineLearningProjects/Flappy_bird/Flappy_bird/AI_Flappy_bird.gif)
 
 
 We often treat Machine Learning libraries like TensorFlow or PyTorch as " Black bockes". We feed data in, and magic come out. However, to have better understanding on deep learning, one must understand the mathematics happening under the hood.
@@ -194,7 +194,7 @@ class NeuralNetwork:
     def __init__(self, layer_sizes=[5, 8, 1]):
         # ... initializes weights and biases based on layer_sizes
 ```
-![Flappy bird ANN topology](/_MachineLearningProjects/Flappy_bird/Flappy_bird/Topology.jpg)
+![Flappy bird ANN topology](/MachineLearningProjects/Flappy_bird/Flappy_bird/Topology.jpg)
 
 ## 2.2 The input (The senses)
 
@@ -217,7 +217,7 @@ def think(self, bird_y, bird_vel, pipe_gap_top, pipe_gap_bottom, pipe_dist):
     return self.brain.forward(inputs)
 ```
 
-![The inputs of ANN](/_MachineLearningProjects/Flappy_bird/Flappy_bird/Game_input.jpg)
+![The inputs of ANN](/MachineLearningProjects/Flappy_bird/Flappy_bird/Game_input.jpg)
 
 ## 2.3 The math: forward propagation
 
@@ -283,9 +283,9 @@ def forward(self, x):
     # If the probability is > 50%, return True (JUMP)
     return output[0][0] > 0.5
 ```
-![The inputs of ANN](/_MachineLearningProjects/Flappy_bird/Flappy_bird/Single_neuron_mathematical_model.jpg)
+![The inputs of ANN](/MachineLearningProjects/Flappy_bird/Flappy_bird/Single_neuron_mathematical_model.jpg)
 
-![The activation graph](/_MachineLearningProjects/Flappy_bird/Flappy_bird/Activation_graph.jpg)
+![The activation graph](/MachineLearningProjects/Flappy_bird/Flappy_bird/Activation_graph.jpg)
 
 ## 2.4 Mutability and Copying
 

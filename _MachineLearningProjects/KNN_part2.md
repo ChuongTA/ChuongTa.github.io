@@ -347,7 +347,7 @@ new_pred = knn.predict(new_point_scaled)[0]
 - Create new data point as 2D array
 - Scale using SAME scaler as training data
 - Predict and extract single value with [0]
-![Result](/_MachineLearningProjects/00_Traditional_ML/output_off_example_KNN.png)
+![Result](/MachineLearningProjects/00_Traditional_ML/output_off_example_KNN.png)
 
 
-You can also download code through [this link](/_MachineLearningProjects/KNN_part2_pratice.zip)
+You can also download code through [this link](/MachineLearningProjects/KNN_part2_pratice.zip)
