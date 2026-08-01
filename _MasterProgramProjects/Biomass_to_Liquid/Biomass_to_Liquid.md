@@ -4,7 +4,7 @@ category: densys
 excerpt: "Comparative analysis of biomass-to-liquid conversion pathways for sustainable fuels; multi-criteria evaluation and scenario modeling."
 layout: single
 author_profile: true
-permalink: /projects/project3.md/
+permalink: /MasterProgramProjects/Biomass_to_Liquid/
 ---
 
 **DENSYS Biomass-to-Liquid Project — January 2025**

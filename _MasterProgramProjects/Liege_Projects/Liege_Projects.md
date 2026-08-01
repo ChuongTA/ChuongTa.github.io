@@ -5,7 +5,7 @@ excerpt: "Operational planning, sizing, and optimization assignment for Universi
 image: /MasterProgramProjects/Liege_Projects/Liege_class.jpg
 layout: single
 author_profile: true
-permalink: /projects/project1.md/
+permalink: /MasterProgramProjects/Liege_Projects/
 ---
 
 ![Liège Assignment](/MasterProgramProjects/Liege_Projects/Liege_class.jpg)

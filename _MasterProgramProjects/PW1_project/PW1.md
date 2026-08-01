@@ -4,10 +4,10 @@ category: densys
 excerpt: "Repowering feasibility study replacing three aging Vestas V44-600 turbines with single modern V82-1.65 MW turbine, achieving 33% energy increase and 38% LCOE reduction."
 layout: single
 author_profile: true
-permalink: /projects/project5.md/
+permalink: /MasterProgramProjects/PW1_project/
 ---
 
-![Veggerslev Wind Farm](/files/PW1_project/PW1_github.png)
+![Veggerslev Wind Farm](/MasterProgramProjects/PW1_project/PW1_github.png)
 
 **Academic Group Project — Politecnico di Torino**
 

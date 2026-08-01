@@ -5,9 +5,8 @@ excerpt: "Case-Based Module: Evaluating algae-derived Sustainable Aviation Fuel 
 image: /MasterProgramProjects/Algae_Biofuel/SAF.png
 layout: single
 author_profile: true
-permalink: /projects/project2.md/
+permalink: /MasterProgramProjects/Algae_Biofuel/
 ---
-
 ![Algae SAF Project](/MasterProgramProjects/Algae_Biofuel/SAF.png)
 
 **Case-Based Module Assignment: Decarbonizing Aviation with Algae-Based SAF**
