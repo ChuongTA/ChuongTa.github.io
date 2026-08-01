@@ -2,13 +2,13 @@
 title: "K-Nearest Neighbours (KNN) Algorithm - Part 1 "
 category: densys
 excerpt: K‑Nearest Neighbors (KNN) is a simple, non‑parametric machine learning algorithm that makes predictions based on the labels of the closest data points in the training set. It is supervised (it needs labeled examples) and can be used for both classification and regression tasks."
-image: /images/Naive_Bayes.png
+image: /_MachineLearningProjects/00_Traditional_ML/Naive_Bayes.png
 layout: single
 author_profile: true
 permalink: /MachineLearning/KNN_part1.md/
 usemathjax: true
 ---
-![K-Nearest Neighbour (KNN) steps](/images/KNN_part_1.png)  
+![K-Nearest Neighbour (KNN) steps](/_MachineLearningProjects/00_Traditional_ML/KNN_part_1.png)  
 *Source: step‑by‑step KNN guide by Utsav Desai on Medium.*
 
 ## 1. Definition of KNN
@@ -72,7 +72,7 @@ KNN needs a way to measure how similar or different two data points are, which i
 
 ### 3.1 Euclidean distance
 
-![Euclidean and Manhattan distance](/images/Euclidean_distance_Mahattan_distance.png)  
+![Euclidean and Manhattan distance](/_MachineLearningProjects/00_Traditional_ML/Euclidean_distance_Mahattan_distance.png)  
 
 For two points
 $$
@@ -104,7 +104,7 @@ You can think of this as moving along a grid of streets instead of diagonally. I
 
 ### 3.3 Minkowski distance
 
-![Minkowski distance](/images/Minkowski.jpg)  
+![Minkowski distance](/_MachineLearningProjects/00_Traditional_ML/Minkowski.jpg)  
 
 A general form that includes both Euclidean and Manhattan distances:
 $$
@@ -135,7 +135,7 @@ Two points are close only if *all* feature differences are small.
 
 ### 3.5 Cosine distance / similarity
 
-![Cosine Distance](/images/Cosine_distance.png)
+![Cosine Distance](/_MachineLearningProjects/00_Traditional_ML/Cosine_distance.png)
 
 Cosine similarity says “how similar” two vectors are by comparing the angle between them.  
 A value close to 1 means the vectors point in almost the same direction (very similar),  

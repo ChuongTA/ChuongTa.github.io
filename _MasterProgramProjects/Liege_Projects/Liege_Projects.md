@@ -2,13 +2,13 @@
 title: "Liège Projects"
 category: densys
 excerpt: "Operational planning, sizing, and optimization assignment for Université de Liège; my favorite DENSYS course that sparked my love for programming!"
-image: /images/Liege_class.jpg
+image: /_MasterProgramProjects/Liege_Projects/Liege_class.jpg
 layout: single
 author_profile: true
 permalink: /projects/project1.md/
 ---
 
-![Liège Assignment](/images/Liege_class.jpg)
+![Liège Assignment](/_MasterProgramProjects/Liege_Projects/Liege_class.jpg)
 
 About this course: Data and Forecasting in Microgrids is my favourite course in DENSYS. From this I started to love programming, which was something I was very scared of in the past. Now, I enjoy it 😊.
 

@@ -2,7 +2,7 @@
 title: "Naive Bayes - Prediction probability Storm days 🌪️ "
 category: densys
 excerpt: "This is my 1st post about Machine Learning (ML). This is a topic I learnt from the book \"An Introduction to Statistical Learning\"."
-image: /images/Naive_Bayes.png
+image: /_MachineLearningProjects/00_Traditional_ML/Naive_Bayes.png
 layout: single
 author_profile: true
 permalink: /MachineLearning/ml1.md/
@@ -12,7 +12,7 @@ usemathjax: true
 In this post, I use the Naive Bayes classifier to predict whether a day in a North Sea wind farm will become a storm day 🌪️.  
 For more information on Naive Bayes, you can read this post on [DataCamp](https://databasecamp.de/en/ml/naive-bayes-algorithm).
 
-![Naive Bayes diagram](/images/Naive_Bayes.png)
+![Naive Bayes diagram](/_MachineLearningProjects/00_Traditional_ML/Naive_Bayes.png)
 
 My features are wind speed 💨, air pressure 🌡️, and cloud cover ☁️, each recorded as simple categories such as high, medium, low.
 
