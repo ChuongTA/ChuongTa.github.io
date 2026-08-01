@@ -12,8 +12,6 @@ main:
     url: /publications/
   - title: "Projects"
     url: /projects/
-  - title: "Machine Learning"
-    url: /MachineLearning/
   - title: "Wind Energy"
     url: /WindEnergy/
 
