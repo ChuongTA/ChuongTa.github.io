@@ -1,0 +1,23 @@
+---
+layout: archive
+title: "Machine Learning Projects"
+permalink: /MachineLearningProjects/
+author_profile: true
+---
+
+<div class="wordwrap">
+  This page gathers my machine learning projects, codes, and study notes.
+</div>
+
+{% include base_path %}
+
+{% if site.MachineLearningProjects and site.MachineLearningProjects.size > 0 %}
+  {% for post in site.MachineLearningProjects %}
+    {% include archive-single.html %}
+  {% endfor %}
+{% else %}
+  <p>
+    No Machine Learning Projects found. Please check that the collection name in
+    <code>_config.yml</code> and the folder <code>_MachineLearningProjects/</code> are correctly defined.
+  </p>
+{% endif %}

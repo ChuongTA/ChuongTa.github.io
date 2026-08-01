@@ -10,15 +10,13 @@
 main:
   - title: "Publications"
     url: /publications/
-  - title: "Projects"
-    url: /projects/
   - title: "Wind Energy"
     url: /WindEnergy/
+  - title: "Energy Systems"
+    url: /EnergySystems/
+  - title: "Master Program Projects"
+    url: /MasterProgramProjects/
+  - title: "Machine Learning Projects"
+    url: /MachineLearningProjects/
   - title: "CV"
     url: /cv/
-
-  # - title: "CV"
-  #   url: /cv-json/
-
-  # - title: "Guide"
-  #   url: /markdown/

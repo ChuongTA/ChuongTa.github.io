@@ -221,10 +221,16 @@ collections:
   publications:
     output: true
     permalink: /:collection/:path/
-  projects:
+  WindEnergy:
     output: true
     permalink: /:collection/:path/
-  WindEnergy:
+  EnergySystems:
+    output: true
+    permalink: /:collection/:path/
+  MasterProgramProjects:
+    output: true
+    permalink: /:collection/:path/
+  MachineLearningProjects:
     output: true
     permalink: /:collection/:path/
 
@@ -258,12 +264,28 @@ defaults:
       author_profile: true
       share: true
       comments: true
-  #_projects
+  #_EnergySystems
   - scope:
       path: ""
-      type: projects
+      type: EnergySystems
     values:
-      layout: projects
+      layout: single
+      author_profile: true
+      share: true
+  #_MasterProgramProjects
+  - scope:
+      path: ""
+      type: MasterProgramProjects
+    values:
+      layout: single
+      author_profile: true
+      share: true
+  #_MachineLearningProjects
+  - scope:
+      path: ""
+      type: MachineLearningProjects
+    values:
+      layout: single
       author_profile: true
       share: true
    #_WindEnergy

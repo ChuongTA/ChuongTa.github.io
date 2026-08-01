@@ -1,0 +1,23 @@
+---
+layout: archive
+title: "Master Program Projects"
+permalink: /MasterProgramProjects/
+author_profile: true
+---
+
+<div class="wordwrap">
+  This page gathers projects and reports completed during my Master's program studies.
+</div>
+
+{% include base_path %}
+
+{% if site.MasterProgramProjects and site.MasterProgramProjects.size > 0 %}
+  {% for post in site.MasterProgramProjects %}
+    {% include archive-single.html %}
+  {% endfor %}
+{% else %}
+  <p>
+    No Master Program Projects found. Please check that the collection name in
+    <code>_config.yml</code> and the folder <code>_MasterProgramProjects/</code> are correctly defined.
+  </p>
+{% endif %}
