@@ -29,7 +29,7 @@ This project, part of the DENSYS Master's program, assessed sustainable aviation
 
 ## Documentation
 
-- [Download full report (PDF)](/files/Final_Report_CBM.pdf)
+- [Download full report (PDF)](/MasterProgramProjects/Algae_Biofuel/Final_Report_CBM.pdf)
 
 ## Technologies and Methods Used
 

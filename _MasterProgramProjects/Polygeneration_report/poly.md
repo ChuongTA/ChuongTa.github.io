@@ -86,9 +86,9 @@ Payback period analysis confirms energy prices as most critical parameter, with 
 ---
 
 ## Documentation
-- [Download Full Report (PDF)](/files/Polygeneration_report/Polygeneration_report_v5.pdf)
-- [Download coding (Python)](/files/Polygeneration_report/Polygeneration_code.ipynb)
-- [Download simulation file (Aspen Plus)](/files/Polygeneration_report/PAES_Lab_Aspen_file.apwz)
+- [Download Full Report (PDF)](/MasterProgramProjects/Polygeneration_report/Polygeneration_report_v5.pdf)
+- [Download coding (Python)](/MasterProgramProjects/Polygeneration_report/Polygeneration_code.ipynb)
+- [Download simulation file (Aspen Plus)](/MasterProgramProjects/Polygeneration_report/PAES_Lab_Aspen_file.apwz)
 ---
 
 ## System Performance

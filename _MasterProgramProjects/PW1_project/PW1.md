@@ -58,7 +58,7 @@ This study evaluates repowering the **Veggerslev wind farm** in Norddjurs, Denma
 
 ## Documentation
 
-- [Download Full Report (PDF)](/files/PW1_project/Team_no_3.pdf)
+- [Download Full Report (PDF)](/MasterProgramProjects/PW1_project/Team_no_3.pdf)
 
 ---
 
