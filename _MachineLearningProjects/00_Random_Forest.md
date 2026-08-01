@@ -19,7 +19,7 @@ The key idea is that a group of weak learners (individual trees) can together fo
 - For **classification**, the final prediction is the **majority vote**.
 - For **regression**, the final prediction is the **average** of all tree outputs.
 
-![RF algorithm explained](/files/00_Tranditional_ML/Figures/00_RF/pic1.png) _Figure 1: RF algorithm process (Source: Jain, A.)_
+![RF algorithm explained](/MachineLearningProjects/00_Traditional_ML/Figures/00_RF/pic1.png) _Figure 1: RF algorithm process (Source: Jain, A.)_
 
 ---
 

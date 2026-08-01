@@ -17,14 +17,14 @@ This raises a natural question:
 
 "or when large wind farm installations operate beneath stratocumulus decks, do the turbines alter the boundary layer structure in ways that promote or suppress cloud formation? And conversely, do changes in cloud properties feedback to affect the wind profiles experienced by turbines, thereby influencing power production?"
 
-![Cloud interact](/files/Wind_farms_and_clouds_interact/hydro-meteo.jpg)
+![Cloud interact](/WindEnergy/Wind_farms_and_clouds_interact/hydro-meteo.jpg)
 *Figure 1: Wind farms and clouds interact [[3]]([https://en.wikipedia.org/wiki/Glaze_%28ice%29](https://noordzeeloket.nl/en/functions-use/offshore-wind-energy/shipping-safety-around-offshore-wind-farms-moswoz/hydrometeo/))*
 
 # 2. The Marine Boundary Layer
 
 The marine boundary layer extends from the sea surface to somewhere between several hundred meters and about 1.5 km, depending on conditions. What defines this layer is direct coupling with the ocean surface through turbulent mixing - momentum exchange via surface friction, heat transfer, and moisture addition through evaporation all shape the properties within this zone [4](https://acp.copernicus.org/articles/21/10965/2021/).
 
-![MBL](/files/Wind_farms_and_clouds_interact/MBL.jpg)
+![MBL](/WindEnergy/Wind_farms_and_clouds_interact/MBL.jpg)
 
 *Figure 2: Marine Boundary Layer [[5]](https://asr.science.energy.gov/news/program-news/post/13377))*
 
@@ -47,7 +47,7 @@ Offshore wind turbines, with hub heights around 100–150 m, sit squarely within
 
 Marine straocumulus are low-altitude, horizontally extensive clouds forming as relatively uniform dects or broken patches, typically gray or white when viewed from below and residing below 2 km altitude. They predominantly form near the top of the marine boundary layer, where rising moist air reaches saturation. The ocean surface continuously supplies moisture through evaporation; as this moist air is mixed upward by turbulence and encounters cooler temperatures near the inversion, water vapor condenses into cloud droplets [7](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2014JD022939).
 
-![Stratocumulus clouds](/files/Wind_farms_and_clouds_interact/Stratocumulus_clounds.jpg)
+![Stratocumulus clouds](/WindEnergy/Wind_farms_and_clouds_interact/Stratocumulus_clounds.jpg)
 
 *Figure 3: Vertical profiles of radiative infrared cooling flux (orange) and temperature change (green) for a nocturnal stratocumulus cloud layer at equatorial latitudes. Upward sensible heat and moisture fluxes from the ocean surface provide the buoyancy and water vapor required for cloud formation, and radiative cooling from the cloud top provides downward entrainment and mixing of dry air from aloft to feed cloud thickening [8](https://www.sciencedirect.com/science/article/pii/B9780128170922000023)*
 
@@ -79,7 +79,7 @@ Near the turbine, the wake exhibits organized structures including helical tip v
 
 The recovery rate depends critically on atmospheric turbulence intensity. In highly turbulent conditions (unstable atmosphere, strong convection), vigorous mixing rapidly restores wake velocity, and wakes recover within 10–15 rotor diameters. In stable, low-turbulence conditions (common at night over cool oceans), mixing is weak and wakes can persist with measurable velocity deficits for 30–50 km downstream [12](https://businessnorway.com/articles/wake-effects-and-how-they-impact-wind-turbine-performance).
 
-![Wake_effect](/files/Wind_farms_and_clouds_interact/wake_effect.png)
+![Wake_effect](/WindEnergy/Wind_farms_and_clouds_interact/wake_effect.png)
 *Figure 4: Horns Rev wind farm in salt spray weather [13](https://www.mdpi.com/2077-1312/13/2/208)*
 
 ## 4.2 Wind farm array effects

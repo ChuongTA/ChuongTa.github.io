@@ -8,7 +8,7 @@ author_profile: true
 permalink: /MachineLearning/Flappy_bird_part1.md/
 usemathjax: true
 ---
-<img src="/Files/Flappy_bird/flappy bird.png" 
+<img src="/MachineLearningProjects/Flappy_bird/flappy bird.png" 
      style="max-width: 100%; border-radius: 8px; display: block; margin: 0 auto 20px; transform: scale(0.5); transform-origin: center;">
 
 Watch a demo live:
@@ -38,4 +38,4 @@ Additional resources:
 - [Source code from Code with Curious](https://codewithcurious.com/projects/flappy-bird-game-using-python/)
 - [Game assets from GitHub](https://github.com/CodexploreRepo/Python_Games/blob/main/5_Flappy_Bird/FileGame.rar)
 
-And the final, my zip code files, [ready to download](/Files/Flappy_bird/Flappy_bird.zip)
+And the final, my zip code files, [ready to download](/MachineLearningProjects/Flappy_bird/Flappy_bird.zip)

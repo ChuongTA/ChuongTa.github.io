@@ -25,17 +25,17 @@ Beyond the mathematics, SVMs can be understood intuitively: imagine two cities o
 
 **Hyperplane:** A decision boundary that separates data points into different classes in a high-dimensional space. In 2D it is a line; in 3D it is a plane. In $N$-dimensional space, a hyperplane has $N-1$ dimensions.
 
-![SVM hyperplane 2D](/files/00_Tranditional_ML/Figures/11_SVM/pic8.png)
+![SVM hyperplane 2D](/MachineLearningProjects/00_Traditional_ML/Figures/11_SVM/pic8.png)
 *Figure: Illustration of the SVM hyperplane in 2D (Source: Kristori, 2023)*
 
-![SVM hyperplane 3D](/files/00_Tranditional_ML/Figures/11_SVM/pic9.png)
+![SVM hyperplane 3D](/MachineLearningProjects/00_Traditional_ML/Figures/11_SVM/pic9.png)
 *Figure: Illustration of the SVM hyperplane in 3D (Source: Kristori, 2023)*
 
 **Margin:** The distance between the hyperplane and the closest data points from each class. SVM aims to **maximise this margin** for a more robust classifier.
 
 **Support vectors:** The data points lying closest to the decision boundary. They determine the position and orientation of the hyperplane and have a significant impact on classification accuracy. SVMs are named after these points because they "support" or define the decision boundary.
 
-![SVM margin 2D](/files/00_Tranditional_ML/Figures/11_SVM/pic10.png)
+![SVM margin 2D](/MachineLearningProjects/00_Traditional_ML/Figures/11_SVM/pic10.png)
 *Figure: Illustration of the SVM margin and support vectors in 2D (Source: Singh, 2023)*
 
 **Weight vector:** The vector $\mathbf{w}$ is perpendicular to the hyperplane and determines its orientation. Its direction indicates how the hyperplane is oriented and its magnitude determines how steep the separation boundary is.
@@ -52,7 +52,7 @@ Where data is **linearly separable**, a linear SVM finds a straight line or hype
 
 Real-world data is often **not linearly separable**. When no straight line can separate classes, the data must be transformed into a higher-dimensional space where separation becomes possible. The classes are said to be *linearly inseparable* in the original feature space.
 
-![Linearly inseparable data](/files/00_Tranditional_ML/Figures/11_SVM/pic11.png)
+![Linearly inseparable data](/MachineLearningProjects/00_Traditional_ML/Figures/11_SVM/pic11.png)
 *Figure: Examples of linearly inseparable data that require transformation into a higher-dimensional space (Source: Singh, 2023)*
 
 ---
@@ -69,7 +69,7 @@ For a **concentric case** (such as a bullseye pattern), separation requires only
 
 For a **non-concentric case** (such as icing events scattered across three separate clusters in feature space), measuring from a single origin is no longer enough. The algorithm must evaluate for every data point its distance to every other point. In SCADA data, icing events form exactly this non-concentric structure, clustering at specific combinations of `AmbientTemperature`, `RelativeHumidity`, and `ws_corrected`.
 
-![Concentric classes](/files/00_Tranditional_ML/Figures/11_SVM/pic12.png)
+![Concentric classes](/MachineLearningProjects/00_Traditional_ML/Figures/11_SVM/pic12.png)
 *Figure: Concentric classes (left) separable by distance from origin. The same points lifted into 3D with $Z = \sqrt{X^2 + Y^2}$ become linearly separable by a flat plane (Source: Singh, 2023)*
 
 ### Problem 2: The Pairwise Distance Problem
@@ -98,7 +98,7 @@ As the SCADA dataset grows from one month (~10K rows) to three years (~3.47M row
 
 Even if the computational cost were acceptable, a second problem remains: **which transformation is correct?** For just two features $X$ and $Y$ with degree-2 polynomials, the candidates are $X$, $Y$, $XY$, $X^2$, $Y^2$, giving 10 possible 3D feature combinations. Not all combinations produce a separable space. With 50 SCADA features and degree-3 terms included, the number of possible polynomial combinations is astronomically large.
 
-![X vs Y vs XY plot](/files/00_Tranditional_ML/Figures/11_SVM/pic14.png)
+![X vs Y vs XY plot](/MachineLearningProjects/00_Traditional_ML/Figures/11_SVM/pic14.png)
 *Figure: $X$ vs $Y$ vs $XY$ plot of the same data. This feature combination is not linearly classifiable (Source: Singh, 2023)*
 
 ---
@@ -141,10 +141,10 @@ In these equations:
 
 The **RBF kernel** computes a similarity score that decays exponentially based on squared Euclidean distance: two points that are close together receive a score near 1, while points far apart receive a score approaching 0. Crucially, the RBF kernel implicitly maps data into an **infinite-dimensional feature space**, enabling arbitrarily smooth and complex boundaries without specifying an exact polynomial combination.
 
-![Effect of gamma on RBF](/files/00_Tranditional_ML/Figures/11_SVM/pic15.png)
+![Effect of gamma on RBF](/MachineLearningProjects/00_Traditional_ML/Figures/11_SVM/pic15.png)
 *Figure: Effect of $\gamma$ on the RBF kernel decision boundary. Left ($\gamma = 1$): tightly curved, matches data locally. Right ($\gamma = 0.01$): smooth and near-linear (Source: Singh, 2023)*
 
-![Gamma overfitting comparison](/files/00_Tranditional_ML/Figures/11_SVM/pic16.png)
+![Gamma overfitting comparison](/MachineLearningProjects/00_Traditional_ML/Figures/11_SVM/pic16.png)
 *Figure: Three models with different $\gamma$ values. Left ($\gamma = 0.1$): well fitted. Middle ($\gamma = 10$): overfitted. Right ($\gamma = 100$): extremely overfitted (Source: Singh, 2023)*
 
 > **Key Insight:** The RBF kernel is selected for icing studies because icing events form localised, non-concentric clusters in the `AmbientTemperature` x `RelativeHumidity` x `ws_corrected` feature space. Linear and polynomial kernels impose structural assumptions that a physically threshold-driven, multi-condition phenomenon like icing does not satisfy.
@@ -157,7 +157,7 @@ The **RBF kernel** computes a similarity score that decays exponentially based o
 
 If data were perfectly separable with no noise, the **hard margin SVM** would demand zero violations: every training point must sit on the correct side of the margin boundary. Two problems arise immediately. First, a single misplaced point (such as a faulty anemometer reading that looks like icing) would either prevent the SVM from finding a solution or force a narrow, distorted margin. Second, when classes genuinely overlap (as icing and non-icing conditions do near 0°C), no hard margin exists at all.
 
-![Hard margin distortion](/files/00_Tranditional_ML/Figures/11_SVM/pic17.png)
+![Hard margin distortion](/MachineLearningProjects/00_Traditional_ML/Figures/11_SVM/pic17.png)
 *Figure: A single outlier introduced into the left class completely distorts the hard-margin decision boundary, misclassifying non-outlier data.*
 
 ### Soft Margin (Real World)
@@ -178,7 +178,7 @@ Rather than forcing a narrow road because one building blocks the path, the soft
 | Moderate (e.g., 1 to 10) | Balanced margin width vs misclassifications | Generally best generalisation |
 | Low (e.g., 0.1) | Wide margin, many misclassifications tolerated | May underfit |
 
-![Soft margin C comparison](/files/00_Tranditional_ML/Figures/11_SVM/pic18.png)
+![Soft margin C comparison](/MachineLearningProjects/00_Traditional_ML/Figures/11_SVM/pic18.png)
 *Figure: Same dataset with $C = 100$ (left, narrow margin) vs $C = 1$ (right, wider margin with better generalisation).*
 
 > **Key Insight:** $C$ controls the bias-variance trade-off. High $C$ gives low bias and high variance. Low $C$ gives high bias and low variance. A moderate $C$ is appropriate for SCADA data because it tolerates transient anomalies (a single timestep where an anemometer stalls) without sacrificing overall icing detection.
@@ -195,7 +195,7 @@ SVR defines a tube of half-width $\varepsilon$ around the regression surface. An
 
 In wind power forecasting, $\varepsilon$ represents the threshold of acceptable prediction error. Minor fluctuations in `loss_kw` due to turbulence or measurement noise fall inside the tube and are ignored. Severe icing-induced losses that exceed $\varepsilon$ become the support vectors that drive the model's fitting effort.
 
-![SVR epsilon tube](/files/00_Tranditional_ML/Figures/11_SVM/pic19.png)
+![SVR epsilon tube](/MachineLearningProjects/00_Traditional_ML/Figures/11_SVM/pic19.png)
 *Figure: SVR regression surface surrounded by the $\varepsilon$-insensitive tube. Points inside have zero loss; points outside become support vectors (Source: Singh, 2023)*
 
 ### Step 2: Soft Margin Tolerance

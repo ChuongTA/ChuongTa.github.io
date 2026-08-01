@@ -4,10 +4,10 @@ category: densys
 excerpt: "Integrated LCA-ML framework achieving 12,600× computational acceleration for rapid environmental optimization of North Sea offshore wind turbines."
 layout: single
 author_profile: true
-permalink: /projects/project4.md/
+permalink: /WindEnergy/LCA_offshore_wind/
 ---
 
-![Offshore Wind LCA Framework](/files/LCA_offshore_wind/LCA_picture.png)
+![Offshore Wind LCA Framework](/WindEnergy/LCA_offshore_wind/LCA_picture.png)
 
 **Academic Research Project — Politecnico di Torino**
 
@@ -45,8 +45,8 @@ Pareto frontier analysis identifies 47 non-dominated configurations, revealing t
 
 ## Documentation
 
-- [Download Full Report (PDF)](/files/LCA_offshore_wind/LCA_report_2.pdf)
-- [View Graphical Abstract](/files/LCA_offshore_wind/LCA_picture.png)
+- [Download Full Report (PDF)](/WindEnergy/LCA_offshore_wind/LCA_report_2.pdf)
+- [View Graphical Abstract](/WindEnergy/LCA_offshore_wind/LCA_picture.png)
 
 **Note:** Code and supplementary data will be released upon peer-reviewed publication.
 

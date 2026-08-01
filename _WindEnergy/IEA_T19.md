@@ -364,7 +364,7 @@ Text file with the computed reference power curve, structured as a table indexed
 
 - **Power curve scatter:** Wind speed vs. power scatter, with reference P10/P50/P90 overlaid and icing events highlighted by class.
 
-![ExampleDataset power curve scatter — blue: standard production, red: IEa losses (0.3%), black: IEb stops (3.0%), green: IEc overproduction (1.4% of total time)](/files/IEA_task19/results/ExampleDataset_pc.png)
+![ExampleDataset power curve scatter — blue: standard production, red: IEa losses (0.3%), black: IEb stops (3.0%), green: IEc overproduction (1.4% of total time)](/WindEnergy/IEA_task19/results/ExampleDataset_pc.png)
 
 
 *Figure 1:(ExampleDataset power curve scatter — blue: standard production, red: IEa losses (0.3%), black: IEb stops (3.0%), green: IEc overproduction (1.4% of total time))*
