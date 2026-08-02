@@ -1,13 +1,4 @@
----
-title: "Biomass-to-Liquid Technologies Review"
-category: densys
-excerpt: "Comparative analysis of biomass-to-liquid conversion pathways for sustainable fuels; multi-criteria evaluation and scenario modeling."
-layout: single
-author_profile: true
-permalink: /MasterProgramProjects/Biomass_to_Liquid/
----
-
-**DENSYS Biomass-to-Liquid Project — January 2025**
+**ENSYS Biomass-to-Liquid Project — January 2025**
 
 Authored by: Dang Chuong TA & Oluwajoba Elisalome Oyefusi
 
@@ -29,8 +20,8 @@ This project evaluates diverse biomass-to-liquid (BtL) conversion pathways for s
 
 ## Documentation
 
-- [Download project report (PDF, written in LaTeX)](/files/BiomasstoLiquid_Chuong_Elisalome_DENSYS_2024_Submisison.pdf)
-- [Download LaTex code](/files/LaTex_code_Chuong_Elisalome_DENSYS_2024.zip)
+- [Download project report (PDF, written in LaTeX)](/MasterProgramProjects/Biomass_to_Liquid/BiomasstoLiquid_Chuong_Elisalome_DENSYS_2024_Submisison.pdf)
+- [Download LaTex code](/MasterProgramProjects/Biomass_to_Liquid/LaTex_code_Chuong_Elisalome_DENSYS_2024.zip)
 
 ## Technologies and Skills Used
 
