@@ -27,7 +27,7 @@ Recently, I watched a great video on how to learn machine learning, and it made 
 
 I have hands-on experience with [PyWake](https://topfarm.pages.windenergy.dtu.dk/PyWake/), an open-source, Python-based wind farm simulation tool developed at DTU, which computes flow fields, power production of individual turbines, and Annual Energy Production (AEP) for entire wind farms. I modeled a project using PyWake that gave me practical insights into wind farm aerodynamics. I also intend to learn [TOPFARM](https://topfarm.pages.windenergy.dtu.dk/), a Python package from DTU Wind Energy that wraps PyWake with OpenMDAO, enabling wind farm optimization for both onshore and offshore projects.
 
-In terms of machine learning, I am currently strengthening my foundational mathematical skills in Linear Algebra, Calculus, Statistics, Probability, and Statistical Learning through the book [Mathematics for Machine learning](https://mml-book.github.io/book/mml-book.pdf). In the coming months, I plan to focus more deeply on Data Science applications relevant to Wind Energy, beginning with two initial books and progressing to [An Introduction to Statistical Learning with Applications in Python](https://www.statlearning.com/) and [Data Science in Wind Energy](https://library.oapen.org/handle/20.500.12657/101466).
+In terms of machine learning, I am currently reading the book [Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow](http://14.139.161.31/OddSem-0822-1122/Hands-On_Machine_Learning_with_Scikit-Learn-Keras-and-TensorFlow-2nd-Edition-Aurelien-Geron.pdf) and expect to finish it by the mid of September.
 
 
 ---
