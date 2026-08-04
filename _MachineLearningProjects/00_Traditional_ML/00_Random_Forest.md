@@ -1,7 +1,7 @@
 ---
 title: "Random Forest - Methodology 🌲" 
 excerpt: "This post explains how Random Forest works, step by step. It covers bootstrap sampling, random feature selection, decision tree growth, and aggregation." 
-image: /images/Random_Forest.png 
+image: "/MachineLearningProjects/00_Traditional_ML/Figures/00_RF/pic1.png" 
 layout: single 
 author_profile: true 
 permalink: /MachineLearning/00_Random_Forest.md/ 
