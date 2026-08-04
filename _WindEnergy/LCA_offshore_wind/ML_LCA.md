@@ -5,6 +5,8 @@ excerpt: "Integrated LCA-ML framework achieving 12,600× computational accelerat
 layout: single
 author_profile: true
 permalink: /WindEnergy/LCA_offshore_wind/
+image: "/WindEnergy/LCA_offshore_wind/LCA_picture.png"
+date: 2026-01-15
 ---
 
 ![Offshore Wind LCA Framework](/WindEnergy/LCA_offshore_wind/LCA_picture.png)

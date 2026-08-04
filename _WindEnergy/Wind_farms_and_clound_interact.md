@@ -6,6 +6,8 @@ layout: single
 author_profile: true
 permalink: /WindEnergy/Wind_farms_and_clound_interact.md/
 usemathjax: true
+image: "/WindEnergy/Wind_farms_and_clouds_interact/wake_effect.png"
+date: 2026-03-10
 ---
 Offshore wind farms are growing rapidly because winds over the ocean are strong, steady, and far from populated areas. Modern installations routinely contain hundreds of turbines spanning tens of kilometers, and some proposed developments will generate multiple gigawatts from single sites. At these scales, the farms begin to measurably modify the atmospheric environment in which they operate—particularly the marine boundary layer, which is the lowest one to two kilometers of atmosphere directly influenced by the sea surface [1](https://drawdown.org/explorer/deploy-offshore-wind-turbines#current-state). 
 

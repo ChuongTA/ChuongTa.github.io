@@ -6,6 +6,8 @@ layout: single
 author_profile: true
 permalink: /WindEnergy/IEA_T19.md/
 usemathjax: true
+image: "/WindEnergy/IEA_task19/results/ExampleDataset_pc.png"
+date: 2026-06-01
 ---
 
 

@@ -6,6 +6,8 @@ layout: single
 author_profile: true
 permalink: /WindEnergy/Icing_formation.md/
 usemathjax: true
+image: "/WindEnergy/Icing_formation/Heavy_of_rime_ice_in_wind_blade.png"
+date: 2026-05-01
 ---
 
 In the Nordic countries, the wind energy capacity is substantially higher in winter due stronger wind and higher air density. Therefore, countries with a high wind potential and intensive cold climates to advance wind power development. 
