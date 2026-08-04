@@ -1,7 +1,7 @@
 ---
 layout: archive
 title: "Energy Forecasting"
-permalink: /EnergySystems/
+permalink: /EnergyForecasting/
 author_profile: true
 ---
 
@@ -11,9 +11,9 @@ author_profile: true
 
 <hr style="border: 0; border-top: 1px solid var(--global-border-color); margin: 2em 0;" />
 
-<div class="energy-systems-list">
+<div class="energy-forecasting-list">
   {% assign last_year = "" %}
-  {% for post in site.EnergySystems reversed %}
+  {% for post in site.EnergyForecasting reversed %}
     {% if post.url == page.url %}
       {% continue %}
     {% endif %}
@@ -24,7 +24,7 @@ author_profile: true
       <!-- Post Thumbnail -->
       <div class="pub-image" style="flex: 0 0 180px; margin-right: 1.5em;">
         {% if post.image %}
-          <img src="{{ post.image | relative_url }}" alt="Energy Systems Project Thumbnail" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border: 1px solid var(--global-border-color); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'" />
+          <img src="{{ post.image | relative_url }}" alt="Energy Forecasting Project Thumbnail" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border: 1px solid var(--global-border-color); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'" />
         {% else %}
           <div style="width: 180px; height: 120px; background: rgba(122,132,136,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--global-text-color-light);">
             <span style="font-size: 2.5em;">⚡</span>
@@ -52,7 +52,7 @@ author_profile: true
             READ ARTICLE
           </a>
           <span style="font-size: 0.8em; color: var(--global-text-color-light); background: rgba(122,132,136,0.08); padding: 0.3em 0.6em; border-radius: 4px;">
-            Category: {{ post.category | default: "Energy Systems" | upcase }}
+            Category: {{ post.category | default: "Energy Forecasting" | upcase }}
           </span>
         </div>
       </div>

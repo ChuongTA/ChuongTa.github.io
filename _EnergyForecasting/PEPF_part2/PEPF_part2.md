@@ -4,9 +4,9 @@ category: densys
 excerpt: "Implementing Quantile Regression and Quantile Regression Forest for DK1 day-ahead prices, evaluated with walk-forward cross-validation: real code, real results, and what changes once a single train/test split becomes four folds spread across different seasons."
 layout: single
 author_profile: true
-permalink: /EnergySystems/PEPF_part2/
+permalink: /EnergyForecasting/PEPF_part2/
 usemathjax: true
-image: "/EnergySystems/PEPF_part2/QRQRF_forecast_24h.png"
+image: "/EnergyForecasting/PEPF_part2/QRQRF_forecast_24h.png"
 date: 2026-08-02
 ---
 
@@ -115,7 +115,7 @@ def generate_walk_forward_folds(min_date, max_date, n_folds, test_len_h, val_len
 
 Training always starts from the same date and expands; validation and test windows are spaced evenly across the remaining timeline, so each fold lands in a different season:
 
-![The four walk-forward folds](/EnergySystems/PEPF_part2/QRQRF_train_val_test_split.png)
+![The four walk-forward folds](/EnergyForecasting/PEPF_part2/QRQRF_train_val_test_split.png)
 *The four walk-forward folds actually used. Fold 2's test window falls over Christmas and New Year; the others fall in early autumn, early spring, and midsummer.*
 
 The validation window is not just a formality: it's where **QRF's `min_samples_leaf` is chosen** (between 20 and 40, by whichever gives the lower validation pinball loss) before either model ever sees the test window.
@@ -269,22 +269,22 @@ Running `qr_qrf_walkforward_pipeline.py` on the real DK1 data, across all four w
 | QR  | 24h | 0.721 (±0.176) | 56.8 | 0.820 (±0.138) | 74.7 | 0.889 (±0.080) | 94.0 |
 | QRF | 24h | 0.781 (±0.073) | 48.9 | 0.898 (±0.044) | 65.7 | 0.952 (±0.022) | 82.8 |
 
-![The four walk-forward folds used to produce every number above](/EnergySystems/PEPF_part2/QRQRF_train_val_test_split.png)
+![The four walk-forward folds used to produce every number above](/EnergyForecasting/PEPF_part2/QRQRF_train_val_test_split.png)
 *The four walk-forward folds used to produce every number above.*
 
-![QR vs QRF, 1h-ahead forecast fan chart](/EnergySystems/PEPF_part2/QRQRF_forecast_1h.png)
+![QR vs QRF, 1h-ahead forecast fan chart](/EnergyForecasting/PEPF_part2/QRQRF_forecast_1h.png)
 *QR vs QRF, 1h-ahead, on the most recent fold's two-week test window, with 80% and 95% prediction intervals.*
 
-![QR vs QRF, 6h-ahead forecast fan chart](/EnergySystems/PEPF_part2/QRQRF_forecast_6h.png)
+![QR vs QRF, 6h-ahead forecast fan chart](/EnergyForecasting/PEPF_part2/QRQRF_forecast_6h.png)
 *QR vs QRF, 6h-ahead.*
 
-![QR vs QRF, 12h-ahead forecast fan chart](/EnergySystems/PEPF_part2/QRQRF_forecast_12h.png)
+![QR vs QRF, 12h-ahead forecast fan chart](/EnergyForecasting/PEPF_part2/QRQRF_forecast_12h.png)
 *QR vs QRF, 12h-ahead.*
 
-![QR vs QRF, 24h-ahead forecast fan chart](/EnergySystems/PEPF_part2/QRQRF_forecast_24h.png)
+![QR vs QRF, 24h-ahead forecast fan chart](/EnergyForecasting/PEPF_part2/QRQRF_forecast_24h.png)
 *QR vs QRF, 24h-ahead.*
 
-![Reliability diagram for QR and QRF](/EnergySystems/PEPF_part2/QRQRF_reliability_diagram.png)
+![Reliability diagram for QR and QRF](/EnergyForecasting/PEPF_part2/QRQRF_reliability_diagram.png)
 *Reliability diagram (empirical vs nominal coverage) for QR and QRF, averaged across all four folds, for all four lead times.*
 
 ## 4. Discussion
@@ -305,8 +305,8 @@ QRF remains the stronger model of the two overall, and walk-forward validation s
 
 ## Code
 
-- [qr_qrf_walkforward_pipeline.py](/EnergySystems/PEPF_part2/qr_qrf_walkforward_pipeline.py): data loading, feature engineering, the QR and QRF model classes, and the walk-forward evaluation loop.
-- [forecasting_plots.py](/EnergySystems/PEPF_part2/forecasting_plots.py): every figure in this post, including the train/validate/test split diagram and the reliability diagram.
-- `Results/` folder: [per-fold metrics](/EnergySystems/PEPF_part2/Results/qr_qrf_per_fold_metrics.csv) and the [cross-fold summary](/EnergySystems/PEPF_part2/Results/qr_qrf_cv_summary.csv) (mean and standard deviation per model per lead time).
+- [qr_qrf_walkforward_pipeline.py](/EnergyForecasting/PEPF_part2/qr_qrf_walkforward_pipeline.py): data loading, feature engineering, the QR and QRF model classes, and the walk-forward evaluation loop.
+- [forecasting_plots.py](/EnergyForecasting/PEPF_part2/forecasting_plots.py): every figure in this post, including the train/validate/test split diagram and the reliability diagram.
+- `Results/` folder: [per-fold metrics](/EnergyForecasting/PEPF_part2/Results/qr_qrf_per_fold_metrics.csv) and the [cross-fold summary](/EnergyForecasting/PEPF_part2/Results/qr_qrf_cv_summary.csv) (mean and standard deviation per model per lead time).
 
-**Next:** [Part 3](/EnergySystems/PEPF_part3/) compares two more approaches, bootstrapped residuals and split conformal prediction, and puts all four methods head to head.
+**Next:** [Part 3](/EnergyForecasting/PEPF_part3/) compares two more approaches, bootstrapped residuals and split conformal prediction, and puts all four methods head to head.

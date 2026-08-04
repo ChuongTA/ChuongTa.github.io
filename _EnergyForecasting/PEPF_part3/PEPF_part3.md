@@ -4,9 +4,9 @@ category: densys
 excerpt: "Bootstrapped residuals and split conformal prediction for DK1 day-ahead prices, adapted from skforecast's guides and evaluated with the same walk-forward cross-validation as Part 2, including a head-to-head comparison against QR and QRF."
 layout: single
 author_profile: true
-permalink: /EnergySystems/PEPF_part3/
+permalink: /EnergyForecasting/PEPF_part3/
 usemathjax: true
-image: "/EnergySystems/PEPF_part3/BC_walkforward_forecast_1h.png"
+image: "/EnergyForecasting/PEPF_part3/BC_walkforward_forecast_1h.png"
 date: 2026-08-03
 ---
 
@@ -14,18 +14,18 @@ date: 2026-08-03
 
 ---
 
-QR and QRF, covered in [Part 2](/EnergySystems/PEPF_part2/), estimate the conditional distribution directly: QR fits one linear model per quantile, QRF reads every quantile off a single forest's weighted empirical CDF. This post covers two different, older techniques that instead take a **single point-forecast model** and turn its **residuals** into an interval. Both come from skforecast's user guides ([Bootstrapped Residuals](https://skforecast.org/0.15.0/user_guides/probabilistic-forecasting-bootstrapped-residuals), [Conformal Prediction](https://skforecast.org/0.15.0/user_guides/probabilistic-forecasting-conformal-prediction)), and this write-up adapts the concepts to this project's own XGBoost pipeline and tests them on real DK1 data rather than skforecast's bike-sharing/ETT examples.
+QR and QRF, covered in [Part 2](/EnergyForecasting/PEPF_part2/), estimate the conditional distribution directly: QR fits one linear model per quantile, QRF reads every quantile off a single forest's weighted empirical CDF. This post covers two different, older techniques that instead take a **single point-forecast model** and turn its **residuals** into an interval. Both come from skforecast's user guides ([Bootstrapped Residuals](https://skforecast.org/0.15.0/user_guides/probabilistic-forecasting-bootstrapped-residuals), [Conformal Prediction](https://skforecast.org/0.15.0/user_guides/probabilistic-forecasting-conformal-prediction)), and this write-up adapts the concepts to this project's own XGBoost pipeline and tests them on real DK1 data rather than skforecast's bike-sharing/ETT examples.
 
 ## 1. Bootstrapped Residuals
 
 The idea: fit one point-forecast model, collect its residuals $e_t = y_t - \hat y_t$, then simulate alternative future outcomes by resampling from that residual pool and adding the draws back to the point forecast. Repeating this many times (`n_boot` draws) builds an empirical distribution at each forecast horizon; percentiles of that distribution become the prediction interval.
 
-![Bootstrapping predictions diagram](/EnergySystems/PEPF_part3/BC_basic_bootstrap_diagram.png)
+![Bootstrapping predictions diagram](/EnergyForecasting/PEPF_part3/BC_basic_bootstrap_diagram.png)
 *Repeated resampling of past residuals builds a collection of alternative predictions, whose spread represents forecast uncertainty. Source: [skforecast.org, Bootstrapped Residuals](https://skforecast.org/0.15.0/user_guides/probabilistic-forecasting-bootstrapped-residuals).*
 
 Taking the $\alpha/2$ and $1-\alpha/2$ percentiles of that spread, at every forecasting horizon, turns the individual bootstrap paths into a single interval band:
 
-![Bootstrapped prediction intervals animation](/EnergySystems/PEPF_part3/BC_basic_bootstrap_animation.gif)
+![Bootstrapped prediction intervals animation](/EnergyForecasting/PEPF_part3/BC_basic_bootstrap_animation.gif)
 *Each gray line is one bootstrap path; the red band is the resulting prediction interval once percentiles are taken at each horizon. Source: [skforecast.org, Bootstrapped Residuals](https://skforecast.org/0.15.0/user_guides/probabilistic-forecasting-bootstrapped-residuals).*
 
 > "One of the main advantages of this strategy is that it requires only a single model to estimate any interval. However, performing hundreds or thousands of bootstrapping iterations can be computationally expensive." ([skforecast, Bootstrapped Residuals](https://skforecast.org/0.15.0/user_guides/probabilistic-forecasting-bootstrapped-residuals))
@@ -39,7 +39,7 @@ This is the part skforecast's docs spend the most time on, and it turns out to m
 
 This project's `forecast.py` currently uses in-sample residuals: `train_residuals = y_train.values - model.predict(X_train)` is fit directly on the training set the model just saw. Testing this on real DK1 data (1h-ahead XGBoost, last walk-forward fold) shows exactly the effect skforecast warns about:
 
-![In-sample vs out-of-sample residual distributions](/EnergySystems/PEPF_part3/BC_residuals_in_vs_out.png)
+![In-sample vs out-of-sample residual distributions](/EnergyForecasting/PEPF_part3/BC_residuals_in_vs_out.png)
 *Real DK1 residuals from the same XGBoost model: in-sample (evaluated on training data) vs out-of-sample (evaluated on a held-out validation window).*
 
 | Residual source | Std. dev. | n |
@@ -62,7 +62,7 @@ Bootstrapping assumes residuals are exchangeable regardless of the situation, wh
 
 This project's `BootstrappedPI` class already bins, but by **hour-of-day**, not predicted value, on the reasoning that DK1 volatility is hour-dependent (peak vs. off-peak). Testing both binning strategies against no binning at all, using an 8-week calibration window (large enough for about 56 samples per hour bin) on the same test fold:
 
-![Coverage comparison by binning strategy](/EnergySystems/PEPF_part3/BC_binning_coverage.png)
+![Coverage comparison by binning strategy](/EnergyForecasting/PEPF_part3/BC_binning_coverage.png)
 *Empirical coverage against the nominal target, for three ways of conditioning the residual pool: no binning, hour-of-day, and predicted-value quantile bins.*
 
 | Method | Nominal 80% | Nominal 90% | Nominal 95% |
@@ -79,7 +79,7 @@ For this project, that means switching `BootstrappedPI`'s conditioning variable 
 
 Conformal prediction solves the same problem, turning a point forecast plus residuals into a calibrated interval, without the resampling loop. Skforecast implements Split Conformal Prediction (SCP): reserve a calibration set, compute residuals on it once, then read the $(\alpha/2, 1-\alpha/2)$ empirical quantiles of those residuals directly as a fixed offset added to every future point forecast.
 
-![Conformal regression diagram](/EnergySystems/PEPF_part3/BC_basic_conformal_diagram.png)
+![Conformal regression diagram](/EnergyForecasting/PEPF_part3/BC_basic_conformal_diagram.png)
 *Conformal regression turns point predictions into prediction intervals using a single correction learned once from a calibration set. Source: [skforecast.org, Conformal Prediction](https://skforecast.org/0.15.0/user_guides/probabilistic-forecasting-conformal-prediction), citing Christoph Molnar, [Introduction To Conformal Prediction With Python](https://leanpub.com/conformal-prediction).*
 
 > "Conformal methods can also calibrate prediction intervals generated by other techniques, such as quantile regression or bootstrapped residuals... Skforecast implements Split Conformal Prediction (SCP) due to its simplicity and efficiency." ([skforecast, Conformal Prediction](https://skforecast.org/0.15.0/user_guides/probabilistic-forecasting-conformal-prediction))
@@ -126,18 +126,18 @@ Coverage tells a different story. Bootstrap consistently covers *more* than Conf
 
 The single-fold test didn't reveal this: resampling with replacement from a calibration pool (Bootstrap) introduces extra variance beyond the pool's raw empirical quantiles, which widens the tails and pushes coverage slightly higher than the direct quantile lookup (Conformal) achieves from the exact same pool. Neither dominates. Conformal is sharper, narrower intervals for near-identical accuracy; Bootstrap is safer, better coverage at the cost of width. Which one to prefer depends on whether the downstream decision cares more about tight intervals or about not being caught outside them.
 
-![Bootstrap vs Conformal forecast fan chart, 1h ahead](/EnergySystems/PEPF_part3/BC_walkforward_forecast_1h.png)
+![Bootstrap vs Conformal forecast fan chart, 1h ahead](/EnergyForecasting/PEPF_part3/BC_walkforward_forecast_1h.png)
 *Bootstrap vs Conformal, 1h ahead, on the most recent fold's test window.*
 
-![Bootstrap vs Conformal reliability diagram](/EnergySystems/PEPF_part3/BC_walkforward_reliability.png)
+![Bootstrap vs Conformal reliability diagram](/EnergyForecasting/PEPF_part3/BC_walkforward_reliability.png)
 *Empirical vs nominal coverage, averaged across all 4 folds, for both methods at all 4 lead times. Conformal sits consistently below Bootstrap, matching the coverage tables above.*
 
-![Bootstrap vs Conformal timing](/EnergySystems/PEPF_part3/BC_walkforward_timing.png)
+![Bootstrap vs Conformal timing](/EnergyForecasting/PEPF_part3/BC_walkforward_timing.png)
 *Real timing, averaged across all 16 fold/lead-time combinations.*
 
 ### How do all four methods compare?
 
-Putting Bootstrap and Conformal's mean pinball loss next to QR and QRF's from [Part 2](/EnergySystems/PEPF_part2/):
+Putting Bootstrap and Conformal's mean pinball loss next to QR and QRF's from [Part 2](/EnergyForecasting/PEPF_part2/):
 
 | Lead Time | QR | QRF | Bootstrap | Conformal |
 |---|---|---|---|---|
@@ -266,7 +266,7 @@ The same `ConformalPI` object, with `bin_by=None`, also reproduces the corrected
 
 ## Code
 
-- [bootstrap_conformal_walkforward_pipeline.py](/EnergySystems/PEPF_part3/bootstrap_conformal_walkforward_pipeline.py): the `BootstrappedPI` and `ConformalPI` classes and the walk-forward evaluation loop for both.
-- [qr_qrf_walkforward_pipeline.py](/EnergySystems/PEPF_part3/qr_qrf_walkforward_pipeline.py): shared data loading, feature engineering, and fold generation (same file as Part 2, included here so this post runs standalone).
-- [forecasting_plots.py](/EnergySystems/PEPF_part3/forecasting_plots.py): every figure in this post.
-- `Results/` folder: [per-fold metrics](/EnergySystems/PEPF_part3/Results/bootstrap_conformal_per_fold_metrics.csv), the [cross-fold summary](/EnergySystems/PEPF_part3/Results/bootstrap_conformal_cv_summary.csv), and the [timing summary](/EnergySystems/PEPF_part3/Results/bootstrap_conformal_timing_summary.csv).
+- [bootstrap_conformal_walkforward_pipeline.py](/EnergyForecasting/PEPF_part3/bootstrap_conformal_walkforward_pipeline.py): the `BootstrappedPI` and `ConformalPI` classes and the walk-forward evaluation loop for both.
+- [qr_qrf_walkforward_pipeline.py](/EnergyForecasting/PEPF_part3/qr_qrf_walkforward_pipeline.py): shared data loading, feature engineering, and fold generation (same file as Part 2, included here so this post runs standalone).
+- [forecasting_plots.py](/EnergyForecasting/PEPF_part3/forecasting_plots.py): every figure in this post.
+- `Results/` folder: [per-fold metrics](/EnergyForecasting/PEPF_part3/Results/bootstrap_conformal_per_fold_metrics.csv), the [cross-fold summary](/EnergyForecasting/PEPF_part3/Results/bootstrap_conformal_cv_summary.csv), and the [timing summary](/EnergyForecasting/PEPF_part3/Results/bootstrap_conformal_timing_summary.csv).

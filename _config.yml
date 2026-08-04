@@ -224,7 +224,7 @@ collections:
   WindEnergy:
     output: true
     permalink: /:collection/:path/
-  EnergySystems:
+  EnergyForecasting:
     output: true
     permalink: /:collection/:path/
   MasterProgramProjects:
