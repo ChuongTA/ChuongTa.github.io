@@ -7,7 +7,7 @@ author_profile: true
 permalink: /MachineLearning/Flappy_bird_part1.md/
 usemathjax: true
 image: "/MachineLearningProjects/Flappy_bird/flappy bird.png"
-date: 2026-07-01
+date: 2025-07-01
 ---
 <img src="/MachineLearningProjects/Flappy_bird/flappy bird.png" 
      style="max-width: 100%; border-radius: 8px; display: block; margin: 0 auto 20px; transform: scale(0.5); transform-origin: center;">

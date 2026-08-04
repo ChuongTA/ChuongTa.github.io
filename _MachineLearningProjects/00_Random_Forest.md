@@ -6,7 +6,7 @@ layout: single
 author_profile: true 
 permalink: /MachineLearning/00_Random_Forest.md/ 
 usemathjax: true
-date: 2026-04-10
+date: 2025-04-10
 ---
 > **Series:** Machine Learning Algorithms | **Part:** 1 of 2 (Theory)
 

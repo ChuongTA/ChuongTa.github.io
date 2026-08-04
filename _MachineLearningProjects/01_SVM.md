@@ -6,7 +6,7 @@ layout: single
 author_profile: true
 permalink: /MachineLearning/01_SVM.md/
 usemathjax: true
-date: 2026-05-15
+date: 2025-05-15
 ---
 
 > **Series:** Machine Learning Algorithms | **Part:** 1 of 2 (Theory)

@@ -6,7 +6,7 @@ author_profile: true
 permalink: /MachineLearning/KNN_part2.md/
 usemathjax: true
 image: "/MachineLearningProjects/00_Traditional_ML/output_off_example_KNN.png"
-date: 2026-03-01
+date: 2025-03-01
 ---
 
 In this post, I use a K-Nearest Neighbors (KNN) regressor to predict the power output of a 3-MW wind turbine using simulated atmospheric data.  
