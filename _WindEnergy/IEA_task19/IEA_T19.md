@@ -1,6 +1,5 @@
 ---
 title: "Icing formation in Wind turbines in Cold climate region (part 2) - IEA Task 19"
-category: densys
 excerpt: "In this first post of wind energy, I will walk you through the IEA Task 19 - Icing events classifcation and and power loss calculation..."
 layout: single
 author_profile: true
