@@ -111,7 +111,7 @@ If the 0.25 quantile for tomorrow at 18:00 is 44 €/MWh, that means the price f
 
 In practice, a forecast predicts a whole set of quantiles: the nine deciles (τ = 0.1 to 0.9) are common. Denser grids (τ = 0.01 to 0.99) sharpen the tails but cost more to compute. Always report which grid was used, since tail-sensitive scores depend on it.
 
-![Quantile ladder concept for a single hour](/EnergyForecasting/PEPF_part1/Fig3.png)
+<img src="/EnergyForecasting/PEPF_part1/Fig3.png" alt="Quantile ladder concept for a single hour" width="540">
 *Figure 3: **Quantile ladder.** For a single hour, the forecast outputs nine price levels ($q_{10}, \dots, q_{90}$), slicing the implied probability density (shaded). The star marks where the actual outcome fell.*
 
 The ladder in the figure runs $q_{10} = 30$ up to $q_{90} = 100$ €/MWh, with the median $q_{50} = 60$. The realised price that hour was 82 €/MWh, marked with the star: it sits between $q_{70} = 75$ and $q_{80} = 85$, above the median but comfortably inside the upper half of the ladder. Reading it as a forecast report card: the median alone would have missed by 22 €/MWh, but the ladder's upper rungs already signalled a real chance of a price this high, and the 80% interval ($q_{10}$ to $q_{90}$, 30 to 100) would have covered the outcome with room to spare. That's the point of publishing the whole ladder instead of a single number: the median can be off by a wide margin and the forecast can still be doing its job.
