@@ -16,7 +16,7 @@ Hi! My name is Chuong Dang Ta. [translate:Chương] is my Vietnamese name, and y
 
 Currently, I am pursuing a Master's degree in Decentralised Smart Energy Systems ([DENSYS](https://densys.univ-lorraine.fr/)), studying at Université de Lorraine, Nancy, France and Politecnico di Torino, Italy. I expect to graduate in September 2026. I am currently working as a Research Intern at [rebase.energy](https://rebase.energy) in Stockholm, developing power forecasting models for Wave Energy Converters by benchmarking Ridge Regression, Random Forest, and LightGBM against deep learning architectures (BiLSTM, TCN). Previously, from February to July 2026, I carried out my Master's thesis here, forecasting wind turbine icing power losses using an extended IEA Wind Task 19 framework and a two-stage LightGBM classifier-regressor. Professionally, I'm driven by challenges in Offshore Wind, Wave Energy, and Power-to-X, a passion amplified by the time I worked as Junior Researcher at VPI - Vietnam's Petroleum Institute — contributing to Vietnam's national hydrogen roadmap. My goal is to return and help advance this transformation.
 
-Recently, I watched a great video on how to learn machine learning, and it made me realize that most people skip the fundamentals and jump straight into a bootcamp. Here's a meme that captures this tendency. Personally, I really enjoy learning from textbooks on topics that interest me, it's one of the best ways to build a concrete foundation of understanding!
+Last year, I watched a great video on how to learn machine learning, and it made me realize that most people skip the fundamentals and jump straight into a bootcamp. Here's a meme that captures this tendency. Personally, I really enjoy learning from textbooks on topics that interest me, it's one of the best ways to build a concrete foundation of understanding! For instance, I am currently reading the book [Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow](http://14.139.161.31/OddSem-0822-1122/Hands-On_Machine_Learning-Keras-and-TensorFlow-2nd-Edition-Aurelien-Geron.pdf) and expect to finish it by the mid of September.
 
 ![CFD learners skipping steps](/Main_page/images/CFDmeme.jpg)  
 *Many learners leap straight to tools like Ansys/Comsol in CFD, skipping mathematics and core fundamentals.*
@@ -26,8 +26,6 @@ Recently, I watched a great video on how to learn machine learning, and it made 
 
 
 I have hands-on experience with [PyWake](https://topfarm.pages.windenergy.dtu.dk/PyWake/), an open-source, Python-based wind farm simulation tool developed at DTU, which computes flow fields, power production of individual turbines, and Annual Energy Production (AEP) for entire wind farms. I modeled a project using PyWake that gave me practical insights into wind farm aerodynamics. I also intend to learn [TOPFARM](https://topfarm.pages.windenergy.dtu.dk/), a Python package from DTU Wind Energy that wraps PyWake with OpenMDAO, enabling wind farm optimization for both onshore and offshore projects.
-
-In terms of machine learning, I am currently reading the book [Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow](http://14.139.161.31/OddSem-0822-1122/Hands-On_Machine_Learning_with_Scikit-Learn-Keras-and-TensorFlow-2nd-Edition-Aurelien-Geron.pdf) and expect to finish it by the mid of September.
 
 
 ---
