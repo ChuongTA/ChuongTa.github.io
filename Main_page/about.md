@@ -8,7 +8,7 @@ redirect_from:
 ---
 Hi! My name is Chuong Dang Ta. [translate:Chương] is my Vietnamese name, and yes, it's tough for foreigners to pronounce (but no hard feelings toward my parents for that 😅).
 
-Currently, I am pursuing a Master's degree in Decentralised Smart Energy Systems ([DENSYS](https://densys.univ-lorraine.fr/)), studying at Université de Lorraine, Nancy, France and Politecnico di Torino, Italy. I expect to graduate in September 2026. From February to July 2026, I am carrying out my Master's thesis at [rebase.energy](https://rebase.energy) in Stockholm, building on work from IEA Task 19, developing machine-learning models (Quantile Regression Forests, Temporal Convolutional Networks, XGBoost) to forecast icing-related power losses for wind farms in cold climates using SCADA and ERA5/NWP meteorological inputs. Professionally, I'm driven by challenges in Offshore Wind and Power-to-X, a passion amplified by the time I worked as Junior Researcher at VPI - Vietnam's Petroleum Institute — contributing to Vietnam's national hydrogen roadmap. My goal is to return and help advance this transformation.
+Currently, I am pursuing a Master's degree in Decentralised Smart Energy Systems ([DENSYS](https://densys.univ-lorraine.fr/)), studying at Université de Lorraine, Nancy, France and Politecnico di Torino, Italy. I expect to graduate in September 2026. I am currently working as a Research Intern at [rebase.energy](https://rebase.energy) in Stockholm, developing power forecasting models for Wave Energy Converters. Previously, from February to July 2026, I carried out my Master's thesis here, building on IEA Wind Task 19 to develop machine-learning models (LightGBM, Quantile Regression Forests, deep learning architectures) to forecast icing-related power losses for wind farms. Professionally, I'm driven by challenges in Offshore Wind, Wave Energy, and Power-to-X, a passion amplified by the time I worked as Junior Researcher at VPI - Vietnam's Petroleum Institute — contributing to Vietnam's national hydrogen roadmap. My goal is to return and help advance this transformation.
 
 Recently, I watched a great video on how to learn machine learning, and it made me realize that most people skip the fundamentals and jump straight into a bootcamp. Here's a meme that captures this tendency. Personally, I really enjoy learning from textbooks on topics that interest me, it's one of the best ways to build a concrete foundation of understanding!
 
@@ -74,10 +74,18 @@ In terms of machine learning, I am currently strengthening my foundational mathe
 ## Selected Research Experience
 
 <div class="research-item" style="margin: 1.5em 0; padding: 1.25em; border-left: 4px solid var(--global-link-color); padding-left: 1.5em; background: linear-gradient(to right, rgba(122, 132, 136, 0.03), transparent); border-radius: 4px;">
-  <h3 style="margin: 0 0 0.5em 0; font-size: 1.15em; font-weight: bold;">Master Thesis Research Intern, rebase.energy</h3>
+  <h3 style="margin: 0 0 0.5em 0; font-size: 1.15em; font-weight: bold;">Research Intern, rebase.energy</h3>
+  <p style="font-weight: 600;">Jul 2026 – Present, Stockholm, Sweden</p>
+  <p style="color: var(--global-text-color-light); margin: 0.5em 0;">
+    Developing power forecasting models for Wave Energy Converters, benchmarking multiple ridge-regularised and tree-based models (Ridge Regression, Random Forest, LightGBM) against deep learning architectures (BiLSTM, TCN) for time-series power prediction.
+  </p>
+</div>
+
+<div class="research-item" style="margin: 1.5em 0; padding: 1.25em; border-left: 4px solid var(--global-link-color); padding-left: 1.5em; background: linear-gradient(to right, rgba(122, 132, 136, 0.03), transparent); border-radius: 4px;">
+  <h3 style="margin: 0 0 0.5em 0; font-size: 1.15em; font-weight: bold;">Master Thesis Student, rebase.energy</h3>
   <p style="font-weight: 600;">Feb 2026 – Jul 2026, Stockholm, Sweden</p>
   <p style="color: var(--global-text-color-light); margin: 0.5em 0;">
-    Developing a machine learning pipeline to detect and forecast wind turbine icing and power losses in cold climates using SCADA and NWP data. Implemented a statistically refined IEA Task 19 methodology with air density correction and IQR-based outlier detection. Investigating traditional models (XGBoost, RF, SVR) against deep learning architectures (TCN, LSTM, GRU) and the TIGER framework, and integrating physical Makkonen accretion models with Quantile Regression Forests (QRF) for probabilistic forecasting and uncertainty quantification.
+    Established wind turbine icing labels on multi-year Swedish SCADA data using an extended IEA Wind Task 19 framework, correcting biases via Quantile Mapping and LightGBM. Built a two-stage LightGBM classifier-regressor to forecast wind power icing losses at 1-36 hour lead times using SCADA and NWP meteorological inputs.
   </p>
 </div>
 
@@ -105,23 +113,28 @@ In terms of machine learning, I am currently strengthening my foundational mathe
 </div>
 
 <p>
+  <strong>Wind Farm-Scale Forecasting of Turbine Icing Power Losses Using Multi-Ridge Regression Models</strong> [Ongoing]<br>
+  Dang-Chuong Ta et al.<br>
+  <i>Based on MSc thesis research at rebase.energy, extending the turbine-level classifier-regressor framework with multi-ridge regression models and upscaling to wind farm-level forecasts.</i>
+</p>
+<p>
   <strong>Feasibility Analysis of Hydrogen Co-Firing in Vietnam's Gas Power Plants for the Period 2035–2050</strong> [Journal Article]<br>
   Dang-Chuong Ta, Thanh-Hoang Le, Long Van Phan, <u>Hoang-Luong Pham</u><br>
-  <i>Energy Conversion and Management</i>, Impact Factor: 10.9, 2025<br>
+  <i>Energy Conversion and Management</i>, Impact Factor: 11.8, 2025<br>
   DOI: <a href="https://doi.org/10.1016/j.enconman.2025.120192">10.1016/j.enconman.2025.120192</a>
 </p>
 <p>
   <strong>An Assessment of the Potential for Large-Scale Hydrogen Export from Vietnam to Asian Countries: Techno-Economic Analysis, Transport Options, and Energy Carrier Comparison</strong> [Journal Article]<br>
   Dang-Chuong Ta, Thanh-Hoang Le, <u>Hoang-Luong Pham</u><br>
-  <i>International Journal of Hydrogen Energy</i>, Impact Factor: 8.3, 2024<br>
+  <i>International Journal of Hydrogen Energy</i>, Impact Factor: 9.2, 2024<br>
   DOI: <a href="https://doi.org/10.1016/j.ijhydene.2024.04.033">10.1016/j.ijhydene.2024.04.033</a>
 </p>
 
 ---
 ## Technical Skills
 
-Python (PyTorch, Scikit-learn, Pyomo, PyAPEP, PyWake), MATLAB/Simulink, Modelica, QBlade, HOMER Pro, GIS, Aspen Plus, Typst, LaTeX, Microsoft Office, AI Agent (Claude Code)  
-Optimization: MILP, MINLP, genetic algorithms, and machine learning (XGBoost, RF, SVR, TCN, LSTM, GRU, QRF) for wind farm and energy system modeling.
+- **Data Science & Optimisation**: Developing hybrid, physics-informed ML models for energy system forecasting and predictive maintenance; applied MILP, MINLP, and heuristic algorithms (e.g., genetic algorithms) in Pyomo to optimize renewable energy systems.
+- **Technical Toolset**: Python (PyTorch, Scikit-learn, TensorFlow, Pyomo, PyWake), MATLAB/Simulink, Modelica, QBlade, HOMER Pro, GIS, Aspen Plus, Typst, LaTeX.
 
 ---
 ## Honors & Awards
