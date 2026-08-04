@@ -7,9 +7,10 @@ layout: single
 author_profile: true 
 permalink: /MachineLearning/00_Random_Forest.md/ 
 usemathjax: true
+date: 2026-04-10
 ---
 > **Series:** Machine Learning Algorithms | **Part:** 1 of 2 (Theory)
- 
+
 ## 1. What is Random Forest?
 
 **Random Forest (RF)** is a powerful ensemble learning method used for both **classification** and **regression**. It was first introduced by [Breiman (2001)](https://doi.org/10.1023/A:1010933404324). By combining many decision trees, it improves accuracy and reduces the risk of overfitting.
@@ -82,7 +83,6 @@ $$
 
 _Where $\bar{y}_{L}$ and $\bar{y}_{R}$ are the mean target values of the left and right child nodes after the split. A smaller SSE means a better split._
 
-
 > **Key insight:** A single overfitted tree has high variance. It is very sensitive to small changes in the training data. However, when many such trees are averaged together in the next step, the variance decreases by roughly a factor of $1/B$, while the bias stays approximately the same.
 
 ---
@@ -113,14 +113,14 @@ _Where $k$ is the class label (for example, 0 or 1). The class that receives the
 
 Tuning the hyperparameters of a Random Forest directly affects the balance between model accuracy and computational cost. The table below lists the key parameters and their effects.
 
-|Parameter|Range|Effect|
-|:--|:--|:--|
-|`n_estimators`|100 - 500|Number of trees $B$. More trees improve stability but increase compute time. Test error plateaus and cannot rise by adding more trees, so there is no upper-bound overfitting risk.|
-|`max_features`|`sqrt`, `log2`|Features considered per split $m$. Smaller values decorrelate trees more aggressively. Default: $m = \sqrt{p}$ for classification, $m = p$ for regression.|
-|`max_depth`|10 - 30, `None`|Maximum depth of each tree. Deeper trees have lower bias but higher individual variance. `None` grows each tree fully, which is the standard RF setting before aggregation corrects the variance.|
-|`min_samples_split`|2 - 20|Minimum samples required to split a node. Higher values prevent splits on very small groups, reducing overfitting at the cost of slightly higher bias.|
-|`min_samples_leaf`|5 - 20|Minimum samples required at a leaf node. Prevents overly specific leaves, which is particularly important when the target variable contains many zero values.|
-|`bootstrap`|`True`|Whether to use bootstrap sampling. Disabling it removes the row randomness that decorrelates the trees and reverts to a standard ensemble on the full dataset.|
+| Parameter             | Range              | Effect                                                                                                                                                                                             |
+| :-------------------- | :----------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `n_estimators`      | 100 - 500          | Number of trees$B$. More trees improve stability but increase compute time. Test error plateaus and cannot rise by adding more trees, so there is no upper-bound overfitting risk.               |
+| `max_features`      | `sqrt`, `log2` | Features considered per split$m$. Smaller values decorrelate trees more aggressively. Default: $m = \sqrt{p}$ for classification, $m = p$ for regression.                                    |
+| `max_depth`         | 10 - 30,`None`   | Maximum depth of each tree. Deeper trees have lower bias but higher individual variance.`None` grows each tree fully, which is the standard RF setting before aggregation corrects the variance. |
+| `min_samples_split` | 2 - 20             | Minimum samples required to split a node. Higher values prevent splits on very small groups, reducing overfitting at the cost of slightly higher bias.                                             |
+| `min_samples_leaf`  | 5 - 20             | Minimum samples required at a leaf node. Prevents overly specific leaves, which is particularly important when the target variable contains many zero values.                                      |
+| `bootstrap`         | `True`           | Whether to use bootstrap sampling. Disabling it removes the row randomness that decorrelates the trees and reverts to a standard ensemble on the full dataset.                                     |
 
 > **Tuning strategy:** Parameters with a search range are tuned using an inner cross-validation loop. RMSE is minimised for regression; $F_{1}$ score is maximised for classification. `bootstrap` and `max_features` are fixed by design throughout.
 

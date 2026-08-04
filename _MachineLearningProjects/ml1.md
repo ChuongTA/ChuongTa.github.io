@@ -7,6 +7,7 @@ layout: single
 author_profile: true
 permalink: /MachineLearning/ml1.md/
 usemathjax: true
+date: 2026-02-01
 ---
 
 In this post, I use the Naive Bayes classifier to predict whether a day in a North Sea wind farm will become a storm day 🌪️.  

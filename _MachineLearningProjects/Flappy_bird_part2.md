@@ -7,6 +7,8 @@ layout: single
 author_profile: true
 permalink: /MachineLearning/Flappy_bird_part2.md/
 usemathjax: true
+image: "/MachineLearningProjects/Flapp_bird_file/cover.png"
+date: 2026-07-15
 ---
 ![AI trained flappy bird](/MachineLearningProjects/Flappy_bird/Flappy_bird/AI_Flappy_bird.gif)
 
