@@ -339,6 +339,8 @@ Get the spread right, with the mean tracking $y$'s mean, and the histogram comes
 
 That's it for this post. Next time: applying all this to DK1.
 
+**Next:** [Part 2](/EnergySystems/PEPF_part2/) implements QR and QRF end to end on real DK1 data with walk-forward cross-validation, and [Part 3](/EnergySystems/PEPF_part3/) adds bootstrapped residuals and split conformal prediction, with all four methods compared head to head.
+
 ---
 
 ## References
