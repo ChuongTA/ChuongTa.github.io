@@ -8,6 +8,12 @@ redirect_from:
 ---
 Hi! My name is Chuong Dang Ta. [translate:Chương] is my Vietnamese name, and yes, it's tough for foreigners to pronounce (but no hard feelings toward my parents for that 😅).
 
+<div style="margin: 1.5em 0;">
+  <a href="{{ base_path }}/Main_page/images/CV.pdf" target="_blank" style="display: inline-block; padding: 0.75em 1.5em; background: var(--global-link-color); color: white; text-decoration: none; border-radius: 8px; font-size: 1em; font-weight: 600;">
+    📄 Download my CV (PDF)
+  </a>
+</div>
+
 Currently, I am pursuing a Master's degree in Decentralised Smart Energy Systems ([DENSYS](https://densys.univ-lorraine.fr/)), studying at Université de Lorraine, Nancy, France and Politecnico di Torino, Italy. I expect to graduate in September 2026. I am currently working as a Research Intern at [rebase.energy](https://rebase.energy) in Stockholm, developing power forecasting models for Wave Energy Converters by benchmarking Ridge Regression, Random Forest, and LightGBM against deep learning architectures (BiLSTM, TCN). Previously, from February to July 2026, I carried out my Master's thesis here, forecasting wind turbine icing power losses using an extended IEA Wind Task 19 framework and a two-stage LightGBM classifier-regressor. Professionally, I'm driven by challenges in Offshore Wind, Wave Energy, and Power-to-X, a passion amplified by the time I worked as Junior Researcher at VPI - Vietnam's Petroleum Institute — contributing to Vietnam's national hydrogen roadmap. My goal is to return and help advance this transformation.
 
 Recently, I watched a great video on how to learn machine learning, and it made me realize that most people skip the fundamentals and jump straight into a bootcamp. Here's a meme that captures this tendency. Personally, I really enjoy learning from textbooks on topics that interest me, it's one of the best ways to build a concrete foundation of understanding!
