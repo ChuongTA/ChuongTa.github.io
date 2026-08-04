@@ -6,7 +6,7 @@ author_profile: true
 permalink: /EnergyForecasting/PEPF_part3/
 usemathjax: true
 image: "/EnergyForecasting/PEPF_part3/BC_walkforward_forecast_1h.png"
-date: 2026-07-03
+date: 2026-08-03
 ---
 
 > **Series:** Probabilistic Electricity Price Forecasting | **Part:** 3 (Bootstrapped Residuals and Conformal Prediction)
