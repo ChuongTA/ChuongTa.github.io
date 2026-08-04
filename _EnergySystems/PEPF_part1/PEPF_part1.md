@@ -1,0 +1,350 @@
+---
+title: "Probabilistic Electricity Price Forecasting (Part 1)"
+category: densys
+excerpt: "An introduction to probabilistic electricity price forecasting: the European and Danish power markets, quantiles and prediction intervals, Quantile Regression and Quantile Regression Forest, and evaluation metrics such as Pinball Loss, CRPS, and the PIT histogram."
+layout: single
+author_profile: true
+permalink: /EnergySystems/PEPF_part1/
+usemathjax: true
+---
+
+> **Series:** Probabilistic Electricity Price Forecasting | **Part:** 1 (Theory)
+
+---
+
+## 1. Introduction
+
+### 1.1 Overview of the Electricity Market in Europe
+
+Europe's power market was liberalised in the 1990s, when the EU created an Internal European Energy Market. Under one common set of rules, companies now handle every part of the business: production, trading, marketing, transmission, and supply [1].
+
+Electricity is hard to store. Supply and demand have to match in real time, or the grid becomes unstable. That's what makes the short-term spot market so important: it balances the system, hour by hour. Because European markets are coupled, electricity can flow across borders to wherever it's needed. Most of this trading happens in two places: the day-ahead market and the intraday market [3].
+
+In the **day-ahead market**, electricity is bought and sold for delivery the next day. Bids close at noon (12:00 CET), and an operator matches them to set an hourly price for each period. The **intraday market** works closer to real time: trading continues up to 30–60 minutes before delivery, mainly to fix forecast errors, like a solar farm producing less power than expected because of cloud cover.
+
+|                                | Day-ahead Market                                 | Intraday Market                                     |
+| ------------------------------ | ------------------------------------------------ | --------------------------------------------------- |
+| **Trading window**       | Day before delivery                              | Same day as delivery                                |
+| **Gate closure**         | Noon (12:00 CET) the day before                  | Up to 30–60 min before delivery                    |
+| **Purpose**              | Plan generation and consumption for the next day | Adjust for forecast deviations and imbalances       |
+| **Auction type**         | Uniform price auction                            | Continuous trading                                  |
+| **Price determination**  | Market clearing price (single price per hour)    | Bilateral matching (pay-as-bid)                     |
+| **Main platforms**       | EPEX SPOT, Nord Pool                             | EPEX SPOT, Nord Pool, XBID                          |
+| **Min. tradable amount** | 0.1 MW                                           | 0.1 MW                                              |
+| **Typical users**        | Generators, retailers, large consumers           | Renewable generators, balancing responsible parties |
+
+These prices shape almost every decision in the system: bidding, scheduling, demand response, storage, risk management. As more renewables come online, production depends more on the weather, and prices get harder to predict. They spike, they occasionally go negative, and they cluster into volatile periods [4].
+
+### 1.2 Electricity Market in Denmark
+
+Denmark has two bidding zones: **DK1** in the west and **DK2** in the east, including Copenhagen. They're physically separate systems, but both trade on **Nord Pool**, along with the rest of the Nordic and Baltic region, 14 zones in total. Finland and the Baltic states are each one zone; Denmark, Norway, and Sweden are each split into several.
+
+The grid operator, **Energinet**, keeps DK1 unusually well connected for its size: links to Germany, Norway, Sweden, the Netherlands, and the UK. That matters for prices. When wind is strong in Jutland, DK1 exports the surplus instead of crashing its own price. When wind drops, it imports Norwegian hydro or Swedish nuclear power. The interconnectors act like a shock absorber, but only while they have spare capacity. Once they're congested, the buffer stops working.
+
+![Interconnector capacities linking the Danish bidding zones to neighbouring markets](/EnergySystems/PEPF_part1/Fig1.png)
+*Figure 1: Interconnector capacities linking the Danish bidding zones (DK1, DK2) to neighbouring markets.*
+
+**Interconnector Capacities**
+
+| **Bidding Zone Border**         | **Interconnector / Route** | **Nominal Capacity (MW)** | **Primary Characteristics**                           |
+| ------------------------------------- | -------------------------------- | ------------------------------- | ----------------------------------------------------------- |
+| **DK1 $\leftrightarrow$ DK2** | Great Belt Link (*Storebælt*) | **600 MW**                | Internal HVDC link bridging continental Denmark and Zealand |
+| **DK1 $\leftrightarrow$ DE**  | Jutland–Germany border          | **2,500 MW**              | AC onshore border (expanding toward 3,500 MW)               |
+| **DK1 $\leftrightarrow$ NO2** | Skagerrak 1–4                   | **1,632 MW**              | Subsea HVDC to Southern Norway                              |
+| **DK1 $\leftrightarrow$ GB**  | Viking Link                      | **1,400 MW**              | Long-distance subsea HVDC to Great Britain                  |
+| **DK1 $\leftrightarrow$ SE3** | Konti-Skan                       | **715 MW**                | Subsea HVDC to Southwestern Sweden                          |
+| **DK1 $\leftrightarrow$ NL**  | COBRAcable                       | **700 MW**                | Subsea HVDC to the Netherlands                              |
+| **DK2 $\leftrightarrow$ SE4** | Øresund                         | **1,300 MW**              | AC subsea connection to Southern Sweden                     |
+| **DK2 $\leftrightarrow$ DE**  | Kontek and Kriegers Flak         | **1,000 MW**              | Subsea HVDC (600 MW Kontek + 400 MW offshore grid)          |
+
+Here's a simple example of how clearing works. Three producers offer power at 50, 60, and 70 €/MWh. Three consumers bid at 65, 55, and 75 €/MWh. Match the cheapest offers to the highest bids until supply meets demand, and the price settles at 60 €/MWh. The producer at 70 €/MWh and the consumer at 55 €/MWh miss out. Everyone else trades at 60.
+
+If the line between two zones can carry the flow, both zones clear at the *same* price. If it's congested, prices split, and the importing zone gets more expensive. That's why DK1 and DK2 often diverge, and why **EPADs** (Electricity Price Area Differentials) exist, as a hedge against exactly this.
+
+![Day-ahead price divergence between DK1 and DK2 when interconnector capacity is congested](/EnergySystems/PEPF_part1/Fig2.png)
+*Figure 2: Day-ahead price divergence between DK1 and DK2 when interconnector capacity is congested.*
+
+### 1.3 Electricity Price Forecasting
+
+There are two ways to forecast electricity prices: **point forecasts** and **probabilistic forecasts**. A point forecast is simple: one number, easy to check with MAE or RMSE, easy to drop into a spreadsheet. But a single number can hide a lot. A forecast can look accurate on average and still miss the risk that actually matters, the chance of a spike, a negative price, a correlation across hours. Two forecasts can share the same expected price and still call for completely different decisions, depending on how much uncertainty sits behind that number [4].
+
+Here's the comparison that makes the point:
+
+|                                                | Situation 1 (stable)                                                                          | Situation 2 (volatile)                                                                            |
+| ---------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| **Expected day-ahead price**             | 80 €/MWh                                                                                     | 80 €/MWh                                                                                         |
+| **Forecast distribution**                | Tightly centred around 80 €/MWh                                                              | Very wide                                                                                         |
+| **Typical range**                        | 75–85 €/MWh                                                                                 | –20 to 200 €/MWh                                                                                |
+| **Probability of a spike (>150 €/MWh)** | <1%                                                                                           | 25%                                                                                               |
+| **Likely response**                      | Battery operator bids normally, consumer locks in the price, trader takes a standard position | Battery operator prepares for arbitrage, consumer hedges, trader reduces exposure or uses options |
+
+Same expected price, very different risk. That's exactly what a probabilistic forecast is built to capture.
+
+A **probabilistic forecast** doesn't give one number. It describes the whole range of plausible outcomes, and how likely each part of that range is. Instead of "80 €/MWh," it says something like: 10% chance the price is below 55, 50% chance it's below 78, 10% chance it's above 110. That extra information matters for a few reasons:
+
+1. **It captures real uncertainty.** Prices are volatile and spike-prone. Quantiles, intervals, and densities capture that directly, both the normal outcomes and the extreme ones.
+2. **It supports better decisions.** Bidding, trading, storage, hedging: these all depend on risk, not just the average price. A probabilistic forecast tells two situations with the same mean apart.
+3. **It manages tail risk.** Spikes, negative prices, scarcity events: these carry large economic consequences. Quantifying tail probabilities supports Value-at-Risk and similar strategies.
+4. **It plugs into optimization.** Unit commitment, dispatch, battery scheduling, market bidding: these models need uncertainty as an input, not just a point estimate.
+
+---
+
+## 2. Methodology
+
+### 2.1 The Four Ways to Express Uncertainty
+
+**PEPF**, probabilistic electricity price forecasting, is the umbrella term for representing that uncertainty instead of collapsing it into one number. Dudek, Piotrowski, Kopyt and Baczyński [4] group the options into four categories:
+
+- **Quantiles:** a set of values, each labelled with the probability of the price being below it.
+- **Prediction intervals:** a lower and upper bound, labelled with the probability that the price falls inside.
+- **Predictive densities:** the full probability distribution, or equivalently the full cumulative distribution function, for each hour.
+- **Multivariate scenarios:** full price *paths* across all 24 hours, keeping the relationship between hours intact. Battery arbitrage, for instance, cares about the spread between hour 4 and hour 18. Independent hourly distributions can't tell you that.
+
+This post sticks to quantiles and prediction intervals: the natural starting point, and what most practical systems actually use. Densities and scenarios are a story for another day.
+
+#### a. Quantiles
+
+A **quantile** splits a distribution at a chosen probability. The τ-quantile (τ between 0 and 1) is the price level that's exceeded with probability 1 − τ.
+
+If the 0.25 quantile for tomorrow at 18:00 is 44 €/MWh, that means the price falls below 44 €/MWh about a quarter of the time, in similar situations. The 0.5 quantile is the **median**. Very low and very high τ describe the tails.
+
+In practice, a forecast predicts a whole set of quantiles: the nine deciles (τ = 0.1 to 0.9) are common. Denser grids (τ = 0.01 to 0.99) sharpen the tails but cost more to compute. Always report which grid was used, since tail-sensitive scores depend on it.
+
+![Quantile ladder concept for a single hour](/EnergySystems/PEPF_part1/Fig3.png)
+*Figure 3: **Quantile ladder.** For a single hour, the forecast outputs nine price levels ($q_{10}, \dots, q_{90}$), slicing the implied probability density (shaded). The star marks where the actual outcome fell.*
+
+#### b. Prediction Intervals
+
+Pair two quantiles and you get a **prediction interval**: a lower and upper bound. A central interval with coverage 1 − α runs from the α/2 quantile to the 1 − α/2 quantile:
+
+- 80% interval → $[q_{0.10}, q_{0.90}]$
+- 90% interval → $[q_{0.05}, q_{0.95}]$
+- 95% interval → $[q_{0.025}, q_{0.975}]$
+
+If the 95% interval for tomorrow at 18:00 is 10–30 €/MWh, the price should land inside that range 95% of the time, and miss it 5% of the time.
+
+### 2.2 Probabilistic Forecasting Models
+
+Aslam et al. [2] classify probabilistic forecasting methods into two major categories:
+
+1. **Parametric models**, which assume a specific distribution for the residuals:
+   - Gaussian
+   - Beta
+   - Gamma
+   - Weibull
+   - Gumbel
+   - Cauchy
+   - Logit-normal
+   - Mixed distributions
+2. **Non-parametric models**, which learn uncertainty from data instead of assuming a shape:
+   - Typical non-parametric methods: Quantile regression (QR), Bootstrap
+   - LUBE methods (Lower-Upper Bound Estimation): Traditional LUBE, Advanced LUBE
+
+This work considers **Quantile Regression (QR)** and **Quantile Regression Forest (QRF)**, following the formulation in [5].
+
+#### 2.2.1 Quantile Regression
+
+Quantile Regression is ordinary linear regression with a twist: it estimates **conditional quantiles** instead of the conditional mean. That makes it a good fit when the data show **heteroscedasticity**, **skewness**, or **outliers**, since different quantiles pick up different parts of the distribution.
+
+Formally: for a conditional distribution $F(y \mid X = x)$, the conditional quantile $Q(\alpha \mid X = x)$ is the smallest $y$ for which the probability of a lower value is at least $\alpha$:
+
+$$
+Q(\alpha \mid X = x) = \inf\{y : F(y \mid X = x) \geq \alpha\}
+$$
+
+Quantile Regression approximates this quantile with a linear model:
+
+$$
+f_\alpha(x) = x^\top \theta_\alpha
+$$
+
+The parameters $\theta_\alpha$ come from minimizing the **quantile loss**, which penalizes over- and under-prediction unevenly:
+
+$$
+L_\alpha(\hat y, y) = \begin{cases} \alpha (y - \hat y) & y \geq \hat y \\ (1-\alpha)(\hat y - y) & y < \hat y \end{cases}
+$$
+
+so that:
+
+$$
+\hat\theta_\alpha = \arg\min_\theta \frac{1}{N}\sum_{i=1}^N L_\alpha\big(f_\alpha(x_i), y_i\big)
+$$
+
+Train one model per quantile level, and together they build a full conditional distribution, with no assumption about its shape. Lasso or Ridge regularization can be added to fight overfitting. That makes QR a good fit for imbalance prices, where the distribution is often skewed and driven by extreme events.
+
+#### 2.2.2 Quantile Regression Forest
+
+A Random Forest builds many decision trees on bootstrapped subsets of the data, a method called **bagging**. For each tree, a prediction comes from passing input $x$ down to a leaf and averaging the training samples stored there. Average across all trees, and the forest approximates the **conditional mean** $\mathbb{E}[Y \mid X = x]$.
+
+Quantile Regression Forest (QRF) pushes this further: instead of storing just the average in each leaf, it keeps **every** training sample, which lets it estimate the **whole conditional distribution**, not just its mean.
+
+##### Tree Structure and Leaf Weight
+
+Each tree, grown with parameters $\theta$ and denoted $T(\theta)$, splits a bootstrapped subset $B$ into leaf regions $R_\ell$. Every observation lands in exactly one leaf. For an input $x$, find its leaf $\ell(x, \theta)$ and weight each bagged observation:
+
+$$
+w_i(x, \theta) = \frac{\mathbb{1}\{X_i \in R_{\ell(x,\theta)}\}}{\#\{j : X_j \in R_{\ell(x,\theta)}\}}
+$$
+
+so the tree prediction is the weighted average:
+
+$$
+\hat\mu_T(x) = \sum_{i=1}^N w_i(x, \theta)\, y_i
+$$
+
+A Random Forest with $K$ trees averages these weights,
+
+$$
+w_i(x) = \frac{1}{K}\sum_{t=1}^K w_i(x, \theta_t)
+$$
+
+giving the conditional mean estimate:
+
+$$
+\hat\mu(x) = \sum_{i=1}^N w_i(x)\, y_i \tag{1}
+$$
+
+##### Conditional Distribution Estimate
+
+QRF replaces the mean with a full conditional cumulative distribution function (CDF):
+
+$$
+F(y \mid X = x) = P(Y \leq y \mid X = x) = \mathbb{E}\big[\mathbb{1}\{Y \leq y\} \mid X = x\big]
+$$
+
+which the forest weights approximate as:
+
+$$
+\hat F(y \mid X = x) = \sum_{i=1}^N w_i(x)\, \mathbb{1}\{y_i \leq y\}
+$$
+
+No Gaussian assumption, no assumed shape at all, just a nonparametric estimate built straight from the data.
+
+##### Conditional Quantile Estimate
+
+The conditional quantile is defined, as before, as:
+
+$$
+Q(\alpha \mid X = x) = \inf\{y : F(y \mid X = x) \geq \alpha\}
+$$
+
+and QRF approximates it using the estimated CDF:
+
+$$
+\hat Q(\alpha \mid X = x) = \inf\{y : \hat F(y \mid X = x) \geq \alpha\} \tag{2}
+$$
+
+Decision trees pick up nonlinear relationships and interactions naturally, which makes QRF a good match for imbalance prices: heavy tails, sudden jumps, nonlinear dependencies, and heteroscedasticity, all in one.
+
+Two models, then. The next question: how do we judge the distributions they produce?
+
+### 2.3 Evaluation Metrics
+
+MAE and MSE are the standard metrics for regression, but they only work for point forecasts. They can't judge a distribution. Three metrics can: Pinball Loss, the Continuous Ranked Probability Score, and the Probability Integral Transform histogram.
+
+#### a. Pinball Loss (Quantile Loss)
+
+Pinball loss is the workhorse for scoring quantile forecasts. For a predicted quantile $q$ at level $\tau$ and a realised price $y$:
+
+$$
+PL_\tau(q, y) = (y - q)\big(\tau - \mathbb{1}\{y < q\}\big)
+$$
+
+$\mathbb{1}\{y < q\}$ is 1 if the price came in below the prediction, 0 otherwise. Written as two cases, it's easier to read:
+
+$$
+PL_\tau(q, y) = \begin{cases} \tau (y - q) & \text{if } y \geq q \quad \text{(under-predicted)} \\ (1-\tau)(q - y) & \text{if } y < q \quad \text{(over-predicted)} \end{cases}
+$$
+
+The whole point is the **asymmetry**. At τ = 0.9, sitting *below* the actual price costs nine times more than sitting above it. That's exactly what pushes the fitted 0.9 quantile up, until only about 10% of outcomes exceed it. At τ = 0.5, the two penalties match, and the loss turns symmetric: that's median regression. Lower is better; zero is a perfect hit.
+
+**Worked example.** Say a model predicts $q_{0.1} = 55$, $q_{0.5} = 78$, $q_{0.9} = 110$ €/MWh for tomorrow at 18:00, and the price comes in at **96 €/MWh**.
+
+| τ  | predicted q | actual y | case                          | pinball loss                              |
+| --- | ----------- | -------- | ----------------------------- | ----------------------------------------- |
+| 0.1 | 55          | 96       | $y \geq q$, under-predicted | $0.1 \times (96 - 55) = \mathbf{4.10}$  |
+| 0.5 | 78          | 96       | $y \geq q$, under-predicted | $0.5 \times (96 - 78) = \mathbf{9.00}$  |
+| 0.9 | 110         | 96       | $y < q$, over-predicted     | $0.1 \times (110 - 96) = \mathbf{1.40}$ |
+
+Average pinball loss for this hour: $(4.10 + 9.00 + 1.40) / 3 = \mathbf{4.83}$ €/MWh.
+
+The 0.9 quantile missed high by 14 €/MWh, and was only charged 1.40 for it, because sitting above the outcome is exactly what a 90% quantile is supposed to do most of the time. The median missed by 18 and was charged 9.00. That gap is the asymmetry doing its job.
+
+A handy shortcut: at τ = 0.5, pinball loss is **half the absolute error**. Here, the median missed by 18, and the loss was 9, exactly half. So to compare a median pinball loss with a familiar MAE, double it. (Some papers skip that factor of 2 and just call τ = 0.5 pinball loss the MAE. It's only proportional, so check the convention before comparing across papers.)
+
+Over a full evaluation, the loss is averaged across all days, hours and quantile levels:
+
+$$
+PL = \frac{1}{T \cdot H \cdot K} \sum_{t=1}^{T} \sum_{h=1}^{H} \sum_{k=1}^{K} PL_{\tau_k}\big(q^{(\tau_k)}_{t,h}, y_{t,h}\big)
+$$
+
+with $H = 24$ for hourly day-ahead forecasts and $K$ the number of quantiles.
+
+As a rule of thumb, **median pinball loss lands around 10–30% of the average price level** for a decent day-ahead model, higher for balancing prices. Don't chase an absolute number. Report it against a naive benchmark instead, the same hour a week earlier works well, so a reader can see whether the model beats a trivial guess.
+
+![Pinball loss as a function of forecast error](/EnergySystems/PEPF_part1/Fig4.png)
+*Figure 4: Pinball loss as a function of forecast error, shown separately for a low, a middle, and a high quantile level, illustrating how the penalty slope flips sign around the predicted quantile. Adapted from [5].*
+
+#### b. CRPS (Continuous Ranked Probability Score)
+
+Pinball loss scores one quantile at a time. **CRPS** scores the whole distribution in a single number. For a predictive CDF $F$ and a realised price $y$:
+
+$$
+CRPS(F, y) = \int_{-\infty}^{\infty} \big(F(z) - \mathbb{1}\{y \leq z\}\big)^2 \, dz
+$$
+
+Picture it geometrically: $\mathbb{1}\{y \leq z\}$ is a step that jumps from 0 to 1 at the actual price. CRPS is the **squared area between the forecast CDF and that step**. The closer the CDF hugs the step, the smaller the area, and the better the forecast.
+
+An equivalent form that is sometimes easier to interpret is:
+
+$$
+CRPS(F, y) = \mathbb{E}_F|X - y| - \tfrac{1}{2}\mathbb{E}_F|X - X'|
+$$
+
+$X$ and $X'$ are two independent draws from the predictive distribution. The first term rewards being close to the outcome. The second rewards **confidence**: a wide distribution has a large expected spread, and gets docked for it. CRPS balances calibration and sharpness in one number.
+
+In practice, nobody computes that integral directly. Given a dense grid of equally spaced quantiles, CRPS is well approximated by **twice the average pinball loss across the grid**:
+
+$$
+\widehat{CRPS}(F, y) \approx \frac{2}{|Q|} \sum_{\tau \in Q} PL_\tau\big(q^{(\tau)}, y\big)
+$$
+
+Which means a fine quantile grid gives an estimate of CRPS almost for free. Equivalently, CRPS is the integral of pinball loss over every quantile level from 0 to 1. Lower is better, and it's expressed in **€/MWh**, same as the price.
+
+**Here's the useful part.** For a point forecast (all its mass on one value), CRPS reduces exactly to the absolute error. That means **CRPS is directly comparable to MAE**. If a point model has an MAE of 18 €/MWh and a probabilistic model has a CRPS of 12 €/MWh, the probabilistic model wins, on a like-for-like scale. CRPS is really just MAE, generalised to distributions.
+
+Back to the earlier example: quantiles at 55, 78, 110, actual outcome of 96. Twice the average pinball loss gives $2 \times 4.83 \approx \mathbf{9.7}$ €/MWh, against an absolute error of 18 for the median treated as a point forecast. (Three quantiles is far too coarse a grid for this to be accurate. Use 99 quantiles in practice; this is just for illustration.)
+
+**Range of good values.** Like pinball loss, CRPS is scale-dependent, so it can't be compared across markets without normalising. The best reference point is the MAE of a matching point forecast: a good CRPS should sit somewhat below it. Solid Nordic day-ahead models run MAEs around 9–25 €/MWh, which puts a plausible target around **8–20 €/MWh** in calm periods, and higher in crisis years. That's a reasoned guess, not a published benchmark, so always report CRPS next to the point baseline's MAE.
+
+Two catches. First, CRPS is **scale-dependent**: don't compare a DK1 CRPS from 2022 to one from 2024 and call it improvement, the price level itself moved. Second, a badly calibrated forecast can *lower* its CRPS just by widening its spread, since the score rewards honest uncertainty. That's usually a good thing, but it means CRPS alone can't tell a genuinely sharp forecast from a merely cautious one. Pair it with a coverage check.
+
+![CRPS as the squared area between the predictive CDF and the step function at the observed price](/EnergySystems/PEPF_part1/Fig5.png)
+*Figure 5: CRPS as the squared area between the predictive CDF $F(z)$ and the step function at the observed price $y$; the shaded region being integrated in the CRPS formula. Adapted from [5].*
+
+#### c. Probability Integral Transform Histogram
+
+One more calibration check: the Probability Integral Transform (PIT) histogram. For each time $i$, the PIT value is $\hat F_i(y_i)$, the predicted CDF evaluated at the true outcome $y_i$. Collect these values across many predictions, build a histogram, and it shows where the truth tends to fall inside the predicted distribution. The logic rests on a standard result: if $y \sim F$, then $F(Y) \sim U(0,1)$. So a well-calibrated forecast should produce a flat, uniform PIT histogram.
+
+![Example PIT histogram shapes](/EnergySystems/PEPF_part1/Fig6.png)
+*Figure 6: Example PIT histogram shapes: uniform (well-calibrated), U-shaped (forecasts too narrow), inverse-U (forecasts too wide), and skewed (biased forecasts). Adapted from [5].*
+
+Get the spread right, with the mean tracking $y$'s mean, and the histogram comes out flat. Too narrow, and it forms a U, because the truth keeps landing in the tails. Too wide, and it forms an inverted U. Biased too high, and the histogram skews left.
+
+| Score                  | What it measures                                            | Applies to                   | Units  | Direction        | Proper?                                      |
+| ---------------------- | ----------------------------------------------------------- | ----------------------------- | ------ | ---------------- | -------------------------------------------- |
+| **Pinball loss** | Accuracy of individual quantiles, with asymmetric penalties | Quantile forecasts           | €/MWh | Lower is better  | Yes                                          |
+| **CRPS**         | Calibration and sharpness of the whole distribution         | Full predictive distribution | €/MWh | Lower is better  | Yes                                          |
+| **PICP**         | Whether stated interval coverage matches reality            | Prediction intervals         | %      | Close to nominal | No, pair with PIAW or use the interval score |
+
+That's it for this post. Next time: applying all this to DK1.
+
+---
+
+## References
+
+- [1] EPEX SPOT, "Basics of the Power Market." [Online]. Available: [www.epexspot.com/en/basicspowermarket](https://www.epexspot.com/en/basicspowermarket). Accessed: Aug. 4, 2026.
+- [2] M. G. Aslam, M. A. Khan, and M. J. Khan, "An overview of deterministic and probabilistic forecasting methods of wind energy," *Energy Reports*, vol. 8, pp. 140-154, 2022.
+- [3] T. Oliveira, "Understanding Day-ahead & Intraday Markets," Synertics, May 15, 2023. [Online]. Available: [synertics.io/blog/39/understanding-day-ahead-intraday-markets](https://synertics.io/blog/39/understanding-day-ahead-intraday-markets). Accessed: Aug. 4, 2026.
+- [4] G. Dudek, P. Piotrowski, M. Kopyt, and D. Baczyński, "Recent Advances in Probabilistic Electricity Price Forecasting: A Review of Methods and Evaluation Metrics," *Energies*, vol. 19, no. 15, p. 3552, Jul. 2026.
+- [5] S. Fredriksson, "Probabilistic Imbalance Price Forecasting and a Study of Sudden Price Shifts," M.S. thesis, Uppsala University, Uppsala, Sweden, 2025.
