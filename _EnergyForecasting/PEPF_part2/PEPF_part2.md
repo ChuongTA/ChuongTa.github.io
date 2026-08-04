@@ -1,6 +1,5 @@
 ---
 title: "Probabilistic Electricity Price Forecasting (Part 2)"
-category: densys
 excerpt: "Implementing Quantile Regression and Quantile Regression Forest for DK1 day-ahead prices, evaluated with walk-forward cross-validation: real code, real results, and what changes once a single train/test split becomes four folds spread across different seasons."
 layout: single
 author_profile: true

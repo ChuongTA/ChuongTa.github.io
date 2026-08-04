@@ -1,6 +1,5 @@
 ---
 title: "K-Nearest Neighbours (KNN) Algorithm - Part 1 "
-category: densys
 excerpt: K‑Nearest Neighbors (KNN) is a simple, non‑parametric machine learning algorithm that makes predictions based on the labels of the closest data points in the training set. It is supervised (it needs labeled examples) and can be used for both classification and regression tasks."
 image: /MachineLearningProjects/00_Traditional_ML/KNN_part_1.png
 layout: single

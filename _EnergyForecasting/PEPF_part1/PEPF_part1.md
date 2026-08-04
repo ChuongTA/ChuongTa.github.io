@@ -1,6 +1,5 @@
 ---
 title: "Probabilistic Electricity Price Forecasting (Part 1)"
-category: densys
 excerpt: "An introduction to probabilistic electricity price forecasting: the European and Danish power markets, quantiles and prediction intervals, Quantile Regression and Quantile Regression Forest, and evaluation metrics such as Pinball Loss, CRPS, and the PIT histogram."
 layout: single
 author_profile: true

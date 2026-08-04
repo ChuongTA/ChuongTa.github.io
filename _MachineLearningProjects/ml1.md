@@ -1,6 +1,5 @@
 ---
 title: "Naive Bayes - Prediction probability Storm days 🌪️ "
-category: densys
 excerpt: "This is my 1st post about Machine Learning (ML). This is a topic I learnt from the book \"An Introduction to Statistical Learning\"."
 image: /MachineLearningProjects/00_Traditional_ML/Naive_Bayes.png
 layout: single

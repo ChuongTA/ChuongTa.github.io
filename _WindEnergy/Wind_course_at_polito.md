@@ -1,6 +1,5 @@
 ---
 title: "Wind and Ocean Energy Plants course at Polito"
-category: densys
 excerpt: "Guideline for studying exam"
 layout: single
 author_profile: true

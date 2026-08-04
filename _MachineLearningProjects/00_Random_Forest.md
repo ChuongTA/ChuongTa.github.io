@@ -1,6 +1,5 @@
 ---
 title: "Random Forest - Methodology 🌲" 
-category: densys 
 excerpt: "This post explains how Random Forest works, step by step. It covers bootstrap sampling, random feature selection, decision tree growth, and aggregation." 
 image: /images/Random_Forest.png 
 layout: single 

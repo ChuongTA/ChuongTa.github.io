@@ -1,6 +1,5 @@
 ---
 title: "Support Vector Machine - Methodology 🧭"
-category: densys
 excerpt: "This post explains how Support Vector Machines (SVM and SVR) work, from the hyperplane concept and the kernel trick to the epsilon-insensitive tube used in regression."
 image: /images/SVM.png
 layout: single

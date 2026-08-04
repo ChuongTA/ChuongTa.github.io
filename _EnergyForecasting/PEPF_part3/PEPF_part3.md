@@ -1,6 +1,5 @@
 ---
 title: "Probabilistic Electricity Price Forecasting (Part 3)"
-category: densys
 excerpt: "Bootstrapped residuals and split conformal prediction for DK1 day-ahead prices, adapted from skforecast's guides and evaluated with the same walk-forward cross-validation as Part 2, including a head-to-head comparison against QR and QRF."
 layout: single
 author_profile: true
