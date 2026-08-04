@@ -5,7 +5,7 @@ excerpt: "Multi-criteria evaluation and future deployment scenario modeling of b
 layout: single
 author_profile: true
 permalink: /MasterProgramProjects/Biomass_to_Liquid/
-date: 2024-01-15
+date: 2025-01-15
 image: "/MasterProgramProjects/Biomass_to_Liquid/Graphical_Abstract.png"
 ---
 
