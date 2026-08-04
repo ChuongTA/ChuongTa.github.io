@@ -6,7 +6,7 @@ layout: single
 author_profile: true
 permalink: /WindEnergy/Wind_course_at_polito.md/
 usemathjax: true
-date: 2025-12-15
+date: 2026-01-01
 ---
 
 This is a guideline how I study for wind and ocean energy plants (I will move this to blog section later)
