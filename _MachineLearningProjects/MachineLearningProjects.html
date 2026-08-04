@@ -13,7 +13,9 @@ author_profile: true
 
 {% if site.MachineLearningProjects and site.MachineLearningProjects.size > 0 %}
   {% for post in site.MachineLearningProjects %}
-    {% include archive-single.html %}
+    {% if post.url != page.url %}
+      {% include archive-single.html %}
+    {% endif %}
   {% endfor %}
 {% else %}
   <p>

@@ -13,7 +13,9 @@ author_profile: true
 
 {% if site.WindEnergy and site.WindEnergy.size > 0 %}
   {% for post in site.WindEnergy %}
-    {% include archive-single.html %}
+    {% if post.url != page.url %}
+      {% include archive-single.html %}
+    {% endif %}
   {% endfor %}
 {% else %}
   <p>

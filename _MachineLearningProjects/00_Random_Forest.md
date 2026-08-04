@@ -38,7 +38,9 @@ On average:
 
 Each tree $b$ is trained on its own sample $\mathcal{D}^{*b}$:
 
-$$\mathcal{D}^{*b} = \{ (\mathbf{x}_{i}^{*}, y_{i}^{*}) \}_{i=1}^{n} \sim \text{Sample with replacement from } \mathcal{D} \tag{1.1}$$
+$$
+\mathcal{D}^{*b} = \{ (\mathbf{x}_{i}^{*}, y_{i}^{*}) \}_{i=1}^{n} \sim \text{Sample with replacement from } \mathcal{D} \tag{1.1}
+$$
 
 > **Why does this help?** Because each tree sees a slightly different version of the data, the trees make different errors. Averaging these uncorrelated errors reduces the overall variance of the model, without increasing its bias.
 
@@ -52,7 +54,9 @@ This step is what separates Random Forest from standard bagging. If all features
 
 The default size of the feature subset is:
 
-$$m = \begin{cases} \sqrt{p} & \text{for classification} \ p & \text{for regression} \end{cases} \tag{1.2}$$
+$$
+m = \begin{cases} \sqrt{p} & \text{for classification} \\ p & \text{for regression} \end{cases} \tag{1.2}
+$$
 
 where $p$ is the total number of input features.
 
@@ -64,15 +68,17 @@ Each tree is grown to its **maximum depth without pruning**. This intentionally 
 
 At each node, the algorithm selects the best split from the random subset of $m$ features using one of the following criteria:
 
-**For classification**, the split minimizes the **Gini Impurity (G)**:
-
-$$G = 1 - \sum_{k=1}^{K} \hat{p}_{mk}^{2} \tag{1.3}$$
+$$
+G = 1 - \sum_{k=1}^{K} \hat{p}_{mk}^{2} \tag{1.3}
+$$
 
 _Where $\hat{p}_{mk}$ is the proportion of class $k$ samples at node $m$. A Gini value of 0 means a perfectly pure node, where all samples belong to the same class._
 
 **For regression**, the split minimizes the **Sum of Squared Errors (SSE)**:
 
-$$\text{SSE} = \sum_{i \in \text{left}} (y_{i} - \bar{y}_{L})^{2} + \sum_{i \in \text{right}} (y_{i} - \bar{y}_{R})^{2} \tag{1.4}$$
+$$
+\text{SSE} = \sum_{i \in \text{left}} (y_{i} - \bar{y}_{L})^{2} + \sum_{i \in \text{right}} (y_{i} - \bar{y}_{R})^{2} \tag{1.4}
+$$
 
 _Where $\bar{y}_{L}$ and $\bar{y}_{R}$ are the mean target values of the left and right child nodes after the split. A smaller SSE means a better split._
 
@@ -87,13 +93,17 @@ Once all $B$ trees are trained, their predictions are combined into a single fin
 
 **For regression (Mean):**
 
-$$\hat{f}_{\text{RF}}(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^{B} \hat{f}^{*b}(\mathbf{x}) \tag{1.5}$$
+$$
+\hat{f}_{\text{RF}}(\mathbf{x}) = \frac{1}{B} \sum_{b=1}^{B} \hat{f}^{*b}(\mathbf{x}) \tag{1.5}
+$$
 
 Averaging reduces the variance by a factor of $1/B$ relative to a single tree, while the bias stays approximately unchanged.
 
 **For classification (Majority Vote):**
 
-$$\hat{y}_{\text{RF}}(\mathbf{x}) = \arg\max_{k} \sum_{b=1}^{B} \mathbb{1}(\hat{f}^{*b}(\mathbf{x}) = k) \tag{1.6}$$
+$$
+\hat{y}_{\text{RF}}(\mathbf{x}) = \arg\max_{k} \sum_{b=1}^{B} \mathbb{1}(\hat{f}^{*b}(\mathbf{x}) = k) \tag{1.6}
+$$
 
 _Where $k$ is the class label (for example, 0 or 1). The class that receives the most votes across all $B$ trees becomes the final prediction._
 
