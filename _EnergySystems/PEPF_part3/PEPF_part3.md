@@ -32,10 +32,10 @@ Taking the $\alpha/2$ and $1-\alpha/2$ percentiles of that spread, at every fore
 
 This is the part skforecast's docs spend the most time on, and it turns out to matter enormously for DK1.
 
-- **In-sample residuals**: computed on the same data the model was trained on. The model has already fit that data, so its errors there systematically understate how wrong it will be on genuinely new data. skforecast's own docs flag this: "this can result in intervals that are too narrow (overly optimistic)."
+- **In-sample residuals**: computed on the same data the model was trained on. The model has already fit that data, so its errors there systematically understate how wrong it will be on new data. skforecast's own docs flag this: "this can result in intervals that are too narrow (overly optimistic)."
 - **Out-of-sample residuals**: computed on a held-out calibration/validation split the model never trained on. Wider, but honest.
 
-**This project's `forecast.py` currently uses in-sample residuals**: `train_residuals = y_train.values - model.predict(X_train)` is fit directly on the training set the model just saw. Testing this on real DK1 data (1h-ahead XGBoost, last walk-forward fold) shows exactly the effect skforecast warns about, and it's dramatic:
+This project's `forecast.py` currently uses in-sample residuals: `train_residuals = y_train.values - model.predict(X_train)` is fit directly on the training set the model just saw. Testing this on real DK1 data (1h-ahead XGBoost, last walk-forward fold) shows exactly the effect skforecast warns about:
 
 ![In-sample vs out-of-sample residual distributions](/EnergySystems/PEPF_part3/BC_residuals_in_vs_out.png)
 *Real DK1 residuals from the same XGBoost model: in-sample (evaluated on training data) vs out-of-sample (evaluated on a held-out validation window).*
@@ -52,7 +52,7 @@ A **5x gap**. The consequence on actual interval coverage, measured on held-out 
 | In-sample | **52.1%** | 78.9% |
 | Out-of-sample | **88.7%** | 99.7% |
 
-The in-sample intervals claim 80% coverage and deliver barely half that: they are badly overconfident. This isn't a hypothetical failure mode, it's what the existing code does today. **Fix: compute residuals on a held-out split, not the training set.** The walk-forward validation split already built in `main_pipeline.py` is the natural place to source these residuals from.
+The in-sample intervals claim 80% coverage and deliver barely half that: they are badly overconfident, and this is what the existing code does today, not a hypothetical failure mode. The fix is to compute residuals on a held-out split rather than the training set; the walk-forward validation split already built in `main_pipeline.py` is the natural place to source these residuals from.
 
 ### Binned residuals (conditioning on heteroscedasticity)
 
@@ -69,9 +69,9 @@ This project's `BootstrappedPI` class already bins, but by **hour-of-day**, not 
 | **Hour-binned** (this project's current choice) | cov **73.2%**, width 25.1 | cov 86.6%, width 34.5 | cov 93.5%, width 43.2 |
 | **Value-binned** (skforecast's default) | cov 88.4%, width 26.1 | cov 96.4%, width 38.1 | cov 98.8%, width 53.6 |
 
-This is a genuinely useful, non-obvious result: **hour-binning makes the interval narrower but noticeably worse-calibrated** on this fold (73% actual vs 80% claimed), while value-binning performs essentially the same as the unbinned baseline. A likely explanation: the XGBoost point forecast already includes `hour` as an input feature, so much of the systematic hour-of-day heteroscedasticity is already absorbed into the point prediction itself, leaving less left over for hour-binned residuals to explain. Binning by the *predicted value* instead, which reflects the model's own sense of how extreme the situation is, captures residual heteroscedasticity that hour alone misses.
+Hour-binning makes the interval narrower but noticeably worse-calibrated on this fold, 73% actual coverage against an 80% claim, while value-binning performs about the same as the unbinned baseline. A likely explanation: the XGBoost point forecast already includes `hour` as an input feature, so much of the systematic hour-of-day heteroscedasticity is already absorbed into the point prediction itself, leaving less for hour-binned residuals to explain. Binning by the *predicted value* instead, which reflects the model's own sense of how extreme the situation is, captures residual heteroscedasticity that hour alone misses.
 
-**Recommendation for this project:** switch `BootstrappedPI`'s conditioning variable from hour-of-day to predicted-value bins (or test both properly within the walk-forward framework before committing), and always source the residual pool from a held-out split.
+For this project, that means switching `BootstrappedPI`'s conditioning variable from hour-of-day to predicted-value bins, or testing both properly within the walk-forward framework before committing, and always sourcing the residual pool from a held-out split.
 
 ## 2. Conformal Prediction (Split Conformal)
 
@@ -122,7 +122,7 @@ Coverage tells a different story. Bootstrap consistently covers *more* than Conf
 | Bootstrap | 24h | **0.682** | 47.5 | **0.807** | 65.0 | **0.871** | 79.3 |
 | Conformal | 24h | 0.670 | 45.2 | 0.770 | 58.5 | 0.833 | 69.4 |
 
-This is a real, non-obvious finding the single-fold test didn't reveal: resampling with replacement from a calibration pool (Bootstrap) introduces extra variance beyond the pool's raw empirical quantiles, which widens the tails and pushes coverage slightly higher than the direct quantile lookup (Conformal) achieves from the exact same pool. Neither dominates: **Conformal is sharper (narrower intervals for near-identical accuracy), Bootstrap is safer (better coverage at the cost of width)**. Which one to prefer depends on whether the downstream decision cares more about tight intervals or about not being caught outside them.
+The single-fold test didn't reveal this: resampling with replacement from a calibration pool (Bootstrap) introduces extra variance beyond the pool's raw empirical quantiles, which widens the tails and pushes coverage slightly higher than the direct quantile lookup (Conformal) achieves from the exact same pool. Neither dominates. Conformal is sharper, narrower intervals for near-identical accuracy; Bootstrap is safer, better coverage at the cost of width. Which one to prefer depends on whether the downstream decision cares more about tight intervals or about not being caught outside them.
 
 ![Bootstrap vs Conformal forecast fan chart, 1h ahead](/EnergySystems/PEPF_part3/BC_walkforward_forecast_1h.png)
 *Bootstrap vs Conformal, 1h ahead, on the most recent fold's test window.*
@@ -144,7 +144,7 @@ Putting Bootstrap and Conformal's mean pinball loss next to QR and QRF's from [P
 | 12h | 6.48 | 5.49 | **5.18** | 5.19 |
 | 24h | 6.39 | **4.89** | 5.11 | 5.12 |
 
-QR, the linear model, is the weakest of the four at every horizon, as it was on its own. More interesting: at 1h, 6h, and 12h, the XGBoost-plus-residuals methods (Bootstrap, Conformal) actually beat QRF on sharpness, sometimes by a wide margin (4.93 vs 5.55 at 6h). Only at 24h does QRF pull back ahead. On coverage, though, the pattern reverses: QRF's 80% interval coverage (0.726 to 0.862 across horizons) is consistently closer to nominal than Bootstrap's (0.682 to 0.781) or Conformal's (0.667 to 0.763). **The sharpest method isn't the best-calibrated one here**, which is exactly why both properties need to be reported together rather than picking a single "winner."
+QR, the linear model, is the weakest of the four at every horizon, as it was on its own. At 1h, 6h, and 12h, though, the XGBoost-plus-residuals methods (Bootstrap, Conformal) actually beat QRF on sharpness, sometimes by a wide margin (4.93 vs 5.55 at 6h); only at 24h does QRF pull back ahead. On coverage, the pattern reverses: QRF's 80% interval coverage (0.726 to 0.862 across horizons) is consistently closer to nominal than Bootstrap's (0.682 to 0.781) or Conformal's (0.667 to 0.763). The sharpest method here isn't the best-calibrated one, so both properties need to be reported together rather than picking a single winner.
 
 ### The multi-step-ahead caveat
 
@@ -248,7 +248,7 @@ The same `ConformalPI` object, with `bin_by=None`, also reproduces the corrected
 
 1. **Fix `BootstrappedPI` to use out-of-sample residuals.** It currently calibrates on training-set residuals, which this data shows understate the true error spread by roughly 5x, and under-cover its own nominal target by nearly 30 percentage points (52% actual vs 80% claimed) on a single test fold. `bootstrap_conformal_pipeline.py` implements the fix: calibrate on the walk-forward validation split instead.
 2. **Reconsider the binning variable.** Hour-of-day binning, this project's current choice, was empirically worse-calibrated than no binning at all in the single-fold test; value-binning (skforecast's default) matched the unbinned baseline and is what the full walk-forward pipeline now uses for both methods.
-3. **Conformal is meaningfully faster, but the margin is smaller than a quick test suggests.** Measured across all 16 fold/lead-time combinations: about 7.4x (5.5 ms vs 40.3 ms per fold), not the ~54x a single fully-vectorized test implied. Still a real, consistent win for anywhere the existing bootstrap approach's computational cost has been a bottleneck.
+3. **Conformal is meaningfully faster, but the margin is smaller than a quick test suggests.** Measured across all 16 fold/lead-time combinations: about 7.4x (5.5 ms vs 40.3 ms per fold), not the ~54x a single fully-vectorized test implied. Still a solid, consistent win for anywhere the existing bootstrap approach's computational cost has been a bottleneck.
 4. **Pick Bootstrap or Conformal based on what the decision needs, not blindly.** Across all four lead times, Bootstrap consistently achieves better coverage (closer to nominal) at the cost of wider intervals, and Conformal is consistently sharper but less well-calibrated. Neither is a strict upgrade over the other.
 5. **QRF is not automatically the best model once all four are compared.** At 1h, 6h, and 12h ahead, the XGBoost-plus-residuals methods (Bootstrap, Conformal) actually beat QRF on mean pinball loss; only at 24h does QRF pull ahead. QRF does have the most consistently well-calibrated coverage of the four, though, so the right choice again depends on whether sharpness or calibration matters more for the use case.
 6. **Validate coverage per lead time, not just once.** Split conformal's coverage guarantee formally holds only for one-step-ahead forecasts; at 6h/12h/24h it must be checked empirically, exactly as this project's walk-forward pipeline now does for all four methods.
