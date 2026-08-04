@@ -195,7 +195,8 @@ A minimum of **6 hours** of data per bin is recommended for a statistically repr
 
 With the reference thresholds computed, the **full dataset** (all temperatures, all operational states) is scanned chronologically to detect icing events. Three distinct classes are defined.
 
-> 📷 **[Insert figure: Icing class diagram showing IEa (reduced production zone), IEb (shutdown zone), IEc (overproduction zone) relative to the power curve and P10/P90 bounds]**
+![Icing class diagram showing IEa (reduced production zone), IEb (shutdown zone), IEc (overproduction zone) relative to the power curve and P10/P90 bounds](/WindEnergy/IEA_task19/Icing%20Classes.png)
+*Figure 2: Icing class diagram showing IEa (reduced production zone), IEb (shutdown zone), and IEc (overproduction zone) relative to the power curve and P10/P90 bounds.*
 
 ---
 
