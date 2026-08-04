@@ -29,7 +29,7 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error
 import warnings
 warnings.filterwarnings("ignore")
 
-from plot import plot_split_diagram, plot_forecast_fan, plot_reliability_diagram
+from forecasting_plots import plot_split_diagram, plot_forecast_fan, plot_reliability_diagram
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 script_dir = os.path.dirname(os.path.abspath(__file__))
