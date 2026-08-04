@@ -57,7 +57,7 @@ The grid operator, **Energinet**, keeps DK1 unusually well connected for its siz
 | **DK2 $\leftrightarrow$ SE4** | Øresund                         | **1,300 MW**              | AC subsea connection to Southern Sweden                     |
 | **DK2 $\leftrightarrow$ DE**  | Kontek and Kriegers Flak         | **1,000 MW**              | Subsea HVDC (600 MW Kontek + 400 MW offshore grid)          |
 
-Here's a simple example of how clearing works. Three producers offer power at 50, 60, and 70 €/MWh. Three consumers bid at 65, 55, and 75 €/MWh. Match the cheapest offers to the highest bids until supply meets demand, and the price settles at 60 €/MWh. The producer at 70 €/MWh and the consumer at 55 €/MWh miss out. Everyone else trades at 60.
+A simple example shows how clearing works. Three producers offer power at 50, 60, and 70 €/MWh. Three consumers bid at 65, 55, and 75 €/MWh. Match the cheapest offers to the highest bids until supply meets demand, and the price settles at 60 €/MWh. The producer at 70 €/MWh and the consumer at 55 €/MWh miss out. Everyone else trades at 60.
 
 If the line between two zones can carry the flow, both zones clear at the *same* price. If it's congested, prices split, and the importing zone gets more expensive. That's why DK1 and DK2 often diverge, and why **EPADs** (Electricity Price Area Differentials) exist, as a hedge against exactly this.
 
@@ -68,7 +68,7 @@ If the line between two zones can carry the flow, both zones clear at the *same*
 
 There are two ways to forecast electricity prices: **point forecasts** and **probabilistic forecasts**. A point forecast is simple: one number, easy to check with MAE or RMSE, easy to drop into a spreadsheet. But a single number can hide a lot. A forecast can look accurate on average and still miss the risk that actually matters, the chance of a spike, a negative price, a correlation across hours. Two forecasts can share the same expected price and still call for completely different decisions, depending on how much uncertainty sits behind that number [4].
 
-Here's the comparison that makes the point:
+The following comparison makes the point:
 
 |                                                | Situation 1 (stable)                                                                          | Situation 2 (volatile)                                                                            |
 | ---------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
@@ -112,6 +112,8 @@ In practice, a forecast predicts a whole set of quantiles: the nine deciles (τ 
 
 ![Quantile ladder concept for a single hour](/EnergySystems/PEPF_part1/Fig3.png)
 *Figure 3: **Quantile ladder.** For a single hour, the forecast outputs nine price levels ($q_{10}, \dots, q_{90}$), slicing the implied probability density (shaded). The star marks where the actual outcome fell.*
+
+The ladder in the figure runs $q_{10} = 30$ up to $q_{90} = 100$ €/MWh, with the median $q_{50} = 60$. The realised price that hour was 82 €/MWh, marked with the star: it sits between $q_{70} = 75$ and $q_{80} = 85$, above the median but comfortably inside the upper half of the ladder. Reading it as a forecast report card: the median alone would have missed by 22 €/MWh, but the ladder's upper rungs already signalled a real chance of a price this high, and the 80% interval ($q_{10}$ to $q_{90}$, 30 to 100) would have covered the outcome with room to spare. That's the point of publishing the whole ladder instead of a single number: the median can be off by a wide margin and the forecast can still be doing its job.
 
 #### b. Prediction Intervals
 
@@ -280,10 +282,12 @@ $$
 
 with $H = 24$ for hourly day-ahead forecasts and $K$ the number of quantiles.
 
-As a rule of thumb, **median pinball loss lands around 10–30% of the average price level** for a decent day-ahead model, higher for balancing prices. Don't chase an absolute number. Report it against a naive benchmark instead, the same hour a week earlier works well, so a reader can see whether the model beats a trivial guess.
+As a rule of thumb, median pinball loss lands around 10–30% of the average price level for a decent day-ahead model, higher for balancing prices. Don't chase an absolute number. Report it against a naive benchmark instead, the same hour a week earlier works well, so a reader can see whether the model beats a trivial guess.
 
 ![Pinball loss as a function of forecast error](/EnergySystems/PEPF_part1/Fig4.png)
 *Figure 4: Pinball loss as a function of forecast error, shown separately for a low, a middle, and a high quantile level, illustrating how the penalty slope flips sign around the predicted quantile. Adapted from [5].*
+
+Each panel plots the loss for a fixed actual price of 96 €/MWh, as the predicted value $q$ sweeps from 40 to 150. All three curves kink at $q = 96$, but the slopes on either side of that kink are what change. At $\tau = 0.1$, the curve is steep to the right of the kink and shallow to the left: over-predicting (guessing above 96) is expensive, under-predicting is cheap, which is exactly what pulls a low quantile's fitted value downward. At $\tau = 0.9$, it's the mirror image, steep on the left, shallow on the right, pulling a high quantile's fitted value upward. At $\tau = 0.5$, the two sides are identical, a symmetric V, since under- and over-predicting cost the same. The three panels side by side are the asymmetry rule made visible: same actual price, same loss function, three different penalty shapes depending only on which quantile is being scored.
 
 #### b. CRPS (Continuous Ranked Probability Score)
 
@@ -293,7 +297,12 @@ $$
 CRPS(F, y) = \int_{-\infty}^{\infty} \big(F(z) - \mathbb{1}\{y \leq z\}\big)^2 \, dz
 $$
 
-Picture it geometrically: $\mathbb{1}\{y \leq z\}$ is a step that jumps from 0 to 1 at the actual price. CRPS is the **squared area between the forecast CDF and that step**. The closer the CDF hugs the step, the smaller the area, and the better the forecast.
+Picture it geometrically: $\mathbb{1}\{y \leq z\}$ is a step that jumps from 0 to 1 at the actual price. CRPS is the squared area between the forecast CDF and that step. The closer the CDF hugs the step, the smaller the area, and the better the forecast.
+
+![CRPS as the squared area between the predictive CDF and the step function at the observed price](/EnergySystems/PEPF_part1/Fig5.png)
+*Figure 5: CRPS as the squared area between the predictive CDF $F(z)$ and the step function at the observed price $y$; the shaded region being integrated in the CRPS formula. Adapted from [5].*
+
+Each panel is a normal predictive distribution centred at a value $\mu$ with spread $\sigma$, scored against the same true outcome, $y = 0$. Reading the three left to right: panel (a) is centred exactly on the outcome but wide ($\mu = 0$, $\sigma = 0.83$), scoring **CRPS = 0.194**; panel (b) is off-centre and narrow ($\mu = -0.5$, $\sigma = 0.4$), scoring **CRPS = 0.315**, the worst of the three; panel (c) is centred on the outcome *and* narrow ($\mu = 0$, $\sigma = 0.4$), scoring **CRPS = 0.093**, the best. The comparison that matters is (a) vs. (b): (a) is wider than (b) but scores better, because it is at least honest about where the price landed. (b) is narrower, which looks like a sharper forecast on paper, but it is confidently wrong, and CRPS penalises that more than it rewards the narrower spread. Panel (c) shows what the score is actually rewarding: narrow *and* correctly placed.
 
 An equivalent form that is sometimes easier to interpret is:
 
@@ -301,26 +310,23 @@ $$
 CRPS(F, y) = \mathbb{E}_F|X - y| - \tfrac{1}{2}\mathbb{E}_F|X - X'|
 $$
 
-$X$ and $X'$ are two independent draws from the predictive distribution. The first term rewards being close to the outcome. The second rewards **confidence**: a wide distribution has a large expected spread, and gets docked for it. CRPS balances calibration and sharpness in one number.
+$X$ and $X'$ are two independent draws from the predictive distribution. The first term rewards being close to the outcome. The second rewards confidence: a wide distribution has a large expected spread, and gets docked for it. CRPS balances calibration and sharpness in one number, which is exactly the trade-off the three panels above show directly.
 
-In practice, nobody computes that integral directly. Given a dense grid of equally spaced quantiles, CRPS is well approximated by **twice the average pinball loss across the grid**:
+In practice, nobody computes that integral directly. Given a dense grid of equally spaced quantiles, CRPS is well approximated by twice the average pinball loss across the grid:
 
 $$
 \widehat{CRPS}(F, y) \approx \frac{2}{|Q|} \sum_{\tau \in Q} PL_\tau\big(q^{(\tau)}, y\big)
 $$
 
-Which means a fine quantile grid gives an estimate of CRPS almost for free. Equivalently, CRPS is the integral of pinball loss over every quantile level from 0 to 1. Lower is better, and it's expressed in **€/MWh**, same as the price.
+A fine quantile grid gives an estimate of CRPS almost for free this way. Equivalently, CRPS is the integral of pinball loss over every quantile level from 0 to 1. Lower is better, and it's expressed in €/MWh, same as the price.
 
-**Here's the useful part.** For a point forecast (all its mass on one value), CRPS reduces exactly to the absolute error. That means **CRPS is directly comparable to MAE**. If a point model has an MAE of 18 €/MWh and a probabilistic model has a CRPS of 12 €/MWh, the probabilistic model wins, on a like-for-like scale. CRPS is really just MAE, generalised to distributions.
+For a point forecast, all its mass on one value, CRPS reduces exactly to the absolute error, which is what makes it directly comparable to MAE. If a point model has an MAE of 18 €/MWh and a probabilistic model has a CRPS of 12 €/MWh, the probabilistic model wins on a like-for-like scale. CRPS is essentially MAE generalised to distributions.
 
 Back to the earlier example: quantiles at 55, 78, 110, actual outcome of 96. Twice the average pinball loss gives $2 \times 4.83 \approx \mathbf{9.7}$ €/MWh, against an absolute error of 18 for the median treated as a point forecast. (Three quantiles is far too coarse a grid for this to be accurate. Use 99 quantiles in practice; this is just for illustration.)
 
-**Range of good values.** Like pinball loss, CRPS is scale-dependent, so it can't be compared across markets without normalising. The best reference point is the MAE of a matching point forecast: a good CRPS should sit somewhat below it. Solid Nordic day-ahead models run MAEs around 9–25 €/MWh, which puts a plausible target around **8–20 €/MWh** in calm periods, and higher in crisis years. That's a reasoned guess, not a published benchmark, so always report CRPS next to the point baseline's MAE.
+**Range of good values.** Like pinball loss, CRPS is scale-dependent, so it can't be compared across markets without normalising. The best reference point is the MAE of a matching point forecast: a good CRPS should sit somewhat below it. Solid Nordic day-ahead models run MAEs around 9–25 €/MWh, which puts a plausible target around 8–20 €/MWh in calm periods, and higher in crisis years. That's a reasoned guess, not a published benchmark, so always report CRPS next to the point baseline's MAE.
 
-Two catches. First, CRPS is **scale-dependent**: don't compare a DK1 CRPS from 2022 to one from 2024 and call it improvement, the price level itself moved. Second, a badly calibrated forecast can *lower* its CRPS just by widening its spread, since the score rewards honest uncertainty. That's usually a good thing, but it means CRPS alone can't tell a genuinely sharp forecast from a merely cautious one. Pair it with a coverage check.
-
-![CRPS as the squared area between the predictive CDF and the step function at the observed price](/EnergySystems/PEPF_part1/Fig5.png)
-*Figure 5: CRPS as the squared area between the predictive CDF $F(z)$ and the step function at the observed price $y$; the shaded region being integrated in the CRPS formula. Adapted from [5].*
+Two catches follow directly from the panels above. First, CRPS is scale-dependent: don't compare a DK1 CRPS from 2022 to one from 2024 and call it improvement, the price level itself moved. Second, as panel (b) showed, a badly calibrated forecast can *lower* its CRPS just by widening its spread, since the score rewards honest uncertainty. That's usually a good thing, but it means CRPS alone can't tell a sharp, well-placed forecast (like panel c) from one that's merely cautious (like panel a). Pair it with a coverage check.
 
 #### c. Probability Integral Transform Histogram
 
@@ -329,7 +335,7 @@ One more calibration check: the Probability Integral Transform (PIT) histogram. 
 ![Example PIT histogram shapes](/EnergySystems/PEPF_part1/Fig6.png)
 *Figure 6: Example PIT histogram shapes: uniform (well-calibrated), U-shaped (forecasts too narrow), inverse-U (forecasts too wide), and skewed (biased forecasts). Adapted from [5].*
 
-Get the spread right, with the mean tracking $y$'s mean, and the histogram comes out flat. Too narrow, and it forms a U, because the truth keeps landing in the tails. Too wide, and it forms an inverted U. Biased too high, and the histogram skews left.
+Each panel is built from 1,500 simulated PIT values drawn from a distribution chosen to represent one failure mode. **Well calibrated** draws uniformly on $[0,1]$, so the bars are flat: every part of the predicted distribution catches the true price about equally often, which is what a trustworthy forecast looks like. **Underdispersed** draws from a Beta(0.4, 0.4) distribution, which piles mass at both ends near 0 and 1, producing the U-shape: the true price keeps landing in the extreme tails of the forecast, meaning the predicted interval was too narrow and missed more often than it should. **Overdispersed** draws from a Beta(2.5, 2.5), which concentrates mass near 0.5, producing the inverted U: the true price keeps landing near the centre of the forecast, meaning the interval was wider than it needed to be. **Biased forecast** draws from a Beta(1.5, 3.5), whose mean sits at 0.3 rather than 0.5, skewing the bars toward the low end: the true price is disproportionately below where the forecast expected it, meaning the model's predictions run systematically too high.
 
 | Score                  | What it measures                                            | Applies to                   | Units  | Direction        | Proper?                                      |
 | ---------------------- | ----------------------------------------------------------- | ----------------------------- | ------ | ---------------- | -------------------------------------------- |
