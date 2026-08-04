@@ -5,6 +5,8 @@ excerpt: "Feasibility study of 120 kW SOFC system achieving 116.88 kW net output
 layout: single
 author_profile: true
 permalink: /MasterProgramProjects/Polygeneration_report/
+image: "/MasterProgramProjects/Polygeneration_report/WWTP.png"
+date: 2026-02-15
 ---
 
 ![Figure 1. Schematic illustration of a WWTP integrated with Biogas-fed SOFC plant](/MasterProgramProjects/Polygeneration_report/WWTP.png)

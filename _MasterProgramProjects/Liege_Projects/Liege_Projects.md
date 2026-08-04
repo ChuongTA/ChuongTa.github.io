@@ -6,6 +6,7 @@ image: /MasterProgramProjects/Liege_Projects/Liege_class.jpg
 layout: single
 author_profile: true
 permalink: /MasterProgramProjects/Liege_Projects/
+date: 2026-05-01
 ---
 
 ![Liège Assignment](/MasterProgramProjects/Liege_Projects/Liege_class.jpg)

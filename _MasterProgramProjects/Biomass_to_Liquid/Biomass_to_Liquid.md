@@ -1,3 +1,13 @@
+---
+title: "Biomass-to-Liquid Conversion Pathways"
+category: densys
+excerpt: "Multi-criteria evaluation and future deployment scenario modeling of biomass-to-liquid (BtL) conversion technologies."
+layout: single
+author_profile: true
+permalink: /MasterProgramProjects/Biomass_to_Liquid/
+date: 2025-01-15
+---
+
 **ENSYS Biomass-to-Liquid Project — January 2025**
 
 Authored by: Dang Chuong TA & Oluwajoba Elisalome Oyefusi

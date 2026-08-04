@@ -5,6 +5,8 @@ excerpt: "Repowering feasibility study replacing three aging Vestas V44-600 turb
 layout: single
 author_profile: true
 permalink: /MasterProgramProjects/PW1_project/
+image: "/MasterProgramProjects/PW1_project/PW1_github.png"
+date: 2026-03-01
 ---
 
 ![Veggerslev Wind Farm](/MasterProgramProjects/PW1_project/PW1_github.png)
