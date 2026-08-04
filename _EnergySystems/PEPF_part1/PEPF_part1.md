@@ -6,6 +6,8 @@ layout: single
 author_profile: true
 permalink: /EnergySystems/PEPF_part1/
 usemathjax: true
+image: "/EnergySystems/PEPF_part1/Fig1.png"
+date: 2026-08-01
 ---
 
 > **Series:** Probabilistic Electricity Price Forecasting | **Part:** 1 (Theory)
@@ -356,3 +358,7 @@ That's it for this post. Next time: applying all this to DK1.
 - [3] T. Oliveira, "Understanding Day-ahead & Intraday Markets," Synertics, May 15, 2023. [Online]. Available: [synertics.io/blog/39/understanding-day-ahead-intraday-markets](https://synertics.io/blog/39/understanding-day-ahead-intraday-markets). Accessed: Aug. 4, 2026.
 - [4] G. Dudek, P. Piotrowski, M. Kopyt, and D. Baczyński, "Recent Advances in Probabilistic Electricity Price Forecasting: A Review of Methods and Evaluation Metrics," *Energies*, vol. 19, no. 15, p. 3552, Jul. 2026.
 - [5] S. Fredriksson, "Probabilistic Imbalance Price Forecasting and a Study of Sudden Price Shifts," M.S. thesis, Uppsala University, Uppsala, Sweden, 2025.
+
+## Code
+
+- [make_theory_figures.py](/EnergySystems/PEPF_part1/make_theory_figures.py): generates Figures 3 through 6 (quantile ladder, pinball loss shape, CRPS panels, PIT histograms) from the synthetic values discussed above.

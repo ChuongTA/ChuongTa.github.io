@@ -6,6 +6,8 @@ layout: single
 author_profile: true
 permalink: /EnergySystems/PEPF_part3/
 usemathjax: true
+image: "/EnergySystems/PEPF_part3/BC_walkforward_forecast_1h.png"
+date: 2026-08-03
 ---
 
 > **Series:** Probabilistic Electricity Price Forecasting | **Part:** 3 (Bootstrapped Residuals and Conformal Prediction)
@@ -52,7 +54,7 @@ A **5x gap**. The consequence on actual interval coverage, measured on held-out 
 | In-sample | **52.1%** | 78.9% |
 | Out-of-sample | **88.7%** | 99.7% |
 
-The in-sample intervals claim 80% coverage and deliver barely half that: they are badly overconfident, and this is what the existing code does today, not a hypothetical failure mode. The fix is to compute residuals on a held-out split rather than the training set; the walk-forward validation split already built in `main_pipeline.py` is the natural place to source these residuals from.
+The in-sample intervals claim 80% coverage and deliver barely half that: they are badly overconfident, and this is what the existing code does today, not a hypothetical failure mode. The fix is to compute residuals on a held-out split rather than the training set; the walk-forward validation split already built in `qr_qrf_walkforward_pipeline.py` is the natural place to source these residuals from.
 
 ### Binned residuals (conditioning on heteroscedasticity)
 
@@ -94,7 +96,7 @@ The gap narrows from the earlier single-shot estimate because computing 13 quant
 
 ### Results: Walk-Forward Comparison
 
-Both methods were run through the exact same walk-forward folds as QR and QRF (`bootstrap_conformal_pipeline.py`), calibrated on out-of-sample validation residuals, value-binned, wrapping the same XGBoost point-forecast family used in `forecast.py`:
+Both methods were run through the exact same walk-forward folds as QR and QRF (`bootstrap_conformal_walkforward_pipeline.py`), calibrated on out-of-sample validation residuals, value-binned, wrapping the same XGBoost point-forecast family used in `forecast.py`:
 
 | Model | Lead Time | MAE (median) | Mean Pinball | CRPS (approx.) |
 |---|---|---|---|---|
@@ -156,7 +158,7 @@ This matters directly for this project, which forecasts 1h, 6h, 12h, and 24h ahe
 
 ## 3. Implementation for This Project
 
-The simplified version below shows the core mechanism. The actual implementation used to produce every result in this post, including both the single-fold binning comparison above and the full walk-forward comparison below, lives in `bootstrap_conformal_pipeline.py` (included alongside this post), alongside a matching `BootstrappedPI` class built the same way.
+The simplified version below shows the core mechanism. The actual implementation used to produce every result in this post, including both the single-fold binning comparison above and the full walk-forward comparison below, lives in `bootstrap_conformal_walkforward_pipeline.py` (included alongside this post), alongside a matching `BootstrappedPI` class built the same way.
 
 ```python
 import numpy as np
@@ -246,7 +248,7 @@ The same `ConformalPI` object, with `bin_by=None`, also reproduces the corrected
 
 ## 4. Summary: What to Change in This Project
 
-1. **Fix `BootstrappedPI` to use out-of-sample residuals.** It currently calibrates on training-set residuals, which this data shows understate the true error spread by roughly 5x, and under-cover its own nominal target by nearly 30 percentage points (52% actual vs 80% claimed) on a single test fold. `bootstrap_conformal_pipeline.py` implements the fix: calibrate on the walk-forward validation split instead.
+1. **Fix `BootstrappedPI` to use out-of-sample residuals.** It currently calibrates on training-set residuals, which this data shows understate the true error spread by roughly 5x, and under-cover its own nominal target by nearly 30 percentage points (52% actual vs 80% claimed) on a single test fold. `bootstrap_conformal_walkforward_pipeline.py` implements the fix: calibrate on the walk-forward validation split instead.
 2. **Reconsider the binning variable.** Hour-of-day binning, this project's current choice, was empirically worse-calibrated than no binning at all in the single-fold test; value-binning (skforecast's default) matched the unbinned baseline and is what the full walk-forward pipeline now uses for both methods.
 3. **Conformal is meaningfully faster, but the margin is smaller than a quick test suggests.** Measured across all 16 fold/lead-time combinations: about 7.4x (5.5 ms vs 40.3 ms per fold), not the ~54x a single fully-vectorized test implied. Still a solid, consistent win for anywhere the existing bootstrap approach's computational cost has been a bottleneck.
 4. **Pick Bootstrap or Conformal based on what the decision needs, not blindly.** Across all four lead times, Bootstrap consistently achieves better coverage (closer to nominal) at the cost of wider intervals, and Conformal is consistently sharper but less well-calibrated. Neither is a strict upgrade over the other.
@@ -262,4 +264,9 @@ The same `ConformalPI` object, with `bin_by=None`, also reproduces the corrected
 
 ---
 
-**Files accompanying this post:** `bootstrap_conformal_pipeline.py`, `main_pipeline.py`, `plot.py`, and the `Results/` folder (per-fold metrics, cross-fold summary, and timing summary CSVs).
+## Code
+
+- [bootstrap_conformal_walkforward_pipeline.py](/EnergySystems/PEPF_part3/bootstrap_conformal_walkforward_pipeline.py): the `BootstrappedPI` and `ConformalPI` classes and the walk-forward evaluation loop for both.
+- [qr_qrf_walkforward_pipeline.py](/EnergySystems/PEPF_part3/qr_qrf_walkforward_pipeline.py): shared data loading, feature engineering, and fold generation (same file as Part 2, included here so this post runs standalone).
+- [forecasting_plots.py](/EnergySystems/PEPF_part3/forecasting_plots.py): every figure in this post.
+- `Results/` folder: [per-fold metrics](/EnergySystems/PEPF_part3/Results/bootstrap_conformal_per_fold_metrics.csv), the [cross-fold summary](/EnergySystems/PEPF_part3/Results/bootstrap_conformal_cv_summary.csv), and the [timing summary](/EnergySystems/PEPF_part3/Results/bootstrap_conformal_timing_summary.csv).

@@ -6,6 +6,8 @@ layout: single
 author_profile: true
 permalink: /EnergySystems/PEPF_part2/
 usemathjax: true
+image: "/EnergySystems/PEPF_part2/QRQRF_forecast_24h.png"
+date: 2026-08-02
 ---
 
 > **Series:** Probabilistic Electricity Price Forecasting | **Part:** 2 (Implementation and Results)
@@ -62,7 +64,7 @@ FEATURE_COLS = [
 
 ## 2. Building the QR and QRF Pipeline
 
-The earlier theory post committed to two models: **Quantile Regression (QR)** and **Quantile Regression Forest (QRF)**. This section walks through the actual implementation, step by step, and evaluates both on the DK1 data above using walk-forward cross-validation rather than a single train/test split. The full pipeline is split across `main_pipeline.py` (data, models, evaluation) and `plot.py` (all figures), both included alongside this post.
+The earlier theory post committed to two models: **Quantile Regression (QR)** and **Quantile Regression Forest (QRF)**. This section walks through the actual implementation, step by step, and evaluates both on the DK1 data above using walk-forward cross-validation rather than a single train/test split. The full pipeline is split across `qr_qrf_walkforward_pipeline.py` (data, models, evaluation) and `forecasting_plots.py` (all figures), both included alongside this post.
 
 ### 2.1 Feature Engineering
 
@@ -243,7 +245,7 @@ The pipeline runs both models across four lead times (1h, 6h, 12h, 24h) and all 
 
 ## 3. Results
 
-Running `main_pipeline.py` on the real DK1 data, across all four walk-forward folds, gives the following comparison. Each number is the **mean across the 4 folds**, with the standard deviation in parentheses showing how much that metric actually varies from one time period to the next:
+Running `qr_qrf_walkforward_pipeline.py` on the real DK1 data, across all four walk-forward folds, gives the following comparison. Each number is the **mean across the 4 folds**, with the standard deviation in parentheses showing how much that metric actually varies from one time period to the next:
 
 | Model | Lead Time | MAE (median) | RMSE (median) | Mean Pinball | CRPS (approx.) |
 | --- | --- | --- | --- | --- | --- |
@@ -301,6 +303,10 @@ QRF remains the stronger model of the two overall, and walk-forward validation s
 
 ---
 
-**Files accompanying this post:** `main_pipeline.py`, `plot.py`, and the `Results/` folder (per-fold and cross-fold summary CSVs).
+## Code
+
+- [qr_qrf_walkforward_pipeline.py](/EnergySystems/PEPF_part2/qr_qrf_walkforward_pipeline.py): data loading, feature engineering, the QR and QRF model classes, and the walk-forward evaluation loop.
+- [forecasting_plots.py](/EnergySystems/PEPF_part2/forecasting_plots.py): every figure in this post, including the train/validate/test split diagram and the reliability diagram.
+- `Results/` folder: [per-fold metrics](/EnergySystems/PEPF_part2/Results/qr_qrf_per_fold_metrics.csv) and the [cross-fold summary](/EnergySystems/PEPF_part2/Results/qr_qrf_cv_summary.csv) (mean and standard deviation per model per lead time).
 
 **Next:** [Part 3](/EnergySystems/PEPF_part3/) compares two more approaches, bootstrapped residuals and split conformal prediction, and puts all four methods head to head.
