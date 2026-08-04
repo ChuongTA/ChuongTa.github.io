@@ -6,7 +6,8 @@ image: /MasterProgramProjects/Algae_Biofuel/SAF.png
 layout: single
 author_profile: true
 permalink: /MasterProgramProjects/Algae_Biofuel/
-date: 2026-04-15
+date: 2025-06-01
+year: "2024 - 2025"
 ---
 ![Algae SAF Project](/MasterProgramProjects/Algae_Biofuel/SAF.png)
 

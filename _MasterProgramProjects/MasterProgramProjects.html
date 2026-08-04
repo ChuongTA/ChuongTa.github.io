@@ -18,7 +18,7 @@ author_profile: true
       {% continue %}
     {% endif %}
 
-    {% assign current_year = post.date | date: "%Y" %}
+    {% assign current_year = post.year | default: (post.date | date: "%Y") %}
     
     <div class="pub-row" style="display: flex; margin-bottom: 2.5em; position: relative;">
       <!-- Post Thumbnail -->
