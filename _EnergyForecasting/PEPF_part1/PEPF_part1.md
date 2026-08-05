@@ -275,6 +275,17 @@ Average pinball loss for this hour: $(4.10 + 9.00 + 1.40) / 3 = \mathbf{4.83}$ �
 
 The 0.9 quantile missed high by 14 €/MWh, and was only charged 1.40 for it, because sitting above the outcome is exactly what a 90% quantile is supposed to do most of the time. The median missed by 18 and was charged 9.00. That gap is the asymmetry doing its job.
 
+![Pinball loss as a function of forecast error](/EnergyForecasting/PEPF_part1/Fig4.png)
+*Figure 4: Pinball loss as a function of forecast error, shown separately for a low, a middle, and a high quantile level, illustrating how the penalty slope flips sign around the predicted quantile. Adapted from [5].*
+
+This means:
+
+| Quantile level | Under-prediction | Over-prediction | Shape |
+| --- | --- | --- | --- |
+| Low (τ = 0.1) | Cheap | Expensive | Skewed, shallow on the left |
+| Median (τ = 0.5) | Costs the same as over-prediction | Costs the same as under-prediction | Symmetric V |
+| High (τ = 0.9) | Expensive | Cheap | Skewed, shallow on the right |
+
 A handy shortcut: at τ = 0.5, pinball loss is **half the absolute error**. Here, the median missed by 18, and the loss was 9, exactly half. So to compare a median pinball loss with a familiar MAE, double it. (Some papers skip that factor of 2 and just call τ = 0.5 pinball loss the MAE. It's only proportional, so check the convention before comparing across papers.)
 
 Over a full evaluation, the loss is averaged across all days, hours and quantile levels:
@@ -285,12 +296,9 @@ $$
 
 with $H = 24$ for hourly day-ahead forecasts and $K$ the number of quantiles.
 
-As a rule of thumb, median pinball loss lands around 10–30% of the average price level for a decent day-ahead model, higher for balancing prices. Don't chase an absolute number. Report it against a naive benchmark instead, the same hour a week earlier works well, so a reader can see whether the model beats a trivial guess.
+As a rule of thumb, median pinball loss for a decent day-ahead model lands around 10–30% of the average price level, higher for balancing prices. It's not a strict rule, just a typical range seen in practice. So at an average price of 100 €/MWh, a decent model's median pinball loss sits around 10–30 €/MWh; at 150 €/MWh, that's roughly 15–45 €/MWh.
 
-![Pinball loss as a function of forecast error](/EnergyForecasting/PEPF_part1/Fig4.png)
-*Figure 4: Pinball loss as a function of forecast error, shown separately for a low, a middle, and a high quantile level, illustrating how the penalty slope flips sign around the predicted quantile. Adapted from [5].*
-
-Each panel plots the loss for a fixed actual price of 96 €/MWh, as the predicted value $q$ sweeps from 40 to 150. All three curves kink at $q = 96$, but the slopes on either side of that kink are what change. At $\tau = 0.1$, the curve is steep to the right of the kink and shallow to the left: over-predicting (guessing above 96) is expensive, under-predicting is cheap, which is exactly what pulls a low quantile's fitted value downward. At $\tau = 0.9$, it's the mirror image, steep on the left, shallow on the right, pulling a high quantile's fitted value upward. At $\tau = 0.5$, the two sides are identical, a symmetric V, since under- and over-predicting cost the same. The three panels side by side are the asymmetry rule made visible: same actual price, same loss function, three different penalty shapes depending only on which quantile is being scored.
+Don't chase an absolute number on its own, either. Pinball loss depends heavily on price volatility, market regime, spikes, negative prices, season, and model type, so a loss of 20 might be excellent in one market and terrible in another; the number means nothing without context. Report it against a naive benchmark instead, the same hour a week earlier works well, so a reader can see whether the model beats a trivial guess.
 
 #### b. CRPS (Continuous Ranked Probability Score)
 
