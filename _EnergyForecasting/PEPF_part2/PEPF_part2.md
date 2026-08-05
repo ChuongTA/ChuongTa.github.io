@@ -13,7 +13,7 @@ date: 2026-08-02
 
 ---
 
-This post extends the earlier deterministic analysis using the same data source, [Energi Data Service](https://www.energidataservice.dk/buildreport), with a clean date range from **2024-01-01 to 2025-09-30 UTC**, excluding subsequent empty and unreported price periods, and incorporating the same post-production exogenous features.
+This post develops QR and QRF using the same data source, [Energi Data Service](https://www.energidataservice.dk/buildreport), with a clean date range from **2024-01-01 to 2025-09-30 UTC**, excluding subsequent empty and unreported price periods, and incorporating the same post-production exogenous features.
 
 That window covers 639 days, or **15,336 hourly observations**.
 
@@ -244,7 +244,40 @@ The pipeline runs both models across four lead times (1h, 6h, 12h, 24h) and all 
 
 ## 3. Results
 
-Running `qr_qrf_walkforward_pipeline.py` on the real DK1 data, across all four walk-forward folds, gives the following comparison. Each number is the **mean across the 4 folds**, with the standard deviation in parentheses showing how much that metric actually varies from one time period to the next:
+Running `qr_qrf_walkforward_pipeline.py` on the real DK1 data, across all four walk-forward folds, gives the following comparison. Each number is the **mean across the 4 folds**, with the standard deviation in parentheses showing how much that metric actually varies from one time period to the next.
+
+### 3.1 How to Read the Numbers Below
+
+Two tables and five figures follow. A simple four-step read gets to the actual verdict without getting lost in them.
+
+**Step 1 — Check accuracy.** Start with MAE, RMSE, pinball loss, and CRPS. Whichever model is lower makes closer point predictions. Here QRF wins across the board, at every lead time (24h: MAE 16.19 vs 20.63 €/MWh, CRPS 9.77 vs 12.77 €/MWh) — but accuracy alone says nothing about whether the model's stated uncertainty is trustworthy, which is what the next two steps are for.
+
+**Step 2 — Check calibration.** Compare empirical coverage to its nominal target: an 80% interval should catch the outcome about 80% of the time. Averaged across folds, both models land within a few points of nominal most of the time, but the average hides the real story: some folds calibrate well, others (the Christmas/New Year and July folds, see Discussion below) collapse to 53–66% coverage against an 80% target. Always check whether the average is hiding a fold-to-fold collapse like that before trusting it.
+
+**Step 3 — Check sharpness.** Look at interval width. Narrower is better, but only if coverage holds up alongside it — a tighter interval that also misses more often isn't sharper, it's just wrong more confidently. QRF is narrower than QR at every lead time (24h, 90% interval: 65.7 vs 74.7 €/MWh), with calibration that's comparable at 1h and clearly better from 6h onward.
+
+**Step 4 — Combine calibration and sharpness.** This is the actual verdict, not either metric alone:
+
+| Width | Coverage | Verdict |
+| --- | --- | --- |
+| Narrow | Matches nominal | Excellent |
+| Narrow | Below nominal | Overconfident |
+| Wide | Above nominal | Underconfident (too cautious) |
+| Wide | Matches nominal | Conservative but calibrated |
+
+QRF sits closest to the narrow-and-matching cell for most lead times, which is why it's the model to reach for by default; QR is both wider and, on its worst folds, still under-covering, the less favourable combination of the two.
+
+**A rough grading scale.** There's no official standard for what counts as a "good" pinball loss, CRPS, or coverage gap; it depends on price volatility and the specific market. As a reasoned extension of the rule of thumb from Part 1:
+
+| Grade | Pinball / CRPS (% of average price) | Coverage gap, \|actual − nominal\| |
+| --- | --- | --- |
+| Excellent | < 10% | < 3 points |
+| Good | 10–20% | 3–7 points |
+| Acceptable | 20–30% | 7–12 points |
+| Bad | 30–50% | 12–20 points |
+| Unacceptable | > 50% | > 20 points |
+
+By that scale, both models' fold-averaged coverage gaps mostly sit in the good-to-excellent range, a few points off nominal. That average hides the folds where actual coverage drops to 53–66% against an 80% target, a gap of 14 to 27 points, squarely bad-to-unacceptable. The average metric looks fine; the worst fold does not, which is the whole point of walk-forward validation.
 
 | Model | Lead Time | MAE (median) | RMSE (median) | Mean Pinball | CRPS (approx.) |
 | --- | --- | --- | --- | --- | --- |
@@ -267,9 +300,6 @@ Running `qr_qrf_walkforward_pipeline.py` on the real DK1 data, across all four w
 | QRF | 12h | 0.726 (±0.135) | 47.9 | 0.851 (±0.102) | 65.1 | 0.927 (±0.058) | 82.7 |
 | QR  | 24h | 0.721 (±0.176) | 56.8 | 0.820 (±0.138) | 74.7 | 0.889 (±0.080) | 94.0 |
 | QRF | 24h | 0.781 (±0.073) | 48.9 | 0.898 (±0.044) | 65.7 | 0.952 (±0.022) | 82.8 |
-
-![The four walk-forward folds used to produce every number above](/EnergyForecasting/PEPF_part2/QRQRF_train_val_test_split.png)
-*The four walk-forward folds used to produce every number above.*
 
 ![QR vs QRF, 1h-ahead forecast fan chart](/EnergyForecasting/PEPF_part2/QRQRF_forecast_1h.png)
 *QR vs QRF, 1h-ahead, on the most recent fold's two-week test window, with 80% and 95% prediction intervals.*
