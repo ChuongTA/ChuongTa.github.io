@@ -1,59 +1,67 @@
 /* _code-copy.scss
-   Styles for the injected "Copy" button.
+   Styles for the clipboard copy button on code blocks.
 
-   The ::before pseudo-element on div.highlighter-rouge already sits at
-   top: 0 / right: 0 and shows the </> icon (~1.8em wide).
-   We place our button just to its left: right: 2em.
+   Default : shows clipboard SVG icon (square icon, muted)
+   Copied  : shows "Copied!" text in green
 */
 
 .code-copy-btn {
   position: absolute;
   top:   0;
-  right: 2em;       /* sits immediately left of the existing </> icon */
+  right: 0;
   z-index: 5;
 
   display:     inline-flex;
   align-items: center;
-  padding:     0.35em 0.7em;
-  border:      none;
-  border-radius: 0 0 0 3px;  /* rounded bottom-left only — matches top-right corner of block */
-  cursor:      pointer;
+  justify-content: center;
+  width:   2.2em;
+  height:  2.2em;
+  padding: 0;
+  border:  none;
+  border-radius: 0 $border-radius 0 3px;  /* top-right matches block corner */
+  cursor:  pointer;
 
-  font-family: inherit;
-  font-size:   0.72rem;
-  font-weight: 500;
-  line-height: 1.4;
-  white-space: nowrap;
+  /* Matches the old </> badge background so it feels native */
+  background-color: mix(#fff, #7a8288, 88%);
+  color:            #7a8288;
 
-  /* Matches the </> badge colour so both buttons look like a pair */
-  background-color: mix(#fff, #7a8288, 90%);
-  color:            #586e75;
+  transition: background-color 130ms ease, color 130ms ease, width 130ms ease;
 
-  transition: background-color 130ms ease, color 130ms ease;
+  svg {
+    display: block;
+    flex-shrink: 0;
+  }
 
   &:hover {
-    background-color: mix(#fff, #7a8288, 70%);
-    color:            #000;
+    background-color: mix(#fff, #7a8288, 68%);
+    color:            #3d4449;
   }
 
   &:active {
-    transform: scale(0.95);
+    transform: scale(0.93);
   }
 
-  /* Success flash */
+  /* "Copied!" state — expands to show text */
   &.is-copied {
+    width:            auto;
+    padding:          0 0.6em;
     background-color: #2ecc71;
     color:            #fff;
+    font-family:      inherit;
+    font-size:        0.72rem;
+    font-weight:      500;
+    line-height:      1.4;
+    white-space:      nowrap;
   }
 }
 
 /* Dark-theme override */
 [data-theme="dark"] .code-copy-btn {
-  background-color: rgba(255, 255, 255, 0.1);
-  color:            rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.08);
+  color:            rgba(255, 255, 255, 0.5);
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.22);
+    background-color: rgba(255, 255, 255, 0.18);
     color:            #fff;
   }
 
