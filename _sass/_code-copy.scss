@@ -1,0 +1,64 @@
+/* _code-copy.scss
+   Styles for the injected "Copy" button.
+
+   The ::before pseudo-element on div.highlighter-rouge already sits at
+   top: 0 / right: 0 and shows the </> icon (~1.8em wide).
+   We place our button just to its left: right: 2em.
+*/
+
+.code-copy-btn {
+  position: absolute;
+  top:   0;
+  right: 2em;       /* sits immediately left of the existing </> icon */
+  z-index: 5;
+
+  display:     inline-flex;
+  align-items: center;
+  padding:     0.35em 0.7em;
+  border:      none;
+  border-radius: 0 0 0 3px;  /* rounded bottom-left only — matches top-right corner of block */
+  cursor:      pointer;
+
+  font-family: inherit;
+  font-size:   0.72rem;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+
+  /* Matches the </> badge colour so both buttons look like a pair */
+  background-color: mix(#fff, #7a8288, 90%);
+  color:            #586e75;
+
+  transition: background-color 130ms ease, color 130ms ease;
+
+  &:hover {
+    background-color: mix(#fff, #7a8288, 70%);
+    color:            #000;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  /* Success flash */
+  &.is-copied {
+    background-color: #2ecc71;
+    color:            #fff;
+  }
+}
+
+/* Dark-theme override */
+[data-theme="dark"] .code-copy-btn {
+  background-color: rgba(255, 255, 255, 0.1);
+  color:            rgba(255, 255, 255, 0.7);
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.22);
+    color:            #fff;
+  }
+
+  &.is-copied {
+    background-color: #27ae60;
+    color:            #fff;
+  }
+}
