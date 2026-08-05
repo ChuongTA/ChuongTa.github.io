@@ -260,14 +260,17 @@ Two tables and five figures follow. A simple four-step read gets to the actual v
 
 **Step 4: Combine calibration and sharpness.** This is the actual verdict, not either metric alone:
 
-| Width | Coverage | Verdict |
-| --- | --- | --- |
-| Narrow | Matches nominal | Excellent |
-| Narrow | Below nominal | Overconfident |
-| Wide | Above nominal | Underconfident (too cautious) |
-| Wide | Matches nominal | Conservative but calibrated |
+| Width | Coverage | Verdict | What it means |
+| --- | --- | --- | --- |
+| Narrow | Matches nominal | Excellent | The interval is both tight and honest: it claims high confidence and earns it. Nothing to fix. |
+| Narrow | Below nominal | Overconfident | The interval is tight, but the outcome falls outside it more often than promised. It's making a confident claim it can't back up, the worst combination, since it looks precise while actually misleading. |
+| Wide | Above nominal | Underconfident (too cautious) | The interval catches the outcome more often than it needs to, but only because it's wider than necessary. Safe, but not sharp, there's room to tighten it without losing reliability. |
+| Wide | Matches nominal | Conservative but calibrated | The interval is wider than it strictly needs to be, but it's honest about it: the stated confidence level is met. Trustworthy, just not efficient. |
 
 QRF sits closest to the narrow-and-matching cell for most lead times, which is why it's the model to reach for by default; QR is both wider and, on its worst folds, still under-covering, the less favourable combination of the two.
+
+![Calibration vs. sharpness quadrants, by lead time](/EnergyForecasting/PEPF_part2/QRQRF_calibration_sharpness_quadrant.png)
+*Each panel plots mean interval width against coverage minus nominal, for QR and QRF at the 80/90/95% levels, at one lead time. QRF (teal) sits in or near the Excellent quadrant at 1h and drifts toward it by 24h; QR (blue) sits mostly in Overconfident at 6h through 24h, wider than QRF and still under-covering.*
 
 **A rough grading scale.** There's no official standard for what counts as a "good" pinball loss, CRPS, or coverage gap; it depends on price volatility and the specific market. As a reasoned extension of the rule of thumb from Part 1:
 
@@ -413,8 +416,11 @@ All models also degrade sharply from 1h to 6h, then roughly plateau, since the l
 
 ## Code
 
+- [Data.csv](/EnergyForecasting/PEPF_part2/Data.csv): the DK1 price and generation-mix data from Energi Data Service used throughout this post.
 - [qr_qrf_walkforward_pipeline.py](/EnergyForecasting/PEPF_part2/qr_qrf_walkforward_pipeline.py): data loading, feature engineering, the QR and QRF model classes, and the walk-forward evaluation loop.
-- [forecasting_plots.py](/EnergyForecasting/PEPF_part2/forecasting_plots.py): every figure in this post, including the train/validate/test split diagram and the reliability diagram.
+- [forecasting_plots.py](/EnergyForecasting/PEPF_part2/forecasting_plots.py): every figure in this post, including the train/validate/test split diagram, the reliability diagram, the fold-4 tail diagnostics, and the calibration/sharpness quadrant plot.
+- [generate_fold4_diagnostics.py](/EnergyForecasting/PEPF_part2/generate_fold4_diagnostics.py): reruns fold 4 only (1h ahead) to produce the exceedance-rate and interval-width-over-time figures.
+- [plot_calibration_sharpness_quadrant.py](/EnergyForecasting/PEPF_part2/plot_calibration_sharpness_quadrant.py): the Step-4 quadrant figure, built directly from the published coverage/width numbers.
 - `Results/` folder: [per-fold metrics](/EnergyForecasting/PEPF_part2/Results/qr_qrf_per_fold_metrics.csv) and the [cross-fold summary](/EnergyForecasting/PEPF_part2/Results/qr_qrf_cv_summary.csv) (mean and standard deviation per model per lead time).
 
 **Next:** [Part 3](/EnergyForecasting/PEPF_part3/) compares two more approaches, bootstrapped residuals and split conformal prediction, and puts all four methods head to head.

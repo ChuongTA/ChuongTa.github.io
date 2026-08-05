@@ -252,3 +252,93 @@ def plot_interval_width_over_time(dates, y_true, preds_by_model, lo_a, hi_a, out
     plt.savefig(out_path, dpi=150)
     plt.close()
     print(f"Saved interval width over time plot to: {out_path}")
+
+
+def plot_calibration_sharpness_quadrant(results, out_path):
+    """
+    Four panels, one per lead time. Each plots width (x) vs. coverage
+    deviation, empirical - nominal (y), for both models at the 80/90/95%
+    intervals, shaded into the four Step-4 verdict quadrants: narrow vs.
+    wide is split at that panel's own median width, matches-nominal is a
+    band around y = 0.
+
+    results: {lead_time_label: {"QR": [(width, cov, nominal), ...],
+                                 "QRF": [(width, cov, nominal), ...]}}
+    """
+    colors = {"QR": "#1976D2", "QRF": "#00796B"}
+    markers = {80: "o", 90: "s", 95: "^"}
+    match_band = 0.02  # +/- 2 points counts as "matches nominal"
+
+    fig, axes = plt.subplots(2, 2, figsize=(11, 9.6))
+    axes = axes.ravel()
+
+    for ax, (lead_label, by_model) in zip(axes, results.items()):
+        all_widths = [w for pts in by_model.values() for (w, _, _) in pts]
+        x_split = (min(all_widths) + max(all_widths)) / 2
+
+        x_lo, x_hi = min(all_widths) - 8, max(all_widths) + 8
+        y_vals = [cov - nom for pts in by_model.values() for (_, cov, nom) in pts]
+        y_lo, y_hi = min(y_vals + [-match_band]) - 0.03, max(y_vals + [match_band]) + 0.03
+
+        # Quadrant shading: narrow/wide split at x_split, matches-band around y=0
+        ax.axhspan(-match_band, match_band, color="#B0BEC5", alpha=0.25, zorder=0)
+        ax.fill_betweenx([y_lo, -match_band], x_lo, x_split, color="#EF9A9A", alpha=0.25, zorder=0)
+        ax.fill_betweenx([match_band, y_hi], x_lo, x_split, color="#A5D6A7", alpha=0.25, zorder=0)
+        ax.fill_betweenx([match_band, y_hi], x_split, x_hi, color="#FFE082", alpha=0.25, zorder=0)
+        ax.fill_betweenx([-match_band, match_band], x_split, x_hi, color="#90CAF9", alpha=0.25, zorder=0)
+
+        ax.axhline(0, color="#37474F", lw=1, linestyle="--", zorder=1)
+        ax.axvline(x_split, color="#37474F", lw=1, linestyle="--", zorder=1)
+
+        for name, pts in by_model.items():
+            for w, cov, nom in pts:
+                nom_pct = int(round(nom * 100))
+                ax.scatter(w, cov - nom, color=colors.get(name, "#607D8B"),
+                           marker=markers.get(nom_pct, "o"), s=90, zorder=3,
+                           edgecolor="white", linewidth=0.8)
+            ws = [w for w, _, _ in pts]
+            covs = [cov - nom for w, cov, nom in pts]
+            order = np.argsort(ws)
+            ax.plot(np.array(ws)[order], np.array(covs)[order], color=colors.get(name, "#607D8B"),
+                    lw=1.2, alpha=0.6, zorder=2)
+
+        ax.set_xlim(x_lo, x_hi)
+        ax.set_ylim(y_lo, y_hi)
+        ax.set_title(lead_label, fontsize=12, fontweight="bold", color="#263238")
+        ax.set_xlabel("Mean interval width (EUR/MWh)", fontsize=10, fontweight="bold", color="#37474F")
+        ax.set_ylabel("Coverage - nominal", fontsize=10, fontweight="bold", color="#37474F")
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
+        ax.spines["left"].set_color("#CFD8DC")
+        ax.spines["bottom"].set_color("#CFD8DC")
+
+    # Shared legend: model colors + interval markers + quadrant labels
+    model_handles = [plt.Line2D([0], [0], marker="o", color="w", markerfacecolor=c, markersize=9, label=n)
+                      for n, c in colors.items()]
+    marker_handles = [plt.Line2D([0], [0], marker=m, color="w", markerfacecolor="#607D8B", markersize=8,
+                                  label=f"{p}% interval") for p, m in markers.items()]
+    fig.legend(handles=model_handles + marker_handles, loc="lower center", ncol=5,
+               frameon=False, fontsize=10, bbox_to_anchor=(0.5, 0.005))
+
+    fig.suptitle("Calibration vs. Sharpness Quadrants, by Lead Time\n"
+                 "(narrow/wide split at each panel's own median width; grey band = within 2 points of nominal)",
+                 fontsize=13, fontweight="bold", y=0.98, color="#263238")
+
+    for ax, corner_labels in zip(
+        axes,
+        [dict(overconfident=(0.02, 0.04), excellent=(0.02, 0.96),
+              underconfident=(0.98, 0.96), conservative=(0.98, 0.04))] * 4,
+    ):
+        ax.text(*corner_labels["overconfident"], "Overconfident", transform=ax.transAxes,
+                ha="left", va="bottom", fontsize=8, color="#B71C1C", fontweight="bold")
+        ax.text(*corner_labels["excellent"], "Excellent", transform=ax.transAxes,
+                ha="left", va="top", fontsize=8, color="#1B5E20", fontweight="bold")
+        ax.text(*corner_labels["underconfident"], "Underconfident", transform=ax.transAxes,
+                ha="right", va="top", fontsize=8, color="#E65100", fontweight="bold")
+        ax.text(*corner_labels["conservative"], "Conservative", transform=ax.transAxes,
+                ha="right", va="bottom", fontsize=8, color="#0D47A1", fontweight="bold")
+
+    plt.subplots_adjust(top=0.86, bottom=0.13, hspace=0.35, wspace=0.28)
+    plt.savefig(out_path, dpi=150)
+    plt.close()
+    print(f"Saved calibration/sharpness quadrant plot to: {out_path}")

@@ -32,14 +32,14 @@ warnings.filterwarnings("ignore")
 from forecasting_plots import plot_split_diagram, plot_forecast_fan, plot_reliability_diagram
 
 # ── Paths ────────────────────────────────────────────────────────────────────
+# Data.csv lives alongside this script, so results are resolved relative to
+# this file's own directory rather than the caller's current working directory.
 script_dir = os.path.dirname(os.path.abspath(__file__))
-RESULTS_DIR = os.path.join(os.path.dirname(script_dir), "Results", "QR_QRF_CV")
+RESULTS_DIR = os.path.join(script_dir, "Results")
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
 # ── Load data ────────────────────────────────────────────────────────────────
-csv_path = "Data.csv"
-if not os.path.exists(csv_path):
-    csv_path = os.path.join(script_dir, "Data.csv")
+csv_path = os.path.join(script_dir, "Data.csv")
 
 print(f"Loading data from: {csv_path}")
 df_raw = pd.read_csv(csv_path, sep=";", decimal=",", parse_dates=["HourUTC"])
