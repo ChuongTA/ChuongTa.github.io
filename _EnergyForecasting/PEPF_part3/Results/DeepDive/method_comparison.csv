@@ -1,0 +1,4 @@
+Method,NominalCoverage,EmpiricalCoverage,IntervalArea
+In-sample residuals,0.8,0.5238095238095238,4277.5419921875
+Out-sample residuals (non-conditioned),0.8,0.8988095238095238,10278.9365234375
+Out-sample residuals (binned),0.8,0.8541666666666666,14536.8173828125
