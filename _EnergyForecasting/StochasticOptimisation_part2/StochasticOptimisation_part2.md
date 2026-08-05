@@ -15,7 +15,7 @@ date: 2026-08-06
 
 Part 1 laid out the theory: a two-stage stochastic program commits a first-stage decision before the uncertain outcome is known, then evaluates it against however many possible outcomes are being planned against. This post turns that into working code: a real battery dispatch problem, solved in Pyomo, with the scenario set built from real quantile forecasts rather than the six hand-picked historical days used in the earlier `Storage_Dispatch` series.
 
-## What This Post Builds
+## Overview
 
 Three pieces come together here. The quantile forecasting machinery from [PEPF Part 2](/EnergyForecasting/PEPF_part2/) generates the price scenarios. The battery physics are the same assumed specification used throughout this project. The dispatch problem connecting them is formulated exactly as the two-stage program from [Part 1](/EnergyForecasting/StochasticOptimisation_part1/), and solved with Pyomo instead of a hand-written linear program.
 
@@ -65,7 +65,7 @@ The battery specification is unchanged from `Storage_Dispatch_part2`: a stated h
 | Charge / discharge efficiency | 95% each way |
 | Starting charge | 50% |
 
-## Results on a Real Test Day
+## Results and Discussion
 
 All three schedules are evaluated on the actual realized price for 10 July 2025.
 
@@ -78,15 +78,13 @@ All three schedules are evaluated on the actual realized price for 10 July 2025.
 ![Battery dispatch comparison](/EnergyForecasting/StochasticOptimisation_part2/Results/fig_dispatch_comparison.png)
 *All three schedules charge in the same two windows and discharge into the same two price peaks; the stochastic and naive schedules differ only by a one-hour shift in when the evening discharge happens.*
 
-## What The Numbers Actually Show
-
 The stochastic schedule made €7.17 less than the naive median-only schedule on this particular day, a negative result for the stochastic approach, and worth reporting exactly as it came out rather than picking a friendlier test day. The dispatch comparison plot shows why: the two schedules are nearly identical. Both charge overnight and again through the midday trough, and both discharge into the morning and evening price peaks. The only real difference is that the stochastic schedule's evening discharge lands one hour later than the naive one, and the actual price had already started falling by then, turning a small timing difference into a small loss.
 
 This happened because the five scenarios do not disagree much about *when* the day's peaks and troughs occur, only about their *size*. Fixing the same quantile level across every hour, by construction, preserves the median forecast's timing in every scenario; it only stretches or compresses the price level around that timing. When the schedules barely disagree on timing, weighting five similar-shaped scenarios cannot outperform trusting the single median path, and a one-hour difference in either direction is within the noise of which one wins on a single test day.
 
 The gap to perfect foresight is more informative: €34.08, about 15% of the perfect-foresight profit. That gap is not a modeling failure to fix, it is the actual, honest cost of not knowing the future, and the figure above shows exactly where it comes from: perfect foresight charges during the very cheapest early-morning hours (00:00 to 02:00), a window none of the five scenarios flagged as unusually cheap, because the actual price dipped there while every quantile forecast expected a flatter overnight profile.
 
-## What Is Simplified Here
+## Simplifications
 
 A few things a fuller model would include were deliberately left out.
 
@@ -94,6 +92,10 @@ A few things a fuller model would include were deliberately left out.
 - **No intraday recourse.** The schedule is committed once for the whole day. A real operator can adjust through the intraday market as the day unfolds; that would make this a genuine multi-stage problem rather than a two-stage one.
 - **Five scenarios, not a full lattice.** Wimmeder (2021) works with the full apparatus of scenario lattices and approximate dual dynamic programming for exactly this reason, five comonotonic paths is a coarse approximation to the true joint distribution.
 - **One test day.** A single day proves very little on its own; the loss reported here easily could have gone the other way on a different day, which is the entire reason walk-forward validation exists elsewhere in this project.
+
+## Conclusion
+
+The two-stage stochastic model from Part 1 now runs on real data: real quantile forecasts build the scenarios, and Pyomo solves the dispatch. On this one test day, the stochastic schedule did not beat a naive median-only schedule, and the reason was traceable rather than mysterious, the scenarios agreed on timing and differed only on price level, leaving little for a weighted schedule to exploit. The more useful number was the 15% gap to perfect foresight, which is the honest cost of forecasting under uncertainty rather than a bug to fix. Closing that gap further would need scenarios that can disagree on timing, not just magnitude, and a schedule that can react intraday rather than committing once.
 
 ## References
 

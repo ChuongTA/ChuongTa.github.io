@@ -84,11 +84,11 @@ A battery generates value in several distinct ways:
 - **Reliability**: reducing the impact of supply interruptions for the end user.
 - **Ancillary services**: supporting grid functions such as frequency regulation.
 
-### 5.2 Why Battery Operation Needs Stochastic Optimisation
+### 5.2 The Need for Stochastic Optimisation in Battery Operation
 
 Three inputs to the battery scheduling problem are genuinely uncertain: electricity prices, consumer demand, and, where relevant, solar or wind generation. Each is difficult to forecast precisely, prices because of market volatility, generation because of weather dependence, and demand because of variable consumer behaviour. A schedule built around a single forecast for these inputs can perform well on average and still fail badly at exactly the moments that matter, if the actual outcome departs from the assumed one. Yurdakul and Billimoria (n.d.) find that storage assets scheduled without accounting for this uncertainty can fail to respond to strong price signals precisely when they are needed most. Stochastic optimisation addresses this by planning against a representative set of possible outcomes instead of one.
 
-### 5.3 How Stochastic Optimisation Is Applied
+### 5.3 Model Structure Under Uncertainty
 
 The battery's physical characteristics, power rating, energy capacity, charge and discharge efficiency, and self-discharge, do not change with the introduction of uncertainty. What changes is how the uncertain inputs, price, demand, and generation, enter the model: instead of fixed values, they are represented as scenarios, each with an associated probability. The scheduling problem is then formulated as a two-stage or multi-stage stochastic program, and solved for the schedule that performs best across the scenario set as a whole, rather than the one schedule that would be optimal under a single assumed future.
 
