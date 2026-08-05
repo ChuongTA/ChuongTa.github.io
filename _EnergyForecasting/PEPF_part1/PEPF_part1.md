@@ -259,7 +259,7 @@ Two models, then. The next question: how do we judge the distributions they prod
 
 ### 2.3 Evaluation Metrics
 
-MAE and MSE are the standard metrics for regression, but they only work for point forecasts. They can't judge a distribution. Three metrics can: Pinball Loss, the Continuous Ranked Probability Score, and the Probability Integral Transform histogram.
+MAE and MSE are the standard metrics for regression, but they only work for point forecasts. They can't judge a distribution. Four metrics can: Pinball Loss, the Continuous Ranked Probability Score, the Probability Integral Transform histogram, and Empirical Coverage.
 
 #### a. Pinball Loss (Quantile Loss)
 
@@ -376,6 +376,43 @@ In short, the shape of the histogram is the diagnosis:
 | **Under-dispersed (U-shaped)** | Tall at both ends | 0.02, 0.95, 0.03, 0.97 — piled near 0 and 1 | Intervals too narrow |
 | **Over-dispersed (inverted-U)** | Tall in the middle | 0.45, 0.52, 0.55, 0.48 — bunched near 0.5 | Intervals could be tighter |
 | **Biased forecast (skewed)** | Concentrated near 0 or near 1 | 0.05, 0.12, 0.18, 0.22 — mostly near 0 | Systematic over- or under-prediction |
+
+#### d. Empirical Coverage
+
+Pinball loss, CRPS, and PIT all judge the shape of the distribution. Empirical coverage asks something simpler: for a stated interval, how often does the actual price land inside it?
+
+For a central interval $[\hat Q_{\alpha/2}, \hat Q_{1-\alpha/2}]$ evaluated over $T$ hours:
+
+$$
+\text{Coverage} = \frac{1}{T} \sum_{t=1}^T \mathbb{1}\big\{y_t \in [\hat Q_{\alpha/2,\,t}, \hat Q_{1-\alpha/2,\,t}]\big\}
+$$
+
+A nominal $(1-\alpha)$ interval, a 90% interval say, should contain the outcome about 90% of the time. Coverage close to nominal means the intervals are trustworthy; too low means they're too narrow, the same failure the U-shaped PIT flags; too high means they're too wide, the same as the inverted-U case. It's PIT's headline number condensed to one interval instead of a full histogram, and this is also what's usually meant by PICP (Prediction Interval Coverage Probability).
+
+**A minimal example.** Ten hours, each with a stated 90% interval. The actual price lands inside it for 8 of the 10 hours:
+
+$$
+\text{Coverage} = \frac{8}{10} = 0.80 = 80\%
+$$
+
+The model promised 90% coverage but delivered 80%, so the intervals are too tight and should be widened.
+
+```python
+import matplotlib.pyplot as plt
+
+def empirical_coverage(y, q_low, q_high):
+    inside = (y >= q_low) & (y <= q_high)
+    return inside.mean()
+
+# y, q_low, q_high: one entry per hour, actual price and interval bounds
+coverage = empirical_coverage(y, q_low, q_high)
+
+plt.bar(["Nominal", "Empirical"], [0.90, coverage], color=["grey", "tab:blue"])
+plt.axhline(0.90, color="black", linestyle="--", linewidth=1)
+plt.ylabel("Coverage")
+plt.title("90% interval: nominal vs. empirical coverage")
+plt.show()
+```
 
 That's it for this post. Next time: applying all this to DK1.
 
