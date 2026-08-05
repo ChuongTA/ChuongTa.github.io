@@ -53,7 +53,8 @@ $$
 
 where $x$ is the first-stage decision, $\xi$ is the random data, and $Q(x, \xi)$ is the optimal value of the second-stage problem once $\xi$ is known.
 
-**[FIGURE: The Two-Stage Stochastic Program]** — three boxes left to right, connected by arrows: (1) "First-stage decision $x$ — made before the outcome is known", (2) "Uncertainty realizes $\xi$ — price, demand, generation", (3) "Second-stage decision $y(\xi)$ — reacts to the realized outcome". The objective, $\min_x c^T x + \mathbb{E}[Q(x,\xi)]$, sits underneath, tying the three boxes together. The point the figure should make: $x$ is locked in before $\xi$ is known; $y$ is free to react to whatever $\xi$ turns out to be.
+![The Two-Stage Stochastic Program](/EnergyForecasting/StochasticOptimisation_part1/fig_two_stage_program.png)
+*$x$ is locked in before $\xi$ is known; $y(\xi)$ is free to react to whatever $\xi$ turns out to be.*
 
 Many real problems require more than two stages. A multi-stage stochastic program extends this to a sequence of decisions $x_1, x_2, \dots, x_T$, each made after observing the random data revealed so far:
 
@@ -100,6 +101,6 @@ The battery's physical characteristics, power rating, energy capacity, charge an
 
 ## Code
 
-- [make_stochastic_optimisation_part1_figures.py](/EnergyForecasting/StochasticOptimisation_part1/make_stochastic_optimisation_part1_figures.py), generates the deterministic-vs-stochastic figure above. The two-stage program diagram is built manually.
+- [make_stochastic_optimisation_part1_figures.py](/EnergyForecasting/StochasticOptimisation_part1/make_stochastic_optimisation_part1_figures.py), generates the deterministic-vs-stochastic figure above. The two-stage program diagram was built manually.
 
 **Next:** Part 2 builds this logic into a working battery dispatch model with real code.
