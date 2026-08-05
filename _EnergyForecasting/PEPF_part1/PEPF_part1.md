@@ -126,6 +126,22 @@ Pair two quantiles and you get a **prediction interval**: a lower and upper boun
 
 If the 95% interval for tomorrow at 18:00 is 10–30 €/MWh, the price should land inside that range 95% of the time, and miss it 5% of the time.
 
+#### c. Width
+
+The size of a prediction interval is its **width**: the upper bound minus the lower bound.
+
+$$
+\text{Width}_\alpha = q_{(1+\alpha)/2} - q_{(1-\alpha)/2}
+$$
+
+For example:
+
+- 80% interval width = $q_{0.90} - q_{0.10}$
+- 90% interval width = $q_{0.95} - q_{0.05}$
+- 95% interval width = $q_{0.975} - q_{0.025}$
+
+Width says how much uncertainty the model is expressing, not whether that uncertainty is warranted, that's what coverage is for. A small width means a tight interval, a confident forecast; a large width means a cautious one. It's measured in €/MWh, the same units as the price itself, so it's directly interpretable without any conversion.
+
 ### 2.2 Probabilistic Forecasting Models
 
 Aslam et al. [2] classify probabilistic forecasting methods into two major categories:

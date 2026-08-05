@@ -225,7 +225,7 @@ Unlike QR, QRF is monotonic by construction: the quantiles are all read off the 
 
 ### 2.5 Evaluation Metrics, Averaged Across Folds
 
-Both models are scored with the same metrics introduced in the theory post: mean pinball loss, the CRPS approximation (twice the average pinball loss over the grid), empirical coverage, and mean interval width for the 80/90/95% intervals. With four folds instead of one split, each metric is now reported as a **mean across folds, with a standard deviation** showing how much it varies fold to fold:
+Both models are scored with the same metrics introduced in the theory post: mean pinball loss, the CRPS approximation (twice the average pinball loss over the grid), empirical coverage, and mean interval width (upper quantile minus lower quantile, in €/MWh) for the 80/90/95% intervals. With four folds instead of one split, each metric is now reported as a **mean across folds, with a standard deviation** showing how much it varies fold to fold:
 
 ```python
 def pinball_loss(y_true, q_hat, alpha):
