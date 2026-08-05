@@ -339,20 +339,26 @@ Back to the earlier example: quantiles at 55, 78, 110, actual outcome of 96. Twi
 
 Two catches follow directly from the panels above. First, CRPS is scale-dependent: don't compare a DK1 CRPS from 2022 to one from 2024 and call it improvement, the price level itself moved. Second, as panel (b) showed, a badly calibrated forecast can *lower* its CRPS just by widening its spread, since the score rewards honest uncertainty. That's usually a good thing, but it means CRPS alone can't tell a sharp, well-placed forecast (like panel c) from one that's merely cautious (like panel a). Pair it with a coverage check.
 
+**A minimal example.** Suppose a simplified predictive distribution puts 20% probability on 40 €/MWh, 50% on 50 €/MWh, and 30% on 60 €/MWh, and the actual price comes in at 45 €/MWh. The predictive CDF is a staircase: 0 below 40, 0.2 between 40 and 50, 0.7 between 50 and 60, and 1 above 60. Squaring the gap between that staircase and the step that jumps to 1 at 45, and summing across each price interval, gives $(0.2)^2 \times 5 + (0.2 - 1)^2 \times 5 + (0.7 - 1)^2 \times 10 = 0.2 + 3.2 + 0.9$, or **CRPS ≈ 4.3 €/MWh**. Most of that comes from the interval right around the outcome, exactly where the staircase is still far from the step.
+
 #### c. Probability Integral Transform Histogram
 
 One more calibration check: the Probability Integral Transform (PIT) histogram. For each time $i$, the PIT value is $\hat F_i(y_i)$, the predicted CDF evaluated at the true outcome $y_i$. Collect these values across many predictions, build a histogram, and it shows where the truth tends to fall inside the predicted distribution. The logic rests on a standard result: if $y \sim F$, then $F(Y) \sim U(0,1)$. So a well-calibrated forecast should produce a flat, uniform PIT histogram.
+
+**A minimal example.** Suppose a predictive CDF is known at a few price points: $F(40) = 0.10$, $F(60) = 0.40$, $F(80) = 0.75$, $F(100) = 0.95$. The actual price comes in at $y = 72$ €/MWh, between the 60 and 80 points, so linearly interpolating between them gives $F(72) = 0.40 + \frac{72 - 60}{80 - 60}(0.75 - 0.40) = 0.40 + 0.6 \times 0.35 = \mathbf{0.61}$. That single number, PIT = 0.61, says the actual price landed at the 61st percentile of that day's forecast; repeat this across many days and the resulting histogram is what Figure 6 visualises.
 
 ![Example PIT histogram shapes](/EnergyForecasting/PEPF_part1/Fig6.png)
 *Figure 6: Example PIT histogram shapes: uniform (well-calibrated), U-shaped (forecasts too narrow), inverse-U (forecasts too wide), and skewed (biased forecasts). Adapted from [5].*
 
 Each panel is built from 1,500 simulated PIT values drawn from a distribution chosen to represent one failure mode. **Well calibrated** draws uniformly on $[0,1]$, so the bars are flat: every part of the predicted distribution catches the true price about equally often, which is what a trustworthy forecast looks like. **Underdispersed** draws from a Beta(0.4, 0.4) distribution, which piles mass at both ends near 0 and 1, producing the U-shape: the true price keeps landing in the extreme tails of the forecast, meaning the predicted interval was too narrow and missed more often than it should. **Overdispersed** draws from a Beta(2.5, 2.5), which concentrates mass near 0.5, producing the inverted U: the true price keeps landing near the centre of the forecast, meaning the interval was wider than it needed to be. **Biased forecast** draws from a Beta(1.5, 3.5), whose mean sits at 0.3 rather than 0.5, skewing the bars toward the low end: the true price is disproportionately below where the forecast expected it, meaning the model's predictions run systematically too high.
 
-| Score                  | What it measures                                            | Applies to                   | Units  | Direction        | Proper?                                      |
-| ---------------------- | ----------------------------------------------------------- | ----------------------------- | ------ | ---------------- | -------------------------------------------- |
-| **Pinball loss** | Accuracy of individual quantiles, with asymmetric penalties | Quantile forecasts           | €/MWh | Lower is better  | Yes                                          |
-| **CRPS**         | Calibration and sharpness of the whole distribution         | Full predictive distribution | €/MWh | Lower is better  | Yes                                          |
-| **PICP**         | Whether stated interval coverage matches reality            | Prediction intervals         | %      | Close to nominal | No, pair with PIAW or use the interval score |
+In short, the shape of the histogram is the diagnosis:
+
+- **Uniform (flat bars):** good calibration — the true price falls equally often across every part of the predicted distribution.
+- **U-shaped (tall bars at both ends):** forecasts too narrow — the true price keeps landing in the tails, outside where the model expected it.
+- **Inverted-U (tall bars in the middle):** forecasts too wide — the true price keeps landing near the centre, so the interval could be tighter.
+- **Skewed left (mass near 0):** systematic bias, model runs too high — the true price is disproportionately below the predicted distribution.
+- **Skewed right (mass near 1):** systematic bias, model runs too low — the true price is disproportionately above the predicted distribution.
 
 That's it for this post. Next time: applying all this to DK1.
 
