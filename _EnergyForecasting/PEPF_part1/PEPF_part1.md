@@ -261,6 +261,8 @@ $$
 
 The whole point is the **asymmetry**. At τ = 0.9, sitting *below* the actual price costs nine times more than sitting above it. That's exactly what pushes the fitted 0.9 quantile up, until only about 10% of outcomes exceed it. At τ = 0.5, the two penalties match, and the loss turns symmetric: that's median regression. Lower is better; zero is a perfect hit.
 
+The same logic runs in reverse at the low end. Low quantiles (τ = 0.1) are supposed to sit *below* the actual price about 90% of the time, so under-prediction is the expected, cheap outcome, while over-prediction is heavily penalised. The median (τ = 0.5) expects to sit right in the middle, so under-prediction is just as expensive as over-prediction, with no free pass in either direction.
+
 **Worked example.** Say a model predicts $q_{0.1} = 55$, $q_{0.5} = 78$, $q_{0.9} = 110$ €/MWh for tomorrow at 18:00, and the price comes in at **96 €/MWh**.
 
 | τ  | predicted q | actual y | case                          | pinball loss                              |
