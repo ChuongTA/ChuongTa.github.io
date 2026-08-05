@@ -254,7 +254,7 @@ Two tables and five figures follow. A simple four-step read gets to the actual v
 
 **Step 1: Check accuracy.** Start with MAE, RMSE, pinball loss, and CRPS. Whichever model is lower makes closer point predictions. Here QRF wins across the board, at every lead time (24h: MAE 16.19 vs 20.63 €/MWh, CRPS 9.77 vs 12.77 €/MWh). But accuracy alone doesn't say whether the model's stated uncertainty can be trusted. That's what the next two steps check.
 
-**Step 2: Check calibration.** Compare empirical coverage to its nominal target: an 80% interval should catch the outcome about 80% of the time. Averaged across folds, both models land within a few points of nominal most of the time, but the average hides the real story: some folds calibrate well, others (the Christmas/New Year and July folds, see Discussion below) collapse to 53–66% coverage against an 80% target. Always check whether the average is hiding a fold-to-fold collapse like that before trusting it.
+**Step 2: Check calibration.** Compare empirical coverage to its nominal target: an 80% interval should catch the outcome about 80% of the time. Averaged across folds, both models land within a few points of nominal most of the time, but the average hides the real story: some folds calibrate well, others collapse well below target (the specific numbers and dates are in the Discussion below). Always check whether the average is hiding a fold-to-fold collapse like that before trusting it.
 
 **Step 3: Check sharpness.** Look at interval width. Narrower is better, but only if coverage holds up alongside it. A tighter interval that also misses more often isn't sharper, it's just wrong more confidently. QRF is narrower than QR at every lead time (24h, 90% interval: 65.7 vs 74.7 €/MWh), with calibration that's comparable at 1h and clearly better from 6h onward.
 
@@ -319,10 +319,10 @@ Look closely at this fold (Fold 4, 4 to 18 July 2025) and QRF's upper tail visib
 
 Running the first three checks on this fold's actual predictions:
 
-| Model | Exceedances (τ = 0.95) | Exceedance rate | Upper coverage deviation | Mean 95% width |
-| --- | --- | --- | --- | --- |
-| QR | 13 / 336 | 3.9% | +0.011 | 72.8 €/MWh |
-| QRF | 4 / 336 | 1.2% | +0.038 | 54.4 €/MWh |
+| Model | Exceedances (τ = 0.95) | Upper coverage deviation | Mean 95% width |
+| --- | --- | --- | --- |
+| QR | 13 / 336 (3.9%) | +0.011 | 72.8 €/MWh |
+| QRF | 4 / 336 (1.2%) | +0.038 | 54.4 €/MWh |
 
 This is a more precise, and slightly different, story than the fan chart alone suggests. QRF's 95% interval is narrower on average than QR's, consistent with the pattern in Section 3, but at the single 95th quantile specifically, QRF is exceeded only 4 times out of 336 hours against a 5% nominal target, while QR is exceeded 13 times, much closer to nominal. QRF's upper bound in this fold isn't missing extremes, it's overshooting them. That's a conservative bias in this one quantile and fold, not the sharper tail its narrower average width would suggest. QR's tail calibration is, if anything, closer to nominal here, even with a wider interval overall.
 
@@ -331,6 +331,8 @@ This is a more precise, and slightly different, story than the fan chart alone s
 
 ![95% interval width over time, Fold 4](/EnergyForecasting/PEPF_part2/QRQRF_fold4_width95_timeline.png)
 *95% interval width over time for QR and QRF on fold 4; narrow and low coverage indicates under-dispersion, wide and correct coverage indicates conservative but calibrated forecasts.*
+
+That's the full tail diagnosis for one fold at one lead time. The same walk-forward pipeline produces an equivalent fan chart for each of the other three lead times:
 
 ![QR vs QRF, 6h-ahead forecast fan chart](/EnergyForecasting/PEPF_part2/QRQRF_forecast_6h.png)
 *QR vs QRF, 6h-ahead.*
@@ -341,12 +343,16 @@ This is a more precise, and slightly different, story than the fan chart alone s
 ![QR vs QRF, 24h-ahead forecast fan chart](/EnergyForecasting/PEPF_part2/QRQRF_forecast_24h.png)
 *QR vs QRF, 24h-ahead.*
 
+Zooming out from any single fold to the full cross-validated picture:
+
 ![Reliability diagram for QR and QRF](/EnergyForecasting/PEPF_part2/QRQRF_reliability_diagram.png)
 *Reliability diagram (empirical vs nominal coverage) for QR and QRF, averaged across all four folds, for all four lead times.*
 
+A point sitting on the diagonal is perfectly calibrated at that nominal level. QRF's points hug the diagonal noticeably more closely than QR's across most lead times, the same pattern already visible in the coverage-delta table above, but compressed here into a single picture: whichever model's markers sit closer to the dashed line, for a given colour (lead time), is the better-calibrated one at that horizon. It's a useful sanity check on the tables rather than new information, since it's built from the same averaged coverage numbers, just plotted instead of listed.
+
 ## 4. Discussion
 
-**Executive takeaway.** QRF is clearly superior on accuracy and generally superior on probabilistic performance. The remaining problem is calibration instability across folds, concentrated at mid-horizons (6h, 12h). That instability is the single most important result to explain, and to fix.
+**Executive takeaway.** QRF is clearly superior on accuracy and generally superior on probabilistic performance. The remaining problem is calibration instability across folds, worst for QRF at mid-horizons (6h, 12h) and worst for QR across every horizon from 6h onward. That instability, not the accuracy gap, is the single most important result to explain, and to fix.
 
 ### 4.1 Accuracy and Distributional Performance
 
@@ -359,11 +365,9 @@ Relative improvement of QRF over QR, computed from the table in Section 3:
 | 12h | 14% | 6% | 15% | 15% |
 | 24h | 21% | 14% | 24% | 23% |
 
-QRF wins on every metric at every lead time, but the size of the win isn't uniform. Gains are largest at 1h and 24h (14 to 24%, depending on the metric) and noticeably smaller at 6h and 12h (4 to 15%), the same two horizons where calibration turns out to be shakiest below. That's not a coincidence. Whatever makes mid-horizon forecasting hard for QR (regime shifts, a weaker lag signal) also caps how much QRF's extra flexibility can buy.
+The size of that win isn't uniform, though. Gains are largest at 1h and 24h (14 to 24%, depending on the metric) and noticeably smaller at 6h and 12h (4 to 15%), the same two horizons where QRF's own calibration turns out to be shakiest below. That's not a coincidence. Whatever makes mid-horizon forecasting hard (regime shifts, a weaker lag signal) also caps how much QRF's extra flexibility can buy.
 
 Two things follow. First, the RMSE gap (driven by large errors) is close to the MAE gap at every horizon, so QRF isn't just nudging the median, it's handling spikes better, consistent with a forest picking up nonlinearities and tail behaviour a linear model per quantile can't. Second, the CRPS gap tracks the pinball gap almost exactly, confirming QRF's whole predictive CDF sits closer to the empirical distribution, not just a couple of quantiles that happen to look good.
-
-**Bottom line:** QRF makes smaller errors than QR everywhere, but the improvement shrinks at 6h and 12h ahead, the same horizons where calibration struggles most below.
 
 ### 4.2 Calibration, Quantified
 
@@ -408,9 +412,7 @@ QR shows the opposite pathology at points: wider intervals that still under-cove
 - **Feature insufficiency.** The calendar features (`dayofweek`, `is_weekend`, `is_peak`) encode an ordinary working week, but say nothing about public holidays or the demand shift a holiday causes. A holiday-flag feature is the obvious next thing to try.
 - **Model limitations.** QR's linear form has no mechanism to adapt to a regime it hasn't been trained on. QRF's tree splits give it more flexibility, but more flexible isn't immune. It still degrades on regimes genuinely absent from training. Quantile crossing is one symptom specific to QR: averaged across folds it ranges from under 1% at 1h ahead to over 20% at 6h ahead in the worst fold, spiking in the same folds where coverage collapses. QRF has no such issue by construction.
 
-All models also degrade sharply from 1h to 6h, then roughly plateau, since the lag features carry the most information about the very next hour and that advantage fades quickly once the horizon exceeds the shortest lag. QRF remains the stronger model overall, and walk-forward validation shows that conclusion holds across seasons and market regimes rather than one three-month window. The practical implication: any deployment of this pipeline should expect noticeably worse-calibrated intervals during holiday periods, at mid-horizon lead times especially, until the feature set explicitly accounts for them.
-
-**Bottom line:** The models struggle most in unusual weeks, like holidays and summer, that look nothing like most of the training data. Adding a holiday flag is the most promising next fix.
+All models also degrade sharply from 1h to 6h, then roughly plateau, since the lag features carry the most information about the very next hour and that advantage fades quickly once the horizon exceeds the shortest lag. QRF remains the stronger model overall, and walk-forward validation shows that conclusion holds across seasons and market regimes rather than one three-month window. The practical implication: any deployment of this pipeline should expect noticeably worse-calibrated intervals during holiday periods, at mid-horizon lead times especially, until the feature set explicitly accounts for them, a holiday flag being the single most promising fix to try first.
 
 ---
 
