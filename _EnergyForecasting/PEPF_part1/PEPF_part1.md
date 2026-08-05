@@ -324,36 +324,20 @@ $$
 CRPS(F, y) = \int_{-\infty}^{\infty} \big(F(z) - \mathbb{1}\{y \leq z\}\big)^2 \, dz
 $$
 
-Picture it geometrically: $\mathbb{1}\{y \leq z\}$ is a step that jumps from 0 to 1 at the actual price. CRPS is the squared area between the forecast CDF and that step. The closer the CDF hugs the step, the smaller the area, and the better the forecast.
+Picture it geometrically: $\mathbb{1}\{y \leq z\}$ is a step that jumps from 0 to 1 at the actual price, and CRPS is the squared area between the forecast CDF and that step. The closer the CDF hugs the step, the better the forecast.
 
 ![CRPS as the squared area between the predictive CDF and the step function at the observed price](/EnergyForecasting/PEPF_part1/Fig5.png)
 *Figure 5: CRPS as the squared area between the predictive CDF $F(z)$ and the step function at the observed price $y$; the shaded region being integrated in the CRPS formula. Adapted from [5].*
 
-Each panel is a normal predictive distribution centred at a value $\mu$ with spread $\sigma$, scored against the same true outcome, $y = 0$. Reading the three left to right: panel (a) is centred exactly on the outcome but wide ($\mu = 0$, $\sigma = 0.83$), scoring **CRPS = 0.194**; panel (b) is off-centre and narrow ($\mu = -0.5$, $\sigma = 0.4$), scoring **CRPS = 0.315**, the worst of the three; panel (c) is centred on the outcome *and* narrow ($\mu = 0$, $\sigma = 0.4$), scoring **CRPS = 0.093**, the best. The comparison that matters is (a) vs. (b): (a) is wider than (b) but scores better, because it is at least honest about where the price landed. (b) is narrower, which looks like a sharper forecast on paper, but it is confidently wrong, and CRPS penalises that more than it rewards the narrower spread. Panel (c) shows what the score is actually rewarding: narrow *and* correctly placed.
+Three normal predictive distributions scored against the same outcome ($y = 0$) show what that area rewards: wide-but-centred scores **CRPS = 0.194**; narrow-but-off-centre scores **CRPS = 0.315**, the worst of the three, because it's confidently wrong; narrow-and-centred scores **CRPS = 0.093**, the best. CRPS rewards being both close to the outcome (calibration) *and* confident about it (sharpness), and it penalises overconfidence more than it rewards narrowness when the two conflict.
 
-An equivalent form that is sometimes easier to interpret is:
-
-$$
-CRPS(F, y) = \mathbb{E}_F|X - y| - \tfrac{1}{2}\mathbb{E}_F|X - X'|
-$$
-
-$X$ and $X'$ are two independent draws from the predictive distribution. The first term rewards being close to the outcome. The second rewards confidence: a wide distribution has a large expected spread, and gets docked for it. CRPS balances calibration and sharpness in one number, which is exactly the trade-off the three panels above show directly.
-
-In practice, nobody computes that integral directly. Given a dense grid of equally spaced quantiles, CRPS is well approximated by twice the average pinball loss across the grid:
+In practice, nobody computes that integral directly. Given a dense grid of quantiles, CRPS is well approximated by twice the average pinball loss across the grid:
 
 $$
 \widehat{CRPS}(F, y) \approx \frac{2}{|Q|} \sum_{\tau \in Q} PL_\tau\big(q^{(\tau)}, y\big)
 $$
 
-A fine quantile grid gives an estimate of CRPS almost for free this way. Equivalently, CRPS is the integral of pinball loss over every quantile level from 0 to 1. Lower is better, and it's expressed in €/MWh, same as the price.
-
-For a point forecast, all its mass on one value, CRPS reduces exactly to the absolute error, which is what makes it directly comparable to MAE. If a point model has an MAE of 18 €/MWh and a probabilistic model has a CRPS of 12 €/MWh, the probabilistic model wins on a like-for-like scale. CRPS is essentially MAE generalised to distributions.
-
-Back to the earlier example: quantiles at 55, 78, 110, actual outcome of 96. Twice the average pinball loss gives $2 \times 4.83 \approx \mathbf{9.7}$ €/MWh, against an absolute error of 18 for the median treated as a point forecast. (Three quantiles is far too coarse a grid for this to be accurate. Use 99 quantiles in practice; this is just for illustration.)
-
-**Range of good values.** Like pinball loss, CRPS is scale-dependent, so it can't be compared across markets without normalising. The best reference point is the MAE of a matching point forecast: a good CRPS should sit somewhat below it. Solid Nordic day-ahead models run MAEs around 9–25 €/MWh, which puts a plausible target around 8–20 €/MWh in calm periods, and higher in crisis years. That's a reasoned guess, not a published benchmark, so always report CRPS next to the point baseline's MAE.
-
-Two catches follow directly from the panels above. First, CRPS is scale-dependent: don't compare a DK1 CRPS from 2022 to one from 2024 and call it improvement, the price level itself moved. Second, as panel (b) showed, a badly calibrated forecast can *lower* its CRPS just by widening its spread, since the score rewards honest uncertainty. That's usually a good thing, but it means CRPS alone can't tell a sharp, well-placed forecast (like panel c) from one that's merely cautious (like panel a). Pair it with a coverage check.
+Lower is better, it's expressed in €/MWh, and for a point forecast it reduces exactly to the absolute error, which is what makes it directly comparable to MAE. Like pinball loss, it's scale-dependent, so only compare it within the same market and price regime, and pair it with a coverage check, since a badly calibrated but wide forecast can lower its CRPS without actually being sharper.
 
 **A minimal example.** Suppose a simplified predictive distribution puts 20% probability on 40 €/MWh, 50% on 50 €/MWh, and 30% on 60 €/MWh, and the actual price comes in at 45 €/MWh. The predictive CDF is a staircase: 0 below 40, 0.2 between 40 and 50, 0.7 between 50 and 60, and 1 above 60. Squaring the gap between that staircase and the step that jumps to 1 at 45, and summing across each price interval, gives $(0.2)^2 \times 5 + (0.2 - 1)^2 \times 5 + (0.7 - 1)^2 \times 10 = 0.2 + 3.2 + 0.9$, or **CRPS ≈ 4.3 €/MWh**. Most of that comes from the interval right around the outcome, exactly where the staircase is still far from the step.
 
@@ -398,21 +382,32 @@ $$
 The model promised 90% coverage but delivered 80%, so the intervals are too tight and should be widened.
 
 ```python
+import numpy as np
 import matplotlib.pyplot as plt
 
-def empirical_coverage(y, q_low, q_high):
-    inside = (y >= q_low) & (y <= q_high)
-    return inside.mean()
+hours = np.arange(1, 11)
+q_low = np.array([40, 42, 38, 45, 50, 47, 43, 39, 41, 44])
+q_high = np.array([70, 72, 68, 75, 80, 77, 73, 69, 71, 74])
+actual = np.array([55, 60, 50, 90, 65, 58, 30, 62, 68, 59])
 
-# y, q_low, q_high: one entry per hour, actual price and interval bounds
-coverage = empirical_coverage(y, q_low, q_high)
+inside = (actual >= q_low) & (actual <= q_high)
+coverage = inside.mean()
 
-plt.bar(["Nominal", "Empirical"], [0.90, coverage], color=["grey", "tab:blue"])
-plt.axhline(0.90, color="black", linestyle="--", linewidth=1)
-plt.ylabel("Coverage")
-plt.title("90% interval: nominal vs. empirical coverage")
+fig, ax = plt.subplots(figsize=(9, 5.5))
+for h, lo, hi, is_in in zip(hours, q_low, q_high, inside):
+    ax.plot([h, h], [lo, hi], color="#00796B" if is_in else "#E91E63", lw=6, alpha=0.35)
+
+ax.scatter(hours[inside], actual[inside], color="#00796B", label="Inside interval")
+ax.scatter(hours[~inside], actual[~inside], color="#E91E63", marker="X", label="Outside interval")
+ax.set_xlabel("Hour")
+ax.set_ylabel("Price (EUR/MWh)")
+ax.set_title(f"90% intervals across 10 hours — empirical coverage = {coverage:.0%}")
+ax.legend()
 plt.show()
 ```
+
+![90% prediction intervals across ten hours, showing which ones caught the actual price](/EnergyForecasting/PEPF_part1/Fig7.png)
+*Figure 7: The same 10-hour, 8-of-10 example as a picture: each bar is one hour's stated 90% interval, dots are the actual price, and colour marks whether the outcome landed inside (teal) or outside (pink) the interval.*
 
 That's it for this post. Next time: applying all this to DK1.
 
@@ -430,4 +425,4 @@ That's it for this post. Next time: applying all this to DK1.
 
 ## Code
 
-- [make_theory_figures.py](/EnergyForecasting/PEPF_part1/make_theory_figures.py): generates Figures 3 through 6 (quantile ladder, pinball loss shape, CRPS panels, PIT histograms) from the synthetic values discussed above.
+- [make_theory_figures.py](/EnergyForecasting/PEPF_part1/make_theory_figures.py): generates Figures 3 through 7 (quantile ladder, pinball loss shape, CRPS panels, PIT histograms, empirical coverage) from the synthetic values discussed above.

@@ -225,3 +225,43 @@ plt.close()
 print(f"Successfully saved PIT histograms plot to: {output_path_pit}")
 
 
+# ── Figure 9 — Empirical Coverage Illustration ──────────────────────────────
+# Same 10-hour, 8-of-10 example used in the Empirical Coverage worked example
+hours = np.arange(1, 11)
+q_low = np.array([40, 42, 38, 45, 50, 47, 43, 39, 41, 44])
+q_high = np.array([70, 72, 68, 75, 80, 77, 73, 69, 71, 74])
+actual = np.array([55, 60, 50, 90, 65, 58, 30, 62, 68, 59])
+
+inside = (actual >= q_low) & (actual <= q_high)
+coverage = inside.mean()
+
+fig_cov, ax = plt.subplots(figsize=(9, 5.5))
+
+# Draw each interval as a vertical bar, coloured by whether it caught the outcome
+for h, lo, hi, is_in in zip(hours, q_low, q_high, inside):
+    color = "#00796B" if is_in else "#E91E63"
+    ax.plot([h, h], [lo, hi], color=color, lw=6, alpha=0.35, solid_capstyle="butt", zorder=1)
+
+# Overlay the actual price for each hour
+ax.scatter(hours[inside], actual[inside], color="#00796B", marker="o", s=70, zorder=3, label="Inside interval")
+ax.scatter(hours[~inside], actual[~inside], color="#E91E63", marker="X", s=90, zorder=3, label="Outside interval")
+
+ax.set_xticks(hours)
+ax.set_xlabel("Hour", fontsize=11, fontweight="bold", color="#37474F")
+ax.set_ylabel("Price (EUR/MWh)", fontsize=11, fontweight="bold", color="#37474F")
+ax.set_title(f"90% intervals across 10 hours — empirical coverage = {coverage:.0%}",
+             fontsize=12, fontweight="bold", color="#263238", pad=12)
+
+ax.spines["top"].set_visible(False)
+ax.spines["right"].set_visible(False)
+ax.spines["left"].set_color("#CFD8DC")
+ax.spines["bottom"].set_color("#CFD8DC")
+ax.grid(True, alpha=0.15, linestyle="--", color="#90A4AE")
+ax.legend(loc="upper left", frameon=True, facecolor="white", edgecolor="#ECEFF1")
+
+plt.tight_layout()
+output_path_coverage = os.path.join(RESULTS_DIR, "empirical_coverage.png")
+plt.savefig(output_path_coverage, dpi=150, bbox_inches="tight")
+plt.close()
+print(f"Successfully saved empirical coverage plot to: {output_path_coverage}")
+
