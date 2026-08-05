@@ -207,6 +207,14 @@ $$
 \hat\mu(x) = \sum_{i=1}^N w_i(x)\, y_i \tag{1}
 $$
 
+**A minimal example.** Suppose four training prices land in the same leaf as $x$: 40, 50, 50, and 60 €/MWh, each carrying equal weight. The conditional mean is just their average,
+
+$$
+E[Y \mid X = x] = \frac{1}{n}\sum_{i=1}^n y_i = \frac{40 + 50 + 50 + 60}{4} = 50 \text{ €/MWh,}
+$$
+
+which is exactly what equation (1) reduces to when every sample in the leaf carries the same weight.
+
 ##### Conditional Distribution Estimate
 
 QRF replaces the mean with a full conditional cumulative distribution function (CDF):
@@ -236,6 +244,14 @@ and QRF approximates it using the estimated CDF:
 $$
 \hat Q(\alpha \mid X = x) = \inf\{y : \hat F(y \mid X = x) \geq \alpha\} \tag{2}
 $$
+
+**A minimal example.** Using the same four leaf values, sorted: 40, 50, 50, 60 €/MWh. The empirical CDF is $\hat F(40) = 0.25$, $\hat F(50) = 0.75$, $\hat F(60) = 1.00$. Applying
+
+$$
+Q_\tau(Y \mid X = x) = \inf\{y : F(y \mid X = x) \geq \tau\}
+$$
+
+gives $Q_{0.1} = 40$ (since $\hat F(40) = 0.25 \geq 0.1$), $Q_{0.5} = 50$ (since $\hat F(40) = 0.25 < 0.5$ but $\hat F(50) = 0.75 \geq 0.5$), and $Q_{0.9} = 60$. Same four numbers as the mean example, but three different summaries depending on which slice of the distribution is asked for.
 
 Decision trees pick up nonlinear relationships and interactions naturally, which makes QRF a good match for imbalance prices: heavy tails, sudden jumps, nonlinear dependencies, and heteroscedasticity, all in one.
 
