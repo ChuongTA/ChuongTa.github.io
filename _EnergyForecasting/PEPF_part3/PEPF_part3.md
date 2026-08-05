@@ -19,7 +19,8 @@ Forecasting intervals with bootstrapped residuals is a method used to estimate t
 
 The error of a one-step-ahead forecast is defined as the difference between the actual value and the predicted value ($e_t = y_t - \hat{y}_{t|t-1}$). By assuming that future errors will be similar to past errors, it is possible to simulate different predictions by taking samples from the collection of errors previously seen in the past (i.e., the residuals) and adding them to the predictions.
 
-[PLACEHOLDER: diagram of the bootstrapping prediction process — error definition $e_t = y_t - \hat y_{t|t-1}$]
+![Diagram bootstrapping prediction process](/EnergyForecasting/PEPF_part3/BC_bootstrap_error_definition.png)
+*At each step, the model's prediction is perturbed by a resampled error $\epsilon$, and that perturbed value feeds into the next step's lags, so the errors compound forward through the recursion. Source: [skforecast.org, Bootstrapped Residuals](https://skforecast.org/0.15.0/user_guides/probabilistic-forecasting-bootstrapped-residuals).*
 
 Repeatedly performing this process creates a collection of slightly different predictions, which represent the distribution of possible outcomes due to the expected variance in the forecasting process.
 
