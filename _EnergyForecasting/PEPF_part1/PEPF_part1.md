@@ -370,11 +370,12 @@ Each panel is built from 1,500 simulated PIT values drawn from a distribution ch
 
 In short, the shape of the histogram is the diagnosis:
 
-- **Uniform (flat bars):** good calibration — the true price falls equally often across every part of the predicted distribution.
-- **U-shaped (tall bars at both ends):** forecasts too narrow — the true price keeps landing in the tails, outside where the model expected it.
-- **Inverted-U (tall bars in the middle):** forecasts too wide — the true price keeps landing near the centre, so the interval could be tighter.
-- **Skewed left (mass near 0):** systematic bias, model runs too high — the true price is disproportionately below the predicted distribution.
-- **Skewed right (mass near 1):** systematic bias, model runs too low — the true price is disproportionately above the predicted distribution.
+| Shape | Bars | Numeric intuition (4 PIT values) | Diagnosis |
+| --- | --- | --- | --- |
+| **Well-calibrated (uniform)** | Flat across $[0,1]$ | 0.10, 0.40, 0.70, 0.90 — spread evenly | Good calibration |
+| **Under-dispersed (U-shaped)** | Tall at both ends | 0.02, 0.95, 0.03, 0.97 — piled near 0 and 1 | Intervals too narrow |
+| **Over-dispersed (inverted-U)** | Tall in the middle | 0.45, 0.52, 0.55, 0.48 — bunched near 0.5 | Intervals could be tighter |
+| **Biased forecast (skewed)** | Concentrated near 0 or near 1 | 0.05, 0.12, 0.18, 0.22 — mostly near 0 | Systematic over- or under-prediction |
 
 That's it for this post. Next time: applying all this to DK1.
 
