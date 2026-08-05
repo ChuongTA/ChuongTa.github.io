@@ -244,19 +244,21 @@ The pipeline runs both models across four lead times (1h, 6h, 12h, 24h) and all 
 
 ## 3. Results
 
+**In one sentence:** QRF is more accurate and gives narrower intervals than QR at every lead time, but both models struggle to stay well calibrated during unusual weeks like holidays.
+
 Running `qr_qrf_walkforward_pipeline.py` on the real DK1 data, across all four walk-forward folds, gives the following comparison. Each number is the **mean across the 4 folds**, with the standard deviation in parentheses showing how much that metric actually varies from one time period to the next.
 
 ### 3.1 How to Read the Numbers Below
 
 Two tables and five figures follow. A simple four-step read gets to the actual verdict without getting lost in them.
 
-**Step 1 — Check accuracy.** Start with MAE, RMSE, pinball loss, and CRPS. Whichever model is lower makes closer point predictions. Here QRF wins across the board, at every lead time (24h: MAE 16.19 vs 20.63 €/MWh, CRPS 9.77 vs 12.77 €/MWh) — but accuracy alone says nothing about whether the model's stated uncertainty is trustworthy, which is what the next two steps are for.
+**Step 1: Check accuracy.** Start with MAE, RMSE, pinball loss, and CRPS. Whichever model is lower makes closer point predictions. Here QRF wins across the board, at every lead time (24h: MAE 16.19 vs 20.63 €/MWh, CRPS 9.77 vs 12.77 €/MWh). But accuracy alone doesn't say whether the model's stated uncertainty can be trusted. That's what the next two steps check.
 
-**Step 2 — Check calibration.** Compare empirical coverage to its nominal target: an 80% interval should catch the outcome about 80% of the time. Averaged across folds, both models land within a few points of nominal most of the time, but the average hides the real story: some folds calibrate well, others (the Christmas/New Year and July folds, see Discussion below) collapse to 53–66% coverage against an 80% target. Always check whether the average is hiding a fold-to-fold collapse like that before trusting it.
+**Step 2: Check calibration.** Compare empirical coverage to its nominal target: an 80% interval should catch the outcome about 80% of the time. Averaged across folds, both models land within a few points of nominal most of the time, but the average hides the real story: some folds calibrate well, others (the Christmas/New Year and July folds, see Discussion below) collapse to 53–66% coverage against an 80% target. Always check whether the average is hiding a fold-to-fold collapse like that before trusting it.
 
-**Step 3 — Check sharpness.** Look at interval width. Narrower is better, but only if coverage holds up alongside it — a tighter interval that also misses more often isn't sharper, it's just wrong more confidently. QRF is narrower than QR at every lead time (24h, 90% interval: 65.7 vs 74.7 €/MWh), with calibration that's comparable at 1h and clearly better from 6h onward.
+**Step 3: Check sharpness.** Look at interval width. Narrower is better, but only if coverage holds up alongside it. A tighter interval that also misses more often isn't sharper, it's just wrong more confidently. QRF is narrower than QR at every lead time (24h, 90% interval: 65.7 vs 74.7 €/MWh), with calibration that's comparable at 1h and clearly better from 6h onward.
 
-**Step 4 — Combine calibration and sharpness.** This is the actual verdict, not either metric alone:
+**Step 4: Combine calibration and sharpness.** This is the actual verdict, not either metric alone:
 
 | Width | Coverage | Verdict |
 | --- | --- | --- |
@@ -331,9 +333,11 @@ Relative improvement of QRF over QR, computed from the table in Section 3:
 | 12h | 14% | 6% | 15% | 15% |
 | 24h | 21% | 14% | 24% | 23% |
 
-QRF wins on every metric at every lead time, but the size of the win isn't uniform: gains are largest at 1h and 24h (14–24% depending on the metric) and noticeably smaller at 6h and 12h (4–15%), the same two horizons where calibration turns out to be shakiest below. That's not a coincidence — whatever makes mid-horizon forecasting hard for QR (regime shifts, a weaker lag signal) also caps how much QRF's extra flexibility can buy.
+QRF wins on every metric at every lead time, but the size of the win isn't uniform. Gains are largest at 1h and 24h (14 to 24%, depending on the metric) and noticeably smaller at 6h and 12h (4 to 15%), the same two horizons where calibration turns out to be shakiest below. That's not a coincidence. Whatever makes mid-horizon forecasting hard for QR (regime shifts, a weaker lag signal) also caps how much QRF's extra flexibility can buy.
 
 Two things follow. First, the RMSE gap (driven by large errors) is close to the MAE gap at every horizon, so QRF isn't just nudging the median, it's handling spikes better, consistent with a forest picking up nonlinearities and tail behaviour a linear model per quantile can't. Second, the CRPS gap tracks the pinball gap almost exactly, confirming QRF's whole predictive CDF sits closer to the empirical distribution, not just a couple of quantiles that happen to look good.
+
+**Bottom line:** QRF makes smaller errors than QR everywhere, but the improvement shrinks at 6h and 12h ahead, the same horizons where calibration struggles most below.
 
 ### 4.2 Calibration, Quantified
 
@@ -350,7 +354,7 @@ Coverage delta (empirical − nominal) by model, lead time, and interval:
 | QR, 24h | −0.079 | −0.080 | −0.061 |
 | QRF, 24h | −0.019 | −0.002 | +0.002 |
 
-At 1h, both models are slightly conservative (small positive deltas). At 6h and 12h, QR's deltas run as large as −0.10; QRF's 90% and 95% intervals improve noticeably there, but its 80% interval doesn't (−0.073 to −0.074, marginally worse than QR's), so "QRF calibrates better at mid-horizons" is only half true — it depends which interval you're looking at. By 24h, QRF is essentially on target while QR is still under-covering by 6 to 8 points.
+At 1h, both models are slightly conservative (small positive deltas). At 6h and 12h, QR's deltas run as large as −0.10. QRF's 90% and 95% intervals improve noticeably there, but its 80% interval doesn't (−0.073 to −0.074, marginally worse than QR's), so "QRF calibrates better at mid-horizons" is only half true. It depends which interval you're looking at. By 24h, QRF is essentially on target while QR is still under-covering by 6 to 8 points.
 
 **Fold variability matters more than the mean.** The reported ± is the standard deviation across the four folds, and it's large: QR's Cov80 at 6h is 0.735 (±0.166), meaning individual folds swing roughly ±16 percentage points around that mean. Two of the four folds are consistently the hardest to calibrate for both models. Fold 1 (test window 19 September to 3 October 2024) and Fold 3 (30 March to 13 April 2025) calibrate well, close to nominal coverage at every lead time. Fold 2 (24 December 2024 to 7 January 2025, spanning Christmas and New Year) and Fold 4 (4 to 18 July 2025) collapse to 53–66% actual coverage against an 80% nominal target. Reporting only the fold-average, the way a single train/test split effectively forces you to, hides that collapse entirely.
 
@@ -362,19 +366,25 @@ $$
 
 If the nominal target lies outside that interval, the miscalibration isn't sampling noise. With a two-week test window ($T_f \approx 336$ hours) and a fold where coverage drops to $\hat C = 0.55$ against an 80% target: $0.55 \pm 1.96\sqrt{0.55 \times 0.45 / 336} \approx 0.55 \pm 0.053$, or roughly $[0.50, 0.60]$. Nominal 0.80 sits far outside that band, so this is a genuinely miscalibrated fold, not noise.
 
+**Bottom line:** On average, both models look reasonably calibrated. But averages hide bad folds: during Christmas/New Year and July, actual coverage can fall to 53–66% when it should be 80%. That's a real, measurable failure, not random noise.
+
 ### 4.3 Sharpness Versus Calibration
 
-QRF's intervals are consistently narrower than QR's (1h, 80% interval: 31.4 vs 38.2 €/MWh) while also being closer to nominal coverage at most lead times, narrow and calibrated together, the combination that actually matters rather than narrowness alone.
+QRF's intervals are consistently narrower than QR's (1h, 80% interval: 31.4 vs 38.2 €/MWh) while also being closer to nominal coverage at most lead times. Narrow and calibrated together is the combination that actually matters, not narrowness alone.
 
-QR shows the opposite pathology at points: wider intervals that still under-cover at 6h and 12h. Wide but wrong isn't a dispersion problem, since the intervals aren't too narrow, it's a sign of misspecified tails or bias in where the interval sits relative to the true distribution.
+QR shows the opposite pathology at points: wider intervals that still under-cover at 6h and 12h. Wide but wrong isn't a dispersion problem, since the intervals aren't too narrow. It's a sign of misspecified tails or bias in where the interval sits relative to the true distribution.
+
+**Bottom line:** QRF gives tighter prediction intervals that are also more trustworthy. QR sometimes gives wider intervals that are still wrong more often, the worst possible combination of the two.
 
 ### 4.4 Likely Causes of the Collapse, and What to Check Next
 
 - **Regime mismatch.** The worst-calibrated folds line up with unusual regimes: Fold 2's test window spans Christmas and New Year, Fold 4 sits in July. Training data up to that point contains few or no comparable examples to learn from.
 - **Feature insufficiency.** The calendar features (`dayofweek`, `is_weekend`, `is_peak`) encode an ordinary working week, but say nothing about public holidays or the demand shift a holiday causes. A holiday-flag feature is the obvious next thing to try.
-- **Model limitations.** QR's linear form has no mechanism to adapt to a regime it hasn't been trained on. QRF's tree splits give it more flexibility, but more flexible isn't immune, it still degrades on regimes genuinely absent from training. Quantile crossing is one symptom specific to QR: averaged across folds it ranges from under 1% at 1h ahead to over 20% at 6h ahead in the worst fold, spiking in the same folds where coverage collapses. QRF has no such issue by construction.
+- **Model limitations.** QR's linear form has no mechanism to adapt to a regime it hasn't been trained on. QRF's tree splits give it more flexibility, but more flexible isn't immune. It still degrades on regimes genuinely absent from training. Quantile crossing is one symptom specific to QR: averaged across folds it ranges from under 1% at 1h ahead to over 20% at 6h ahead in the worst fold, spiking in the same folds where coverage collapses. QRF has no such issue by construction.
 
 All models also degrade sharply from 1h to 6h, then roughly plateau, since the lag features carry the most information about the very next hour and that advantage fades quickly once the horizon exceeds the shortest lag. QRF remains the stronger model overall, and walk-forward validation shows that conclusion holds across seasons and market regimes rather than one three-month window. The practical implication: any deployment of this pipeline should expect noticeably worse-calibrated intervals during holiday periods, at mid-horizon lead times especially, until the feature set explicitly accounts for them.
+
+**Bottom line:** The models struggle most in unusual weeks, like holidays and summer, that look nothing like most of the training data. Adding a holiday flag is the most promising next fix.
 
 ---
 
