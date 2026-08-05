@@ -139,7 +139,7 @@ def plot_reliability_diagram(reliability_rows, out_path):
         lead_time, model, nominal_coverage, empirical_coverage
     already averaged across folds.
     """
-    fig, ax = plt.subplots(figsize=(7.5, 7.5))
+    fig, ax = plt.subplots(figsize=(4.5, 4.5))
     ax.plot([0, 1], [0, 1], color="#37474F", linestyle="--", lw=1.5, alpha=0.7,
             label="Perfect Calibration (Ideal)")
 
