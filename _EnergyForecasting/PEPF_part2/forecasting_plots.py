@@ -8,6 +8,7 @@ one figure.
 """
 import os
 import numpy as np
+import pandas as pd
 import matplotlib
 matplotlib.use("Agg")  # headless-safe backend; avoids Tk errors with no display
 import matplotlib.pyplot as plt
@@ -174,3 +175,80 @@ def plot_reliability_diagram(reliability_rows, out_path):
     plt.savefig(out_path, dpi=150)
     plt.close()
     print(f"Saved reliability diagram to: {out_path}")
+
+
+def plot_local_exceedance_rate(dates, y_true, preds_by_model, tau, out_path, window_hours=48):
+    """
+    Rolling local exceedance rate at a single upper quantile tau (e.g. 0.95):
+    the fraction of actual prices above the predicted tau-quantile, inside a
+    rolling window. A well-calibrated tau quantile should hover near 1 - tau.
+    """
+    colors = {"QR": "#1976D2", "QRF": "#00796B"}
+    dates = pd.to_datetime(dates)
+    fig, ax = plt.subplots(figsize=(9, 5))
+
+    for name, preds in preds_by_model.items():
+        exceed = (y_true > preds[tau]).astype(float)
+        rolling = pd.Series(exceed, index=dates).rolling(f"{window_hours}h", min_periods=window_hours // 2).mean()
+        ax.plot(rolling.index, rolling.values, color=colors.get(name, "#607D8B"), lw=2, label=name)
+
+    ax.axhline(1 - tau, color="#37474F", linestyle="--", lw=1.5, label=f"Nominal ({1 - tau:.0%})")
+    ax.set_ylim(-0.02, max(0.4, ax.get_ylim()[1]))
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d"))
+    ax.xaxis.set_major_locator(mdates.DayLocator(interval=2))
+    ax.set_xlabel("Date (UTC)", fontsize=11, fontweight="bold", color="#37474F")
+    ax.set_ylabel(f"Local exceedance rate, {window_hours}h rolling", fontsize=11, fontweight="bold", color="#37474F")
+    ax.set_title(f"Local exceedance rate at $\\tau={tau}$, Fold 4", fontsize=13,
+                 fontweight="bold", pad=12, color="#263238")
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.spines["left"].set_color("#CFD8DC")
+    ax.spines["bottom"].set_color("#CFD8DC")
+    ax.legend(fontsize=9, loc="upper right", frameon=True, facecolor="white", edgecolor="#ECEFF1")
+    ax.grid(True, alpha=0.2, linestyle="--", color="#90A4AE")
+
+    plt.tight_layout()
+    plt.savefig(out_path, dpi=150)
+    plt.close()
+    print(f"Saved local exceedance rate plot to: {out_path}")
+
+
+def plot_interval_width_over_time(dates, y_true, preds_by_model, lo_a, hi_a, out_path, spike_z=2.0):
+    """
+    Interval width (hi_a - lo_a quantile) over time for each model, with
+    price-spike timestamps (z-score of y_true above spike_z) marked.
+    """
+    colors = {"QR": "#1976D2", "QRF": "#00796B"}
+    dates = pd.to_datetime(dates)
+    fig, ax = plt.subplots(figsize=(9, 5))
+
+    for name, preds in preds_by_model.items():
+        width = preds[hi_a] - preds[lo_a]
+        ax.plot(dates, width, color=colors.get(name, "#607D8B"), lw=2, label=f"{name} width")
+
+    z = (y_true - np.mean(y_true)) / np.std(y_true)
+    spike_mask = z > spike_z
+    for spike_date in np.asarray(dates)[spike_mask]:
+        ax.axvline(spike_date, color="#E91E63", lw=0.8, alpha=0.35, zorder=1)
+    if spike_mask.any():
+        ax.axvline(np.asarray(dates)[spike_mask][0], color="#E91E63", lw=0.8, alpha=0.35,
+                   zorder=1, label="Price spike")
+
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d"))
+    ax.xaxis.set_major_locator(mdates.DayLocator(interval=2))
+    ax.set_xlabel("Date (UTC)", fontsize=11, fontweight="bold", color="#37474F")
+    ax.set_ylabel(f"Interval width ({int(hi_a * 100 - lo_a * 100)}%), EUR/MWh", fontsize=11,
+                  fontweight="bold", color="#37474F")
+    ax.set_title("95% Interval Width Over Time, Fold 4", fontsize=13,
+                 fontweight="bold", pad=12, color="#263238")
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.spines["left"].set_color("#CFD8DC")
+    ax.spines["bottom"].set_color("#CFD8DC")
+    ax.legend(fontsize=9, loc="upper right", frameon=True, facecolor="white", edgecolor="#ECEFF1")
+    ax.grid(True, alpha=0.2, linestyle="--", color="#90A4AE")
+
+    plt.tight_layout()
+    plt.savefig(out_path, dpi=150)
+    plt.close()
+    print(f"Saved interval width over time plot to: {out_path}")
