@@ -306,6 +306,22 @@ By that scale, both models' fold-averaged coverage gaps mostly sit in the good-t
 ![QR vs QRF, 1h-ahead forecast fan chart](/EnergyForecasting/PEPF_part2/QRQRF_forecast_1h.png)
 *QR vs QRF, 1h-ahead, on the most recent fold's two-week test window, with 80% and 95% prediction intervals.*
 
+Look closely at this fold (Fold 4, 4 to 18 July 2025) and QRF's upper tail visibly sits above QR's during the price spikes. A higher upper tail means QRF is putting more probability on extreme high prices in this specific window. That's a good thing if those extremes actually happen, it's better tail calibration, and a bad thing if they don't, it's over-dispersion and a loss of sharpness for no benefit. Since QRF has the lower CRPS and narrower average interval widths at every lead time in the tables above, a wider tail in this one fold looks more like the model correctly picking up on an unusual regime than a general tendency to be too wide.
+
+A few checks would confirm which case this is:
+
+- **Exceedance count.** Count how many actual prices in the fold 4 test window exceed each model's 95th-quantile prediction; a well-calibrated 95% quantile should be exceeded roughly 5% of the time.
+- **One-sided upper coverage.** Compute the empirical $P(y \leq \hat Q_{0.95})$ for the window and report its deviation from 0.95; a large positive deviation means the tail is too wide, a negative one means it's too narrow.
+- **Interval width over time.** Plot the 95% interval width for both models across the two weeks and mark the timestamps of the price spikes, to see whether QRF's wider tail lines up with the spikes or persists everywhere.
+- **Rolling pinball loss at τ = 0.95.** Compute a 7-day rolling pinball loss at the 0.95 quantile for both models and compare; if QRF's rolling loss is lower around the spikes, the wider tail is earning its keep.
+- **PIT histogram for the fold.** Build the PIT histogram restricted to fold 4 only; a histogram skewed toward 1 would confirm the upper tail is systematically too wide rather than just wide during genuine extremes.
+
+**Placeholder A**
+*Local exceedance rates for the 95th quantile on fold 4; lower exceedance closer to 5% indicates better tail calibration.*
+
+**Placeholder B**
+*95% interval width over time for QR and QRF on fold 4; narrow and low coverage indicates under-dispersion, wide and correct coverage indicates conservative but calibrated forecasts.*
+
 ![QR vs QRF, 6h-ahead forecast fan chart](/EnergyForecasting/PEPF_part2/QRQRF_forecast_6h.png)
 *QR vs QRF, 6h-ahead.*
 
