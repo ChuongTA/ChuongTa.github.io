@@ -10,14 +10,6 @@ html[data-theme="dark"] {
     background-size: cover;
   }
 
-  /* Adjust masthead for glassmorphism */
-  .masthead {
-    background: rgba(45, 38, 80, 0.45) !important;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
   /* Make links and headings have AI style purple/cyan highlights */
   --global-link-color: #c084fc;
   --global-link-color-hover: #e9d5ff;
@@ -52,6 +44,139 @@ html[data-theme="dark"] {
     border-left-color: #a855f7 !important;
     border-top: 1px solid rgba(255, 255, 255, 0.03);
     border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  }
+}
+
+/* Floating Rounded Rectangle Navigation Bar */
+.masthead {
+  position: fixed !important;
+  top: 15px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 95% !important;
+  max-width: 1400px !important;
+  border-radius: 30px !important; /* rounded rectangle */
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding: 0 24px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+  background: rgba(45, 38, 80, 0.6) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  height: 60px !important;
+  display: flex !important;
+  align-items: center !important;
+  z-index: 1000 !important;
+
+  &::after {
+    display: none !important; /* remove bottom border bar */
+  }
+
+  &__inner-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    
+    .greedy-nav {
+      background: transparent !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      width: 100% !important;
+      
+      .visible-links {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        width: auto !important;
+        list-style: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        flex-grow: 1;
+        
+        li {
+          display: block !important;
+          
+          a {
+            margin: 0 8px !important;
+            padding: 8px 12px !important;
+            font-size: 0.95rem !important;
+            color: #f3e8ff !important;
+            border-radius: 8px !important;
+            transition: all 0.2s ease !important;
+            
+            &:hover {
+              background: rgba(255, 255, 255, 0.08) !important;
+              color: #fff !important;
+            }
+            
+            &:before {
+              display: none !important; /* remove default underline border hover */
+            }
+          }
+        }
+      }
+
+      /* Keep search and theme toggles grouped cleanly on the right */
+      #search-toggle, #theme-toggle {
+        display: block !important;
+        margin-left: auto !important;
+        
+        a {
+          padding: 8px !important;
+          margin: 0 4px !important;
+          border-radius: 50% !important;
+          width: 38px !important;
+          height: 38px !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          color: #f3e8ff !important;
+          
+          &:hover {
+            background: rgba(255, 255, 255, 0.08) !important;
+          }
+        }
+      }
+      
+      #theme-toggle {
+        margin-left: 0 !important;
+      }
+      
+      /* Disable prioritization button since we have layout space */
+      button {
+        display: none !important;
+      }
+    }
+  }
+}
+
+/* Page spacing updates for the floating navbar */
+#main {
+  max-width: 1400px !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+  margin-top: 100px !important;
+}
+
+/* Horizontal Margin Reductions */
+.page {
+  @include breakpoint($large) {
+    width: 78% !important;
+    float: right !important;
+    margin-right: 0 !important;
+    padding-right: 0 !important;
+  }
+}
+
+.no-sidebar-layout {
+  .page {
+    @include breakpoint($large) {
+      width: 100% !important;
+      max-width: 1200px !important;
+      margin: 0 auto !important;
+      padding-left: 30px !important;
+      padding-right: 30px !important;
+    }
   }
 }
 
@@ -251,33 +376,35 @@ html[data-theme="dark"] {
   }
 }
 
-/* Adjust layout when sidebar is hidden */
-.no-sidebar-layout {
-  .sidebar {
-    display: none !important;
+/* Customize Right TOC Spy to match dark purple theme and keep visible on larger viewports */
+@media (min-width: 925px) {
+  .toc-panel {
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    position: fixed !important;
+    right: 20px !important;
+    top: 100px !important;
+    width: 250px !important;
+    max-height: calc(100vh - 140px) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    z-index: 99 !important;
   }
-  .page {
-    @include breakpoint($large) {
-      width: 100% !important;
-      float: none !important;
-      margin-left: 0 !important;
-      margin-right: 0 !important;
-      padding-left: 5% !important;
-      padding-right: 5% !important;
-      max-width: 900px;
-      margin: 0 auto !important;
-    }
+  
+  .toc-toggle {
+    display: none !important;
   }
 }
 
-/* Customize Right TOC Spy to match dark purple theme */
 html[data-theme="dark"] {
   .toc-panel {
-    background-color: rgba(45, 38, 80, 0.8) !important;
+    background-color: rgba(45, 38, 80, 0.7) !important;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border-color: rgba(168, 85, 247, 0.2) !important;
-    box-shadow: -4px 4px 20px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(168, 85, 247, 0.2) !important;
+    border-radius: 12px !important;
+    box-shadow: -5px 5px 25px rgba(0, 0, 0, 0.3);
 
     &__title {
       color: #d8b4fe !important;
@@ -307,6 +434,24 @@ html[data-theme="dark"] {
     &:hover {
       background-color: #a855f7 !important;
       color: #fff !important;
+    }
+  }
+}
+
+/* Clear vertical scrollbar styling for TOC Panel */
+.toc-panel__list {
+  &::-webkit-scrollbar {
+    width: 6px !important;
+  }
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-radius: 3px !important;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(168, 85, 247, 0.6) !important;
+    border-radius: 3px !important;
+    &:hover {
+      background: rgba(168, 85, 247, 0.9) !important;
     }
   }
 }
