@@ -172,6 +172,7 @@
 
   /* ── Boot ────────────────────────────────────────────────── */
   function init() {
+    if (document.body.classList.contains('homepage-layout')) return;
     var headings = Array.from(document.querySelectorAll(HEADING_SELECTOR));
     if (headings.length < MIN_HEADINGS) return;   // not worth showing
     buildTOC(headings);
