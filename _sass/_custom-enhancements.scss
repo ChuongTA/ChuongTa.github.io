@@ -519,4 +519,31 @@ html[data-theme="dark"] {
   }
 }
 
+/* Dark Mode Syntax Highlighting Overrides (Dracula/VS Code hybrid) */
+html[data-theme="dark"] {
+  .highlight {
+    color: #f8f8f2;
+    
+    .c, .cm, .cp, .c1, .cs { color: #6272a4 !important; font-style: italic; } /* Comment */
+    .err { color: #ff5555 !important; } /* Error */
+    .k, .kd, .kn, .kp, .kr, .kt { color: #ff79c6 !important; font-weight: bold; } /* Keyword */
+    .o, .ow { color: #ff79c6 !important; } /* Operator */
+    .p { color: #f8f8f2 !important; } /* Punctuation */
+    
+    .s, .s1, .s2, .sb, .sc, .sd, .se, .sh, .si, .sx, .ss { color: #ffb86c !important; } /* String (warm orange/coral) */
+    .m, .mf, .mh, .mi, .mo, .il { color: #bd93f9 !important; } /* Number */
+    
+    .n, .nx { color: #f8f8f2 !important; } /* Name */
+    .na { color: #50fa7b !important; } /* Attribute */
+    .nb, .bp { color: #8be9fd !important; } /* Builtin */
+    .nc { color: #8be9fd !important; font-weight: bold; } /* Class */
+    .no { color: #bd93f9 !important; } /* Constant */
+    .nd { color: #50fa7b !important; } /* Decorator */
+    .nf { color: #50fa7b !important; } /* Function (bright green) */
+    .nt { color: #ff79c6 !important; } /* Tag */
+    .nv, .vc, .vg, .vi { color: #8be9fd !important; } /* Variable */
+  }
+}
+
+
 
