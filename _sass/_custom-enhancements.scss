@@ -640,10 +640,6 @@ html[data-theme="dark"] {
 
   /* Slide-in animation */
   animation: email-popup-in 180ms ease;
-  @keyframes email-popup-in {
-    from { opacity: 0; transform: translateY(-50%) translateX(-6px); }
-    to   { opacity: 1; transform: translateY(-50%) translateX(0); }
-  }
 
   &[hidden] { display: none; }
 
@@ -724,10 +720,16 @@ html[data-theme="dark"] {
     opacity: 1;
     animation: carrier-run 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
   }
+}
 
-  @keyframes carrier-run {
-    0%   { left: -120px; opacity: 1; }
-    85%  { left: calc(100vw + 20px); opacity: 1; }
-    100% { left: calc(100vw + 20px); opacity: 0; }
-  }
+/* Top-level @keyframes (must be outside selectors for older Sass) */
+@keyframes email-popup-in {
+  from { opacity: 0; transform: translateY(-50%) translateX(-6px); }
+  to   { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
+
+@keyframes carrier-run {
+  0%   { left: -120px; opacity: 1; }
+  85%  { left: calc(100vw + 20px); opacity: 1; }
+  100% { left: calc(100vw + 20px); opacity: 0; }
 }
