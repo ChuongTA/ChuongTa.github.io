@@ -58,6 +58,30 @@ html[data-theme="dark"] {
     border-top: 1px solid rgba(255, 255, 255, 0.03);
     border-bottom: 1px solid rgba(255, 255, 255, 0.03);
   }
+
+  /* Author profile card — a small card hugging just the avatar/bio/links,
+     not the full-height .sidebar wrapper (that one is position:fixed and
+     spans the whole viewport, so giving IT a background paints a giant
+     box behind the navbar instead of a snug card). */
+  .author__card {
+    background: rgba(45, 38, 80, 0.55) !important;
+    border: 1px solid rgba(168, 85, 247, 0.25) !important;
+    border-radius: 16px !important;
+    padding: 1.25rem 1.1rem !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+  }
+
+  /* Icon/text legibility for the social links row — the default muted grey
+     is too close to the dark gradient background to read. */
+  .author__urls a,
+  .author__urls li,
+  .email-popup-trigger {
+    color: rgba(255, 255, 255, 0.75) !important;
+
+    &:hover { color: #e9d5ff !important; }
+  }
 }
 
 
@@ -228,8 +252,8 @@ html:not([data-theme="dark"]) body {
       width: 100% !important;
       max-width: 1100px !important;
       margin: 0 auto !important;
-      padding-left: 20px !important;
-      padding-right: 290px !important; /* reserve space for TOC on the right */
+      padding-left: 280px !important; /* reserve space for TOC panel, which sits on the left */
+      padding-right: 20px !important;
       float: none !important;
     }
   }
@@ -454,11 +478,25 @@ html body .toc-panel,
     display: flex !important;
     flex-direction: column !important;
     z-index: 99 !important;
+
+    /* Respect the close button even on wide screens */
+    &.toc-panel--hidden {
+      transform: translateX(-100%) !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
   }
-  
+
+  /* Reopen handle: sits where the panel would be, only shown once it's closed */
   html body .toc-toggle,
   .toc-toggle {
-    display: none !important;
+    display: flex !important;
+    top: 100px !important;
+    left: 20px !important;
+
+    &[aria-expanded="true"] {
+      display: none !important;
+    }
   }
 }
 
@@ -555,15 +593,17 @@ html[data-theme="dark"] {
     }
   }
 
-  /* Custom text selection colors */
-  ::selection {
-    background: rgba(99, 102, 241, 0.45) !important; /* Indigo blue tint */
-    color: #ffffff !important;
-  }
-  ::-moz-selection {
-    background: rgba(99, 102, 241, 0.45) !important;
-    color: #ffffff !important;
-  }
+}
+
+/* Custom text-selection color — applies in every theme, not just dark mode,
+   so selecting code text never falls back to the reset stylesheet's black. */
+::selection {
+  background: rgba(99, 102, 241, 0.45) !important; /* Indigo blue tint */
+  color: #ffffff !important;
+}
+::-moz-selection {
+  background: rgba(99, 102, 241, 0.45) !important;
+  color: #ffffff !important;
 }
 
 /* Dark Mode Syntax Highlighting Overrides (Dracula/VS Code hybrid) */
@@ -595,7 +635,10 @@ html[data-theme="dark"] {
 
 /* ── Email popup & letter-carrier animation ────────────────────────────────── */
 
-/* Trigger button styled like the social links */
+/* Trigger button styled like the social links.
+   !important on display is required: the base theme hides every <button>
+   inside .author__urls-wrapper on desktop (it's meant for the mobile-only
+   "Follow" button), and that descendant selector also catches this one. */
 .email-popup-trigger {
   background: none;
   border: none;
@@ -605,7 +648,7 @@ html[data-theme="dark"] {
   font-size: inherit;
   font-family: inherit;
   color: var(--global-text-color-light, #7a8288);
-  display: flex;
+  display: flex !important;
   align-items: center;
   transition: color 120ms ease;
   width: 100%;
@@ -617,24 +660,32 @@ html[data-theme="dark"] {
 /* Popup tooltip card */
 .email-popup {
   position: absolute;
-  left: 105%;
-  top: 50%;
-  transform: translateY(-50%);
+  left: 0;
+  right: 0;         /* match the card's own width instead of an intrinsic
+                        nowrap width — the sidebar clips horizontal overflow,
+                        which was cutting the address and copy button off */
+  top: 100%;
+  margin-top: 6px;
   z-index: 999;
 
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 6px;
 
-  background: rgba(30, 15, 60, 0.92);
+  /* The base theme sets `.author__urls li { white-space: nowrap }`, and
+     white-space is inherited — without resetting it here, the address span
+     inherits nowrap and refuses to wrap no matter what it sets itself. */
+  white-space: normal;
+
+  background: rgba(30, 15, 60, 0.95);
   border: 1px solid rgba(168, 85, 247, 0.4);
   border-radius: 10px;
-  padding: 7px 12px;
+  padding: 8px 10px;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 
-  white-space: nowrap;
   font-size: 0.82rem;
   color: #f3e8ff;
 
@@ -645,9 +696,12 @@ html[data-theme="dark"] {
 
   &__address {
     font-family: 'Courier New', monospace;
-    font-size: 0.8rem;
+    font-size: 0.74rem;
     letter-spacing: 0.01em;
     color: #e9d5ff;
+    word-break: break-all;
+    flex: 1 1 auto;
+    min-width: 0;
   }
 
   &__copy {
@@ -659,6 +713,7 @@ html[data-theme="dark"] {
     color: #d8b4fe;
     display: flex;
     align-items: center;
+    flex-shrink: 0;
     transition: background 120ms ease, transform 100ms ease;
 
     &:hover {
@@ -671,14 +726,14 @@ html[data-theme="dark"] {
   &__copied-msg {
     font-size: 0.72rem;
     color: #86efac;
-    min-width: 0;
+    flex-basis: 100%;
     overflow: hidden;
-    max-width: 0;
-    transition: max-width 250ms ease, opacity 200ms ease;
+    max-height: 0;
+    transition: max-height 250ms ease, opacity 200ms ease;
     opacity: 0;
 
     &.visible {
-      max-width: 80px;
+      max-height: 1.2em;
       opacity: 1;
     }
   }
@@ -704,6 +759,16 @@ html[data-theme="dark"] {
 
   &__figure { display: inline-block; }
 
+  /* The runner emoji faces left by default; since the mail emoji trails to
+     its right (reading order) and travel is left-to-right, the mail leads
+     and the runner should face right — toward it, not away from it. */
+  &__runner {
+    display: inline-block;
+    transform: scaleX(-1);
+  }
+
+  &__mail { display: inline-block; }
+
   &__bubble {
     background: rgba(30, 15, 60, 0.88);
     border: 1px solid rgba(168, 85, 247, 0.4);
@@ -718,14 +783,14 @@ html[data-theme="dark"] {
   /* Running animation: slides from left edge to right edge of screen */
   &.running {
     opacity: 1;
-    animation: carrier-run 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: carrier-run 20s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
   }
 }
 
 /* Top-level @keyframes (must be outside selectors for older Sass) */
 @keyframes email-popup-in {
-  from { opacity: 0; transform: translateY(-50%) translateX(-6px); }
-  to   { opacity: 1; transform: translateY(-50%) translateX(0); }
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes carrier-run {

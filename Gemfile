@@ -9,3 +9,6 @@ group :jekyll_plugins do
   gem 'jemoji'
   gem 'webrick', '~> 1.8'
 end
+
+# Required for Windows timezone resolution locally
+gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]

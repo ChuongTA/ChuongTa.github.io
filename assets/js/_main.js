@@ -120,10 +120,12 @@ $(document).ready(function () {
   // FitVids init
   fitvids();
 
-  // Follow menu drop down
-  $(".author__urls-wrapper button").on("click", function () {
+  // Follow menu drop down (direct child only — the Email button also lives
+  // inside .author__urls-wrapper, nested under .author__urls, and must not
+  // trigger this "Follow" toggle or it fades the whole icon list away)
+  $(".author__urls-wrapper > button").on("click", function () {
     $(".author__urls").fadeToggle("fast", function () { });
-    $(".author__urls-wrapper button").toggleClass("open");
+    $(".author__urls-wrapper > button").toggleClass("open");
   });
 
   // Restore the follow menu if toggled on a window resize
@@ -256,20 +258,45 @@ $(document).ready(function () {
     });
   }
 
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  function onCopySuccess() {
+    if (emailCopiedMsg) {
+      emailCopiedMsg.textContent = '✓ Copied!';
+      emailCopiedMsg.classList.add('visible');
+    }
+    setTimeout(function() {
+      closePopup();
+      runCarrier();
+    }, 900);
+  }
+
   if (emailCopyBtn && emailPopup) {
     emailCopyBtn.addEventListener('click', function(e) {
       e.stopPropagation();
       const address = emailPopup.querySelector('.email-popup__address');
-      if (address) {
-        navigator.clipboard.writeText(address.textContent.trim()).then(function() {
-          if (emailCopiedMsg) {
-            emailCopiedMsg.textContent = '✓ Copied!';
-            emailCopiedMsg.classList.add('visible');
-          }
-          setTimeout(function() {
-            closePopup();
-            runCarrier();
-          }, 900);
+      if (!address) return;
+      const text = address.textContent.trim();
+
+      // execCommand is synchronous and needs no permissions/secure-context
+      // checks, so it's the more reliable path — try it first, and only
+      // reach for the async Clipboard API if it fails.
+      if (fallbackCopy(text)) {
+        onCopySuccess();
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(onCopySuccess, function(err) {
+          console.warn('[email-copy] clipboard write failed', err);
         });
       }
     });

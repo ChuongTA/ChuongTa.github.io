@@ -58,11 +58,14 @@
     background:  none;
     border:      none;
     cursor:      pointer;
-    font-size:   1.2rem;
-    line-height: 1;
-    padding:     0 0.15rem;
+    display:     flex;
+    align-items: center;
+    justify-content: center;
+    padding:     0.2rem;
     color:       var(--global-text-color-light, #7a8288);
     transition:  color 120ms ease;
+
+    svg { display: block; }
 
     &:hover { color: var(--global-text-color, #3d4449); }
   }
