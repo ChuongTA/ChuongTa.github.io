@@ -391,30 +391,28 @@ html[data-theme="dark"] {
   }
 }
 
-/* Customize Right TOC Spy to match dark purple theme and keep visible on larger viewports */
+/* Customize Left TOC Spy to match dark purple theme and keep visible on larger viewports */
 @media (min-width: 925px) {
   .toc-panel {
     transform: translateX(0) !important;
     opacity: 1 !important;
     pointer-events: auto !important;
     position: fixed !important;
-    right: 20px !important;
+    left: 20px !important;
+    right: auto !important;
     top: 100px !important;
-    width: 250px !important;
+    width: 220px !important;
     max-height: calc(100vh - 140px) !important;
     display: flex !important;
     flex-direction: column !important;
     z-index: 99 !important;
   }
   
-  .no-sidebar-layout .toc-panel {
-    right: MAX(20px, calc((100vw - 1100px) / 2 + 20px)) !important;
-  }
-  
   .toc-toggle {
     display: none !important;
   }
 }
+
 
 html[data-theme="dark"] {
   .toc-panel {
