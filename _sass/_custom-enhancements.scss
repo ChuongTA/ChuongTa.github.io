@@ -60,6 +60,19 @@ html[data-theme="dark"] {
   }
 }
 
+/* Prevent "whole paragraph suddenly selected" — force normal drag-to-select behaviour
+   on all content elements. Some themes set user-select:all on blocks, which causes
+   a single click to grab the entire block. Override that here. */
+p, li, h1, h2, h3, h4, h5, h6,
+.page__content, .page__body,
+pre, code, blockquote,
+.highlight, div.highlight {
+  -webkit-user-select: text !important;
+  -moz-user-select:    text !important;
+  -ms-user-select:     text !important;
+  user-select:         text !important;
+}
+
 /* Floating Rounded Rectangle Navigation Bar */
 .masthead {
   position: fixed !important;
