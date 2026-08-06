@@ -507,5 +507,16 @@ html[data-theme="dark"] {
       width: auto !important;
     }
   }
+
+  /* Custom text selection colors */
+  ::selection {
+    background: rgba(99, 102, 241, 0.45) !important; /* Indigo blue tint */
+    color: #ffffff !important;
+  }
+  ::-moz-selection {
+    background: rgba(99, 102, 241, 0.45) !important;
+    color: #ffffff !important;
+  }
 }
+
 
