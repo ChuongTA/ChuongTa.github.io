@@ -60,6 +60,7 @@ html[data-theme="dark"] {
   }
 }
 
+
 /* Prevent "whole paragraph suddenly selected" — force normal drag-to-select behaviour
    on all content elements. Some themes set user-select:all on blocks, which causes
    a single click to grab the entire block. Override that here. */
@@ -71,6 +72,19 @@ pre, code, blockquote,
   -moz-user-select:    text !important;
   -ms-user-select:     text !important;
   user-select:         text !important;
+}
+
+/* Light Theme — white + dot grid + soft teal corner glow */
+html[data-theme="light"] body,
+html:not([data-theme="dark"]) body {
+  background-color: #ffffff !important;
+  background-image:
+    /* Soft teal gradient glow in bottom-right corner */
+    radial-gradient(ellipse 65% 65% at 100% 100%, rgba(180, 230, 220, 0.45) 0%, transparent 70%),
+    /* Dot grid: tiny #c5d8d4 dots on transparent */
+    radial-gradient(circle, #c8dbd8 1px, transparent 1px) !important;
+  background-size: auto, 22px 22px !important;
+  background-attachment: fixed !important;
 }
 
 /* Floating Rounded Rectangle Navigation Bar */
