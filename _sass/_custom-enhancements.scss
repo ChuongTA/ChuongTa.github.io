@@ -408,7 +408,7 @@ html[data-theme="dark"] {
   }
   
   .no-sidebar-layout .toc-panel {
-    right: max(20px, calc((100vw - 1100px) / 2 + 20px)) !important;
+    right: MAX(20px, calc((100vw - 1100px) / 2 + 20px)) !important;
   }
   
   .toc-toggle {
