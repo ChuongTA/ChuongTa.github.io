@@ -12,7 +12,7 @@ layout: compress
     {% include mathjax.html %}
   </head>
 
-  <body>
+  <body class="{% if page.url == '/' or page.url == '/index.html' %}homepage-layout{% else %}no-sidebar-layout{% endif %}">
 
     {% include browser-upgrade.html %}
     {% include masthead.html %}
@@ -25,6 +25,9 @@ layout: compress
         {% include footer.html %}
       </footer>
     </div>
+
+    {% include search-modal.html %}
+    {% include scroll-top.html %}
 
     {% include scripts.html %}
 

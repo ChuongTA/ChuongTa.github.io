@@ -1,0 +1,27 @@
+---
+layout: none
+permalink: /search.json
+---
+[
+  {% assign first = true %}
+  {% for doc in site.pages %}
+    {% if doc.title and doc.url and doc.url != "/search.json" %}
+      {% unless first %},{% endunless %}{
+        "title": {{ doc.title | jsonify }},
+        "url": {{ doc.url | prepend: site.baseurl | jsonify }},
+        "excerpt": {{ doc.excerpt | strip_html | strip_newlines | truncatewords: 25 | jsonify }}
+      }
+      {% assign first = false %}
+    {% endif %}
+  {% endfor %}
+  {% for doc in site.documents %}
+    {% if doc.title and doc.url %}
+      {% unless first %},{% endunless %}{
+        "title": {{ doc.title | jsonify }},
+        "url": {{ doc.url | prepend: site.baseurl | jsonify }},
+        "excerpt": {{ doc.excerpt | strip_html | strip_newlines | truncatewords: 25 | jsonify }}
+      }
+      {% assign first = false %}
+    {% endif %}
+  {% endfor %}
+]

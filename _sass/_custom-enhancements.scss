@@ -1,0 +1,312 @@
+/* ==========================================================================
+   CUSTOM ENHANCEMENTS & PREMIUM AI PURPLE GRADIENT THEME
+   ========================================================================== */
+
+/* Dark Mode Purple Gradient Theme */
+html[data-theme="dark"] {
+  body {
+    background-image: linear-gradient(135deg, #100b26 0%, #2d2650 50%, #1e1138 100%);
+    background-attachment: fixed;
+    background-size: cover;
+  }
+
+  /* Adjust masthead for glassmorphism */
+  .masthead {
+    background: rgba(45, 38, 80, 0.45) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* Make links and headings have AI style purple/cyan highlights */
+  --global-link-color: #c084fc;
+  --global-link-color-hover: #e9d5ff;
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: #f3e8ff;
+  }
+
+  /* Accent color overrides */
+  .btn--primary {
+    background-color: #7c3aed !important;
+    background-image: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+    border: none;
+    box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
+    transition: all 0.3s ease;
+    &:hover {
+      background-image: linear-gradient(135deg, #c084fc 0%, #8b5cf6 100%);
+      box-shadow: 0 6px 20px rgba(124, 58, 237, 0.6);
+      transform: translateY(-2px);
+    }
+  }
+
+  /* Glassmorphism cards / code blocks */
+  pre, code, blockquote {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: #e9d5ff !important;
+  }
+
+  .education-item, .research-item {
+    background: linear-gradient(to right, rgba(168, 85, 247, 0.08), transparent) !important;
+    border-left-color: #a855f7 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  }
+}
+
+/* Scroll to Top Button styling */
+.scroll-top-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+  color: #fff;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  &:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(124, 58, 237, 0.7);
+    background: linear-gradient(135deg, #c084fc 0%, #8b5cf6 100%);
+  }
+
+  &.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+}
+
+/* Glassmorphism Search Modal */
+.search-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+
+  &.open {
+    opacity: 1;
+    visibility: visible;
+    
+    .search-modal__content {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+  }
+
+  &__overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(16, 11, 38, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  &__content {
+    position: relative;
+    width: 90%;
+    max-width: 650px;
+    max-height: 80vh;
+    background: rgba(45, 38, 80, 0.85);
+    border: 1px solid rgba(168, 85, 247, 0.25);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: scale(0.95) translateY(-20px);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    padding: 1.25em;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .search-input-wrapper {
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+
+    .search-icon {
+      position: absolute;
+      left: 15px;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 1.1em;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.8em 1em 0.8em 2.8em;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 1.1em;
+      outline: none;
+      transition: all 0.3s ease;
+
+      &:focus {
+        border-color: rgba(168, 85, 247, 0.8);
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+      }
+    }
+  }
+
+  .search-close-btn {
+    background: none;
+    border: none;
+    font-size: 2em;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    margin-left: 0.5em;
+    line-height: 1;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+
+  &__results {
+    flex-grow: 1;
+    padding: 1em 1.25em;
+    overflow-y: auto;
+    max-height: calc(80vh - 100px);
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(168, 85, 247, 0.4);
+      border-radius: 3px;
+    }
+  }
+
+  .search-results-placeholder {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.4);
+    padding: 2em 0;
+    font-size: 1.1em;
+  }
+
+  .search-result-item {
+    display: block;
+    padding: 0.9em 1.25em;
+    margin-bottom: 0.75em;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    text-decoration: none;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(168, 85, 247, 0.15);
+      border-color: rgba(168, 85, 247, 0.4);
+      transform: translateX(4px);
+    }
+
+    h3 {
+      margin: 0 0 0.25em 0;
+      font-size: 1.15em;
+      color: #f3e8ff;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.9em;
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.4;
+    }
+  }
+}
+
+/* Adjust layout when sidebar is hidden */
+.no-sidebar-layout {
+  .sidebar {
+    display: none !important;
+  }
+  .page {
+    @include breakpoint($large) {
+      width: 100% !important;
+      float: none !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      padding-left: 5% !important;
+      padding-right: 5% !important;
+      max-width: 900px;
+      margin: 0 auto !important;
+    }
+  }
+}
+
+/* Customize Right TOC Spy to match dark purple theme */
+html[data-theme="dark"] {
+  .toc-panel {
+    background-color: rgba(45, 38, 80, 0.8) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-color: rgba(168, 85, 247, 0.2) !important;
+    box-shadow: -4px 4px 20px rgba(0, 0, 0, 0.4);
+
+    &__title {
+      color: #d8b4fe !important;
+    }
+    
+    &__link {
+      color: rgba(255, 255, 255, 0.6) !important;
+      &:hover {
+        color: #f3e8ff !important;
+      }
+    }
+
+    &__item--active {
+      &::before {
+        background-color: #a855f7 !important;
+      }
+      > .toc-panel__link {
+        color: #c084fc !important;
+      }
+    }
+  }
+
+  .toc-toggle {
+    background-color: rgba(45, 38, 80, 0.8) !important;
+    border-color: rgba(168, 85, 247, 0.2) !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    &:hover {
+      background-color: #a855f7 !important;
+      color: #fff !important;
+    }
+  }
+}

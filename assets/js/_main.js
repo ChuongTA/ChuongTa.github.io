@@ -139,4 +139,86 @@ $(document).ready(function () {
     preventDefault: false,
   });
 
+  // --- Client-side Search ---
+  let searchData = null;
+  const searchModal = $('#search-modal');
+  const searchInput = $('#search-input');
+  const searchResults = $('#search-results');
+
+  // Toggle search modal
+  $('#search-toggle').on('click', function(e) {
+    e.preventDefault();
+    searchModal.addClass('open');
+    setTimeout(() => searchInput.focus(), 100);
+    // Fetch search index if not already loaded
+    if (!searchData) {
+      const siteUrl = window.location.pathname.startsWith('/ChuongTa.github.io') ? '/ChuongTa.github.io' : '';
+      fetch(siteUrl + '/search.json')
+        .then(res => res.json())
+        .then(data => {
+          searchData = data;
+        })
+        .catch(err => console.error('Error loading search index:', err));
+    }
+  });
+
+  $('#search-close, .search-modal__overlay').on('click', function() {
+    searchModal.removeClass('open');
+  });
+
+  // Handle escape key to close modal
+  $(document).on('keydown', function(e) {
+    if (e.key === 'Escape' && searchModal.hasClass('open')) {
+      searchModal.removeClass('open');
+    }
+  });
+
+  // Perform search matching
+  searchInput.on('input', function() {
+    const query = $(this).val().toLowerCase().trim();
+    if (!query) {
+      searchResults.html('<div class="search-results-placeholder">Type to search...</div>');
+      return;
+    }
+    if (!searchData) {
+      searchResults.html('<div class="search-results-placeholder">Loading search index...</div>');
+      return;
+    }
+
+    const matches = searchData.filter(item => {
+      return (item.title && item.title.toLowerCase().includes(query)) || 
+             (item.excerpt && item.excerpt.toLowerCase().includes(query));
+    });
+
+    if (matches.length === 0) {
+      searchResults.html('<div class="search-results-placeholder">No results found</div>');
+      return;
+    }
+
+    const html = matches.map(item => `
+      <a href="${item.url}" class="search-result-item">
+        <h3>${item.title}</h3>
+        <p>${item.excerpt || ''}</p>
+      </a>
+    `).join('');
+    searchResults.html(html);
+  });
+
+  // --- Scroll-to-Top Button ---
+  const scrollTopBtn = $('#scroll-top-btn');
+  $(window).on('scroll', function() {
+    if ($(window).scrollTop() > 300) {
+      scrollTopBtn.addClass('show');
+    } else {
+      scrollTopBtn.removeClass('show');
+    }
+  });
+
+  scrollTopBtn.on('click', function() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+
 });
