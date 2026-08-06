@@ -39,8 +39,29 @@
         <li><a href="{{ author.uri }}"><i class="fas fa-fw fa-link icon-pad-right" aria-hidden="true"></i>{{ site.data.ui-text[site.locale].website_label | default: "Website" }}</a></li>
       {% endif %}
       {% if author.email %}
-        <li><a href="mailto:{{ author.email }}"><i class="fas fa-fw fa-envelope icon-pad-right" aria-hidden="true"></i>{{ site.data.ui-text[site.locale].email_label | default: "Email" }}</a></li>
+        <li>
+          <button id="email-btn" class="email-popup-trigger" type="button" aria-label="Show email address">
+            <i class="fas fa-fw fa-envelope icon-pad-right" aria-hidden="true"></i>Email
+          </button>
+          <!-- Email popup tooltip -->
+          <div id="email-popup" class="email-popup" role="dialog" aria-label="Email address" hidden>
+            <span class="email-popup__address">{{ author.email }}</span>
+            <button id="email-copy-btn" class="email-popup__copy" type="button" aria-label="Copy email">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+            </button>
+            <span class="email-popup__copied-msg" id="email-copied-msg" aria-live="polite"></span>
+          </div>
+          <!-- Funny letter carrier that runs after copy/dismiss -->
+          <div id="letter-carrier" class="letter-carrier" aria-hidden="true">
+            <span class="letter-carrier__figure">🏃📬</span>
+            <span class="letter-carrier__bubble">On its way!</span>
+          </div>
+        </li>
       {% endif %}
+
 
       <!-- Font Awesome and Academicons icons / Academic websites -->
       {% if author.academia %}

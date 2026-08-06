@@ -221,4 +221,69 @@ $(document).ready(function () {
     });
   });
 
+  // --- Email Popup & Letter-Carrier Animation ---
+  const emailBtn      = document.getElementById('email-btn');
+  const emailPopup    = document.getElementById('email-popup');
+  const emailCopyBtn  = document.getElementById('email-copy-btn');
+  const emailCopiedMsg = document.getElementById('email-copied-msg');
+  const letterCarrier = document.getElementById('letter-carrier');
+
+  function runCarrier() {
+    if (!letterCarrier) return;
+    letterCarrier.classList.remove('running');
+    // Force reflow to restart animation
+    void letterCarrier.offsetWidth;
+    letterCarrier.classList.add('running');
+    letterCarrier.addEventListener('animationend', function onEnd() {
+      letterCarrier.classList.remove('running');
+      letterCarrier.removeEventListener('animationend', onEnd);
+    });
+  }
+
+  function closePopup() {
+    if (emailPopup) emailPopup.hidden = true;
+    if (emailCopiedMsg) {
+      emailCopiedMsg.classList.remove('visible');
+      emailCopiedMsg.textContent = '';
+    }
+  }
+
+  if (emailBtn && emailPopup) {
+    emailBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const isHidden = emailPopup.hidden;
+      emailPopup.hidden = !isHidden;
+    });
+  }
+
+  if (emailCopyBtn && emailPopup) {
+    emailCopyBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const address = emailPopup.querySelector('.email-popup__address');
+      if (address) {
+        navigator.clipboard.writeText(address.textContent.trim()).then(function() {
+          if (emailCopiedMsg) {
+            emailCopiedMsg.textContent = '✓ Copied!';
+            emailCopiedMsg.classList.add('visible');
+          }
+          setTimeout(function() {
+            closePopup();
+            runCarrier();
+          }, 900);
+        });
+      }
+    });
+  }
+
+  // Click outside to close popup and send the carrier
+  document.addEventListener('click', function(e) {
+    if (emailPopup && !emailPopup.hidden) {
+      if (!emailPopup.contains(e.target) && e.target !== emailBtn) {
+        closePopup();
+        runCarrier();
+      }
+    }
+  });
+
 });
+
