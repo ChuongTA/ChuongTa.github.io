@@ -2,10 +2,10 @@
    CUSTOM ENHANCEMENTS & PREMIUM AI PURPLE GRADIENT THEME
    ========================================================================== */
 
-/* Dark Mode Purple Gradient Theme */
+/* Dark Mode Purple Gradient Theme — darker, moodier tones */
 html[data-theme="dark"] {
   body {
-    background-image: linear-gradient(135deg, #0e052f 0%, #35155d 30%, #12486b 65%, #0a4d2f 100%) !important;
+    background-image: linear-gradient(135deg, #07021a 0%, #1a0b38 30%, #07263a 65%, #041f16 100%) !important;
     background-attachment: fixed;
     background-size: cover;
   }
@@ -32,11 +32,24 @@ html[data-theme="dark"] {
     }
   }
 
-  /* Glassmorphism cards / code blocks */
-  pre, code, blockquote {
-    background: rgba(255, 255, 255, 0.04) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  /* Dark code block background so colorful syntax text is visible */
+  .highlight,
+  pre.highlight,
+  div.highlight {
+    background: rgba(10, 5, 30, 0.75) !important;
+    border: 1px solid rgba(168, 85, 247, 0.15) !important;
+    border-radius: 8px !important;
+  }
+
+  pre, code {
+    background: rgba(10, 5, 30, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
     color: #e9d5ff !important;
+  }
+
+  blockquote {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-left: 3px solid rgba(168, 85, 247, 0.5) !important;
   }
 
   .education-item, .research-item {
@@ -392,7 +405,15 @@ html[data-theme="dark"] {
 }
 
 /* Customize Left TOC Spy to match dark purple theme and keep visible on larger viewports */
+/* Force LEFT positioning with maximum specificity */
+html body .toc-panel,
+.toc-panel {
+  left: 20px !important;
+  right: auto !important;
+}
+
 @media (min-width: 925px) {
+  html body .toc-panel,
   .toc-panel {
     transform: translateX(0) !important;
     opacity: 1 !important;
@@ -408,6 +429,7 @@ html[data-theme="dark"] {
     z-index: 99 !important;
   }
   
+  html body .toc-toggle,
   .toc-toggle {
     display: none !important;
   }
