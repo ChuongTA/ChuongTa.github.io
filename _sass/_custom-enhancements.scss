@@ -186,10 +186,11 @@ html[data-theme="dark"] {
   .page {
     @include breakpoint($large) {
       width: 100% !important;
-      max-width: 1200px !important;
+      max-width: 1100px !important;
       margin: 0 auto !important;
-      padding-left: 30px !important;
-      padding-right: 30px !important;
+      padding-left: 20px !important;
+      padding-right: 290px !important; /* reserve space for TOC on the right */
+      float: none !important;
     }
   }
 }
@@ -404,6 +405,10 @@ html[data-theme="dark"] {
     display: flex !important;
     flex-direction: column !important;
     z-index: 99 !important;
+  }
+  
+  .no-sidebar-layout .toc-panel {
+    right: max(20px, calc((100vw - 1100px) / 2 + 20px)) !important;
   }
   
   .toc-toggle {
