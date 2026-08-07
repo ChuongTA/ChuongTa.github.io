@@ -214,10 +214,10 @@ best_models = {}
 # Dictionary to hold test metrics for base models and stacking model for the spider plots
 radar_metrics = {
     target: {
-        "Ridge": {"MSE": [], "RMSE": [], "R2": []},
-        "Random Forest": {"MSE": [], "RMSE": [], "R2": []},
-        "LightGBM": {"MSE": [], "RMSE": [], "R2": []},
-        "Stacking model": {"MSE": [], "RMSE": [], "R2": []}
+        "Ridge": {"MSE": [], "NRMSE": [], "SMAPE": []},
+        "Random Forest": {"MSE": [], "NRMSE": [], "SMAPE": []},
+        "LightGBM": {"MSE": [], "NRMSE": [], "SMAPE": []},
+        "Stacking model": {"MSE": [], "NRMSE": [], "SMAPE": []}
     } for target in TARGETS
 }
 
@@ -306,21 +306,21 @@ for target in TARGETS:
         
         # Store metrics in radar_metrics dict
         radar_metrics[target]["Ridge"]["MSE"].append(ridge_mse)
-        radar_metrics[target]["Ridge"]["RMSE"].append(ridge_rmse)
-        radar_metrics[target]["Ridge"]["R2"].append(ridge_r2)
-        
+        radar_metrics[target]["Ridge"]["NRMSE"].append(nrmse(y_test, ridge_test_pred))
+        radar_metrics[target]["Ridge"]["SMAPE"].append(smape(y_test, ridge_test_pred))
+
         radar_metrics[target]["Random Forest"]["MSE"].append(rf_mse)
-        radar_metrics[target]["Random Forest"]["RMSE"].append(rf_rmse)
-        radar_metrics[target]["Random Forest"]["R2"].append(rf_r2)
-        
+        radar_metrics[target]["Random Forest"]["NRMSE"].append(nrmse(y_test, rf_test_pred))
+        radar_metrics[target]["Random Forest"]["SMAPE"].append(smape(y_test, rf_test_pred))
+
         radar_metrics[target]["LightGBM"]["MSE"].append(lgbm_mse)
-        radar_metrics[target]["LightGBM"]["RMSE"].append(lgbm_rmse)
-        radar_metrics[target]["LightGBM"]["R2"].append(lgbm_r2)
-        
+        radar_metrics[target]["LightGBM"]["NRMSE"].append(nrmse(y_test, lgbm_test_pred))
+        radar_metrics[target]["LightGBM"]["SMAPE"].append(smape(y_test, lgbm_test_pred))
+
         radar_metrics[target]["Stacking model"]["MSE"].append(stack_mse)
-        radar_metrics[target]["Stacking model"]["RMSE"].append(stack_rmse)
-        radar_metrics[target]["Stacking model"]["R2"].append(stack_r2)
-        
+        radar_metrics[target]["Stacking model"]["NRMSE"].append(nrmse(y_test, stack_test_pred))
+        radar_metrics[target]["Stacking model"]["SMAPE"].append(smape(y_test, stack_test_pred))
+
         # Compute final test metrics
         mae = mean_absolute_error(y_test, stack_test_pred)
         stack_nrmse = nrmse(y_test, stack_test_pred)
@@ -431,7 +431,7 @@ plot_forecast_group([12, 24, 48], "12_24_48h")
 # ---------------------------------------------------------------------------
 def plot_bar_charts(target, metrics_data, filename):
     model_names = ["Ridge", "Random Forest", "LightGBM", "Stacking model"]
-    metrics = ["MSE", "RMSE", "R2"]
+    metrics = ["MSE", "NRMSE", "SMAPE"]
     colors = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100"]  # blue, orange, aqua, yellow
     
     fig, axes = plt.subplots(1, 3, figsize=(18, 5))

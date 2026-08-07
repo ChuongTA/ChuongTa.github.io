@@ -16,7 +16,10 @@ category: "Wave Energy"
 This is the first post in a series on wave energy: what makes it an attractive resource, the physics governing ocean waves, the machines built to extract energy from them, and how wave conditions are actually observed and measured. Later posts in this series move into forecasting; this one lays the groundwork.
 
 <figure>
-  <img src="/EnergyForecasting/Wave_Energy/0_Introduction_of_Wave_Energy/Images/Wave_Energy.gif" alt="Graphical abstract: an animated illustration of a figure surfing across large ocean waves">
+  <video autoplay loop muted playsinline style="width: 50%; max-width: 100%; display: block; margin: 0 auto;">
+    <source src="/EnergyForecasting/Wave_Energy/0_Introduction_of_Wave_Energy/Images/Recording 2026-08-07 134413.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
   <figcaption>Fig. 0 - Graphical abstract. Source: <a href="https://www.instagram.com/reel/DQVD_ELDysU/">Instagram reel</a>.</figcaption>
 </figure>
 
