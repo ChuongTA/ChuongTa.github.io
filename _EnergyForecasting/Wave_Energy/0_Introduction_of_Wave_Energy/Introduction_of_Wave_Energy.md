@@ -5,7 +5,7 @@ layout: single
 author_profile: true
 permalink: /EnergyForecasting/Wave_Energy/Introduction_of_Wave_Energy/
 usemathjax: true
-image: "/EnergyForecasting/Wave_Energy/0_Introduction_of_Wave_Energy/Images/Fig1.png"
+image: "/EnergyForecasting/Wave_Energy/0_Introduction_of_Wave_Energy/Images/Fig0.png"
 date: 2026-08-07
 category: "Wave Energy"
 ---
@@ -15,6 +15,11 @@ category: "Wave Energy"
 ---
 
 This is the first post in a series on wave energy: what makes it an attractive resource, the physics governing ocean waves, the machines built to extract energy from them, and how wave conditions are actually observed and measured. Later posts in this series move into forecasting and converter modeling; this one lays the groundwork.
+
+<figure>
+  <img src="/EnergyForecasting/Wave_Energy/0_Introduction_of_Wave_Energy/Images/Fig0.png" alt="Graphical abstract: a stylized ukiyo-e style illustration of a figure surfing across large ocean waves">
+  <figcaption>Fig. 0 — Graphical abstract.</figcaption>
+</figure>
 
 ## Why Wave Energy
 
