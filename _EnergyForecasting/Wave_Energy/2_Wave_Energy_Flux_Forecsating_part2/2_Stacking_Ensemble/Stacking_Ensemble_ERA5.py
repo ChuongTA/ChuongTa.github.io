@@ -46,8 +46,9 @@ RESULTS_DIR = os.path.join(SCRIPT_DIR, "Results_Stacking")
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
 # Path to the data and results from notebook 3
-DATA_PATH = os.path.join(SCRIPT_DIR, "..", "0_Data_Acquisition", "0_ERA5_Data", "ERA5_Ocean_2024_01_to_2026_07.csv")
-BEST_LAGS_PATH = os.path.join(SCRIPT_DIR, "..", "3_Light_GBM_with_ERA5_Data", "Results_3", "2.2_best_lags_full.csv")
+PART1_CODE_DIR = r"D:\33_Obsidian\33_Github\ChuongTa.github.io\_EnergyForecasting\Wave_Energy\1_Wave_Energy_Flux_Forecasting_part1\01_Code"
+DATA_PATH = os.path.join(PART1_CODE_DIR, "0_Data_Acquisition", "0_ERA5_Data", "ERA5_Ocean_2024_01_to_2026_07.csv")
+BEST_LAGS_PATH = os.path.join(PART1_CODE_DIR, "3_Light_GBM_with_ERA5_Data", "Results_3", "2.2_best_lags_full.csv")
 
 TARGETS = ["swh", "mwp"]
 LEAD_STEPS = [1, 3, 6, 12, 24, 48]
