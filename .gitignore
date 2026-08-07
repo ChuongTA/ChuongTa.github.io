@@ -18,3 +18,12 @@ package-lock.json
 
 # Ignore folders related to IDEs
 .vscode/
+**/.claude/
+
+# Python bytecode cache from post code/notebooks
+__pycache__/
+*.pyc
+
+# Raw intermediate NetCDF dumps — large, and superseded by the derived CSVs
+# that posts actually reference
+**/raw_netcdf/

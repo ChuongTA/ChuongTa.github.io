@@ -168,6 +168,8 @@ exclude:
   - .asset-cache
   - .bundle
   - .github
+  - "**/.claude"
+  - "**/__pycache__"
   - .jekyll-assets-cache
   - .sass-cache
   - assets/js/_main.js
