@@ -234,4 +234,4 @@ Modern reanalysis products such as ERA5 further complement direct observation, p
     
 [^3]: World Meteorological Organization, *Guide to Wave Analysis and Forecasting*, 3rd ed., WMO-No. 702, Geneva, Switzerland: WMO, 2018.
     
-[^4]: EMEC — European Marine Energy Centre, [&amp;#34;Wave Devices&amp;#34;](https://www.emec.org.uk/marine-energy/wave-devices/).
+[^4]: EMEC — European Marine Energy Centre, ["Wave Devices"](https://www.emec.org.uk/marine-energy/wave-devices/).
