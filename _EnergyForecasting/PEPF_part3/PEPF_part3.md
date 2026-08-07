@@ -7,6 +7,7 @@ permalink: /EnergyForecasting/PEPF_part3/
 usemathjax: true
 image: "/EnergyForecasting/PEPF_part3/Results/DeepDive/interval_binned.png"
 date: 2026-08-03
+category: "Electricity Market"
 ---
 
 > **Series:** Probabilistic Electricity Price Forecasting | **Part:** 3 (Bootstrapped Residuals)

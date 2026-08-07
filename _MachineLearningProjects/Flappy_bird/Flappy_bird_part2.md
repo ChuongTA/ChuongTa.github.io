@@ -8,6 +8,7 @@ permalink: /MachineLearning/Flappy_bird_part2.md/
 usemathjax: true
 image: "/MachineLearningProjects/Flappy_bird/Flappy_bird/Game_input.jpg"
 date: 2025-07-15
+category: "Machine learning projects"
 ---
 ![AI trained flappy bird](/MachineLearningProjects/Flappy_bird/Flappy_bird/AI_Flappy_bird.gif)
 

@@ -7,6 +7,7 @@ author_profile: true
 permalink: /MachineLearning/00_Random_Forest.md/ 
 usemathjax: true
 date: 2025-04-10
+category: "Machine learning algorithms"
 ---
 > **Series:** Machine Learning Algorithms | **Part:** 1 of 2 (Theory)
 

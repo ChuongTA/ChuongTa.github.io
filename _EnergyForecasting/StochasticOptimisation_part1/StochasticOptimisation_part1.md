@@ -7,6 +7,7 @@ permalink: /EnergyForecasting/StochasticOptimisation_part1/
 usemathjax: true
 image: "/EnergyForecasting/StochasticOptimisation_part1/fig_deterministic_vs_stochastic.png"
 date: 2026-08-06
+category: "Electricity Market"
 ---
 
 > **Series:** Stochastic Optimisation for Energy Storage | **Part:** 1 (Theory)

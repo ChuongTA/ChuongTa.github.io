@@ -7,6 +7,7 @@ author_profile: true
 permalink: /MachineLearning/KNN_part1.md/
 usemathjax: true
 date: 2025-02-15
+category: "Machine learning algorithms"
 ---
 ![K-Nearest Neighbour (KNN) steps](/MachineLearningProjects/00_Traditional_ML/KNN_part_1.png)
 *Source: step‑by‑step KNN guide by Utsav Desai on Medium.*
