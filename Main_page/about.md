@@ -8,9 +8,12 @@ redirect_from:
 ---
 Hi! My name is Chuong Dang Ta. [translate:Chương] is my Vietnamese name, and yes, it's tough for foreigners to pronounce (but no hard feelings toward my parents for that 😅).
 
-<div style="margin: 1.5em 0;">
+<div style="margin: 1.5em 0; display: flex; gap: 1em; flex-wrap: wrap;">
   <a href="{{ base_path }}/Main_page/images/CV.pdf" target="_blank" style="display: inline-block; padding: 0.75em 1.5em; background: var(--global-link-color); color: white; text-decoration: none; border-radius: 8px; font-size: 1em; font-weight: 600;">
-    📄 Download my CV (PDF)
+    📄 Download my CV (Original)
+  </a>
+  <a href="{{ base_path }}/Main_page/images/CV_Technical.pdf" target="_blank" style="display: inline-block; padding: 0.75em 1.5em; background: var(--global-link-color); color: white; text-decoration: none; border-radius: 8px; font-size: 1em; font-weight: 600;">
+    📄 Download my CV (Forecasting / Technical)
   </a>
 </div>
 
