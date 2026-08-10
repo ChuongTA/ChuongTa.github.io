@@ -12,9 +12,43 @@ author_profile: true
 <hr style="border: 0; border-top: 1px solid var(--global-border-color); margin: 2em 0;" />
 
 <div class="wind-energy-list">
+  {% assign order_doc = site.WindEnergy | where: "title", "Order configuration" | first %}
+  {% assign ordered_posts = "" | split: "," %}
+
+  {% if order_doc and order_doc.post_order %}
+    <!-- 1. Add posts in the specified custom order -->
+    {% for path in order_doc.post_order %}
+      {% for post in site.WindEnergy %}
+        {% if post.permalink == path %}
+          {% assign ordered_posts = ordered_posts | push: post %}
+          {% break %}
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+    
+    <!-- 2. Append any posts that are not in the ordered list -->
+    {% for post in site.WindEnergy %}
+      {% if post.url == page.url or post.title == "Order configuration" %}
+        {% continue %}
+      {% endif %}
+      {% assign found = false %}
+      {% for path in order_doc.post_order %}
+        {% if post.permalink == path %}
+          {% assign found = true %}
+          {% break %}
+        {% endif %}
+      {% endfor %}
+      {% if found == false %}
+        {% assign ordered_posts = ordered_posts | push: post %}
+      {% endif %}
+    {% endfor %}
+  {% else %}
+    {% assign ordered_posts = site.WindEnergy | reversed %}
+  {% endif %}
+
   {% assign last_year = "" %}
-  {% for post in site.WindEnergy reversed %}
-    {% if post.url == page.url %}
+  {% for post in ordered_posts %}
+    {% if post.url == page.url or post.title == "Order configuration" %}
       {% continue %}
     {% endif %}
 
