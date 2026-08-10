@@ -5,7 +5,7 @@ layout: single
 author_profile: true
 permalink: /EnergyForecasting/Wave_Energy/Wave_Energy_Flux_Forecasting_part3/
 usemathjax: true
-image: "/EnergyForecasting/Wave_Energy/3_Wave_Energy_Flux_Forecasting_part3/5_Bootstrap_Residuals_Probabilistic/Results/DeepDive/method_comparison_stacked.png"
+image: "/EnergyForecasting/Wave_Energy/3_Wave_Energy_Flux_Forecasting_part3/5_Bootstrap_Residuals_Probabilistic/Results/bootstrap_forecast_swh_48h.png"
 date: 2026-08-10
 category: "Wave Energy"
 ---
@@ -94,6 +94,20 @@ The table below aggregates the mean cross-validation performance across folds fo
   <figcaption>Fig. 1: Reliability diagram comparing QR and QRF calibration for SWH.</figcaption>
 </figure>
 
+### 2.3 Forecast Visualizations
+
+To visualize the prediction intervals across different lead times, we compare the short-term and long-term forecasts for Significant Wave Height ($H_s$):
+
+<figure>
+  <img src="/EnergyForecasting/Wave_Energy/3_Wave_Energy_Flux_Forecasting_part3/5_Bootstrap_Residuals_Probabilistic/Results/bootstrap_forecast_swh_6h.png" alt="Bootstrapped residuals prediction interval for SWH at 6h lead time">
+  <figcaption>Fig. 2: Bootstrapped residuals prediction interval for SWH at 6h lead time.</figcaption>
+</figure>
+
+<figure>
+  <img src="/EnergyForecasting/Wave_Energy/3_Wave_Energy_Flux_Forecasting_part3/5_Bootstrap_Residuals_Probabilistic/Results/bootstrap_forecast_swh_48h.png" alt="Bootstrapped residuals prediction interval for SWH at 48h lead time">
+  <figcaption>Fig. 3: Bootstrapped residuals prediction interval for SWH at 48h lead time (Graphical Abstract).</figcaption>
+</figure>
+
 ---
 
 ## 3. Comparison with Stacking Ensemble (Part 2)
@@ -122,7 +136,7 @@ Evaluating the median ($q_{0.50}$) forecast of the probabilistic models against 
 
 <figure>
   <img src="/EnergyForecasting/Wave_Energy/3_Wave_Energy_Flux_Forecasting_part3/5_Bootstrap_Residuals_Probabilistic/Results/bootstrap_forecast_swh_24h.png" alt="Fan chart of bootstrapped residuals at 24h lead time for SWH">
-  <figcaption>Fig. 2: Fan chart of bootstrapped residuals forecasting SWH (24h lead time).</figcaption>
+  <figcaption>Fig. 4: Fan chart of bootstrapped residuals forecasting SWH (24h lead time).</figcaption>
 </figure>
 
 ---
@@ -152,7 +166,7 @@ This conditional approach achieves a much smaller cumulative interval area ($455
 
 <figure>
   <img src="/EnergyForecasting/Wave_Energy/3_Wave_Energy_Flux_Forecasting_part3/5_Bootstrap_Residuals_Probabilistic/Results/DeepDive/method_comparison_stacked.png" alt="Visual comparison of interval widths across the three bootstrapping methods">
-  <figcaption>Fig. 3: Interval widths compared across the three bootstrapping methods.</figcaption>
+  <figcaption>Fig. 5: Interval widths compared across the three bootstrapping methods.</figcaption>
 </figure>
 
 ---
