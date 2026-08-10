@@ -156,4 +156,14 @@ $$T_{\text{corrected}} = T_{\text{physics}} + f_{\text{ML}}(\text{measured featu
 This hybrid approach ensures the digital twin remains structurally grounded by physics while retaining the flexibility to adapt to real-world deviations.
 
 ---
+
+## References
+
+*   **Carrier Corporation:** [What Is A Heat Pump And How Does It Work?](https://www.carrier.com/us/en/residential/hvac-resources/heat-pumps/what-is-a-heat-pump-how-does-it-work/)
+*   **International Energy Agency (IEA):** [How a heat pump works – The Future of Heat Pumps Analysis](https://www.iea.org/reports/the-future-of-heat-pumps/how-a-heat-pump-works)
+*   **Leonardo da Vinci project ENERSOL:** *EU Heat Pumps – Energy Saving and Renewable Energy in Vocational Education Report*.
+*   **Japan International Cooperation Agency (JICA):** [Vapour Compression and Absorption Systems Technical Report](https://openjicareport.jica.go.jp/pdf/11511847_03.pdf)
+*   **Danish Technological Institute:** [Digital twins for large-scale heat pumps and refrigeration systems](https://www.dti.dk/projects/digital-twins/41553)
+
+---
 *The next post will explore Reinforcement Learning for smart heat pump control within this digital twin framework.*
