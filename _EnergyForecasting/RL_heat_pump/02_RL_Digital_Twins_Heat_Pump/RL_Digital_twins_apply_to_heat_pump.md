@@ -5,7 +5,7 @@ layout: single
 author_profile: true
 permalink: /EnergyForecasting/RL_heat_pump/HeatPump_Storage_Environment/
 usemathjax: true
-date: 2026-08-10
+date: 2026-08-10 12:00:00
 categories:
   - "District Heating and Cooling"
   - "Heat Pump"
@@ -24,7 +24,7 @@ The pipeline integrates a physics-based model of the thermal storage tank with a
 
 <figure style="display: block; margin: 1.5em auto; text-align: center;">
   <img src="/EnergyForecasting/RL_heat_pump/02_RL_Digital_Twins_Heat_Pump/Images/graphical_abstract.png" alt="Graphical Abstract - Smart Heat Pump Control" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--global-border-color);">
-  <figcaption style="margin-top: 0.5em; font-size: 0.9em; color: var(--global-text-color-light);">Graphical Abstract: The hybrid state estimation and RL decision loop for smart heat pump operation.</figcaption>
+  <figcaption style="margin-top: 0.5em; font-size: 0.9em; color: var(--global-text-color-light);"><strong>Figure 1.</strong> Graphical abstract: the hybrid state estimation and RL decision loop for smart heat pump operation.</figcaption>
 </figure>
 
 1.  **Data Ingestion and Alignment:** Import local hourly outdoor temperature data and day-ahead electricity prices.
@@ -51,7 +51,7 @@ Historical day-ahead spot prices for the SE3 region (Stockholm) are sourced from
 
 <figure style="display: block; margin: 1.5em auto; text-align: center;">
   <img src="/EnergyForecasting/RL_heat_pump/02_RL_Digital_Twins_Heat_Pump/Images/ENTSO_E-SE3.png" alt="ENTSO-E Transparency Platform showing the SE3 bidding zone and its day-ahead price curve" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--global-border-color);">
-  <figcaption style="margin-top: 0.5em; font-size: 0.9em; color: var(--global-text-color-light);">SE3 bidding zone on the ENTSO-E Transparency Platform, with its day-ahead price curve for the selected day.</figcaption>
+  <figcaption style="margin-top: 0.5em; font-size: 0.9em; color: var(--global-text-color-light);"><strong>Figure 2.</strong> SE3 bidding zone on the ENTSO-E Transparency Platform, with its day-ahead price curve for the selected day.</figcaption>
 </figure>
 
 ---
@@ -68,7 +68,9 @@ Historical day-ahead spot prices for the SE3 region (Stockholm) are sourced from
 | **Maximum Temperature** | $T_{\text{max}}$ | $80.0$ | $^\circ\text{C}$ | Upper operational limit of the storage tank ($\text{SOC} = 1$). |
 
 *   **COP Model:** The Coefficient of Performance varies linearly with ambient temperature:
+
     $$\text{COP}(T_{\text{amb}}) = \text{COP}_0 + \alpha \cdot (T_{\text{amb}} - 5)$$
+
     where $\text{COP}_0 = 3.0$ and temperature sensitivity coefficient $\alpha = 0.05$.
 
 These values were chosen so that the heat pump has spare thermal capacity year-round: even at the coldest hour in the dataset ($-12^\circ\text{C}$), maximum compressor output still exceeds building demand plus tank losses by a wide margin. That headroom is what makes load-shifting possible at all. With a tighter energy balance, the agent would have to run near-constantly just to keep the tank from draining, regardless of price.
@@ -81,13 +83,20 @@ These values were chosen so that the heat pump has spare thermal capacity year-r
 *   **State Space:** $s_t = [T_{\text{amb}}(t), \text{SOC}(t), \text{Price}(t), \sin(\text{hour}), \cos(\text{hour}), \text{Price}_{t+1}, \dots, \text{Price}_{t+24}]$
 *   **Action Space:** Continuous action $a_t \in [0, 1]$, representing the electricity input fraction of the heat pump compressor: $P_{\text{elec}} = a_t \cdot P_{\text{max}}$.
 *   **Reward Function:** Minimizes operational cost and penalizes exceeding safety limits ($SOC \notin [0.05, 0.95]$):
+
     $$R_t = - \Big( \text{Price}(t) \cdot P_{\text{elec}}(t) \cdot dt \Big) - w_{\text{penalty}} \cdot \max\Big(0, 0.05 - \text{SOC}_t, \text{SOC}_t - 0.95\Big)^2$$
 
 ### 5.2 Digital Twin State Correction
 The simplified physical model estimates the temperature using:
+
 $$T_{\text{physics}}(t+1) = T_{\text{physics}}(t) + \frac{(Q_{\text{hp}} - Q_{\text{heat}} - Q_{\text{loss}}) \cdot dt}{C}$$
 
-To emulate unmodeled effects such as pipe degradation or insulation leaks, a Gradient Boosting model is trained on residuals between a "true" environment and a deliberately drifted one ($C=42$ kWh/K, $\beta=0.036$ kW/K, roughly 15-20% off the true parameters). It predicts the mismatch $\Delta \text{SOC} = \text{SOC}_{\text{true}} - \text{SOC}_{\text{physics}}$ from $[T_{\text{amb}}, \text{SOC}, \text{Price}]$, and the RL agent is always fed the corrected state:
+To emulate unmodeled effects such as pipe degradation or insulation leaks, a Gradient Boosting model is trained on residuals between a "true" environment and a deliberately drifted one ($C=42$ kWh/K, $\beta=0.036$ kW/K, roughly 15-20% off the true parameters). It predicts the mismatch between the true and physics-model state of charge, from the state $[T_{\text{amb}}, \text{SOC}, \text{Price}]$:
+
+$$\Delta \text{SOC} = \text{SOC}_{\text{true}} - \text{SOC}_{\text{physics}}$$
+
+and the RL agent is always fed the corrected state:
+
 $$\text{SOC}_{\text{corrected}} = \text{SOC}_{\text{physics}} + \Delta \text{SOC}$$
 
 ### 5.3 Training Configuration
@@ -128,7 +137,7 @@ Evaluated deterministically over one week (168 hours) starting February 11:
 
 <figure style="display: block; margin: 1.5em auto; text-align: center;">
   <img src="/EnergyForecasting/RL_heat_pump/02_RL_Digital_Twins_Heat_Pump/Code/Results/evaluation_results.png" alt="Evaluation results: temperature and price, storage SOC, and compressor action over one week" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--global-border-color);">
-  <figcaption style="margin-top: 0.5em; font-size: 0.9em; color: var(--global-text-color-light);">One week of evaluation: outdoor temperature and day-ahead price (top), storage SOC (middle), and compressor action (bottom).</figcaption>
+  <figcaption style="margin-top: 0.5em; font-size: 0.9em; color: var(--global-text-color-light);"><strong>Figure 3.</strong> One week of evaluation: outdoor temperature and day-ahead price (top), storage SOC (middle), and compressor action (bottom).</figcaption>
 </figure>
 
 *   **Arbitrage behavior:** compressor action and electricity price are negatively correlated (Pearson $r = -0.45$) over the evaluation week. The agent runs the heat pump harder when prices are low and eases off when they spike, using the tank as a buffer rather than a fixed-setpoint thermostat.

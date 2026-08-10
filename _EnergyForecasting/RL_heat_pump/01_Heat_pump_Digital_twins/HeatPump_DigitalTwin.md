@@ -5,7 +5,7 @@ layout: single
 author_profile: true
 permalink: /EnergyForecasting/RL_heat_pump/HeatPump_DigitalTwin/
 usemathjax: true
-date: 2026-08-10
+date: 2026-08-10 10:00:00
 categories:
   - "District Heating and Cooling"
   - "Heat Pump"
