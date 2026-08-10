@@ -9,6 +9,7 @@ date: 2026-08-10
 categories:
   - "Reinforcement learning to me"
   - "Machine learning algorithms"
+image: "/MachineLearningProjects/11_Reinforcement_Learning/Part1_Introduction/RL_Images/Fig1.png"
 ---
 
 Original content synthesized from: MathWorks, IBM, Google Cloud, and OpenAI Spinning Up (Parts 1–3)
