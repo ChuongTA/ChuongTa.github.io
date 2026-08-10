@@ -1,5 +1,5 @@
 ---
-title: "Heat Pump Digital Twins: Modeling and Hybrid State Estimation 🌡️"
+title: "Heat Pump Digital Twins: Modeling and Hybrid State Estimation"
 excerpt: "An introduction to heat pump technologies, thermodynamic cycles, coefficient of performance (COP), and building physical-informed digital twins."
 layout: single
 author_profile: true

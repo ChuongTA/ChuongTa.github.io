@@ -1,5 +1,5 @@
 ---
-title: "Introduction to Reinforcement Learning (Part 1) 🤖"
+title: "Introduction to Reinforcement Learning (Part 1)"
 excerpt: "An intuitive introduction to Reinforcement Learning. Learn the core concepts, Markov Decision Processes, key training trade-offs, and algorithm taxonomies."
 layout: single
 author_profile: true

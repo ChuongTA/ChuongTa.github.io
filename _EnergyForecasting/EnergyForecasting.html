@@ -86,7 +86,7 @@ author_profile: true
             READ ARTICLE
           </a>
           <span style="font-size: 0.8em; color: var(--global-text-color-light); background: rgba(122,132,136,0.08); padding: 0.3em 0.6em; border-radius: 4px;">
-            Category: {{ post.category | default: "Energy Forecasting" | upcase }}
+            Category: {% if post.categories %}{{ post.categories | join: ", " | upcase }}{% else %}{{ post.category | default: "Energy Forecasting" | upcase }}{% endif %}
           </span>
         </div>
       </div>
