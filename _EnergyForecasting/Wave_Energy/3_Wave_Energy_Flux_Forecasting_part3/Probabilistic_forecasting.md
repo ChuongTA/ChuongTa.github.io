@@ -104,8 +104,13 @@ To visualize the prediction intervals across different lead times, we compare th
 </figure>
 
 <figure>
+  <img src="/EnergyForecasting/Wave_Energy/3_Wave_Energy_Flux_Forecasting_part3/5_Bootstrap_Residuals_Probabilistic/Results/bootstrap_forecast_swh_12h.png" alt="Bootstrapped residuals prediction interval for SWH at 12h lead time">
+  <figcaption>Fig. 3: Bootstrapped residuals prediction interval for SWH at 12h lead time.</figcaption>
+</figure>
+
+<figure>
   <img src="/EnergyForecasting/Wave_Energy/3_Wave_Energy_Flux_Forecasting_part3/5_Bootstrap_Residuals_Probabilistic/Results/bootstrap_forecast_swh_48h.png" alt="Bootstrapped residuals prediction interval for SWH at 48h lead time">
-  <figcaption>Fig. 3: Bootstrapped residuals prediction interval for SWH at 48h lead time (Graphical Abstract).</figcaption>
+  <figcaption>Fig. 4: Bootstrapped residuals prediction interval for SWH at 48h lead time (Graphical Abstract).</figcaption>
 </figure>
 
 ---
@@ -136,7 +141,7 @@ Evaluating the median ($q_{0.50}$) forecast of the probabilistic models against 
 
 <figure>
   <img src="/EnergyForecasting/Wave_Energy/3_Wave_Energy_Flux_Forecasting_part3/5_Bootstrap_Residuals_Probabilistic/Results/bootstrap_forecast_swh_24h.png" alt="Fan chart of bootstrapped residuals at 24h lead time for SWH">
-  <figcaption>Fig. 4: Fan chart of bootstrapped residuals forecasting SWH (24h lead time).</figcaption>
+  <figcaption>Fig. 5: Fan chart of bootstrapped residuals forecasting SWH (24h lead time).</figcaption>
 </figure>
 
 ---
@@ -166,7 +171,7 @@ This conditional approach achieves a much smaller cumulative interval area ($455
 
 <figure>
   <img src="/EnergyForecasting/Wave_Energy/3_Wave_Energy_Flux_Forecasting_part3/5_Bootstrap_Residuals_Probabilistic/Results/DeepDive/method_comparison_stacked.png" alt="Visual comparison of interval widths across the three bootstrapping methods">
-  <figcaption>Fig. 5: Interval widths compared across the three bootstrapping methods.</figcaption>
+  <figcaption>Fig. 6: Interval widths compared across the three bootstrapping methods.</figcaption>
 </figure>
 
 ---
