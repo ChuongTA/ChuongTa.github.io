@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+# pyrefly: ignore [missing-import]
 import gymnasium as gym
 from gymnasium import spaces
 
@@ -8,9 +9,9 @@ class HeatPumpStorageEnv(gym.Env):
 
     def __init__(self, temp_csv='Data/Stockholm_temperature.csv',
                  price_csv='Data/SE3_electricity_sport_price_ENTSO_E.csv',
-                 dt=1.0, C=50.0, beta=0.5, kh=2.0,
+                 dt=1.0, C=50.0, beta=0.03, kh=0.3,
                  cop0=3.0, alpha=0.05, p_max=10.0,
-                 T_min=40.0, T_max=80.0, soc_penalty_weight=10.0,
+                 T_min=40.0, T_max=80.0, soc_penalty_weight=50.0,
                  forecast_horizon=24, use_corrected_state=False, corrector=None):
         super().__init__()
         self.dt = dt
@@ -43,6 +44,7 @@ class HeatPumpStorageEnv(gym.Env):
         self.n_steps = len(merged)
         self.time_idx = 0
         self.T_storage = 60.0
+        self.episode_steps = 0
 
         # Observation Space: Tamb, SOC, Price, Sin(hour), Cos(hour), Price Forecast (24h)
         self.observation_space = spaces.Box(low=-np.inf, high=np.inf,
@@ -83,9 +85,9 @@ class HeatPumpStorageEnv(gym.Env):
 
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)
-        # Random start but leave enough room for forecast lookahead
         self.time_idx = np.random.randint(0, self.n_steps - self.forecast_horizon - 24*30)
         self.T_storage = 60.0
+        self.episode_steps = 0
         return self._get_state(), {}
 
     def step(self, action):
@@ -106,15 +108,16 @@ class HeatPumpStorageEnv(gym.Env):
         SOC = (self.T_storage - self.T_min) / (self.T_max - self.T_min)
         SOC = np.clip(SOC, 0.0, 1.0)
 
-        # Reward: negative electricity cost minus safety boundary penalty
-        cost = self.price[self.time_idx] * P_elec * self.dt
+        # Reward: negative electricity cost (convert price from EUR/MWh to EUR/kWh)
+        cost = (self.price[self.time_idx] / 1000.0) * P_elec * self.dt
         penalty = 0.0
         if SOC < 0.05:
-            penalty = self.soc_penalty_weight * (0.05 - SOC) ** 2
+            penalty = self.soc_penalty_weight * (0.05 - SOC) * 100.0 + 5.0
         elif SOC > 0.95:
-            penalty = self.soc_penalty_weight * (SOC - 0.95) ** 2
+            penalty = self.soc_penalty_weight * (SOC - 0.95) * 100.0 + 5.0
         reward = -cost - penalty
 
         self.time_idx += 1
-        terminated = self.time_idx >= self.n_steps - self.forecast_horizon - 1
+        self.episode_steps += 1
+        terminated = (self.time_idx >= self.n_steps - self.forecast_horizon - 1) or (self.episode_steps >= 720)
         return self._get_state(), reward, terminated, False, {}

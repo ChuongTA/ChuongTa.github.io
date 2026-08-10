@@ -1,0 +1,12 @@
+==================================================
+HEAT PUMP DIGITAL TWIN EVALUATION REPORT
+==================================================
+Simulation Start: 2024-02-11 16:00:00
+Simulation Duration: 168 hours (1 week)
+
+Total Electricity Consumed: 365.05 kWh
+Total Operating Cost: 14.03 EUR
+Average Spot Price Paid: 38.42 EUR/MWh
+Average Market Spot Price: 52.32 EUR/MWh
+Cost Reduction relative to Market Mean: 26.57%
+==================================================
