@@ -6,6 +6,7 @@ layout: single
 author_profile: true
 permalink: /MasterProgramProjects/Master_Thesis_Icing_Power_Loss/
 date: 2026-07-29
+image: "/MasterProgramProjects/Master_Thesis_Icing_Power_Loss/Graphical_Abstract.png"
 ---
 
 **Master Thesis, DENSYS Erasmus Mundus Joint Master Degree**
