@@ -9,7 +9,6 @@ image: "/EnergyForecasting/Wave_Energy/1_Wave_Energy_Flux_Forecasting_part1/02_I
 date: 2026-08-07
 category: "Wave Energy"
 ---
-
 > **Series:** Wave Energy | **Part:** 2 (Flux Forecasting — LightGBM)
 
 ---
@@ -18,15 +17,19 @@ category: "Wave Energy"
 
 ## Introduction
 
-Wave energy flux — also called wave power per unit crest length — is the rate at which energy is transmitted by ocean waves across a unit width of wave front. It represents how much energy flows through the sea surface due to wave motion.
+Wave energy flux also called wave power per unit crest length is the rate at which energy is transmitted by ocean waves across a unit width of wave front. It represents how much energy flows through the sea surface due to wave motion.
 
 The deep-water wave energy flux is:
 
-$$P=\frac{\rho g^2}{64\pi}H_s^2 T_e$$
+$$
+P=\frac{\rho g^2}{64\pi}H_s^2 T_e
+$$
 
 or, in simplified engineering form:
 
-$$P \approx 0.49\, H_s^2 T_e \quad \text{[kW/m]}$$
+$$
+P \approx 0.49\, H_s^2 T_e \quad \text{[kW/m]}
+$$
 
 Where:
 
@@ -77,28 +80,28 @@ Data acquisition goes through the ERA5 CDS API (an API key from the Climate Data
 
 **ERA5 wave and meteorological variables:**
 
-| Variable | Meaning |
-| --- | --- |
-| **valid_time** | Timestamp of the data in UTC; when the model output is valid. |
-| **latitude** | Latitude of the grid point (north–south position). |
-| **longitude** | Longitude of the grid point (east–west position). |
-| **u10** | 10-m east–west wind component; positive values mean wind blowing eastward. |
-| **v10** | 10-m north–south wind component; positive values mean wind blowing northward. |
-| **sst** | Sea surface temperature; temperature of the ocean skin layer. |
-| **number** | Ensemble member index (0–9); identifies which ensemble forecast is used. |
-| **expver** | Experiment version; internal ECMWF metadata for dataset versioning. |
-| **tp** | Total precipitation (m); accumulated rainfall and snowfall converted to water. |
-| **mwd** | Mean wave direction; average direction of all waves in the spectrum. |
-| **mwp** | Mean wave period; energy period used for wave power calculations. |
-| **swh** | Significant wave height; average height of the highest one-third of waves. |
-| **mdts** | Mean direction of total swell; direction of long-period swell waves. |
-| **mdww** | Mean direction of wind waves; direction of locally generated wind waves. |
-| **mpts** | Mean period of total swell; average period of swell waves. |
-| **mpww** | Mean period of wind waves; average period of wind-generated waves. |
-| **wmb** | Wave mean bandwidth; spectral width indicating how broad the wave spectrum is. |
-| **pp1d** | Peak period (first spectral moment); dominant wave period. |
-| **shts** | Significant height of total swell; height of long-period swell waves. |
-| **shww** | Significant height of wind waves; height of short-period wind waves. |
+| Variable             | Meaning                                                                        |
+| -------------------- | ------------------------------------------------------------------------------ |
+| **valid_time** | Timestamp of the data in UTC; when the model output is valid.                  |
+| **latitude**   | Latitude of the grid point (north–south position).                            |
+| **longitude**  | Longitude of the grid point (east–west position).                             |
+| **u10**        | 10-m east–west wind component; positive values mean wind blowing eastward.    |
+| **v10**        | 10-m north–south wind component; positive values mean wind blowing northward. |
+| **sst**        | Sea surface temperature; temperature of the ocean skin layer.                  |
+| **number**     | Ensemble member index (0–9); identifies which ensemble forecast is used.      |
+| **expver**     | Experiment version; internal ECMWF metadata for dataset versioning.            |
+| **tp**         | Total precipitation (m); accumulated rainfall and snowfall converted to water. |
+| **mwd**        | Mean wave direction; average direction of all waves in the spectrum.           |
+| **mwp**        | Mean wave period; energy period used for wave power calculations.              |
+| **swh**        | Significant wave height; average height of the highest one-third of waves.     |
+| **mdts**       | Mean direction of total swell; direction of long-period swell waves.           |
+| **mdww**       | Mean direction of wind waves; direction of locally generated wind waves.       |
+| **mpts**       | Mean period of total swell; average period of swell waves.                     |
+| **mpww**       | Mean period of wind waves; average period of wind-generated waves.             |
+| **wmb**        | Wave mean bandwidth; spectral width indicating how broad the wave spectrum is. |
+| **pp1d**       | Peak period (first spectral moment); dominant wave period.                     |
+| **shts**       | Significant height of total swell; height of long-period swell waves.          |
+| **shww**       | Significant height of wind waves; height of short-period wind waves.           |
 
 The two forecast targets are **Hs** and **Te**, corresponding to `swh` and `mwp` in the dataset respectively.
 
@@ -127,7 +130,9 @@ Weighting that same surface by how often each (Hs, Te) combination actually occu
 
 Before building lag features, a Pearson correlation heatmap gives a quick, interpretable screen of which variables are linearly related to the targets:
 
-$$r_{xy} = \frac{\sum_i (x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum_i (x_i-\bar{x})^2}\sqrt{\sum_i (y_i-\bar{y})^2}}$$
+$$
+r_{xy} = \frac{\sum_i (x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum_i (x_i-\bar{x})^2}\sqrt{\sum_i (y_i-\bar{y})^2}}
+$$
 
 `tp` (total precipitation) was dropped after this step — it showed essentially no linear correlation with either target, which is physically sensible, since instantaneous rainfall isn't itself a wave-generating variable.
 
@@ -155,19 +160,34 @@ Significant wave height also varies seasonally at this site — smaller, calmer 
 Five metrics are used to score every (target, lead time) combination:
 
 **MAE** (Mean Absolute Error):
-$$\text{MAE} = \frac{1}{n}\sum_{i=1}^n |y_i - \hat{y}_i|$$
+
+$$
+\text{MAE} = \frac{1}{n}\sum_{i=1}^n |y_i - \hat{y}_i|
+$$
 
 **RMSE** (Root Mean Squared Error):
-$$\text{RMSE} = \sqrt{\frac{1}{n}\sum_{i=1}^n (y_i - \hat{y}_i)^2}$$
+
+$$
+\text{RMSE} = \sqrt{\frac{1}{n}\sum_{i=1}^n (y_i - \hat{y}_i)^2}
+$$
 
 **NRMSE** (Normalized RMSE), RMSE divided by the range of the actual values, so error magnitude is comparable across targets and lead times that live on different scales (Hs in metres, Te in seconds):
-$$\text{NRMSE} = \frac{\text{RMSE}}{\max(y) - \min(y)}$$
+
+$$
+\text{NRMSE} = \frac{\text{RMSE}}{\max(y) - \min(y)}
+$$
 
 **SMAPE** (Symmetric Mean Absolute Percentage Error), used instead of plain MAPE, which is unstable and can blow up whenever the actual value is close to zero. SMAPE is bounded and stable near zero:
-$$\text{SMAPE} = \frac{1}{n}\sum_{i=1}^n \frac{|y_i - \hat{y}_i|}{(|y_i| + |\hat{y}_i|)/2}$$
+
+$$
+\text{SMAPE} = \frac{1}{n}\sum_{i=1}^n \frac{|y_i - \hat{y}_i|}{(|y_i| + |\hat{y}_i|)/2}
+$$
 
 **R²** (Coefficient of Determination):
-$$R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}$$
+
+$$
+R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
+$$
 
 ## Results
 
@@ -175,20 +195,20 @@ $$R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}$$
 
 Running the recursive feature elimination described above separately for each target and lead time gives the following best feature count and validation-set scores:
 
-| Target | Lead (h) | n_features | RMSE | NRMSE | SMAPE | R² |
-| --- | --- | --- | --- | --- | --- | --- |
-| swh | 1 | 73 | 0.02 | 0.01 | 0.01 | 1.00 |
-| swh | 3 | 78 | 0.05 | 0.02 | 0.03 | 0.99 |
-| swh | 6 | 78 | 0.11 | 0.05 | 0.06 | 0.96 |
-| swh | 12 | 63 | 0.25 | 0.10 | 0.14 | 0.83 |
-| swh | 24 | 73 | 0.41 | 0.16 | 0.24 | 0.54 |
-| swh | 48 | 108 | 0.54 | 0.22 | 0.31 | 0.20 |
-| mwp | 1 | 33 | 0.06 | 0.01 | 0.01 | 1.00 |
-| mwp | 3 | 28 | 0.20 | 0.03 | 0.02 | 0.98 |
-| mwp | 6 | 33 | 0.41 | 0.06 | 0.04 | 0.92 |
-| mwp | 12 | 73 | 0.74 | 0.12 | 0.07 | 0.74 |
-| mwp | 24 | 28 | 1.12 | 0.19 | 0.11 | 0.36 |
-| mwp | 48 | 8 | 1.28 | 0.22 | 0.14 | 0.05 |
+| Target | Lead (h) | n_features | RMSE | NRMSE | SMAPE | R²  |
+| ------ | -------- | ---------- | ---- | ----- | ----- | ---- |
+| swh    | 1        | 73         | 0.02 | 0.01  | 0.01  | 1.00 |
+| swh    | 3        | 78         | 0.05 | 0.02  | 0.03  | 0.99 |
+| swh    | 6        | 78         | 0.11 | 0.05  | 0.06  | 0.96 |
+| swh    | 12       | 63         | 0.25 | 0.10  | 0.14  | 0.83 |
+| swh    | 24       | 73         | 0.41 | 0.16  | 0.24  | 0.54 |
+| swh    | 48       | 108        | 0.54 | 0.22  | 0.31  | 0.20 |
+| mwp    | 1        | 33         | 0.06 | 0.01  | 0.01  | 1.00 |
+| mwp    | 3        | 28         | 0.20 | 0.03  | 0.02  | 0.98 |
+| mwp    | 6        | 33         | 0.41 | 0.06  | 0.04  | 0.92 |
+| mwp    | 12       | 73         | 0.74 | 0.12  | 0.07  | 0.74 |
+| mwp    | 24       | 28         | 1.12 | 0.19  | 0.11  | 0.36 |
+| mwp    | 48       | 8          | 1.28 | 0.22  | 0.14  | 0.05 |
 
 For swh, the optimal feature count stays fairly high across the board and peaks at 108 for the 48h lead. mwp behaves differently: the optimal count actually drops to just 8 features at 48h. That's not a sign of a cleaner signal — validation R² at that point is only 0.05, essentially no skill — it means additional features had stopped helping a model that had already run out of predictive signal to extract.
 
@@ -196,25 +216,25 @@ For swh, the optimal feature count stays fairly high across the board and peaks 
 
 **Significant wave height (Hs / swh):**
 
-| Lead (h) | n_features | MAE | RMSE | NRMSE | SMAPE | R² |
-| --- | --- | --- | --- | --- | --- | --- |
-| 1 | 73 | 0.01 | 0.02 | 0.01 | 0.02 | 1.00 |
-| 3 | 78 | 0.04 | 0.06 | 0.02 | 0.04 | 0.99 |
-| 6 | 78 | 0.08 | 0.11 | 0.05 | 0.08 | 0.95 |
-| 12 | 63 | 0.21 | 0.26 | 0.11 | 0.20 | 0.76 |
-| 24 | 73 | 0.38 | 0.42 | 0.19 | 0.35 | 0.36 |
-| 48 | 108 | 0.66 | 0.70 | 0.31 | 0.55 | -0.66 |
+| Lead (h) | n_features | MAE  | RMSE | NRMSE | SMAPE | R²   |
+| -------- | ---------- | ---- | ---- | ----- | ----- | ----- |
+| 1        | 73         | 0.01 | 0.02 | 0.01  | 0.02  | 1.00  |
+| 3        | 78         | 0.04 | 0.06 | 0.02  | 0.04  | 0.99  |
+| 6        | 78         | 0.08 | 0.11 | 0.05  | 0.08  | 0.95  |
+| 12       | 63         | 0.21 | 0.26 | 0.11  | 0.20  | 0.76  |
+| 24       | 73         | 0.38 | 0.42 | 0.19  | 0.35  | 0.36  |
+| 48       | 108        | 0.66 | 0.70 | 0.31  | 0.55  | -0.66 |
 
 **Mean wave period (Te / mwp):**
 
-| Lead (h) | n_features | MAE | RMSE | NRMSE | SMAPE | R² |
-| --- | --- | --- | --- | --- | --- | --- |
-| 1 | 33 | 0.06 | 0.09 | 0.02 | 0.01 | 0.99 |
-| 3 | 28 | 0.15 | 0.20 | 0.04 | 0.02 | 0.96 |
-| 6 | 33 | 0.33 | 0.42 | 0.09 | 0.05 | 0.81 |
-| 12 | 73 | 0.57 | 0.71 | 0.15 | 0.09 | 0.45 |
-| 24 | 28 | 0.82 | 1.01 | 0.21 | 0.13 | -0.08 |
-| 48 | 8 | 1.01 | 1.25 | 0.26 | 0.16 | -0.63 |
+| Lead (h) | n_features | MAE  | RMSE | NRMSE | SMAPE | R²   |
+| -------- | ---------- | ---- | ---- | ----- | ----- | ----- |
+| 1        | 33         | 0.06 | 0.09 | 0.02  | 0.01  | 0.99  |
+| 3        | 28         | 0.15 | 0.20 | 0.04  | 0.02  | 0.96  |
+| 6        | 33         | 0.33 | 0.42 | 0.09  | 0.05  | 0.81  |
+| 12       | 73         | 0.57 | 0.71 | 0.15  | 0.09  | 0.45  |
+| 24       | 28         | 0.82 | 1.01 | 0.21  | 0.13  | -0.08 |
+| 48       | 8          | 1.01 | 1.25 | 0.26  | 0.16  | -0.63 |
 
 Both targets hold up well through 6h and are still usable at 12h, then degrade sharply. Past 12h, R² keeps falling and actually turns negative for both targets at longer leads (swh at 48h, mwp already by 24h) — worse than just predicting the mean. This isn't specific to the one test window shown here either: repeating the same evaluation across all six walk-forward folds gives a mean R² of −0.31 (± 0.35) for swh and −0.11 (± 0.22) for mwp at 48h, so it's a consistent property of the model at that lead, not a fluke of which month landed in the test set. Hs is consistently the easier target to forecast — its R² stays above mwp's at every lead time up to 24h.
 
@@ -245,8 +265,6 @@ An autoregressive LightGBM model, fed lagged ERA5 ocean variables and cyclical t
 
 ## References
 
-[^1]: M. Wang, F. Ying, and J. Jia, "Ocean wave power flux forecasting using a stacking ensemble of LSTM and LightGBM," *Renewable Energy*, vol. 256, p. 124597, 2026.
-
 ## Code
 
 - [LightGBM_ERA5_3.py](/EnergyForecasting/Wave_Energy/1_Wave_Energy_Flux_Forecasting_part1/01_Code/3_Light_GBM_with_ERA5_Data/LightGBM_ERA5_3.py): data loading, walk-forward fold construction, feature engineering, RFE feature selection, final model training, and all figures above.
@@ -254,3 +272,5 @@ An autoregressive LightGBM model, fed lagged ERA5 ocean variables and cyclical t
 - `Results_3/` folder: [best feature count per lead time](/EnergyForecasting/Wave_Energy/1_Wave_Energy_Flux_Forecasting_part1/01_Code/3_Light_GBM_with_ERA5_Data/Results_3/2.3_rfe_best_per_lead.csv), [test-set metrics](/EnergyForecasting/Wave_Energy/1_Wave_Energy_Flux_Forecasting_part1/01_Code/3_Light_GBM_with_ERA5_Data/Results_3/2.4_test_set_results.csv), and the [six-fold walk-forward summary](/EnergyForecasting/Wave_Energy/1_Wave_Energy_Flux_Forecasting_part1/01_Code/3_Light_GBM_with_ERA5_Data/Results_3/2.5_walk_forward_summary.csv).
 
 **Next:** Part 3 (numbering continues from the series) will stack Ridge Regression, Random Forest, and LightGBM together and check whether the ensemble holds up better than LightGBM alone at longer lead times.
+
+[^1]: M. Wang, F. Ying, and J. Jia, "Ocean wave power flux forecasting using a stacking ensemble of LSTM and LightGBM," *Renewable Energy*, vol. 256, p. 124597, 2026.
