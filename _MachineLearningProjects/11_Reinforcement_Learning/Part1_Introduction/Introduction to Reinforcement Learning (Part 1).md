@@ -6,9 +6,7 @@ author_profile: true
 permalink: /MachineLearning/Introduction_to_Reinforcement_Learning_Part1/
 usemathjax: true
 date: 2026-08-10
-categories:
-  - "Reinforcement learning to me"
-  - "Machine learning algorithms"
+category: "Machine learning algorithms"
 image: "/MachineLearningProjects/11_Reinforcement_Learning/Part1_Introduction/RL_Images/Fig1.png"
 ---
 
