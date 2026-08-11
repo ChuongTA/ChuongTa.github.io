@@ -80,7 +80,8 @@ These values were chosen so that the heat pump has spare thermal capacity year-r
 ## 5. Reinforcement Learning & Digital Twin Formulation
 
 ### 5.1 Markov Decision Process (MDP)
-*   **State Space:** $s_t = [T_{\text{amb}}(t), \text{SOC}(t), \text{Price}(t), \sin(\text{hour}), \cos(\text{hour}), \text{Price}_{t+1}, \dots, \text{Price}_{t+24}]$
+*   **State Space:**
+    $$s_t = \left[ T_{\text{amb}}(t), \text{SOC}(t), \text{Price}(t), \sin(\text{hour}), \cos(\text{hour}), \text{Price}_{t+1}, \dots, \text{Price}_{t+24} \right]$$
 *   **Action Space:** Continuous action $a_t \in [0, 1]$, representing the electricity input fraction of the heat pump compressor: $P_{\text{elec}} = a_t \cdot P_{\text{max}}$.
 *   **Reward Function:** Minimizes operational cost and penalizes exceeding safety limits ($SOC \notin [0.05, 0.95]$):
 
