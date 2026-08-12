@@ -2,6 +2,7 @@
 
 8 learning objectives
 A student who has met the objs of the course will be able to:
+
 1. Explain the fundamental of electricity markets
 2. Explain various **market, actors**, and **pricing mechanisms**
 3. Explain the market-clearing process from both optimisation and equilibrium perspectives
@@ -15,4 +16,4 @@ A student who has met the objs of the course will be able to:
 I will do them later
 
 - Assignment 1: Focus on the **market operator** perspective
-- Assignment 2: Focus on the market participant perspective
+- Assignment 2: Focus on the **market participant** perspective
