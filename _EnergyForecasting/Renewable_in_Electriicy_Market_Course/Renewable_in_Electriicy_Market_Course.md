@@ -35,7 +35,7 @@ This course provides a comprehensive overview of electricity markets, covering b
 
 ### Lecture 1: Introduction to electricity markets *(Completed)*
 - [Lecture Slides (PDF)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/Lecture1/46755%20%E2%80%93%20Renewables%20in%20Electricity%20Markets%20Lecture%201.pdf)
-- [Study Notes (Web Page)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/Lecture1/Introduction/)
+- [Study Notes (Markdown)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/Lecture1/Lecture%201%20_%20Introduction%20to%20electricity%20markets.md)
 - [Study Notes (PDF)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/Lecture1/Lecture%201%20_%20Introduction%20to%20electricity%20markets.pdf)
 - **Quick Summary:**
   - Learned about shifting from centralized TSO dispatch to decentralized power markets (modeled using Game Theory).

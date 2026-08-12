@@ -1,15 +1,3 @@
----
-title: "Lecture 1: Introduction to electricity markets"
-excerpt: "Study notes on centralized vs. decentralized power systems, game theory, market clearing, social welfare, and uniform pricing."
-layout: single
-author_profile: true
-permalink: /EnergyForecasting/Renewable_in_Electriicy_Market_Course/Lecture1/Introduction/
-usemathjax: true
-date: 2026-08-12
-categories:
-  - "Electricity Market"
----
-
 ![[Pasted image 20260812135339.png]]
 
 Electric power systems include: generators (producers) + tranmission system + Demands
