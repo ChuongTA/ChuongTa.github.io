@@ -1,5 +1,5 @@
 ---
-title: "Lecture 1: Introduction to Electricity Markets (Notes)"
+title: "Lecture 1: Introduction to electricity markets"
 excerpt: "Study notes on centralized vs. decentralized power systems, game theory, market clearing, social welfare, and uniform pricing."
 layout: single
 author_profile: true
