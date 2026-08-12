@@ -41,7 +41,7 @@ This course provides a comprehensive overview of electricity markets, covering b
   - Learned about shifting from centralized TSO dispatch to decentralized power markets (modeled using Game Theory).
   - Covered uniform pricing (settling at the Market Clearing Price) vs. pay-as-bid schemes.
   - Explored what makes electricity markets unique (non-storability, inelastic demand, grid constraints).
-  - Played a super fun Kahoot quiz on calculating social welfare and supplier profits!
+  - Played a super fun 🎮 Kahoot quiz on calculating social welfare and supplier profits (still Notworking! 😜)
 
 ### Market Clearing: Optimization vs. Equilibrium *(To be updated)*
 
