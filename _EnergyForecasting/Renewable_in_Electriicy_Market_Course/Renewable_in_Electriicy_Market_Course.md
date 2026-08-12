@@ -3,16 +3,22 @@ title: "Self-Directed Learning: Electricity Markets & Renewables"
 excerpt: "Study notes on market structures, pricing mechanisms, day-ahead clearing, intraday trading, balancing markets, and offering strategies."
 layout: single
 author_profile: true
-permalink: /EnergyForecasting/Electricity_Market/
+permalink: /EnergyForecasting/Renewable_in_Electriicy_Market_Course/
 usemathjax: true
 date: 2026-08-12
 categories:
   - "Energy Markets"
+image: "/EnergyForecasting/Renewable_in_Electriicy_Market_Course/1_Intro/Introduction_graphical_abstract.png"
 ---
 
 # Self-Directed Learning: Electricity Markets
 
 This page compiles my notes, study materials, and practical projects on electricity market design, clearing mechanisms, and deregulated operations. A primary resource for this study is the DTU course **Renewables in Electricity Markets (46755)** taught by [**Prof. Jalal Kazempour**](https://www.jalalkazempour.com/home) (available via the [DTU Course Catalog](https://kurser.dtu.dk/course/46755) and the [YouTube Lecture Playlist](https://www.youtube.com/watch?v=QmdBpKUP4Ek&list=PLe7H9pun_r8bsWrLZ483DhVt8zvU4jv8P)).
+
+<figure style="display: block; margin: 1.5em auto; text-align: center;">
+  <img src="/EnergyForecasting/Renewable_in_Electriicy_Market_Course/1_Intro/Introduction_graphical_abstract.png" alt="Graphical Abstract - Electricity Market Structure" style="max-width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--global-border-color);">
+  <figcaption style="margin-top: 0.5em; font-size: 0.9em; color: var(--global-text-color-light);">Graphical abstract: Structural overview of electricity markets and clearing mechanisms.</figcaption>
+</figure>
 
 *Status: In Progress (Completed the 1st topic. Below links will direct to detailed notes and projects as they are completed).*
 
@@ -22,7 +28,8 @@ This course provides a comprehensive overview of electricity markets, covering b
 
 ## I. System and Market Perspective
 
-### Fundamentals of Electricity Markets *(In Progress)*
+### [Fundamentals of Electricity Markets](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/1_Intro/Introduction/) *(Completed)*
+- [Lecture Slides (PDF)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/1_Intro/46755%20%E2%80%93%20Renewables%20in%20Electricity%20Markets%20Lecture%200-compressed.pdf)
 - Supply and demand curves and the merit-order principle
 - Definitions of social welfare and equilibrium
 - Various pricing mechanisms
