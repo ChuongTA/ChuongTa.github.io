@@ -37,12 +37,11 @@ This course provides a comprehensive overview of electricity markets, covering b
 - [Lecture Slides (PDF)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/Lecture1/46755%20%E2%80%93%20Renewables%20in%20Electricity%20Markets%20Lecture%201.pdf)
 - [Study Notes (Web Page)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/Lecture1/Introduction/)
 - [Study Notes (PDF)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/Lecture1/Lecture%201%20_%20Introduction%20to%20electricity%20markets.pdf)
-- **Key Concepts Covered:**
-  - **Centralized vs. Market Systems:** Decoupled transmission networks (TSOs) vs. market actors seeking profit-maximization.
-  - **Game Theory Application:** Modeling strategic interaction where generators choose offer prices/volumes to maximize profit.
-  - **Market Clearing & Pricing:** Social welfare maximization (consumer and producer surplus clearing) and uniform pricing (settling at Market Clearing Price) vs. pay-as-bid.
-  - **Electricity Uniqueness:** Power market differences (non-storability, inelastic demand, transmission/Kirchhoff's law constraints).
-  - **Interactive Kahoot Quiz:** An engaging review of social welfare calculation, uniform pricing payments/profits, and comparisons with pay-as-bid schemes.
+- **Quick Summary:**
+  - Learned about shifting from centralized TSO dispatch to decentralized power markets (modeled using Game Theory).
+  - Covered uniform pricing (settling at the Market Clearing Price) vs. pay-as-bid schemes.
+  - Explored what makes electricity markets unique (non-storability, inelastic demand, grid constraints).
+  - Played a super fun Kahoot quiz on calculating social welfare and supplier profits!
 
 ### Market Clearing: Optimization vs. Equilibrium *(To be updated)*
 
