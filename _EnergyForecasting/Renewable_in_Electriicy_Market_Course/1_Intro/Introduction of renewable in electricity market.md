@@ -1,15 +1,3 @@
----
-title: "Lecture 1: Introduction to Electricity Markets"
-excerpt: "Learning objectives and course overview for Renewables in Electricity Markets."
-layout: single
-author_profile: true
-permalink: /EnergyForecasting/Renewable_in_Electriicy_Market_Course/1_Intro/Introduction/
-usemathjax: true
-date: 2026-08-12
-categories:
-  - "Energy Markets"
----
-
 # Learning objectives
 
 8 learning objectives

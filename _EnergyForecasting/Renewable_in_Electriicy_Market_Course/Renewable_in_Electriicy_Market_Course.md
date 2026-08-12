@@ -28,8 +28,9 @@ This course provides a comprehensive overview of electricity markets, covering b
 
 ## I. System and Market Perspective
 
-### [Fundamentals of Electricity Markets](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/1_Intro/Introduction/) *(Completed)*
+### Fundamentals of Electricity Markets *(Completed)*
 - [Lecture Slides (PDF)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/1_Intro/46755%20%E2%80%93%20Renewables%20in%20Electricity%20Markets%20Lecture%200-compressed.pdf)
+- [Study Notes (Markdown)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/1_Intro/Introduction%20of%20renewable%20in%20electricity%20market.md)
 - Supply and demand curves and the merit-order principle
 - Definitions of social welfare and equilibrium
 - Various pricing mechanisms
