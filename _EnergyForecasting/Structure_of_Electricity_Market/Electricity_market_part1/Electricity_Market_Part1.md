@@ -13,7 +13,15 @@ image: "/EnergyForecasting/Structure_of_Electricity_Market/Electricity_market_pa
 
 This post is the first in a series on the fundamentals of electricity markets in Europe. The contents are synthesized from two main lecture courses at [Politecnico di Torino (PoliTo)](https://www.polito.it/) and the [KTH Royal Institute of Technology](https://www.kth.se/). Specific source documents are hyperlinked in the [Sources](#sources) section below.
 
-*   **Part 1 (This post) covers:** Fundamental economic and physical concepts, including power system layers, average vs. marginal costs, demand and supply curves, equilibrium clearing, social surplus, strategic bidding, electricity's unique properties as a commodity, and market liberalization levels.
+*   **Part 1 (This post) covers:**
+    *   Fundamental economic and physical concepts in power systems (generation, transmission, distribution, utilization)
+    *   Recall Math: Average vs. marginal costs
+    *   Law of diminishing marginal utility and returns (demand and supply curves)
+    *   Market equilibrium clearing and clearing price (MCP/MCQ)
+    *   Surplus analysis: Consumer surplus, producer surplus, and social welfare
+    *   Strategic bidding behavior of producers and market power
+    *   Electricity as a unique commodity (non-storability, grid physics, reserves)
+    *   The liberalization ladder (levels 0–3) and market participant roles
 *   **Part 2 (Next post) will cover:**
     *   Electricity market structures: pool model vs. bilateral model
     *   Day-Ahead Markets
