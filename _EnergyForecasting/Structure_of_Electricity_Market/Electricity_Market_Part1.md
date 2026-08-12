@@ -1,5 +1,5 @@
 ---
-title: "Electricity Markets (Part 1)"
+title: "Fundamental of Electricity Markets"
 excerpt: "Introduction to electricity market design, demand/supply curves, marginal utility, equilibrium pricing, and social surplus."
 layout: single
 author_profile: true
