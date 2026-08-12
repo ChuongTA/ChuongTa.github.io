@@ -1,5 +1,5 @@
 ---
-title: "Self-Directed Learning: Electricity Markets & Renewables"
+title: "Self-Directed Learning: Renewables in Electricity Markets"
 excerpt: "Study notes on market structures, pricing mechanisms, day-ahead clearing, intraday trading, balancing markets, and offering strategies."
 layout: single
 author_profile: true
@@ -11,7 +11,7 @@ categories:
 image: "/EnergyForecasting/Renewable_in_Electriicy_Market_Course/1_Intro/Introduction_graphical_abstract.png"
 ---
 
-# Self-Directed Learning: Electricity Markets
+# Self-Directed Learning: Renewables in Electricity Markets
 
 This page compiles my notes, study materials, and practical projects on electricity market design, clearing mechanisms, and deregulated operations. A primary resource for this study is the DTU course **Renewables in Electricity Markets (46755)** taught by [**Prof. Jalal Kazempour**](https://www.jalalkazempour.com/home) (available via the [DTU Course Catalog](https://kurser.dtu.dk/course/46755) and the [YouTube Lecture Playlist](https://www.youtube.com/watch?v=QmdBpKUP4Ek&list=PLe7H9pun_r8bsWrLZ483DhVt8zvU4jv8P)).
 
@@ -28,13 +28,27 @@ This course provides a comprehensive overview of electricity markets, covering b
 
 ## I. System and Market Perspective
 
-### [Fundamentals of Electricity Markets](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/1_Intro/Introduction/) *(Completed)*
+### Fundamentals of Electricity Markets *(Completed)*
 - [Lecture Slides (PDF)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/1_Intro/46755%20%E2%80%93%20Renewables%20in%20Electricity%20Markets%20Lecture%200-compressed.pdf)
 - Supply and demand curves and the merit-order principle
 - Definitions of social welfare and equilibrium
 - Various pricing mechanisms
 - Different electricity markets and market actors
 - Comparison of European and U.S. electricity markets
+
+#### Notes & Learning Objectives
+A student who has met the objectives of the course will be able to:
+1. Explain the fundamentals of electricity markets.
+2. Explain various market actors and pricing mechanisms.
+3. Explain the market-clearing process from both optimization and equilibrium perspectives.
+4. Describe the impact of renewables on electricity markets.
+5. Develop mathematical models (optimization and equilibrium problems) for clearing various electricity markets.
+6. Design mathematical models for market participants enabling them to make optimal offering strategy decisions under uncertainty.
+7. Implement these mathematical models in Julia or Python.
+
+#### Group Assignments
+- **Assignment 1:** Focus on the market operator perspective.
+- **Assignment 2:** Focus on the market participant perspective.
 
 ### Market Clearing: Optimization vs. Equilibrium *(To be updated)*
 - Market clearing as an optimization problem
