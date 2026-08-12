@@ -47,23 +47,16 @@ A **power system** is the physical network that generates electrical energy, tra
 
 ## Recall Math - Average vs Marginal
 
-<div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap; margin: 1em auto;" markdown="1">
-  <div style="flex: 1; min-width: 250px;" markdown="1">
-
-The function $f(x)$ gives the value of a quantity $y$ as a function of the variable $x$. For a specific point $x_1$ with corresponding value $y_1=f(x_1)$, we define:
-
-$$A(x_1) = \frac{f(x_1)}{x_1}$$
-
-This represents the slope of the line connecting the origin to $(x_1, y_1)$.
-
-For a small increase of the variable $x$, from $x_1$ to $x_1+\Delta x$, the quantity $y$ increases from $y_1$ to $y_1+\Delta y$. In the limit, the marginal value is defined as:
-
-$$M(x_1) = \lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x} = f'(x_1)$$
-
-This represents the slope of the function $f(x)$ at $x=x_1$.
-
+<div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap; margin: 1em auto;">
+  <div style="flex: 1; min-width: 250px;">
+    <p>The function $f(x)$ gives the value of a quantity $y$ as a function of the variable $x$. For a specific point $x_1$ with corresponding value $y_1=f(x_1)$, we define:</p>
+    $$A(x_1) = \frac{f(x_1)}{x_1}$$
+    <p>This represents the slope of the line connecting the origin to $(x_1, y_1)$.</p>
+    <p>For a small increase of the variable $x$, from $x_1$ to $x_1+\Delta x$, the quantity $y$ increases from $y_1$ to $y_1+\Delta y$. In the limit, the marginal value is defined as:</p>
+    $$M(x_1) = \lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x} = f'(x_1)$$
+    <p>This represents the slope of the function $f(x)$ at $x=x_1$.</p>
   </div>
-  <div style="text-align: center; flex-shrink: 0;" markdown="1">
+  <div style="text-align: center; flex-shrink: 0;">
     <img src="/EnergyForecasting/Structure_of_Electricity_Market/Images/Fig2.png" alt="Average vs Marginal" style="width: 300px; height: auto;">
   </div>
 </div>
@@ -115,17 +108,15 @@ $$c_m(p) = \frac{dc(p)}{dp}$$
 
 ## Law of diminishing marginal returns and supply curve
 
-<div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap; margin: 1em auto;" markdown="1">
-  <div style="flex: 1; min-width: 250px;" markdown="1">
-
-An increase in variable inputs relative to fixed inputs raises total output, but after a certain point the extra output from the same input increase becomes smaller.
-
-• As production grows, producers must use increasingly costly resources.
-
-• Since marginal cost rises with output, the supply curve is upward‑sloping.
-
+<div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap; margin: 1em auto;">
+  <div style="flex: 1; min-width: 250px;">
+    <p>An increase in variable inputs relative to fixed inputs raises total output, but after a certain point the extra output from the same input increase becomes smaller.</p>
+    <ul>
+      <li>As production grows, producers must use increasingly costly resources.</li>
+      <li>Since marginal cost rises with output, the supply curve is upward‑sloping.</li>
+    </ul>
   </div>
-  <div style="text-align: center; flex-shrink: 0;" markdown="1">
+  <div style="text-align: center; flex-shrink: 0;">
     <img src="/EnergyForecasting/Structure_of_Electricity_Market/Images/Fig5.png" alt="Diminishing marginal returns" style="width: 320px; height: auto;">
     <br>
     <small style="color: var(--global-text-color-light);"><em>Fig 5: Diminishing marginal returns</em></small>
@@ -140,19 +131,19 @@ An increase in variable inputs relative to fixed inputs raises total output, but
 
 ## Equilibrium and Market Clearing Price
 
-<div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap; margin: 1em auto;" markdown="1">
-  <div style="flex: 1; min-width: 250px;" markdown="1">
-
-• **Equilibrium**: the condition in which the quantity offered by sellers equals the quantity demanded by buyers at a specific price. 
-
-- When price is higher than $\lambda$ ($v_2$), more quantity is produced but less quantity is demanded, prompting producers to decrease the price.
-
-- When price is lower than $\lambda$ ($v_1$), more quantity is demanded but less quantity is produced, prompting buyers to increase their bids, raising the price.
-
-• **Market Clearing Price (MCP)**: the unique price at which supply and demand are exactly equal, ensuring that all offered quantity is sold and all demanded quantity (Market Clearing Quantity (MCQ)) is purchased.
-
+<div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap; margin: 1em auto;">
+  <div style="flex: 1; min-width: 250px;">
+    <ul>
+      <li><strong>Equilibrium</strong>: the condition in which the quantity offered by sellers equals the quantity demanded by buyers at a specific price.
+        <ul>
+          <li>When price is higher than $\lambda$ ($v_2$), more quantity is produced but less quantity is demanded, prompting producers to decrease the price.</li>
+          <li>When price is lower than $\lambda$ ($v_1$), more quantity is demanded but less quantity is produced, prompting buyers to increase their bids, raising the price.</li>
+        </ul>
+      </li>
+      <li><strong>Market Clearing Price (MCP)</strong>: the unique price at which supply and demand are exactly equal, ensuring that all offered quantity is sold and all demanded quantity (Market Clearing Quantity (MCQ)) is purchased.</li>
+    </ul>
   </div>
-  <div style="text-align: center; flex-shrink: 0;" markdown="1">
+  <div style="text-align: center; flex-shrink: 0;">
     <img src="/EnergyForecasting/Structure_of_Electricity_Market/Images/Fig6.png" alt="Equilibrium and Market Clearing Price" style="width: 320px; height: auto;">
     <br>
     <small style="color: var(--global-text-color-light);"><em>Fig 6: Equilibrium and Market Clearing Price</em></small>
@@ -236,6 +227,9 @@ Electricity systems moved from one regulated monopoly controlling generation, tr
 
 ### Sources
 
-- KTH "EG2050 System Planning", lecture 1 - 2 "The Structure of an electricity market", 2014 (Access via [KTH Course Catalog](https://www.kth.se/student/kurser/kurs/EG2050?l=en))
-- PoliTo "Smart Electricity Systems", *Market for electricity* lecture slides, A.Y. 2025-2026, taught by [Prof. Tao HUANG](https://www.polito.it/en/staff?p=tao.huang)
-- Gemini generated AI pictures for Fig 7 and 8
+- **KTH Royal Institute of Technology**: Course "EG2050 System Planning", taught by [**Prof. Mikael Amelin**](https://www.kth.se/profile/amelin).
+  - Lecture 1 - 2: *The Structure of an electricity market* (2014) — [Download Lecture Slides (PDF)](/EnergyForecasting/Structure_of_Electricity_Market/Sources/L1-2%20(2014).pdf)
+- **Politecnico di Torino (PoliTo)**: Course "Smart Electricity Systems", taught by [**Prof. Tao HUANG**](https://www.polito.it/en/staff?p=tao.huang).
+  - Lecture 1: *A Crash Introduction to (Smart) Power Systems* — [Download Lecture Slides (PDF)](/EnergyForecasting/Structure_of_Electricity_Market/Sources/Com_L1-A%20crash%20introduction%20to%20(Smart)%20Power%20Systems_compressed.pdf)
+  - Lecture 2: *Markets for electricity* (A.Y. 2025-2026) — [Download Lecture Slides (PDF)](/EnergyForecasting/Structure_of_Electricity_Market/Sources/Common_L2%20-%20markets%20for%20electricity.pdf)
+- **AI Artworks**: Figures 7 and 8 generated using Gemini AI.
