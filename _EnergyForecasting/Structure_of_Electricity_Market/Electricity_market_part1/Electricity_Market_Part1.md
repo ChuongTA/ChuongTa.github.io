@@ -22,7 +22,7 @@ This post is the first in a series on the fundamentals of electricity markets in
     *   Strategic bidding behavior of producers and market power
     *   Electricity as a unique commodity (non-storability, grid physics, reserves)
     *   The liberalization ladder (levels 0–3) and market participant roles
-*   **Part 2 (Next post) will cover:**
+*   **Part 2 (Next post) will cover:** *(Note: Part 2 will be written when I finish my self-directed DTU course, which you can refer to [here](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/))*
     *   Electricity market structures: pool model vs. bilateral model
     *   Day-Ahead Markets
     *   Intraday Markets
