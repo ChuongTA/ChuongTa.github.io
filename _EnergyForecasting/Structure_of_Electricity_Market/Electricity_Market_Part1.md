@@ -8,7 +8,7 @@ usemathjax: true
 date: 2026-08-12
 categories:
   - "Electricity Market"
-image: "/EnergyForecasting/Structure_of_Electricity_Market/Electricity_market_part1/Images/Fig1.png"
+image: "/EnergyForecasting/Structure_of_Electricity_Market/Images/Fig1.png"
 ---
 
 This post is the first in a series on the fundamentals of electricity markets in Europe. The contents are synthesized from two main lecture courses at [Politecnico di Torino (PoliTo)](https://www.polito.it/) and the [KTH Royal Institute of Technology](https://www.kth.se/). Specific source documents are hyperlinked in the [Sources](#sources) section below.
@@ -34,7 +34,7 @@ This post is the first in a series on the fundamentals of electricity markets in
 
 An electricity market is a system that enables the transfer of electric energy from producers to consumers, relying on a dedicated infrastructure - the power system.
 
-![Power system](/EnergyForecasting/Structure_of_Electricity_Market/Electricity_market_part1/Images/Fig1.png)
+![Power system](/EnergyForecasting/Structure_of_Electricity_Market/Images/Fig1.png)
 
 *Fig 1: Power system*
 
@@ -64,7 +64,7 @@ This represents the slope of the function $f(x)$ at $x=x_1$.
 
   </div>
   <div style="text-align: center; flex-shrink: 0;" markdown="1">
-    <img src="/EnergyForecasting/Structure_of_Electricity_Market/Electricity_market_part1/Images/Fig2.png" alt="Average vs Marginal" style="width: 300px; height: auto;">
+    <img src="/EnergyForecasting/Structure_of_Electricity_Market/Images/Fig2.png" alt="Average vs Marginal" style="width: 300px; height: auto;">
   </div>
 </div>
 
@@ -91,8 +91,8 @@ $$\nu = d(p)$$
 $$p = g(\nu)$$
 
 <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 1em auto;">
-  <img src="/EnergyForecasting/Structure_of_Electricity_Market/Electricity_market_part1/Images/Fig3.png" alt="Demand Curve 1" style="max-width: 317px; height: auto;">
-  <img src="/EnergyForecasting/Structure_of_Electricity_Market/Electricity_market_part1/Images/Fig4.png" alt="Demand Curve 2" style="max-width: 368px; height: auto;">
+  <img src="/EnergyForecasting/Structure_of_Electricity_Market/Images/Fig3.png" alt="Demand Curve 1" style="max-width: 317px; height: auto;">
+  <img src="/EnergyForecasting/Structure_of_Electricity_Market/Images/Fig4.png" alt="Demand Curve 2" style="max-width: 368px; height: auto;">
 </div>
 
 *Fig 3 and 4: Demand curves*
@@ -126,7 +126,7 @@ An increase in variable inputs relative to fixed inputs raises total output, but
 
   </div>
   <div style="text-align: center; flex-shrink: 0;" markdown="1">
-    <img src="/EnergyForecasting/Structure_of_Electricity_Market/Electricity_market_part1/Images/Fig5.png" alt="Diminishing marginal returns" style="width: 320px; height: auto;">
+    <img src="/EnergyForecasting/Structure_of_Electricity_Market/Images/Fig5.png" alt="Diminishing marginal returns" style="width: 320px; height: auto;">
     <br>
     <small style="color: var(--global-text-color-light);"><em>Fig 5: Diminishing marginal returns</em></small>
   </div>
@@ -153,7 +153,7 @@ An increase in variable inputs relative to fixed inputs raises total output, but
 
   </div>
   <div style="text-align: center; flex-shrink: 0;" markdown="1">
-    <img src="/EnergyForecasting/Structure_of_Electricity_Market/Electricity_market_part1/Images/Fig6.png" alt="Equilibrium and Market Clearing Price" style="width: 320px; height: auto;">
+    <img src="/EnergyForecasting/Structure_of_Electricity_Market/Images/Fig6.png" alt="Equilibrium and Market Clearing Price" style="width: 320px; height: auto;">
     <br>
     <small style="color: var(--global-text-color-light);"><em>Fig 6: Equilibrium and Market Clearing Price</em></small>
   </div>
@@ -167,7 +167,7 @@ An increase in variable inputs relative to fixed inputs raises total output, but
 | **Producer Surplus** | The economic benefit producers receive when the market price is higher than the minimum price at which they were willing to supply the good. |
 | **Social Surplus** | The total economic benefit created in the market, equal to the sum of consumer surplus and producer surplus. |
 
-![Consumer Surplus, Producer Surplus, and Social Surplus](/EnergyForecasting/Structure_of_Electricity_Market/Electricity_market_part1/Images/Fig7.png)
+![Consumer Surplus, Producer Surplus, and Social Surplus](/EnergyForecasting/Structure_of_Electricity_Market/Images/Fig7.png)
 
 *Fig 7: Consumer Surplus, Producer Surplus, and Social Surplus*
 
@@ -179,7 +179,7 @@ In a market where producers have market power, they can bid strategically by off
 
 **In the diagram**, this appears on the right side: the strategic offer curve lies above the marginal cost curve, leading to a higher price and lower quantity. The red triangle shows the deadweight loss - the lost social welfare caused by strategic bidding.
 
-![Demand diagram showing strategic bidding behavior of producers](/EnergyForecasting/Structure_of_Electricity_Market/Electricity_market_part1/Images/Fig8.png)
+![Demand diagram showing strategic bidding behavior of producers](/EnergyForecasting/Structure_of_Electricity_Market/Images/Fig8.png)
 
 *Fig 8: Demand diagram showing strategic bidding behavior of producers*
 
@@ -202,10 +202,10 @@ Electricity is fungible, like gold, oil, or copper - one unit is interchangeable
 - **Level 3**: Retail competition, everyone chooses supplier
 
 <div style="display: flex; flex-direction: column; gap: 15px; align-items: center; margin: 1.5em auto;">
-  <img src="/EnergyForecasting/Structure_of_Electricity_Market/Electricity_market_part1/Images/Fig9.png" alt="liberalization ladder Level 0" style="max-width: 100%; height: auto;">
-  <img src="/EnergyForecasting/Structure_of_Electricity_Market/Electricity_market_part1/Images/Fig10.png" alt="liberalization ladder Level 1" style="max-width: 100%; height: auto;">
-  <img src="/EnergyForecasting/Structure_of_Electricity_Market/Electricity_market_part1/Images/Fig11.png" alt="liberalization ladder Level 2" style="max-width: 100%; height: auto;">
-  <img src="/EnergyForecasting/Structure_of_Electricity_Market/Electricity_market_part1/Images/Fig12.png" alt="liberalization ladder Level 3" style="max-width: 100%; height: auto;">
+  <img src="/EnergyForecasting/Structure_of_Electricity_Market/Images/Fig9.png" alt="liberalization ladder Level 0" style="max-width: 100%; height: auto;">
+  <img src="/EnergyForecasting/Structure_of_Electricity_Market/Images/Fig10.png" alt="liberalization ladder Level 1" style="max-width: 100%; height: auto;">
+  <img src="/EnergyForecasting/Structure_of_Electricity_Market/Images/Fig11.png" alt="liberalization ladder Level 2" style="max-width: 100%; height: auto;">
+  <img src="/EnergyForecasting/Structure_of_Electricity_Market/Images/Fig12.png" alt="liberalization ladder Level 3" style="max-width: 100%; height: auto;">
 </div>
 
 *Fig 9 to 12: liberalization ladder 0–3*
@@ -215,7 +215,7 @@ Electricity is fungible, like gold, oil, or copper - one unit is interchangeable
 
 Electricity systems moved from one regulated monopoly controlling generation, transmission, distribution, and retail to a liberalized structure where generation and retail are opened to competition, while transmission and distribution remain regulated natural monopolies.
 
-![From regulation to liberalization](/EnergyForecasting/Structure_of_Electricity_Market/Electricity_market_part1/Images/Fig13.png)
+![From regulation to liberalization](/EnergyForecasting/Structure_of_Electricity_Market/Images/Fig13.png)
 
 *Fig 13: From regulation to liberalization*
 
@@ -228,7 +228,7 @@ Electricity systems moved from one regulated monopoly controlling generation, tr
 - **System Operator (TSO)**: Responsible for real‑time balancing, grid stability, and secure operation of the power system. They run balancing markets and manage congestion.
 - **Balance Responsible Players (BRPs)**: Entities financially responsible for keeping their production and consumption schedules balanced. If they deviate, they pay imbalance costs.
 
-![Functions in Electricity Market](/EnergyForecasting/Structure_of_Electricity_Market/Electricity_market_part1/Images/Fig14.png)
+![Functions in Electricity Market](/EnergyForecasting/Structure_of_Electricity_Market/Images/Fig14.png)
 
 *Fig 14: Functions in Electricity Market*
 
