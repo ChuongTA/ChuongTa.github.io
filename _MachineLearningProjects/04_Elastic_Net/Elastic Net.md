@@ -149,6 +149,18 @@ Finding the optimal $\boldsymbol{\beta}^*$ successfully reduces the loss from **
 
 ---
 
+## The Grouping Effect (Grouped Selection)
+
+A major weakness of **Lasso** regularization is how it handles strongly correlated features (features that form a group of related variables). When presented with a group of highly correlated variables, Lasso tends to arbitrarily select only **one** variable from the group and drop (zero out) all the others. This can lead to model instability and loss of relevant context.
+
+**Elastic Net** overcomes this limitation. By blending the $L_1$ and $L_2$ penalties, the $L_2$ component forces the coefficients of correlated features to shrink together, allowing Elastic Net to perform **grouped selection** (either keeping or dropping the whole group together).
+
+Below is the visualization of this grouping behavior across 3 panels:
+
+![The Grouped Selection](/MachineLearningProjects/04_Elastic_Net/Results/grouped_selection.png)
+
+---
+
 ## Geometric Representation
 
 When plotted on a Cartesian Plane the elastic net falls in between the ridge and lasso regression plots since it is the combination of those two regression methods. The plot for the elastic net also exhibits singularity at the vertices, which are important for sparsity. It also exhibits strict convex edges where the convexity depends on the value of $\rho$.
