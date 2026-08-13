@@ -39,8 +39,8 @@ $$
 - $n$: number of samples
 - $\alpha$: regularization strength
 - $\rho$: L1 ratio (mix between L1 and L2)
-- $\|\boldsymbol{\beta}\|_1 = \sum_j |\beta_j|$: L1 norm
-- $\|\boldsymbol{\beta}\|_2^2 = \sum_j \beta_j^2$: Squared L2 norm
+- $\lVert\boldsymbol{\beta}\rVert_1 = \sum_j \lvert\beta_j\rvert$: L1 norm
+- $\lVert\boldsymbol{\beta}\rVert_2^2 = \sum_j \beta_j^2$: Squared L2 norm
 
 ### Special Cases
 
