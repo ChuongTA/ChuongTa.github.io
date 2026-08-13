@@ -68,9 +68,11 @@ def draw_geometry_plots():
         ax.text(1.05, 0.05, '1', color='#1e1e1e', fontsize=9)
         ax.text(0.05, 1.05, '1', color='#1e1e1e', fontsize=9)
         
-        # Adjust spines
+        # Hide default outer spines and tick marks to prevent central axes intersecting borders
+        ax.set_xticks([])
+        ax.set_yticks([])
         for spine in ax.spines.values():
-            spine.set_color('#cccccc')
+            spine.set_visible(False)
             
     plt.suptitle("Elastic Net Constraint Geometry", fontsize=18, color='#1e1e1e', weight='bold', y=0.96)
     plt.tight_layout(rect=[0, 0, 1, 0.92])
