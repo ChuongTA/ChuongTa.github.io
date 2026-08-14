@@ -212,12 +212,20 @@ Electricity systems moved from one regulated monopoly controlling generation, tr
 
 
 ## Functions in Electricity Market
+
 - **Producers**: Generate electricity and submit offers to the market. They decide how much to produce and at what price, aiming to maximize profit.
-- **Consumers**: Use electricity and submit bids that reflect their willingness to pay. They can be households, industries, or commercial users.
-- **Retailers and Traders**: Buy electricity from the wholesale market and sell it to consumers. Traders also buy and sell electricity across markets to exploit price differences.
-- **Grid Owners**: Own and maintain the transmission and distribution networks. They ensure reliable physical delivery of electricity but do not participate in price competition.
-- **System Operator (TSO)**: Responsible for real‑time balancing, grid stability, and secure operation of the power system. They run balancing markets and manage congestion.
-- **Balance Responsible Players (BRPs)**: Entities financially responsible for keeping their production and consumption schedules balanced. If they deviate, they pay imbalance costs.
+- **Power Demands & Consumers**:
+  - **Large Consumers**: Large-scale users (e.g., industrial plants, factories) who consume significant volumes of electricity and often participate directly in the wholesale market.
+  - **Retailers**: Intermediate market actors (or traders) who purchase electricity in bulk from the wholesale market and resell it to smaller end-consumers (e.g., households, commercial buildings) who do not have direct market access.
+- **Market Operator**: A non-profit entity that receives all offers from producers and bids from consumers, clears the market by maximizing social welfare, and distributes the final market-clearing outcomes (prices and quantities).
+- **System Operators & Grid Owners**:
+  - **Transmission System Operator (TSO)**: Responsible for the safe and reliable operation of the high-voltage transmission grid (typically a meshed network with many loops). They ensure supply security, real-time power balance, and system stability.
+    - *Note:* In Europe, **ENTSO-E** (European Network of Transmission System Operators for Electricity) represents all European TSOs working together to run the grid and coordinate cross-border markets.
+  - **Distribution System Operator (DSO)**: Responsible for the safe and reliable operation of the medium- and low-voltage distribution networks (typically radial grids, which are tree-like structures where electricity flows in one direction from substations to consumers with no loops).
+- **Market Regulator**: Responsible for monitoring market performance in both the short and long run, ensuring fair competition, and designing appropriate market regulations and policies.
+- **Traders**: Participate in buying and selling electricity across different timeframes and markets to profit from price differences. They can engage in both physical trading (requiring actual delivery) and purely financial trading.
+- **Balance Responsible Parties (BRPs)**: Market participants (or entities representing them) that are financially responsible for keeping their portfolio's production and consumption schedules balanced. Any real-time deviations from their schedules incur imbalance costs.
+- **Flexibility Aggregators**: Service providers who group multiple smaller distributed energy resources (such as electric vehicles, smart appliances, or batteries) to offer flexibility and balancing services to TSOs and DSOs.
 
 ![Functions in Electricity Market](/EnergyForecasting/Structure_of_Electricity_Market/Images/Fig14.png)
 
