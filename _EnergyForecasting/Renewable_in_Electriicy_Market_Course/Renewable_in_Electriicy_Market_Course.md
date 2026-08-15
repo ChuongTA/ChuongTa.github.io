@@ -43,6 +43,16 @@ This course provides a comprehensive overview of electricity markets, covering b
   - Explored what makes electricity markets unique (non-storability, inelastic demand, grid constraints).
   - Played a super fun 🎮 Kahoot quiz on calculating social welfare and supplier profits (still Notworking! 😜)
 
+### Lecture 2: Fundamentals of Electricity Market *(Completed)*
+- [Lecture Slides (PDF)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/Lecture2/46755%20%E2%80%93%20Renewables%20in%20Electricity%20Markets%20Lecture%202.pdf)
+- [Study Notes (Markdown)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/Lecture2/Lecture%202%20-%20Fundamentals%20of%20Electricity%20Market.md)
+- [Study Notes (PDF)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/Lecture2/Lecture%202%20-%20Fundamentals%20of%20Electricity%20Market.pdf)
+- **Quick Summary:**
+  - Classified power market actors (consumers, retailers, market operators, TSOs, DSOs, regulators, BRPs, and flexibility aggregators).
+  - Explored energy market timelines (futures, day-ahead/spot, intraday, and balancing) and ancillary services (FCR, aFRR, mFRR).
+  - Compared European (TSO/MO separation, zonal, sequential clearing) vs. U.S. markets (ISO, nodal, joint co-optimization).
+  - Formulated market clearing mathematically as a linear optimization problem, using the Lagrangian function and KKT optimality conditions to verify market prices.
+
 ### Market Clearing: Optimization vs. Equilibrium *(To be updated)*
 
 - Market clearing as an optimization problem
