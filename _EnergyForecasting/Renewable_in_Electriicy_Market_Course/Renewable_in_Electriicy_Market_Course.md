@@ -19,7 +19,7 @@ This page compiles my notes, study materials, and practical projects on electric
   <figcaption style="margin-top: 0.5em; font-size: 0.9em; color: var(--global-text-color-light);">Graphical abstract: Structural overview of electricity markets and clearing mechanisms.</figcaption>
 </figure>
 
-*Status: In Progress (Completed Lecture 0. Below links will direct to detailed notes and projects as they are completed).*
+*Status: In Progress (Completed Lectures 0 to 3. Below links will direct to detailed notes and projects as they are completed).*
 
 ---
 
@@ -59,13 +59,16 @@ This course provides a comprehensive overview of electricity markets, covering b
 - Market clearing as a competitive equilibrium problem
 - Definitions of Nash equilibrium and mixed complementarity problems
 
-### Day-Ahead Markets *(To be updated)*
-
-- Practical aspects (focus on European markets)
-- Market-clearing problem formulated as an optimization problem
-- Price verification through optimality conditions
-- Network effects: Zonal vs. nodal market clearing
-- Flow-based market coupling
+### Lecture 3: Day-Ahead Market *(Completed)*
+- [Lecture Slides (PDF)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/lecture3/46755%20%E2%80%93%20Renewables%20in%20Electricity%20Markets%20Lecture%203.pdf)
+- [Study Notes (Markdown)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/lecture3/Lecture%203_%20Day%20Ahead%20market.md)
+- [Study Notes (PDF)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/lecture3/Lecture%203_%20Day%20Ahead%20market.pdf)
+- **Quick Summary:**
+  - Explored Single Day-Ahead Coupling (SDAC) in Europe using the EUPHEMIA hybrid market integration algorithm.
+  - Analyzed network effects on clearing outcomes, price distribution, and congestion rent collection.
+  - Formulated the mathematical differences between Nodal (LMP-based, e.g., US ISOs) and Zonal (European) market-clearing models.
+  - Studied linear DC power-flow approximations used to maintain convex, globally solvable optimization problems.
+  - Evaluated Flow-Based Market Coupling as a more grid-reflective alternative to traditional Net Transfer Capacity (NTC) zonal models.
 
 ### Intraday Markets *(To be updated)*
 
