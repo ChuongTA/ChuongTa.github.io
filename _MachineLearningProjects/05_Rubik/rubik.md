@@ -423,9 +423,9 @@ function rotateLayer(axis, targetVal, angle, duration) {
             return posVal === targetVal;
         });
 
-        // Add them to standard rotating group container
+        // Add them to standard rotating group container using attach to preserve positions
         movingCubies.forEach(c => {
-            rotatingGroup.add(c);
+            rotatingGroup.attach(c);
         });
 
         const startRot = rotatingGroup.rotation[axis];
@@ -441,14 +441,14 @@ function rotateLayer(axis, targetVal, angle, duration) {
             } else {
                 // Detach cubies back to base group, round coordinates to maintain grid structure
                 movingCubies.forEach(c => {
-                    THREE.SceneUtils.detach(c, rotatingGroup, scene);
+                    scene.attach(c);
                     c.position.x = Math.round(c.position.x);
                     c.position.y = Math.round(c.position.y);
                     c.position.z = Math.round(c.position.z);
                     c.rotation.x = Math.round(c.rotation.x / (Math.PI / 2)) * (Math.PI / 2);
                     c.rotation.y = Math.round(c.rotation.y / (Math.PI / 2)) * (Math.PI / 2);
                     c.rotation.z = Math.round(c.rotation.z / (Math.PI / 2)) * (Math.PI / 2);
-                    THREE.SceneUtils.attach(c, scene, cubeGroup);
+                    cubeGroup.attach(c);
                 });
                 scene.remove(rotatingGroup);
                 resolve();
