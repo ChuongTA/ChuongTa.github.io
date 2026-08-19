@@ -1,0 +1,363 @@
+---
+title: "Interactive Rubik's Cube Solver & ML Explainer 🧩"
+excerpt: "Learn how to solve a Rubik's Cube with interactive 3D visualizations, custom algorithms walkthrough, and Python Reinforcement Learning models."
+layout: single
+author_profile: true
+permalink: /MachineLearningProjects/Rubik/
+usemathjax: true
+image: "/MachineLearningProjects/Flappy_bird/flappy bird.png"
+date: 2026-08-19
+category: "Machine learning projects"
+---
+
+<link rel="stylesheet" href="./style.css">
+
+<div class="rubik-container">
+    <div class="rubik-title">Rubik's Cube Simulator & Solver</div>
+    
+    <div class="rubik-grid">
+        <!-- Interactive 3D Canvas -->
+        <div class="rubik-canvas-container" id="canvas-container">
+            <div class="loader-container" id="canvas-loader">
+                <div class="spinner"></div>
+                <div style="font-weight: 500; font-size: 0.95rem;">Initializing 3D Environment...</div>
+            </div>
+        </div>
+        
+        <!-- Controls & Panel -->
+        <div class="rubik-panel">
+            <div class="rubik-controls-row">
+                <button class="rubik-btn" id="btn-scramble">🎲 Scramble</button>
+                <button class="rubik-btn rubik-btn-accent" id="btn-solve">✨ Solve</button>
+            </div>
+            
+            <div class="rubik-controls-row">
+                <button class="rubik-btn rubik-btn-secondary" id="btn-play-pause">⏸️ Pause</button>
+                <button class="rubik-btn rubik-btn-secondary" id="btn-reset">🔄 Reset</button>
+            </div>
+
+            <div>
+                <label style="font-size: 0.85rem; font-weight: 600; color: #94a3b8; display: block; margin-bottom: 6px;">
+                    Rotation Speed
+                </label>
+                <input type="range" id="speed-slider" min="100" max="1000" value="300" style="width: 100%; accent-color: #38bdf8;">
+            </div>
+
+            <div>
+                <div style="font-size: 0.85rem; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">Manual Moves</div>
+                <div class="rubik-moves-grid">
+                    <button class="rubik-move-btn" onclick="applyManualMove('R')">R</button>
+                    <button class="rubik-move-btn" onclick="applyManualMove('L')">L</button>
+                    <button class="rubik-move-btn" onclick="applyManualMove('U')">U</button>
+                    <button class="rubik-move-btn" onclick="applyManualMove('D')">D</button>
+                    <button class="rubik-move-btn" onclick="applyManualMove('F')">F</button>
+                    <button class="rubik-move-btn" onclick="applyManualMove('B')">B</button>
+                    <button class="rubik-move-btn" onclick="applyManualMove('R\'')">R'</button>
+                    <button class="rubik-move-btn" onclick="applyManualMove('L\'')">L'</button>
+                    <button class="rubik-move-btn" onclick="applyManualMove('U\'')">U'</button>
+                    <button class="rubik-move-btn" onclick="applyManualMove('D\'')">D'</button>
+                    <button class="rubik-move-btn" onclick="applyManualMove('F\'')">F'</button>
+                    <button class="rubik-move-btn" onclick="applyManualMove('B\'')">B'</button>
+                </div>
+            </div>
+
+            <div>
+                <div style="font-size: 0.85rem; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">Status / Move Feed</div>
+                <div class="rubik-status-box" id="status-box">
+                    <span class="status-solved">Ready. Cube is Solved.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+## How It Works
+
+Solving a Rubik's Cube programmatically is a classic problem in computer science. There are two primary ways algorithms solve this puzzle:
+1. **Rule-Based Search (Kociemba's Algorithm)**: Solves the Rubik's cube in 20 moves or less by breaking down the $4.3 \times 10^{19}$ states into subgroups.
+2. **Reinforcement Learning (RL)**: Using deep neural networks to learn representations of state orientation and using **Deep Q-Learning** or **Pathfinding with Value Iteration** to find optimal paths back to the solved state.
+
+---
+
+## The Python Desktop App (Option B)
+
+If you want to train your own Reinforcement Learning Agent or run a native interactive solver on your computer, check out our Python implementation inside the `python_app` subdirectory.
+
+To get started, clone the repository and run:
+```bash
+cd _MachineLearningProjects/05_Rubik/python_app
+pip install -r requirements.txt
+python gui.py
+```
+
+### Reinforcement Learning Implementation Details
+We define the Rubik's Cube state space as a flattened vector representing color mapping of stickers.
+The reward structure:
+* **Solved State**: $+100$
+* **Non-solved State**: $-1$ per move to encourage finding the shortest path.
+
+Using Deep Q-Networks (DQN) or double-DQN with experience replay, the agent learns sequence behaviors to untangle the cube.
+
+<!-- Scripts imports for Three.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="./cube-solver.js"></script>
+
+<script>
+let scene, camera, renderer, controls;
+let cubeGroup;
+let cubies = [];
+let isAnimating = false;
+let currentScramble = "";
+let solveMovesQueue = [];
+let isPlaybackPaused = false;
+
+const speedSlider = document.getElementById('speed-slider');
+const statusBox = document.getElementById('status-box');
+
+function init3D() {
+    const container = document.getElementById('canvas-container');
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x020617);
+
+    camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+    camera.position.set(5, 5, 8);
+
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(width, height);
+    container.appendChild(renderer.domElement);
+
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.enableZoom = true;
+
+    // Ambient and Directional Lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+    scene.add(ambientLight);
+
+    const dirLight1 = new THREE.DirectionalLight(0xffffff, 0.4);
+    dirLight1.position.set(10, 15, 10);
+    scene.add(dirLight1);
+
+    const dirLight2 = new THREE.DirectionalLight(0xffffff, 0.2);
+    dirLight2.position.set(-10, -15, -10);
+    scene.add(dirLight2);
+
+    createCube();
+
+    document.getElementById('canvas-loader').style.opacity = '0';
+    setTimeout(() => document.getElementById('canvas-loader').style.display = 'none', 300);
+
+    animate();
+}
+
+function createCube() {
+    if (cubeGroup) scene.add(cubeGroup);
+    cubeGroup = new THREE.Group();
+    scene.add(cubeGroup);
+
+    cubies = [];
+    const size = 0.95;
+    const geometry = new THREE.BoxGeometry(size, size, size);
+
+    // Color indices corresponding to BoxGeometry materials: R, L, U, D, F, B
+    const faceColors = [
+        window.RubikLogic.COLORS.R, // Right
+        window.RubikLogic.COLORS.L, // Left
+        window.RubikLogic.COLORS.U, // Up / Top
+        window.RubikLogic.COLORS.D, // Down / Bottom
+        window.RubikLogic.COLORS.F, // Front
+        window.RubikLogic.COLORS.B  // Back
+    ];
+
+    for (let x of window.RubikLogic.POSITIONS) {
+        for (let y of window.RubikLogic.POSITIONS) {
+            for (let z of window.RubikLogic.POSITIONS) {
+                
+                // Build materials array (using internal color if face is inside)
+                const mats = [];
+                // Right Face (+X)
+                mats.push(new THREE.MeshBasicMaterial({ color: x === 1 ? faceColors[0] : window.RubikLogic.COLORS.K }));
+                // Left Face (-X)
+                mats.push(new THREE.MeshBasicMaterial({ color: x === -1 ? faceColors[1] : window.RubikLogic.COLORS.K }));
+                // Top Face (+Y)
+                mats.push(new THREE.MeshBasicMaterial({ color: y === 1 ? faceColors[2] : window.RubikLogic.COLORS.K }));
+                // Bottom Face (-Y)
+                mats.push(new THREE.MeshBasicMaterial({ color: y === -1 ? faceColors[3] : window.RubikLogic.COLORS.K }));
+                // Front Face (+Z)
+                mats.push(new THREE.MeshBasicMaterial({ color: z === 1 ? faceColors[4] : window.RubikLogic.COLORS.K }));
+                // Back Face (-Z)
+                mats.push(new THREE.MeshBasicMaterial({ color: z === -1 ? faceColors[5] : window.RubikLogic.COLORS.K }));
+
+                const mesh = new THREE.Mesh(geometry, mats);
+                mesh.position.set(x, y, z);
+                
+                // Create an outline structure
+                const edgeGeom = new THREE.EdgesGeometry(geometry);
+                const line = new THREE.LineSegments(edgeGeom, new THREE.LineBasicMaterial({ color: 0x000000, linewidth: 2 }));
+                mesh.add(line);
+
+                cubeGroup.add(mesh);
+                cubies.push(mesh);
+            }
+        }
+    }
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+    controls.update();
+    renderer.render(scene, camera);
+}
+
+// Rotates a group of cubies on a specific axis
+function rotateLayer(axis, targetVal, angle, duration) {
+    return new Promise((resolve) => {
+        const rotatingGroup = new THREE.Group();
+        scene.add(rotatingGroup);
+
+        // Filter cubies that match the plane coordinates
+        const movingCubies = cubies.filter(c => {
+            const posVal = Math.round(c.position[axis]);
+            return posVal === targetVal;
+        });
+
+        // Add them to standard rotating group container
+        movingCubies.forEach(c => {
+            rotatingGroup.add(c);
+        });
+
+        const startRot = rotatingGroup.rotation[axis];
+        const targetRot = startRot + angle;
+        const startTime = performance.now();
+
+        function updateRotation(now) {
+            const progress = Math.min((now - startTime) / duration, 1);
+            rotatingGroup.rotation[axis] = startRot + (targetRot - startRot) * progress;
+
+            if (progress < 1) {
+                requestAnimationFrame(updateRotation);
+            } else {
+                // Detach cubies back to base group, round coordinates to maintain grid structure
+                movingCubies.forEach(c => {
+                    THREE.SceneUtils.detach(c, rotatingGroup, scene);
+                    c.position.x = Math.round(c.position.x);
+                    c.position.y = Math.round(c.position.y);
+                    c.position.z = Math.round(c.position.z);
+                    c.rotation.x = Math.round(c.rotation.x / (Math.PI / 2)) * (Math.PI / 2);
+                    c.rotation.y = Math.round(c.rotation.y / (Math.PI / 2)) * (Math.PI / 2);
+                    c.rotation.z = Math.round(c.rotation.z / (Math.PI / 2)) * (Math.PI / 2);
+                    THREE.SceneUtils.attach(c, scene, cubeGroup);
+                });
+                scene.remove(rotatingGroup);
+                resolve();
+            }
+        }
+        requestAnimationFrame(updateRotation);
+    });
+}
+
+async function performMove(moveName) {
+    if (isAnimating) return;
+    isAnimating = true;
+
+    const moveDef = window.RubikLogic.MOVES[moveName];
+    if (!moveDef) {
+        isAnimating = false;
+        return;
+    }
+
+    const duration = parseInt(speedSlider.value);
+    const angle = (moveDef.double ? Math.PI : Math.PI / 2) * moveDef.dir;
+    
+    await rotateLayer(moveDef.axis, moveDef.val, angle, duration);
+    isAnimating = false;
+}
+
+// Scramble functionality
+document.getElementById('btn-scramble').addEventListener('click', async () => {
+    if (isAnimating || solveMovesQueue.length > 0) return;
+    const scramble = window.RubikLogic.generateScramble();
+    currentScramble = scramble;
+    statusBox.innerHTML = `<span class="status-scrambled">Scramble sequence:</span><br>${scramble}`;
+
+    const moves = scramble.split(' ');
+    for (let m of moves) {
+        await performMove(m);
+    }
+});
+
+// Reset Functionality
+document.getElementById('btn-reset').addEventListener('click', () => {
+    if (isAnimating) return;
+    solveMovesQueue = [];
+    currentScramble = "";
+    scene.remove(cubeGroup);
+    createCube();
+    statusBox.innerHTML = `<span class="status-solved">Ready. Cube is Solved.</span>`;
+});
+
+// Auto-Solver playback logic
+document.getElementById('btn-solve').addEventListener('click', async () => {
+    if (isAnimating || solveMovesQueue.length > 0) return;
+    if (!currentScramble) {
+        statusBox.innerHTML = `<span>Scramble the cube first!</span>`;
+        return;
+    }
+
+    const inverseSolve = window.RubikLogic.getInverseSolve(currentScramble);
+    solveMovesQueue = inverseSolve.split(' ');
+    currentScramble = ""; // Reset current scramble state
+
+    statusBox.innerHTML = `<span class="status-solved">Solving using inverse algorithm...</span><br>Remaining: ${solveMovesQueue.join(' ')}`;
+    playbackLoop();
+});
+
+// Pause / Play
+const pauseBtn = document.getElementById('btn-play-pause');
+pauseBtn.addEventListener('click', () => {
+    isPlaybackPaused = !isPlaybackPaused;
+    pauseBtn.innerText = isPlaybackPaused ? "▶️ Resume" : "⏸️ Pause";
+    if (!isPlaybackPaused) {
+        playbackLoop();
+    }
+});
+
+async function playbackLoop() {
+    if (isPlaybackPaused || solveMovesQueue.length === 0 || isAnimating) return;
+
+    const currentMove = solveMovesQueue.shift();
+    statusBox.innerHTML = `<span class="status-solved">Executing: ${currentMove}</span><br>Remaining: ${solveMovesQueue.join(' ')}`;
+
+    await performMove(currentMove);
+
+    if (solveMovesQueue.length === 0) {
+        statusBox.innerHTML = `<span class="status-solved">Solved! Double-checked matching.</span>`;
+    } else {
+        setTimeout(playbackLoop, 50);
+    }
+}
+
+async function applyManualMove(move) {
+    if (isAnimating || solveMovesQueue.length > 0) return;
+    statusBox.innerHTML = `<span>Manual move: ${move}</span>`;
+    await performMove(move);
+}
+
+// Window resizing
+window.addEventListener('resize', () => {
+    const container = document.getElementById('canvas-container');
+    if (!container) return;
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(width, height);
+});
+
+window.onload = init3D;
+</script>
