@@ -558,5 +558,9 @@ window.addEventListener('resize', () => {
     renderer.setSize(width, height);
 });
 
-document.addEventListener('DOMContentLoaded', init3D);
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init3D);
+} else {
+    init3D();
+}
 </script>
