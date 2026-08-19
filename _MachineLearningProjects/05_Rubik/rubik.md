@@ -98,6 +98,40 @@ The reward structure:
 
 Using Deep Q-Networks (DQN) or double-DQN with experience replay, the agent learns sequence behaviors to untangle the cube.
 
+---
+
+## 📘 Step-by-Step Guide to Solving a Rubik's Cube (Beginner's Method)
+
+If you want to solve the Rubik's Cube manually, here is a breakdown of the standard **Layer-by-Layer** method:
+
+### 1. The White Cross ⬜
+Find the yellow center piece. Move the 4 white edge pieces around the yellow center to form a "daisy". Then, align the non-white color of each edge with its matching center piece and rotate that layer $180^\circ$ (a double turn) down to form a clean white cross on the bottom where the white edges match their side centers.
+
+### 2. The First Layer Corners 🧩
+Find white corner pieces on the top layer. Position them above the slot they belong to (determined by the other two colors of the corner). Execute the key algorithm (the **Sexy Move**) until the corner is correctly placed:
+$$\text{Algorithm: } R \ U \ R' \ U'$$
+
+### 3. Middle Layer (Second Layer Edges) 🟩
+Find edge pieces on the top layer that do not contain yellow. Align the front color of the edge with its matching center. 
+* To insert the edge to the **Right**:
+  $$\text{Algorithm: } U \ R \ U \ R' \ U' \ F' \ U' \ F$$
+* To insert the edge to the **Left**:
+  $$\text{Algorithm: } U' \ L' \ U' \ L \ U \ F \ U \ F'$$
+
+### 4. Yellow Cross (Orienting Edges) 🟨
+Look at the top face. You will have a dot, an 'L' shape, a horizontal line, or a cross. Repeat this algorithm to progress towards the cross:
+$$\text{Algorithm: } F \ R \ U \ R' \ U' \ F'$$
+
+### 5. Position the Yellow Corners (Permutation) 🔄
+Swap the corner positions so they sit in their correct corner slots (even if the colors are twisted). Keep repeating this sequence:
+$$\text{Algorithm: } U \ R \ U' \ L' \ U \ R' \ U' \ L$$
+
+### 6. Orient the Yellow Corners (Final Solve) ✨
+Turn the cube upside down (white center faces up). Look at the bottom right corner (the yellow side). Repeat the **Sexy Move** ($R \ U \ R' \ U'$) until the yellow sticker faces down. Rotate the bottom layer to bring the next unsolved corner to the bottom right and repeat. *Do not rotate the whole cube, only the bottom layer!*
+
+---
+
+
 <!-- Scripts imports for Three.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
