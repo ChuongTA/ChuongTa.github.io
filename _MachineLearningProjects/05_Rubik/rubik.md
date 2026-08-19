@@ -5,7 +5,7 @@ layout: single
 author_profile: true
 permalink: /MachineLearningProjects/Rubik/
 usemathjax: true
-image: "/MachineLearningProjects/Flappy_bird/flappy bird.png"
+image: "/images/Rubik/rubik_abstract_thumbnail.jpg"
 date: 2026-08-19
 category: "Machine learning projects"
 ---
