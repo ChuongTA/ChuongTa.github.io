@@ -104,12 +104,73 @@ Using Deep Q-Networks (DQN) or double-DQN with experience replay, the agent lear
 
 ### Understanding Cube Notation 📖
 To follow Rubik's Cube algorithms, you need to understand **Singmaster Notation**. Each letter represents a **$90^\circ$ clockwise rotation** of a specific face (as if you are looking directly at that face):
-*   **$F$ (Front):** Rotate the front face clockwise.
-*   **$B$ (Back):** Rotate the back face clockwise.
-*   **$R$ (Right):** Rotate the right face clockwise.
-*   **$L$ (Left):** Rotate the left face clockwise.
-*   **$U$ (Up):** Rotate the top face clockwise.
-*   **$D$ (Down):** Rotate the bottom face clockwise.
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; margin: 20px 0; text-align: center; font-size: 0.8rem; color: #cbd5e1;">
+    <div style="background: rgba(30, 41, 59, 0.4); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
+        <span style="font-size: 1.2rem; font-weight: bold; color: #38bdf8;">U (Up)</span>
+        <svg width="60" height="60" viewBox="0 0 100 100" style="margin: 10px 0;">
+            <!-- Top perspective face -->
+            <polygon points="50,15 80,30 50,45 20,30" fill="#334155" stroke="#000" stroke-width="2"/>
+            <polygon points="20,30 50,45 50,75 20,60" fill="#1e293b" stroke="#000" stroke-width="2"/>
+            <polygon points="50,45 80,30 80,60 50,75" fill="#1e293b" stroke="#000" stroke-width="2"/>
+            <path d="M50,15 L80,30 L50,45 L20,30 Z" fill="#ffffff" opacity="0.6"/>
+            <!-- Arrow -->
+            <path d="M 40,25 Q 50,18 60,25" fill="none" stroke="#ef4444" stroke-width="4" marker-end="url(#arrow)"/>
+            <defs>
+                <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#ef4444"/>
+                </marker>
+            </defs>
+        </svg>
+        <span>Clockwise top layer</span>
+    </div>
+    <div style="background: rgba(30, 41, 59, 0.4); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
+        <span style="font-size: 1.2rem; font-weight: bold; color: #38bdf8;">D (Down)</span>
+        <svg width="60" height="60" viewBox="0 0 100 100" style="margin: 10px 0;">
+            <polygon points="50,15 80,30 50,45 20,30" fill="#1e293b" stroke="#000" stroke-width="2"/>
+            <polygon points="20,30 50,45 50,75 20,60" fill="#1e293b" stroke="#000" stroke-width="2"/>
+            <polygon points="50,45 80,30 80,60 50,75" fill="#1e293b" stroke="#000" stroke-width="2"/>
+            <!-- Highlight bottom -->
+            <polygon points="20,60 50,75 80,60 50,90" fill="#ffd700" opacity="0.6" stroke="#000" stroke-width="2" transform="translate(0, 5)"/>
+            <path d="M 40,80 Q 50,87 60,80" fill="none" stroke="#ef4444" stroke-width="4" marker-end="url(#arrow)"/>
+        </svg>
+        <span>Clockwise bottom layer</span>
+    </div>
+    <div style="background: rgba(30, 41, 59, 0.4); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
+        <span style="font-size: 1.2rem; font-weight: bold; color: #38bdf8;">F (Front)</span>
+        <svg width="60" height="60" viewBox="0 0 100 100" style="margin: 10px 0;">
+            <polygon points="50,15 80,30 50,45 20,30" fill="#1e293b" stroke="#000" stroke-width="2"/>
+            <polygon points="20,30 50,45 50,75 20,60" fill="#334155" stroke="#000" stroke-width="2"/>
+            <polygon points="50,45 80,30 80,60 50,75" fill="#1e293b" stroke="#000" stroke-width="2"/>
+            <polygon points="20,30 50,45 50,75 20,60" fill="#009b48" opacity="0.6"/>
+            <!-- Circular front arrow -->
+            <path d="M 30,42 A 15,15 0 0,1 45,35" fill="none" stroke="#ef4444" stroke-width="4" marker-end="url(#arrow)"/>
+        </svg>
+        <span>Clockwise front face</span>
+    </div>
+    <div style="background: rgba(30, 41, 59, 0.4); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
+        <span style="font-size: 1.2rem; font-weight: bold; color: #38bdf8;">R (Right)</span>
+        <svg width="60" height="60" viewBox="0 0 100 100" style="margin: 10px 0;">
+            <polygon points="50,15 80,30 50,45 20,30" fill="#1e293b" stroke="#000" stroke-width="2"/>
+            <polygon points="20,30 50,45 50,75 20,60" fill="#1e293b" stroke="#000" stroke-width="2"/>
+            <polygon points="50,45 80,30 80,60 50,75" fill="#334155" stroke="#000" stroke-width="2"/>
+            <polygon points="50,45 80,30 80,60 50,75" fill="#b71234" opacity="0.6"/>
+            <path d="M 62,38 L 78,50" fill="none" stroke="#ef4444" stroke-width="4" marker-end="url(#arrow)"/>
+        </svg>
+        <span>Clockwise right layer</span>
+    </div>
+    <div style="background: rgba(30, 41, 59, 0.4); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
+        <span style="font-size: 1.2rem; font-weight: bold; color: #38bdf8;">L (Left)</span>
+        <svg width="60" height="60" viewBox="0 0 100 100" style="margin: 10px 0;">
+            <polygon points="50,15 80,30 50,45 20,30" fill="#1e293b" stroke="#000" stroke-width="2"/>
+            <polygon points="20,30 50,45 50,75 20,60" fill="#334155" stroke="#000" stroke-width="2"/>
+            <polygon points="50,45 80,30 80,60 50,75" fill="#1e293b" stroke="#000" stroke-width="2"/>
+            <polygon points="20,30 50,45 50,75 20,60" fill="#ff5800" opacity="0.6"/>
+            <path d="M 38,62 L 22,50" fill="none" stroke="#ef4444" stroke-width="4" marker-end="url(#arrow)"/>
+        </svg>
+        <span>Clockwise left layer</span>
+    </div>
+</div>
 
 **Suffix Modifiers:**
 *   **Prime ($'$) Suffix (e.g., $R'$, $U'$):** Rotate the face **counter-clockwise** (e.g., $R'$ is Right counter-clockwise).
