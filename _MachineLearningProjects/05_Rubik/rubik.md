@@ -315,7 +315,9 @@ const statusBox = document.getElementById('status-box');
 function init3D() {
     const container = document.getElementById('canvas-container');
     const width = container.clientWidth;
-    const height = container.clientHeight;
+    // clientHeight of a flex aspect-ratio item can evaluate to 0 initially if not fully loaded.
+    // Fallback to width (since it's a 1:1 aspect ratio container) or bounding rect to prevent division by zero camera distortions.
+    const height = container.clientHeight || width || 400;
 
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x020617);
