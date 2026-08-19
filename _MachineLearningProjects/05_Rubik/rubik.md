@@ -102,6 +102,19 @@ Using Deep Q-Networks (DQN) or double-DQN with experience replay, the agent lear
 
 ## 📘 Step-by-Step Guide to Solving a Rubik's Cube (Beginner's Method)
 
+### Understanding Cube Notation 📖
+To follow Rubik's Cube algorithms, you need to understand **Singmaster Notation**. Each letter represents a **$90^\circ$ clockwise rotation** of a specific face (as if you are looking directly at that face):
+*   **$F$ (Front):** Rotate the front face clockwise.
+*   **$B$ (Back):** Rotate the back face clockwise.
+*   **$R$ (Right):** Rotate the right face clockwise.
+*   **$L$ (Left):** Rotate the left face clockwise.
+*   **$U$ (Up):** Rotate the top face clockwise.
+*   **$D$ (Down):** Rotate the bottom face clockwise.
+
+**Suffix Modifiers:**
+*   **Prime ($'$) Suffix (e.g., $R'$, $U'$):** Rotate the face **counter-clockwise** (e.g., $R'$ is Right counter-clockwise).
+*   **Number $2$ Suffix (e.g., $F2$, $U2$):** Rotate the face **$180^\circ$** (direction does not matter since two turns result in the same position).
+
 If you want to solve the Rubik's Cube manually, here is a breakdown of the standard **Layer-by-Layer** method:
 
 ### 1. The White Cross ⬜
