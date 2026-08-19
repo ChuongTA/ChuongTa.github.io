@@ -10,7 +10,7 @@ date: 2026-08-19
 category: "Machine learning projects"
 ---
 
-<link rel="stylesheet" href="{{ '/_MachineLearningProjects/05_Rubik/style.css' | relative_url }}">
+<link rel="stylesheet" href="{{ '/assets/css/rubik-style.css' | relative_url }}">
 
 <div class="rubik-container">
     <div class="rubik-title">Rubik's Cube Simulator & Solver</div>
@@ -298,7 +298,7 @@ Turn the cube upside down (white center faces up). Look at the bottom right corn
 <!-- Scripts imports for Three.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-<script src="{{ '/_MachineLearningProjects/05_Rubik/cube-solver.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/rubik-cube-solver.js' | relative_url }}"></script>
 
 <script>
 let scene, camera, renderer, controls;
