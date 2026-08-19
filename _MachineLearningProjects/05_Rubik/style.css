@@ -200,3 +200,43 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+/* CSS Drawn Visual Cube Nets */
+.visual-net-container {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.visual-net {
+    display: grid;
+    grid-template-columns: repeat(4, 30px);
+    grid-template-rows: repeat(3, 30px);
+    gap: 2px;
+    background: #020617;
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid #1e293b;
+}
+
+.vn-cell {
+    width: 30px;
+    height: 30px;
+    border-radius: 3px;
+    border: 1px solid #000;
+}
+
+.vn-empty {
+    border: none;
+    background: transparent;
+}
+
+.vn-u { background: #ffffff; }
+.vn-d { background: #ffd700; }
+.vn-f { background: #009b48; }
+.vn-b { background: #0045ad; }
+.vn-l { background: #ff5800; }
+.vn-r { background: #b71234; }
+.vn-k { background: #334155; } /* Highlighted/Target piece */
+.vn-grey { background: #475569; } /* Unrelated/ignored piece */
+

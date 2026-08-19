@@ -107,9 +107,63 @@ If you want to solve the Rubik's Cube manually, here is a breakdown of the stand
 ### 1. The White Cross ⬜
 Find the yellow center piece. Move the 4 white edge pieces around the yellow center to form a "daisy". Then, align the non-white color of each edge with its matching center piece and rotate that layer $180^\circ$ (a double turn) down to form a clean white cross on the bottom where the white edges match their side centers.
 
+<div class="visual-net-container">
+    <div style="text-align: center; font-size: 0.8rem; color: #94a3b8; margin-right: 15px;">
+        <div>Daisy Pattern Target</div>
+        <div style="display: grid; grid-template-columns: repeat(3, 20px); gap: 1px; background: #020617; padding: 4px; border: 1px solid #1e293b; border-radius: 4px; margin-top: 5px;">
+            <div style="width:20px; height:20px; background:#475569;"></div>
+            <div style="width:20px; height:20px; background:#ffffff;"></div>
+            <div style="width:20px; height:20px; background:#475569;"></div>
+            <div style="width:20px; height:20px; background:#ffffff;"></div>
+            <div style="width:20px; height:20px; background:#ffd700;"></div>
+            <div style="width:20px; height:20px; background:#ffffff;"></div>
+            <div style="width:20px; height:20px; background:#475569;"></div>
+            <div style="width:20px; height:20px; background:#ffffff;"></div>
+            <div style="width:20px; height:20px; background:#475569;"></div>
+        </div>
+    </div>
+    <div style="text-align: center; font-size: 0.8rem; color: #94a3b8;">
+        <div>Bottom White Cross Target</div>
+        <div style="display: grid; grid-template-columns: repeat(3, 20px); gap: 1px; background: #020617; padding: 4px; border: 1px solid #1e293b; border-radius: 4px; margin-top: 5px;">
+            <div style="width:20px; height:20px; background:#475569;"></div>
+            <div style="width:20px; height:20px; background:#ffffff;"></div>
+            <div style="width:20px; height:20px; background:#475569;"></div>
+            <div style="width:20px; height:20px; background:#ffffff;"></div>
+            <div style="width:20px; height:20px; background:#ffffff;"></div>
+            <div style="width:20px; height:20px; background:#ffffff;"></div>
+            <div style="width:20px; height:20px; background:#475569;"></div>
+            <div style="width:20px; height:20px; background:#ffffff;"></div>
+            <div style="width:20px; height:20px; background:#475569;"></div>
+        </div>
+    </div>
+</div>
+
 ### 2. The First Layer Corners 🧩
 Find white corner pieces on the top layer. Position them above the slot they belong to (determined by the other two colors of the corner). Execute the key algorithm (the **Sexy Move**) until the corner is correctly placed:
 $$\text{Algorithm: } R \ U \ R' \ U'$$
+
+<div class="visual-net-container">
+    <div style="text-align: center; font-size: 0.8rem; color: #94a3b8;">
+        <div>Solved First Layer Target (Bottom Face + Edges match Center)</div>
+        <div style="display: flex; gap: 8px; margin-top: 5px;">
+            <div style="display: grid; grid-template-columns: repeat(3, 15px); gap: 1px; background: #020617; padding: 3px; border: 1px solid #1e293b; border-radius: 3px;">
+                <div style="width:15px; height:15px; background:#ffffff;"></div>
+                <div style="width:15px; height:15px; background:#ffffff;"></div>
+                <div style="width:15px; height:15px; background:#ffffff;"></div>
+                <div style="width:15px; height:15px; background:#ffffff;"></div>
+                <div style="width:15px; height:15px; background:#ffffff;"></div>
+                <div style="width:15px; height:15px; background:#ffffff;"></div>
+                <div style="width:15px; height:15px; background:#ffffff;"></div>
+                <div style="width:15px; height:15px; background:#ffffff;"></div>
+                <div style="width:15px; height:15px; background:#ffffff;"></div>
+            </div>
+            <div style="display: flex; flex-direction: column; justify-content: center; text-align: left; font-size: 0.75rem;">
+                <div style="color: #10b981;">✓ Bottom layer is solid White</div>
+                <div style="color: #10b981;">✓ T-shapes formed on all 4 sides</div>
+            </div>
+        </div>
+    </div>
+</div>
 
 ### 3. Middle Layer (Second Layer Edges) 🟩
 Find edge pieces on the top layer that do not contain yellow. Align the front color of the edge with its matching center. 
@@ -121,6 +175,41 @@ Find edge pieces on the top layer that do not contain yellow. Align the front co
 ### 4. Yellow Cross (Orienting Edges) 🟨
 Look at the top face. You will have a dot, an 'L' shape, a horizontal line, or a cross. Repeat this algorithm to progress towards the cross:
 $$\text{Algorithm: } F \ R \ U \ R' \ U' \ F'$$
+
+<div class="visual-net-container" style="gap: 15px;">
+    <div style="text-align: center; font-size: 0.75rem; color: #94a3b8;">
+        <div>1. Dot Case</div>
+        <div style="display: grid; grid-template-columns: repeat(3, 12px); gap: 1px; background: #020617; padding: 2px; border: 1px solid #1e293b; border-radius: 3px; margin-top: 3px;">
+            <div style="width:12px; height:12px; background:#475569;"></div><div style="width:12px; height:12px; background:#475569;"></div><div style="width:12px; height:12px; background:#475569;"></div>
+            <div style="width:12px; height:12px; background:#475569;"></div><div style="width:12px; height:12px; background:#ffd700;"></div><div style="width:12px; height:12px; background:#475569;"></div>
+            <div style="width:12px; height:12px; background:#475569;"></div><div style="width:12px; height:12px; background:#475569;"></div><div style="width:12px; height:12px; background:#475569;"></div>
+        </div>
+    </div>
+    <div style="text-align: center; font-size: 0.75rem; color: #94a3b8;">
+        <div>2. L-Shape Case</div>
+        <div style="display: grid; grid-template-columns: repeat(3, 12px); gap: 1px; background: #020617; padding: 2px; border: 1px solid #1e293b; border-radius: 3px; margin-top: 3px;">
+            <div style="width:12px; height:12px; background:#475569;"></div><div style="width:12px; height:12px; background:#ffd700;"></div><div style="width:12px; height:12px; background:#475569;"></div>
+            <div style="width:12px; height:12px; background:#ffd700;"></div><div style="width:12px; height:12px; background:#ffd700;"></div><div style="width:12px; height:12px; background:#475569;"></div>
+            <div style="width:12px; height:12px; background:#475569;"></div><div style="width:12px; height:12px; background:#475569;"></div><div style="width:12px; height:12px; background:#475569;"></div>
+        </div>
+    </div>
+    <div style="text-align: center; font-size: 0.75rem; color: #94a3b8;">
+        <div>3. Line Case</div>
+        <div style="display: grid; grid-template-columns: repeat(3, 12px); gap: 1px; background: #020617; padding: 2px; border: 1px solid #1e293b; border-radius: 3px; margin-top: 3px;">
+            <div style="width:12px; height:12px; background:#475569;"></div><div style="width:12px; height:12px; background:#475569;"></div><div style="width:12px; height:12px; background:#475569;"></div>
+            <div style="width:12px; height:12px; background:#ffd700;"></div><div style="width:12px; height:12px; background:#ffd700;"></div><div style="width:12px; height:12px; background:#ffd700;"></div>
+            <div style="width:12px; height:12px; background:#475569;"></div><div style="width:12px; height:12px; background:#475569;"></div><div style="width:12px; height:12px; background:#475569;"></div>
+        </div>
+    </div>
+    <div style="text-align: center; font-size: 0.75rem; color: #94a3b8;">
+        <div>4. Cross Target</div>
+        <div style="display: grid; grid-template-columns: repeat(3, 12px); gap: 1px; background: #020617; padding: 2px; border: 1px solid #1e293b; border-radius: 3px; margin-top: 3px;">
+            <div style="width:12px; height:12px; background:#475569;"></div><div style="width:12px; height:12px; background:#ffd700;"></div><div style="width:12px; height:12px; background:#475569;"></div>
+            <div style="width:12px; height:12px; background:#ffd700;"></div><div style="width:12px; height:12px; background:#ffd700;"></div><div style="width:12px; height:12px; background:#ffd700;"></div>
+            <div style="width:12px; height:12px; background:#475569;"></div><div style="width:12px; height:12px; background:#ffd700;"></div><div style="width:12px; height:12px; background:#475569;"></div>
+        </div>
+    </div>
+</div>
 
 ### 5. Position the Yellow Corners (Permutation) 🔄
 Swap the corner positions so they sit in their correct corner slots (even if the colors are twisted). Keep repeating this sequence:
