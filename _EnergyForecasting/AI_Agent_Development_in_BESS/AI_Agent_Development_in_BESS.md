@@ -35,10 +35,12 @@ $$
 P_{\text{load}}(t) = \big(P_{\text{base}} + P_{\text{diurnal}}(t)\big) \times M_{\text{day}}(t) + \epsilon(t)
 $$
 
+A constant standby load plus a time-of-day shape, scaled down on weekends by $M_{\text{day}}(t)$, plus Gaussian noise $\epsilon(t)$. Each sector below just plugs its own base level, diurnal shape, and weekend multiplier into this same template.
+
 | Sector         | Base (kW) |                   Peak addition (kW) | Active window                             | Weekend multiplier |
 | -------------- | --------: | -----------------------------------: | ----------------------------------------- | -----------------: |
 | Office         |        10 |        80 (dual peak, 10:00 & 15:00) | 08-18 weekdays                            |                0.1 |
-| Logistics      |        20 |                      120 AM / 150 PM | 06-09 & 17-20, Mon-Sat                    |         0.15 (Sun) |
+| Logistics      |        20 |          +120 when AM / +150 when PM | 06-09 & 17-20, Mon-Sat                    |         0.15 (Sun) |
 | Manufacturing  |        80 | 220 (shifts 1-2) / 120 (night shift) | 3 shifts, weekdays                        |               0.15 |
 | EV (passenger) |         0 |                                  200 | 08:00-13:00 weekdays (unmanaged charging) |                  0 |
 | EV (HGV)       |         0 |                                  600 | 18:00-23:00 weekdays (depot charging)     |                  0 |
@@ -51,11 +53,13 @@ $$
 G_{\text{avg}} = \frac{\text{SSRD}}{3600}\ \left[\text{W/m}^2\right], \qquad P_{\text{PV}}(t)\ [\text{kW}] = G_{\text{avg}} \times A_{\text{total}}\,\eta_{\text{PV}}\,\eta_{\text{system}}\,\eta_{\text{temp}} = G_{\text{avg}} \times 42.75
 $$
 
+SSRD is the energy that landed on each square meter over the hour (joules); dividing by the 3,600 seconds in an hour converts that to an average power density. Multiplying by the panel area and the three efficiency factors converts irradiance into plant output; since the area and efficiencies are fixed for this plant, they collapse into the single constant 42.75.
+
 | Parameter                                  |                            Value |
 | ------------------------------------------ | -------------------------------: |
 | Plant capacity                             | 50 MWp (100,000 x 500 Wp panels) |
-| Active panel area$A_{\text{total}}$      |                      250,000 m² |
-| Module efficiency$\eta_{\text{PV}}$      |                              20% |
+| Active panel area, $A_{\text{total}}$      |                      250,000 m² |
+| Module efficiency, $\eta_{\text{PV}}$      |                              20% |
 | System losses (inverter, cabling, soiling) |                              10% |
 | Nordic temperature derating                |                               5% |
 | Combined scaling factor                    |                            42.75 |
@@ -70,16 +74,20 @@ $$
 \hat{P}(t+k) = f_k(X_t), \quad k \in \{1, \dots, 24\}
 $$
 
+A separate model $f_k$ for each horizon, so the price 24 hours out is predicted directly from today's features $X_t$, not by chaining 24 one-hour-ahead predictions into each other and compounding their errors.
+
 | Feature group  | Variables                                                    |
 | -------------- | ------------------------------------------------------------ |
 | Calendar       | hour, day of week, month, weekend flag                       |
-| Autoregressive | price lag at$t-k$, $t-k-24$, $t-168$; 24h rolling mean |
+| Autoregressive | price lags: $t-k$, $t-k-24$, $t-168$; 24h rolling mean |
 
 Uncertainty comes from a binned residual bootstrap instead of a second set of quantile models: out-of-fold validation residuals are grouped into 15 bins by predicted price level, and a test prediction draws its P10/P90 offsets from the matching bin (5,000 bootstrap samples), so calm-period bands stay narrow and volatile-period bands stay wide:
 
 $$
 \hat{P}_{\text{P10}}(t+k) = \hat{P}_{\text{test}}(t+k) + q_{10}, \qquad \hat{P}_{\text{P90}}(t+k) = \hat{P}_{\text{test}}(t+k) + q_{90}
 $$
+
+$q_{10}$ and $q_{90}$ are the 10th and 90th percentile of the residuals bootstrapped from the matching bin; adding them to the point forecast shifts it down and up to bound the interval around that point, without needing a separate model trained for each quantile.
 
 Full pipeline detail (the 15-bin edges, monotonicity correction) is in [`Forecasting_Logic.md`](/EnergyForecasting/AI_Agent_Development_in_BESS/04_Electricity_Price/Forecasting_Logic.md).
 
@@ -91,15 +99,21 @@ $$
 \min \sum_{t=1}^{T} \Big( \lambda_{\text{buy}}(t)\,P_{\text{import}}(t) + C_{\text{deg}}\big(P_{\text{ch}}(t) + P_{\text{dis}}(t)\big) - \lambda_{\text{sell}}(t)\,P_{\text{export}}(t) \Big)\,\Delta t
 $$
 
-subject to the power balance, the grid import/export cap, and the state-of-charge dynamics $E(t) = E(t-1) + \big(P_{\text{ch}}(t)\eta_{\text{ch}} - P_{\text{dis}}(t)/\eta_{\text{dis}}\big)$:
+Three terms summed over the horizon: money spent importing at the buy price, a penalty proportional to how much the battery gets cycled (so it doesn't charge and discharge for a fraction of a cent of arbitrage margin), minus revenue earned exporting at the sell price. The solver picks the hour-by-hour charge/discharge schedule that minimizes this net cost, subject to the power balance, the grid import/export cap, and the state-of-charge dynamics:
+
+$$
+E(t) = E(t-1) + \Big(P_{\text{ch}}(t)\,\eta_{\text{ch}} - \frac{P_{\text{dis}}(t)}{\eta_{\text{dis}}}\Big)
+$$
+
+Next hour's stored energy is this hour's energy, plus what got charged in after charging losses, minus what got discharged out grossed up for discharging losses. That asymmetry ($\eta_{\text{ch}}$ multiplies, $\eta_{\text{dis}}$ divides) is what makes round-trip efficiency below 100%: charging 100 kWh in stores less than 100 kWh, and getting 100 kWh back out costs more than 100 kWh of stored energy.
 
 | Parameter                                                  |                          Value |
 | ---------------------------------------------------------- | -----------------------------: |
 | Candidate capacities tested                                | 250, 500, 1000, 1500, 2000 kWh |
 | Inverter power                                             | 0.5C (e.g. 750 kW at 1500 kWh) |
 | SoC bounds                                                 |                         15-95% |
-| Round-trip efficiency$\eta_{\text{ch}}\eta_{\text{dis}}$ |         90.25% (0.95 each way) |
-| Degradation penalty$C_{\text{deg}}$                      |        0.40 DKK/kWh throughput |
+| Round-trip efficiency $\eta_{\text{ch}}\eta_{\text{dis}}$ |         90.25% (0.95 each way) |
+| Degradation penalty $C_{\text{deg}}$                       |        0.40 DKK/kWh throughput |
 | Grid import/export cap                                     |                         500 kW |
 
 The two smallest capacities came back infeasible: not enough discharge power to keep peak import under the 500 kW grid limit. Of the feasible sizes, 1500 kWh / 750 kW led on net annual benefit:
@@ -176,7 +190,7 @@ GitHub Pages is static hosting, so there's no server here to run a live model ag
 
 *If the embed doesn't load, [open the demo directly](/EnergyForecasting/AI_Agent_Development_in_BESS/06_LLM/bess_agent_demo.html).*
 
-## What this leaves out
+## Limitation and Future Works
 
 The battery-sizing and weekly-dispatch models use the real DK1 price series, but load and PV forecast error inside the scheduler is injected as synthetic Gaussian noise (5 percent on load, 12 percent on PV) rather than coming from trained load and PV forecasters. That's a reasonable simplification for a prototype meant to demonstrate the agent-to-optimizer interface, but it means the price forecast is the one component actually validated against real held-out data end to end.
 
