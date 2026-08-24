@@ -27,3 +27,12 @@ __pycache__/
 # Raw intermediate NetCDF dumps — large, and superseded by the derived CSVs
 # that posts actually reference
 **/raw_netcdf/
+
+# Large intermediate weather merge (300MB+, over GitHub's file size limit) —
+# superseded by the derived PV generation CSV that posts actually reference
+**/WeatherData_Acquisition/ERA5_DK1_Merged.csv
+
+# Bundled third-party GLPK solver package — see each post's Installation_Guide.md
+# for the SourceForge download link instead of committing the package itself
+**/winglpk-4.65/
+**/winglpk-4.65.zip

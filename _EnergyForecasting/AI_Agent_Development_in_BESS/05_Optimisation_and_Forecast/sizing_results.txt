@@ -1,0 +1,15 @@
+=========================================================
+      BESS SIZING AND ECONOMIC FEASIBILITY REPORT (PYOMO)
+=========================================================
+
+Evaluation Period: 2024-01-01 00:00:00 to 2025-06-06 23:00:00
+Baseline No-BESS Grid Cost: -275,697.16 DKK
+
+ Capacity (kWh)  Power (kW)  CAPEX (DKK)  Annual OPEX (DKK)  Annual Cost (DKK)  Annual Savings (DKK)  Net Benefit (DKK)  Payback (Years)
+         1500.0       750.0    2797500.0            41962.5           321712.5         239508.592678      -82203.907322        11.680165
+         2000.0      1000.0    3730000.0            55950.0           428950.0         307858.735045     -121091.264955        12.115947
+
+Sizing Recommendation:
+Recommended Capacity: 1500.0 kWh (750.0 kW inverter)
+Expected Payback Period: 11.68 years
+Net Annual Benefit: -82,203.91 DKK/year

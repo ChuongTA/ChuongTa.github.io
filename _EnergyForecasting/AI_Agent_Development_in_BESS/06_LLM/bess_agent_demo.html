@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BESS Agent Demo (client-side, fake LLM router)</title>
+<script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+<style>
+    body { font-family: -apple-system, Segoe UI, Arial, sans-serif; margin: 0; padding: 20px; background-color: #f8f9fa; color: #1c1c1c; }
+    .container { max-width: 1100px; margin: 0 auto; background: white; padding: 24px 28px; box-shadow: 0px 0px 10px rgba(0,0,0,0.08); border-radius: 8px; }
+    h1 { font-size: 1.4rem; color: #2c3e50; margin-top: 0; }
+    h2 { font-size: 1.05rem; color: #2c3e50; margin-top: 28px; }
+    p.note { background: #fff8e1; border: 1px solid #f0d878; border-radius: 6px; padding: 10px 14px; font-size: 0.92rem; }
+    .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 10px; }
+    select, input[type=text], button { font-size: 0.95rem; padding: 7px 10px; border-radius: 5px; border: 1px solid #ccc; }
+    input[type=text] { flex: 1; min-width: 280px; }
+    button { background: #2c7a4b; color: white; border: none; cursor: pointer; }
+    button:hover { background: #245f3c; }
+    .examples button { background: #eef3ef; color: #2c3e50; border: 1px solid #cfe0d5; font-size: 0.85rem; padding: 5px 9px; }
+    .examples button:hover { background: #dce8e0; }
+    #trace, #observation { background: #0f1117; color: #d8e0d8; border-radius: 6px; padding: 14px 16px; font-family: "SFMono-Regular", Consolas, Menlo, monospace; font-size: 0.85rem; white-space: pre-wrap; overflow-x: auto; }
+    #response { background: #eef6f0; border: 1px solid #cfe0d5; border-radius: 6px; padding: 14px 16px; font-size: 0.95rem; line-height: 1.5; }
+    #chart1, #chart2 { width: 100%; height: 340px; }
+    label { font-size: 0.85rem; color: #555; }
+    .examples-label { font-size: 0.85rem; color: #777; }
+    .hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>BESS agent demo, client-side with a fake LLM router</h1>
+    <p class="note">
+        This page reruns the three tools from <code>06_LLM/bess_agent.py</code> in plain JavaScript against the same
+        solved 7-day schedule shown in the <a href="/EnergyForecasting/AI_Agent_Development_in_BESS/">write-up</a>.
+        The "routing" step below is a handful of regular expressions, not a live model call. GitHub Pages is static
+        hosting, so there is no server to run an LLM against. It stands in for the ReAct routing step so you can see
+        the tool-call, observation, response shape without needing an API key.
+    </p>
+
+    <h2>1. Pretend it is currently</h2>
+    <div class="controls">
+        <select id="nowSelect" title="Reference hour used for &quot;next N hours&quot; questions" aria-label="Reference hour used for next N hours questions"></select>
+        <label for="nowSelect">(used as the reference point for "next N hours" questions)</label>
+    </div>
+
+    <h2>2. Ask a question</h2>
+    <div class="controls">
+        <input type="text" id="queryInput" placeholder="e.g. Should we charge or discharge in the next 3 hours?">
+        <button type="button" id="askBtn">Ask</button>
+    </div>
+    <div class="controls examples">
+        <span class="examples-label">Try:</span>
+        <button type="button" data-q="Should we charge or discharge the battery in the next 4 hours given the current conditions?">next 4 hours</button>
+        <button type="button" data-q="What was our self-consumption rate on 2025-06-08 and how could it be improved?">self-consumption, 2025-06-08</button>
+        <button type="button" data-q="What would our electricity cost be on 2025-06-09 with the battery versus without it?">cost, 2025-06-09</button>
+        <button type="button" data-q="Compare cost with and without BESS from 2025-06-07 to 2025-06-13">cost, full week</button>
+    </div>
+
+    <div id="resultBlock" class="hidden">
+        <h2>Agent trace</h2>
+        <div id="trace"></div>
+
+        <h2>Tool observation (raw)</h2>
+        <div id="observation"></div>
+
+        <h2>Final response</h2>
+        <div id="response"></div>
+
+        <h2>Schedule around the query window</h2>
+        <div id="chart1"></div>
+        <div id="chart2"></div>
+    </div>
+</div>
+
+<script>
+// ---- Data: the same 168-hour solved schedule embedded in daily_schedule_interactive.html ----
+const timestamps = ['2025-06-07 00:00:00', '2025-06-07 01:00:00', '2025-06-07 02:00:00', '2025-06-07 03:00:00', '2025-06-07 04:00:00', '2025-06-07 05:00:00', '2025-06-07 06:00:00', '2025-06-07 07:00:00', '2025-06-07 08:00:00', '2025-06-07 09:00:00', '2025-06-07 10:00:00', '2025-06-07 11:00:00', '2025-06-07 12:00:00', '2025-06-07 13:00:00', '2025-06-07 14:00:00', '2025-06-07 15:00:00', '2025-06-07 16:00:00', '2025-06-07 17:00:00', '2025-06-07 18:00:00', '2025-06-07 19:00:00', '2025-06-07 20:00:00', '2025-06-07 21:00:00', '2025-06-07 22:00:00', '2025-06-07 23:00:00', '2025-06-08 00:00:00', '2025-06-08 01:00:00', '2025-06-08 02:00:00', '2025-06-08 03:00:00', '2025-06-08 04:00:00', '2025-06-08 05:00:00', '2025-06-08 06:00:00', '2025-06-08 07:00:00', '2025-06-08 08:00:00', '2025-06-08 09:00:00', '2025-06-08 10:00:00', '2025-06-08 11:00:00', '2025-06-08 12:00:00', '2025-06-08 13:00:00', '2025-06-08 14:00:00', '2025-06-08 15:00:00', '2025-06-08 16:00:00', '2025-06-08 17:00:00', '2025-06-08 18:00:00', '2025-06-08 19:00:00', '2025-06-08 20:00:00', '2025-06-08 21:00:00', '2025-06-08 22:00:00', '2025-06-08 23:00:00', '2025-06-09 00:00:00', '2025-06-09 01:00:00', '2025-06-09 02:00:00', '2025-06-09 03:00:00', '2025-06-09 04:00:00', '2025-06-09 05:00:00', '2025-06-09 06:00:00', '2025-06-09 07:00:00', '2025-06-09 08:00:00', '2025-06-09 09:00:00', '2025-06-09 10:00:00', '2025-06-09 11:00:00', '2025-06-09 12:00:00', '2025-06-09 13:00:00', '2025-06-09 14:00:00', '2025-06-09 15:00:00', '2025-06-09 16:00:00', '2025-06-09 17:00:00', '2025-06-09 18:00:00', '2025-06-09 19:00:00', '2025-06-09 20:00:00', '2025-06-09 21:00:00', '2025-06-09 22:00:00', '2025-06-09 23:00:00', '2025-06-10 00:00:00', '2025-06-10 01:00:00', '2025-06-10 02:00:00', '2025-06-10 03:00:00', '2025-06-10 04:00:00', '2025-06-10 05:00:00', '2025-06-10 06:00:00', '2025-06-10 07:00:00', '2025-06-10 08:00:00', '2025-06-10 09:00:00', '2025-06-10 10:00:00', '2025-06-10 11:00:00', '2025-06-10 12:00:00', '2025-06-10 13:00:00', '2025-06-10 14:00:00', '2025-06-10 15:00:00', '2025-06-10 16:00:00', '2025-06-10 17:00:00', '2025-06-10 18:00:00', '2025-06-10 19:00:00', '2025-06-10 20:00:00', '2025-06-10 21:00:00', '2025-06-10 22:00:00', '2025-06-10 23:00:00', '2025-06-11 00:00:00', '2025-06-11 01:00:00', '2025-06-11 02:00:00', '2025-06-11 03:00:00', '2025-06-11 04:00:00', '2025-06-11 05:00:00', '2025-06-11 06:00:00', '2025-06-11 07:00:00', '2025-06-11 08:00:00', '2025-06-11 09:00:00', '2025-06-11 10:00:00', '2025-06-11 11:00:00', '2025-06-11 12:00:00', '2025-06-11 13:00:00', '2025-06-11 14:00:00', '2025-06-11 15:00:00', '2025-06-11 16:00:00', '2025-06-11 17:00:00', '2025-06-11 18:00:00', '2025-06-11 19:00:00', '2025-06-11 20:00:00', '2025-06-11 21:00:00', '2025-06-11 22:00:00', '2025-06-11 23:00:00', '2025-06-12 00:00:00', '2025-06-12 01:00:00', '2025-06-12 02:00:00', '2025-06-12 03:00:00', '2025-06-12 04:00:00', '2025-06-12 05:00:00', '2025-06-12 06:00:00', '2025-06-12 07:00:00', '2025-06-12 08:00:00', '2025-06-12 09:00:00', '2025-06-12 10:00:00', '2025-06-12 11:00:00', '2025-06-12 12:00:00', '2025-06-12 13:00:00', '2025-06-12 14:00:00', '2025-06-12 15:00:00', '2025-06-12 16:00:00', '2025-06-12 17:00:00', '2025-06-12 18:00:00', '2025-06-12 19:00:00', '2025-06-12 20:00:00', '2025-06-12 21:00:00', '2025-06-12 22:00:00', '2025-06-12 23:00:00', '2025-06-13 00:00:00', '2025-06-13 01:00:00', '2025-06-13 02:00:00', '2025-06-13 03:00:00', '2025-06-13 04:00:00', '2025-06-13 05:00:00', '2025-06-13 06:00:00', '2025-06-13 07:00:00', '2025-06-13 08:00:00', '2025-06-13 09:00:00', '2025-06-13 10:00:00', '2025-06-13 11:00:00', '2025-06-13 12:00:00', '2025-06-13 13:00:00', '2025-06-13 14:00:00', '2025-06-13 15:00:00', '2025-06-13 16:00:00', '2025-06-13 17:00:00', '2025-06-13 18:00:00', '2025-06-13 19:00:00', '2025-06-13 20:00:00', '2025-06-13 21:00:00', '2025-06-13 22:00:00', '2025-06-13 23:00:00'];
+const prices = [0.54, 0.51, 0.5, 0.52, 0.54, 0.46, 0.35, 0.12, 0.05, 0.02, -0.01, -0.03, -0.05, -0.05, -0.02, 0.16, 0.55, 0.65, 0.84, 0.78, 0.78, 0.65, 0.57, 0.55, 0.39, 0.41, 0.38, 0.38, 0.4, 0.38, 0.31, 0.18, 0.06, 0.0, -0.01, -0.04, -0.04, -0.04, -0.03, 0.11, 0.49, 0.55, 0.7, 0.7, 0.63, 0.52, 0.59, 0.51, 0.55, 0.54, 0.53, 0.5, 0.62, 0.65, 0.57, 0.41, 0.45, 0.3, 0.4, 0.45, 0.45, 0.45, 0.45, 0.53, 0.49, 0.7, 1.11, 0.94, 0.85, 0.62, 0.57, 0.57, 0.35, 0.38, 0.38, 0.44, 0.54, 0.56, 0.37, 0.29, 0.19, 0.13, 0.1, 0.1, 0.1, 0.1, 0.12, 0.25, 0.59, 0.77, 0.92, 0.93, 0.82, 0.67, 0.56, 0.54, 0.53, 0.48, 0.46, 0.51, 0.55, 0.61, 0.61, 0.55, 0.33, 0.28, 0.21, 0.22, 0.27, 0.27, 0.36, 0.45, 0.61, 0.64, 0.75, 0.73, 0.67, 0.58, 0.57, 0.53, 0.52, 0.52, 0.52, 0.55, 0.66, 0.72, 0.61, 0.53, 0.34, 0.23, 0.09, 0.11, 0.05, 0.05, 0.12, 0.47, 0.63, 0.87, 0.98, 0.98, 0.78, 0.63, 0.6, 0.57, 0.54, 0.54, 0.54, 0.54, 0.71, 0.61, 0.52, 0.36, 0.11, 0.1, 0.07, 0.1, 0.09, 0.09, 0.05, 0.18, 0.59, 0.77, 0.88, 0.76, 0.71, 0.58, 0.54, 0.5];
+const p10 = [0.25, 0.22, 0.21, 0.23, 0.25, 0.16, 0.11, -0.12, -0.19, -0.22, -0.25, -0.27, -0.29, -0.29, -0.26, -0.08, 0.26, 0.36, 0.51, 0.45, 0.46, 0.36, 0.28, 0.26, 0.09, 0.11, 0.08, 0.08, 0.1, 0.08, 0.07, -0.06, -0.18, -0.24, -0.25, -0.28, -0.28, -0.28, -0.27, -0.13, 0.19, 0.26, 0.41, 0.41, 0.34, 0.23, 0.29, 0.22, 0.26, 0.25, 0.24, 0.21, 0.33, 0.36, 0.28, 0.11, 0.14, 0.06, 0.1, 0.14, 0.14, 0.14, 0.15, 0.23, 0.19, 0.41, 0.79, 0.61, 0.53, 0.34, 0.28, 0.28, 0.11, 0.08, 0.08, 0.13, 0.25, 0.27, 0.07, 0.05, -0.05, -0.11, -0.14, -0.14, -0.14, -0.14, -0.12, 0.01, 0.3, 0.44, 0.59, 0.6, 0.49, 0.38, 0.27, 0.25, 0.24, 0.18, 0.16, 0.21, 0.26, 0.32, 0.32, 0.26, 0.09, 0.04, -0.03, -0.02, 0.03, 0.03, 0.12, 0.15, 0.32, 0.35, 0.42, 0.44, 0.38, 0.29, 0.27, 0.24, 0.23, 0.23, 0.23, 0.26, 0.37, 0.43, 0.32, 0.24, 0.1, -0.01, -0.15, -0.13, -0.19, -0.19, -0.12, 0.17, 0.34, 0.54, 0.65, 0.66, 0.46, 0.34, 0.32, 0.28, 0.25, 0.25, 0.25, 0.25, 0.42, 0.32, 0.23, 0.12, -0.13, -0.14, -0.17, -0.14, -0.15, -0.15, -0.19, -0.06, 0.29, 0.44, 0.55, 0.43, 0.42, 0.29, 0.24, 0.2];
+const p90 = [0.76, 0.73, 0.73, 0.75, 0.76, 0.7, 0.54, 0.31, 0.24, 0.21, 0.18, 0.16, 0.14, 0.14, 0.17, 0.35, 0.77, 0.89, 1.14, 1.08, 1.08, 0.89, 0.79, 0.77, 0.63, 0.65, 0.62, 0.62, 0.64, 0.62, 0.49, 0.37, 0.24, 0.19, 0.18, 0.15, 0.15, 0.15, 0.16, 0.3, 0.73, 0.77, 0.94, 0.94, 0.87, 0.74, 0.81, 0.73, 0.77, 0.76, 0.75, 0.72, 0.86, 0.9, 0.8, 0.64, 0.68, 0.48, 0.63, 0.68, 0.68, 0.68, 0.69, 0.75, 0.72, 0.94, 1.41, 1.24, 1.15, 0.87, 0.79, 0.79, 0.54, 0.61, 0.61, 0.67, 0.76, 0.78, 0.61, 0.48, 0.38, 0.32, 0.29, 0.29, 0.29, 0.29, 0.31, 0.43, 0.84, 1.07, 1.22, 1.23, 1.11, 0.91, 0.79, 0.76, 0.75, 0.71, 0.7, 0.73, 0.78, 0.85, 0.85, 0.77, 0.52, 0.47, 0.4, 0.41, 0.46, 0.46, 0.55, 0.69, 0.85, 0.88, 1.05, 0.97, 0.91, 0.81, 0.79, 0.75, 0.74, 0.74, 0.74, 0.77, 0.9, 0.96, 0.85, 0.75, 0.52, 0.42, 0.28, 0.3, 0.24, 0.24, 0.31, 0.7, 0.88, 1.17, 1.28, 1.28, 1.08, 0.87, 0.85, 0.79, 0.77, 0.77, 0.76, 0.76, 0.95, 0.86, 0.74, 0.55, 0.3, 0.28, 0.26, 0.29, 0.28, 0.28, 0.24, 0.37, 0.81, 1.07, 1.18, 1.06, 0.95, 0.8, 0.76, 0.73];
+const soc = [50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 90.35, 37.72, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 39.34, 39.34, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 36.86, 36.86, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 44.87, 44.87, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 42.23, 42.23, 15.0, 15.0, 15.0];
+const charge = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 637.13, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 384.38, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 345.16, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 471.56, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 429.92, 0.0, 0.0, 0.0, 0.0];
+const discharge = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 750.0, 323.76, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 346.9, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 311.51, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 425.58, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 388.0, 0.0, 0.0];
+const load = [48.72, 51.98, 54.06, 59.29, 37.82, 44.58, 111.15, 190.51, 167.09, 95.32, 69.81, 80.43, 79.84, 71.82, 86.5, 106.48, 78.94, 117.49, 180.61, 184.92, 125.47, 85.92, 61.95, 54.15, 21.78, 38.37, 38.2, 43.98, 45.48, 36.6, 53.9, 66.63, 68.81, 63.86, 48.44, 38.88, 45.58, 54.54, 53.45, 46.86, 57.44, 79.01, 58.35, 64.48, 50.13, 46.38, 25.8, 35.29, 223.97, 204.35, 248.14, 230.67, 227.66, 255.06, 382.52, 464.02, 520.98, 578.02, 561.15, 483.54, 374.44, 368.73, 363.82, 362.43, 385.64, 412.02, 491.22, 688.65, 925.77, 827.7, 433.04, 265.64, 231.5, 267.84, 202.64, 233.75, 242.41, 229.63, 376.93, 394.08, 545.02, 607.84, 608.18, 464.19, 359.42, 361.51, 381.51, 385.14, 347.27, 411.13, 504.87, 701.83, 868.15, 854.12, 419.12, 236.62, 229.0, 237.82, 230.02, 229.33, 198.69, 234.74, 369.09, 414.33, 548.22, 607.05, 615.09, 484.57, 407.06, 355.95, 355.75, 392.37, 369.95, 441.89, 494.34, 680.05, 908.15, 818.06, 457.49, 288.51, 232.14, 211.09, 250.35, 208.45, 225.87, 250.11, 338.74, 430.44, 551.4, 565.1, 517.05, 465.08, 382.7, 382.47, 359.9, 423.96, 345.18, 377.41, 524.98, 615.06, 937.76, 935.17, 388.95, 257.06, 224.74, 238.25, 224.04, 216.98, 238.3, 232.38, 370.49, 448.03, 523.38, 577.65, 562.96, 450.08, 423.78, 386.99, 356.02, 389.91, 354.57, 415.59, 527.64, 632.8, 953.5, 897.82, 447.01, 271.87];
+const pv = [0.0, 0.0, 0.0, 45.12, 1310.87, 4684.08, 8543.69, 14854.16, 19479.03, 27479.6, 25914.9, 36098.06, 27902.57, 20633.41, 18734.71, 18797.81, 13289.87, 10141.66, 5754.29, 3317.22, 645.99, 2.45, 0.0, 0.0, 0.0, 0.0, 0.0, 41.15, 960.75, 3278.02, 6850.33, 9763.51, 15869.3, 20648.42, 24807.57, 26041.33, 20057.88, 20941.92, 23702.86, 21960.79, 18712.02, 20439.12, 9176.85, 4992.1, 1143.46, 5.53, 0.0, 0.0, 0.0, 0.0, 0.0, 58.28, 2214.46, 4313.88, 11537.08, 13369.06, 19835.41, 28538.73, 28607.11, 26265.49, 28395.89, 33225.43, 25740.56, 23947.8, 19057.29, 12733.68, 9963.89, 3571.6, 539.78, 3.94, 0.0, 0.0, 0.0, 0.0, 0.0, 31.15, 496.56, 1483.38, 2591.76, 2707.86, 5693.05, 6621.48, 8122.37, 11983.31, 15144.85, 12856.29, 10460.47, 10395.04, 12541.82, 7729.26, 6738.26, 4307.01, 802.45, 7.22, 0.0, 0.0, 0.0, 0.0, 0.0, 55.95, 1769.53, 6043.3, 12833.29, 13569.07, 24511.0, 26305.56, 27111.7, 35397.55, 35977.72, 31846.2, 31820.66, 26539.37, 22768.55, 17785.41, 12381.65, 4263.89, 1484.6, 6.55, 0.0, 0.0, 0.0, 0.0, 0.0, 66.76, 1774.98, 6831.2, 12303.16, 16351.92, 26217.92, 29786.93, 35766.64, 37587.26, 32078.22, 32150.25, 34588.34, 29631.0, 22222.0, 16559.55, 11972.59, 4675.68, 1288.8, 9.59, 0.0, 0.0, 0.0, 0.0, 0.0, 73.28, 2093.66, 6012.0, 12317.94, 17590.01, 23947.49, 30392.23, 28786.79, 41922.32, 30506.58, 28486.91, 34639.34, 29814.08, 23510.28, 17337.96, 10093.38, 4389.58, 1210.05, 9.82, 0.0, 0.0];
+
+// Grid import/export aren't in the embedded dashboard data, so they're re-derived from the solved
+// charge/discharge, load, and PV, following the same logic the LP itself uses for these two free
+// variables: with price > 0, export up to the 500 kW grid cap (curtailing any PV surplus beyond
+// that); with a deficit, import up to the same cap. This reproduces the real run's peak import/export
+// (500 kW) and is within ~8% of its total weekly savings figure (1,905 vs. 2,064.49 DKK reported in
+// optimization_summary.txt) -- close enough to illustrate the tools, not a re-solve of the LP.
+const P_GRID_LIMIT = 500.0;
+const gridImport = [], gridExport = [];
+for (let i = 0; i < timestamps.length; i++) {
+    const resid = pv[i] - load[i] - charge[i] + discharge[i]; // + = surplus after battery, - = deficit
+    let imp = 0, exp = 0;
+    if (resid >= 0) {
+        if (prices[i] > 0) { exp = Math.min(P_GRID_LIMIT, resid); } // beyond the cap, PV is curtailed
+    } else {
+        imp = Math.min(P_GRID_LIMIT, -resid);
+    }
+    gridImport.push(imp); gridExport.push(exp);
+}
+
+const N = timestamps.length;
+const E_NOM = 1500.0, ETA_CH = 0.95, ETA_DIS = 0.95, SOC_MIN = 15.0, SOC_MAX = 95.0;
+
+// ---- Tools (ported 1:1 from bess_agent.py) ----
+
+function bessSimulator(currentSoc, powerKw, durationH) {
+    const currentEnergy = E_NOM * (currentSoc / 100.0);
+    const energyChange = powerKw >= 0 ? powerKw * ETA_CH * durationH : (powerKw / ETA_DIS) * durationH;
+    const newSoc = ((currentEnergy + energyChange) / E_NOM) * 100.0;
+    const clamped = Math.max(SOC_MIN, Math.min(SOC_MAX, newSoc));
+    const violation = newSoc < SOC_MIN || newSoc > SOC_MAX;
+    return {
+        initial_soc_percent: round2(currentSoc),
+        proposed_power_kw: round2(powerKw),
+        new_soc_percent: round2(clamped),
+        violation_detected: violation,
+        clamped_warning: violation ? "Warning: SoC bounds breached, action clamped!" : "None"
+    };
+}
+
+function selfConsumptionCalculator(i0, i1) {
+    let totalPv = 0, totalLoad = 0, totalExport = 0;
+    for (let i = i0; i <= i1; i++) { totalPv += pv[i]; totalLoad += load[i]; totalExport += gridExport[i]; }
+    const selfConsumed = Math.max(0, totalPv - totalExport);
+    const rate = totalPv > 0 ? (selfConsumed / totalPv) * 100.0 : 100.0;
+    return {
+        total_solar_generated_kwh: round2(totalPv),
+        total_load_demand_kwh: round2(totalLoad),
+        solar_self_consumed_kwh: round2(selfConsumed),
+        self_consumption_rate_percent: round2(rate),
+        surplus_solar_exported_kwh: round2(totalExport)
+    };
+}
+
+function electricityCostEstimator(i0, i1, useBess) {
+    let cost = 0;
+    if (useBess) {
+        for (let i = i0; i <= i1; i++) cost += gridImport[i] * prices[i] - gridExport[i] * prices[i];
+    } else {
+        for (let i = i0; i <= i1; i++) {
+            const netLoad = load[i] - pv[i];
+            const noBessImport = netLoad > 0 ? netLoad : 0.0;
+            const noBessExport = netLoad < 0 ? Math.min(500.0, Math.abs(netLoad)) : 0.0;
+            cost += noBessImport * prices[i] - noBessExport * prices[i];
+        }
+    }
+    return { mode: useBess ? "With BESS" : "No BESS (Baseline)", estimated_net_cost_dkk: round2(cost) };
+}
+
+function round2(x) { return Math.round(x * 100) / 100; }
+
+// ---- Fake LLM router: regex keyword matching instead of a live model call ----
+
+function extractDateRange(q, nowIdx) {
+    const dates = q.match(/\d{4}-\d{2}-\d{2}/g);
+    if (dates && dates.length >= 2) {
+        return [findDayStart(dates[0]), findDayEnd(dates[1])];
+    }
+    if (dates && dates.length === 1) {
+        return [findDayStart(dates[0]), findDayEnd(dates[0])];
+    }
+    if (/yesterday/.test(q)) {
+        const day = timestamps[nowIdx].slice(0, 10);
+        const prevIdx = Math.max(0, nowIdx - 24);
+        const prevDay = timestamps[prevIdx].slice(0, 10);
+        return [findDayStart(prevDay), findDayEnd(prevDay)];
+    }
+    if (/today/.test(q)) {
+        const day = timestamps[nowIdx].slice(0, 10);
+        return [findDayStart(day), findDayEnd(day)];
+    }
+    // default: whole loaded week
+    return [0, N - 1];
+}
+function findDayStart(day) { const i = timestamps.findIndex(t => t.startsWith(day)); return i === -1 ? 0 : i; }
+function findDayEnd(day) { let i = timestamps.length - 1; while (i >= 0 && !timestamps[i].startsWith(day)) i--; return i === -1 ? N - 1 : i; }
+
+function routeQuery(query, nowIdx) {
+    const q = query.toLowerCase();
+    const hoursMatch = q.match(/next\s+(\d+)\s*hours?/);
+    if (hoursMatch && /(charge|discharge)/.test(q)) {
+        return { tool: "dispatch_advice", params: { nowIdx, hours: parseInt(hoursMatch[1], 10) } };
+    }
+    if (/self[- ]?consumption/.test(q)) {
+        const [i0, i1] = extractDateRange(q, nowIdx);
+        return { tool: "self_consumption_calculator", params: { i0, i1 } };
+    }
+    if (/(cost|bill|save|saving)/.test(q)) {
+        const [i0, i1] = extractDateRange(q, nowIdx);
+        return { tool: "electricity_cost_estimator", params: { i0, i1 } };
+    }
+    return { tool: null };
+}
+
+// ---- Wire up UI ----
+
+const nowSelect = document.getElementById("nowSelect");
+timestamps.forEach((t, i) => {
+    const opt = document.createElement("option");
+    opt.value = i; opt.textContent = t;
+    nowSelect.appendChild(opt);
+});
+nowSelect.value = 0;
+
+document.querySelectorAll(".examples button").forEach(btn => {
+    btn.addEventListener("click", () => {
+        document.getElementById("queryInput").value = btn.dataset.q;
+        runQuery();
+    });
+});
+document.getElementById("askBtn").addEventListener("click", runQuery);
+document.getElementById("queryInput").addEventListener("keydown", e => { if (e.key === "Enter") runQuery(); });
+
+function runQuery() {
+    const query = document.getElementById("queryInput").value.trim();
+    if (!query) return;
+    const nowIdx = parseInt(nowSelect.value, 10);
+    const routed = routeQuery(query, nowIdx);
+
+    document.getElementById("resultBlock").classList.remove("hidden");
+    let trace = `User: "${query}"\n[Simulated router, not a live LLM call]\n`;
+
+    if (!routed.tool) {
+        trace += `-> No tool matched this query.\n`;
+        document.getElementById("trace").textContent = trace;
+        document.getElementById("observation").textContent = "(none)";
+        document.getElementById("response").textContent =
+            "I am a BESS AI agent. Ask me about charging/discharging over the next N hours, " +
+            "the self-consumption rate on a given date, or the electricity cost with vs. without the battery.";
+        Plotly.purge("chart1"); Plotly.purge("chart2");
+        return;
+    }
+
+    let observation, response, windowStart, windowEnd;
+
+    if (routed.tool === "dispatch_advice") {
+        const { nowIdx, hours } = routed.params;
+        windowStart = nowIdx;
+        windowEnd = Math.min(nowIdx + hours - 1, N - 1);
+        let netCharge = 0, netDischarge = 0;
+        for (let i = windowStart; i <= windowEnd; i++) { netCharge += charge[i]; netDischarge += discharge[i]; }
+        const startSoc = soc[windowStart], endSoc = soc[windowEnd];
+        const startPrice = prices[windowStart], endPrice = prices[windowEnd];
+        const netKw = netDischarge - netCharge;
+        const action = netKw > 5 ? "discharge" : netKw < -5 ? "charge" : "hold";
+
+        trace += `-> [AI requested tool-use]: reading day-ahead schedule for ${timestamps[windowStart]} to ${timestamps[windowEnd]}\n`;
+        // Reuse bess_simulator to sanity-check the net scheduled action against SoC bounds
+        observation = bessSimulator(startSoc, netKw / Math.max(1, windowEnd - windowStart + 1), windowEnd - windowStart + 1);
+        observation.scheduled_charge_kwh = round2(netCharge);
+        observation.scheduled_discharge_kwh = round2(netDischarge);
+        observation.price_start_dkk_kwh = startPrice;
+        observation.price_end_dkk_kwh = endPrice;
+        trace += `<- [Observation]: ${JSON.stringify(observation)}\n`;
+
+        response = `Over the next ${hours} hour(s) (${timestamps[windowStart]} to ${timestamps[windowEnd]}), the day-ahead schedule calls for a net ${action} `
+            + `(${round2(netDischarge)} kWh discharged, ${round2(netCharge)} kWh charged), moving SoC from ${startSoc}% to ${endSoc}%. `
+            + `Price is forecast to move from ${startPrice} to ${endPrice} DKK/kWh over that window. `
+            + (observation.violation_detected ? "Note: this would breach the battery's SoC bounds if taken as a single continuous action; the optimizer instead spreads it across the hour-by-hour schedule shown below." : "This stays within the 15-95% SoC bounds.");
+    } else if (routed.tool === "self_consumption_calculator") {
+        const { i0, i1 } = routed.params;
+        windowStart = i0; windowEnd = i1;
+        trace += `-> [AI requested tool-use]: self_consumption_calculator(${timestamps[i0]}, ${timestamps[i1]})\n`;
+        observation = selfConsumptionCalculator(i0, i1);
+        trace += `<- [Observation]: ${JSON.stringify(observation)}\n`;
+        response = `From ${timestamps[i0]} to ${timestamps[i1]}, the community generated ${observation.total_solar_generated_kwh} kWh of solar `
+            + `against ${observation.total_load_demand_kwh} kWh of demand. Self-consumption came out to ${observation.self_consumption_rate_percent}%, `
+            + `with ${observation.surplus_solar_exported_kwh} kWh exported to the grid. Shifting more battery charging into the highest-PV hours in this window, `
+            + `rather than relying on cheap overnight import, would raise this further.`;
+    } else if (routed.tool === "electricity_cost_estimator") {
+        const { i0, i1 } = routed.params;
+        windowStart = i0; windowEnd = i1;
+        trace += `-> [AI requested tool-use]: electricity_cost_estimator(${timestamps[i0]}, ${timestamps[i1]}, with and without BESS)\n`;
+        const withBess = electricityCostEstimator(i0, i1, true);
+        const noBess = electricityCostEstimator(i0, i1, false);
+        observation = { with_bess: withBess, no_bess: noBess, savings_dkk: round2(noBess.estimated_net_cost_dkk - withBess.estimated_net_cost_dkk) };
+        trace += `<- [Observation]: ${JSON.stringify(observation)}\n`;
+        response = `From ${timestamps[i0]} to ${timestamps[i1]}: net grid cost with the battery is ${withBess.estimated_net_cost_dkk} DKK, `
+            + `versus ${noBess.estimated_net_cost_dkk} DKK without it, a saving of ${observation.savings_dkk} DKK over this window.`;
+    }
+
+    document.getElementById("trace").textContent = trace;
+    document.getElementById("observation").textContent = JSON.stringify(observation, null, 2);
+    document.getElementById("response").textContent = response;
+    renderCharts(windowStart, windowEnd);
+}
+
+function renderCharts(hiStart, hiEnd) {
+    const highlight = {
+        type: "rect", xref: "x", yref: "paper",
+        x0: timestamps[hiStart], x1: timestamps[hiEnd], y0: 0, y1: 1,
+        fillcolor: "rgba(255, 200, 0, 0.18)", line: { width: 0 }
+    };
+
+    const traceP10 = { x: timestamps, y: p10, type: "scatter", mode: "lines", line: { width: 0 }, showlegend: false };
+    const traceP90 = { x: timestamps, y: p90, fill: "tonexty", fillcolor: "rgba(0,0,255,0.1)", type: "scatter", mode: "lines", line: { width: 0 }, name: "Price band (P10-P90)" };
+    const tracePrice = { x: timestamps, y: prices, name: "Price forecast (median)", type: "scatter", line: { color: "blue", width: 2 } };
+    const traceLoad = { x: timestamps, y: load, name: "Load (kW)", type: "scatter", yaxis: "y2", line: { color: "black", width: 1.2, dash: "dash" } };
+    Plotly.newPlot("chart1", [traceP10, traceP90, tracePrice, traceLoad], {
+        title: "Price forecast and load, query window highlighted",
+        xaxis: { title: "Timestamp" },
+        yaxis: { title: "Price (DKK/kWh)", titlefont: { color: "blue" } },
+        yaxis2: { title: "Load (kW)", overlaying: "y", side: "right" },
+        shapes: [highlight], margin: { t: 40 }
+    });
+
+    const netPower = discharge.map((d, i) => d - charge[i]);
+    const traceBess = { x: timestamps, y: netPower, name: "BESS power (+ discharge / - charge)", type: "bar", marker: { color: netPower.map(v => v >= 0 ? "#c0392b" : "#27ae60") } };
+    const traceSoc = { x: timestamps, y: soc, name: "SoC (%)", type: "scatter", yaxis: "y2", line: { color: "purple", width: 2, shape: "hv", dash: "dot" } };
+    Plotly.newPlot("chart2", [traceBess, traceSoc], {
+        title: "BESS dispatch and state of charge, query window highlighted",
+        xaxis: { title: "Timestamp" },
+        yaxis: { title: "Power (kW)" },
+        yaxis2: { title: "SoC (%)", overlaying: "y", side: "right", range: [0, 100], titlefont: { color: "purple" } },
+        shapes: [highlight], margin: { t: 40 }
+    });
+}
+</script>
+</body>
+</html>

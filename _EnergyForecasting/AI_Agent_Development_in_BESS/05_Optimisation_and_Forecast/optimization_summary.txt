@@ -1,0 +1,12 @@
+=========================================================
+    BESS DAILY SCHEDULE OPTIMIZATION SUMMARY (PYOMO)
+=========================================================
+
+Scheduling Period: 2025-06-07 to 2025-06-13
+Baseline Grid Cost (No BESS): -15,974.65 DKK
+Optimized Grid Cost (With BESS): -18,039.13 DKK
+Total Period Savings: 2,064.49 DKK
+Grid Import Peak: 500.00 kW
+Grid Export Peak: 500.00 kW
+Total Battery Charging: 2,268.15 kWh
+Total Battery Discharging: 2,545.75 kWh
