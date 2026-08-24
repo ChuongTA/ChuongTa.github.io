@@ -10,6 +10,8 @@ date: 2026-08-24
 category: "Electricity Market"
 ---
 
+> This post answers Question 2 of the written assessment for a PhD candidate interview at Mälardalen University: ["PhD Candidate Interview Questions: AI-Agent Development for Energy Systems"](/EnergyForecasting/AI_Agent_Development_in_BESS/07_Submission/MDU_Written_Test_for_Interview.pdf). The [1-page architecture summary submitted for Part A](/EnergyForecasting/AI_Agent_Development_in_BESS/07_Submission/Chuong_Dang_Ta_Part_A_Architecture.pdf) is available for reference; this post is the write-up of Part B, the implementation prototype.
+
 ## Why an agent, and not just an optimizer
 
 A battery energy storage system (BESS) attached to a small energy community sits between three things that never quite agree: a load profile that peaks in the evening, solar generation that peaks at noon, and a spot price that does its own thing depending on wind and interconnector flows. An optimizer can schedule the battery against forecasts of all three. What it cannot do is explain itself to the person who has to sign off on the schedule, or answer a follow-up question in plain language when something looks off.
