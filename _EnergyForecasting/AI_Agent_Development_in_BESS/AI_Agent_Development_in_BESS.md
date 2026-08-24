@@ -1,5 +1,5 @@
 ---
-title: "Building an LLM Agent for BESS Operations"
+title: "Operational LLM AI-Agent for Energy Community BESS Management"
 excerpt: "A conceptual architecture and a working prototype for an LLM-based agent that advises on battery dispatch: day-ahead price forecasting with LightGBM, BESS sizing and scheduling in Pyomo, and a provider-agnostic ReAct tool-use agent on top."
 layout: single
 author_profile: true
@@ -24,32 +24,99 @@ Every stage writes its output to a plain CSV or PNG that the next stage reads, s
 
 ### Data
 
-Load and PV are synthetic, generated to look like a real energy community rather than pulled from a live meter. The community load profile combines a double-Gaussian model of the morning and evening demand peaks with a logistic curve that separates weekday and weekend behavior, scaled to a peak of 952 kW. PV output comes from ERA5 solar irradiance scaled to a 50 MW farm. The one real dataset in the pipeline is the day-ahead spot price for the DK1 bidding zone, sourced from Denmark's Energi Data Service, covering 2024-01-01 through 2025-09-30 in hourly resolution.
+Load and PV are synthetic, generated to look like a real energy community rather than pulled from a live meter. The one real dataset in the pipeline is the day-ahead spot price for the DK1 bidding zone: hourly, sourced from Denmark's Energi Data Service, 2024-01-01 through 2025-09-30 (15,336 hours).
+
+**Load.** The community load is the sum of five sectors, each built from the same shape and hit with independent Gaussian noise:
+
+$$P_{\text{load}}(t) = \big(P_{\text{base}} + P_{\text{diurnal}}(t)\big) \times M_{\text{day}}(t) + \epsilon(t)$$
+
+| Sector | Base (kW) | Peak addition (kW) | Active window | Weekend multiplier |
+|---|---:|---:|---|---:|
+| Office | 10 | 80 (dual peak, 10:00 & 15:00) | 08-18 weekdays | 0.1 |
+| Logistics | 20 | 120 AM / 150 PM | 06-09 & 17-20, Mon-Sat | 0.15 (Sun) |
+| Manufacturing | 80 | 220 (shifts 1-2) / 120 (night shift) | 3 shifts, weekdays | 0.15 |
+| EV (passenger) | 0 | 200 | 08:00-13:00 weekdays (unmanaged charging) | 0 |
+| EV (HGV) | 0 | 600 | 18:00-23:00 weekdays (depot charging) | 0 |
+
+Total load is the sum of all five, clipped at zero; over the full series it peaks at 933 kW. Full per-sector equations (including the dual-Gaussian office curve and the shift step function) are in [`Load_Logic.md`](/EnergyForecasting/AI_Agent_Development_in_BESS/01_Load/Load_Logic.md).
+
+**PV.** ERA5 gives Surface Solar Radiation Downwards (SSRD, J/m²) per hour, converted to irradiance and scaled to a 50 MWp plant:
+
+$$G_{\text{avg}} = \frac{\text{SSRD}}{3600}\ \left[\text{W/m}^2\right], \qquad P_{\text{PV}}(t)\ [\text{kW}] = G_{\text{avg}} \times A_{\text{total}}\,\eta_{\text{PV}}\,\eta_{\text{system}}\,\eta_{\text{temp}} = G_{\text{avg}} \times 42.75$$
+
+| Parameter | Value |
+|---|---:|
+| Plant capacity | 50 MWp (100,000 x 500 Wp panels) |
+| Active panel area $A_{\text{total}}$ | 250,000 m² |
+| Module efficiency $\eta_{\text{PV}}$ | 20% |
+| System losses (inverter, cabling, soiling) | 10% |
+| Nordic temperature derating | 5% |
+| Combined scaling factor | 42.75 |
+
+At clear-sky peak (1000 W/m²) that's 42.75 MW; full derivation, plus a sample irradiance-to-output table, is in [`PV_50MW_Scaling_Logic.md`](/EnergyForecasting/AI_Agent_Development_in_BESS/02_PV_Generation/PV_50MW_Scaling_Logic.md).
 
 ### Forecasting the price
 
-Day-ahead prices are forecast with LightGBM rather than the quantile regression forest used in an earlier post in this series, mainly for speed: at this data volume, gradient boosting trains and predicts an order of magnitude faster while using less memory. Rather than a single recursive model, each lead time from 1 to 24 hours gets its own model, trained on calendar features (hour, day of week, month, weekend flag) and price lags at 24 and 168 hours.
+LightGBM replaces the quantile regression forest used in an [earlier post in this series](/EnergyForecasting/PEPF_part1/), mainly for speed at this data volume. Rather than one recursive model, each lead time gets its own model, trained directly on the target $k$ hours ahead:
 
-Uncertainty comes from a binned residual bootstrap instead of a second set of quantile models. Out-of-fold validation residuals get grouped into bins by the model's own predicted price level, so a test prediction draws its P10/P90 offsets only from the bin with a similar predicted price. Residuals during calm periods stay narrow; residuals during volatile periods stay wide. This is the same heteroscedasticity-aware idea from the [probabilistic price forecasting series](/EnergyForecasting/PEPF_part1/), reused here because the BESS scheduler needs a price band, not just a point estimate.
+$$\hat{P}(t+k) = f_k(X_t), \quad k \in \{1, \dots, 24\}$$
+
+| Feature group | Variables |
+|---|---|
+| Calendar | hour, day of week, month, weekend flag |
+| Autoregressive | price lag at $t-k$, $t-k-24$, $t-168$; 24h rolling mean |
+
+Uncertainty comes from a binned residual bootstrap instead of a second set of quantile models: out-of-fold validation residuals are grouped into 15 bins by predicted price level, and a test prediction draws its P10/P90 offsets from the matching bin (5,000 bootstrap samples), so calm-period bands stay narrow and volatile-period bands stay wide:
+
+$$\hat{P}_{\text{P10}}(t+k) = \hat{P}_{\text{test}}(t+k) + q_{10}, \qquad \hat{P}_{\text{P90}}(t+k) = \hat{P}_{\text{test}}(t+k) + q_{90}$$
+
+Full pipeline detail (the 15-bin edges, monotonicity correction) is in [`Forecasting_Logic.md`](/EnergyForecasting/AI_Agent_Development_in_BESS/04_Electricity_Price/Forecasting_Logic.md).
 
 ### Sizing the battery
 
-Before scheduling day to day, the battery needs a capacity. `bess_sizing.py` solves a Pyomo linear program, with GLPK as the backend solver, once per candidate capacity (250, 500, 1000, 1500, and 2000 kWh), over the full 2024-01-01 to 2025-06-06 historical window. For each hour, four power variables and one energy variable are constrained by the standard state-of-charge dynamics:
+Before scheduling day to day, the battery needs a capacity. `bess_sizing.py` solves a Pyomo linear program, GLPK backend, once per candidate capacity, over the full 2024-01-01 to 2025-06-06 historical window:
 
-$$E(t) = E(t-1) + \left(P_{\text{ch}}(t)\cdot\eta_{\text{ch}} - \frac{P_{\text{dis}}(t)}{\eta_{\text{dis}}}\right)$$
+$$\min \sum_{t=1}^{T} \Big( \lambda_{\text{buy}}(t)\,P_{\text{import}}(t) + C_{\text{deg}}\big(P_{\text{ch}}(t) + P_{\text{dis}}(t)\big) - \lambda_{\text{sell}}(t)\,P_{\text{export}}(t) \Big)\,\Delta t$$
 
-subject to a 15 to 95 percent state-of-charge band, a 500 kW grid import/export limit, and a degradation penalty of 0.40 DKK/kWh of throughput in the objective, alongside the price of imported and exported energy. The two smallest capacities came back infeasible: they simply don't have enough discharge power to keep the community's peak import under the 500 kW grid limit. Of the feasible sizes, 1500 kWh with a 750 kW inverter came out ahead on net annual benefit:
+subject to the power balance, the grid import/export cap, and the state-of-charge dynamics $E(t) = E(t-1) + \big(P_{\text{ch}}(t)\eta_{\text{ch}} - P_{\text{dis}}(t)/\eta_{\text{dis}}\big)$:
+
+| Parameter | Value |
+|---|---:|
+| Candidate capacities tested | 250, 500, 1000, 1500, 2000 kWh |
+| Inverter power | 0.5C (e.g. 750 kW at 1500 kWh) |
+| SoC bounds | 15-95% |
+| Round-trip efficiency $\eta_{\text{ch}}\eta_{\text{dis}}$ | 90.25% (0.95 each way) |
+| Degradation penalty $C_{\text{deg}}$ | 0.40 DKK/kWh throughput |
+| Grid import/export cap | 500 kW |
+
+The two smallest capacities came back infeasible: not enough discharge power to keep peak import under the 500 kW grid limit. Of the feasible sizes, 1500 kWh / 750 kW led on net annual benefit:
 
 | Capacity (kWh) | Power (kW) | CAPEX (DKK) | Annual OPEX (DKK) | Annual savings (DKK) | Payback (years) |
 |---:|---:|---:|---:|---:|---:|
 | 1500 | 750 | 2,797,500 | 41,962.50 | 239,508.59 | 11.68 |
 | 2000 | 1000 | 3,730,000 | 55,950.00 | 307,858.74 | 12.12 |
 
-Eleven and a half years is not a fast payback, but it is what the numbers say once degradation cost and the 500 kW grid constraint are taken seriously rather than assumed away.
+Eleven and a half years, under a conservative 10-year straight-line amortization, is the honest number for pure spot-price arbitrage plus self-consumption. It moves with the financing assumptions actually used in industrial storage projects:
+
+| Adjustment | Effect on the 1500 kWh case |
+|---|---|
+| 15-year amortization (realistic cycle life vs. 10-year straight-line) | Net annual benefit turns positive: +11,046 DKK/year |
+| 40% CAPEX subsidy (common for EU storage/grid projects) | Payback drops to about 7.0 years |
+| Registering for Nordic ancillary markets (FCR-D, FFR) on top of arbitrage | Revenue roughly doubles/triples; payback to about 4-6 years |
+
+None of these are modeled in the LP itself, they're back-of-envelope sensitivity from [`BESS_Optimization_and_Forecast_Logic.md`](/EnergyForecasting/AI_Agent_Development_in_BESS/05_Optimisation_and_Forecast/BESS_Optimization_and_Forecast_Logic.md), not a re-solve.
 
 ### Scheduling the week
 
-With the size fixed, `daily_optimization.py` solves a second Pyomo/GLPK model, this time as a one-shot 168-hour linear program over a rolling 7-day window, using the LightGBM price forecast (with its P10/P90 band) instead of historical actuals. Over the sample week (2025-06-07 to 2025-06-13), the schedule saved 2,064 DKK against a no-BESS baseline, importing and exporting right up against the 500 kW grid limit at points and cycling roughly 2,300 to 2,500 kWh through the battery.
+With the size fixed, `daily_optimization.py` solves a second Pyomo/GLPK model, a one-shot 168-hour LP over a rolling 7-day window, using the LightGBM price forecast (with its P10/P90 band) instead of historical actuals:
+
+| Metric (2025-06-07 to 2025-06-13) | Value |
+|---|---:|
+| Savings vs. no-BESS baseline | 2,064.49 DKK |
+| Grid import peak | 500 kW |
+| Grid export peak | 500 kW |
+| Total battery charging | 2,268.15 kWh |
+| Total battery discharging | 2,545.75 kWh |
 
 ![7-day BESS dispatch schedule showing price, load, PV, and battery state of charge](/EnergyForecasting/AI_Agent_Development_in_BESS/05_Optimisation_and_Forecast/daily_schedule_7_days.png)
 *7-day dispatch schedule: spot price with its P10-P90 band on top, battery charge/discharge and state of charge below.*
