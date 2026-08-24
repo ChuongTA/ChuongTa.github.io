@@ -9,8 +9,7 @@ image: "/EnergyForecasting/AI_Agent_Development_in_BESS/bess_agent_architecture.
 date: 2026-08-24
 category: "Electricity Market"
 ---
-
-> This post answers Question 2 of the written assessment for a PhD candidate interview at Mälardalen University: ["PhD Candidate Interview Questions: AI-Agent Development for Energy Systems"](/EnergyForecasting/AI_Agent_Development_in_BESS/07_Submission/MDU_Written_Test_for_Interview.pdf). The [1-page architecture summary submitted for Part A](/EnergyForecasting/AI_Agent_Development_in_BESS/07_Submission/Chuong_Dang_Ta_Part_A_Architecture.pdf) is available for reference; this post is the write-up of Part B, the implementation prototype.
+> This post answers Question 2 of the written assessment for a PhD candidate interview at Mälardalen University: [&#34;PhD Candidate Interview Questions: AI-Agent Development for Energy Systems&#34;](/EnergyForecasting/AI_Agent_Development_in_BESS/07_Submission/MDU_Written_Test_for_Interview.pdf). The [1-page architecture summary submitted for Part A](/EnergyForecasting/AI_Agent_Development_in_BESS/07_Submission/Chuong_Dang_Ta_Part_A_Architecture.pdf) is available for reference; this post is the write-up of Part B, the implementation prototype.
 
 ## Why an agent, and not just an optimizer
 
@@ -22,7 +21,9 @@ That's the gap an LLM agent is meant to fill: not replacing the optimizer, but s
 
 ![BESS AI agent architecture: time-series inputs feeding LightGBM price forecasting, a Pyomo BESS optimizer, and an LLM agent that routes user queries to tools](/EnergyForecasting/AI_Agent_Development_in_BESS/bess_agent_architecture.jpg)
 
-Every stage writes its output to a plain CSV or PNG that the next stage reads, so the pipeline can be inspected or re-run stage by stage.
+Reading the figure left to right: three time series (solar PV generation, community demand, and market price) feed LightGBM, which does both point and probabilistic forecasting. LightGBM's price forecast comes out as a P10/P50/P90 band; its load and PV forecasts feed forward too. Both go into the Pyomo BESS optimizer, which solves the LP and produces the optimal schedule (charge, discharge, or hold), which then drives the actual BESS operations.
+
+The LLM agent sits to one side of that pipeline, not inside it. A user query goes to the agent, which issues tool calls (BESS Simulator, Cost Estimator, in the diagram, mapping to `bess_simulator` and `electricity_cost_estimator` in the code) rather than answering from its own reasoning. Those tools read the optimizer's already-solved schedule, and their output flows back up into the agent so it can answer in plain language, grounded in whatever Pyomo actually decided rather than a guess.
 
 ### Data
 
@@ -30,30 +31,34 @@ Load and PV are synthetic, generated to look like a real energy community rather
 
 **Load.** The community load is the sum of five sectors, each built from the same shape and hit with independent Gaussian noise:
 
-$$P_{\text{load}}(t) = \big(P_{\text{base}} + P_{\text{diurnal}}(t)\big) \times M_{\text{day}}(t) + \epsilon(t)$$
+$$
+P_{\text{load}}(t) = \big(P_{\text{base}} + P_{\text{diurnal}}(t)\big) \times M_{\text{day}}(t) + \epsilon(t)
+$$
 
-| Sector | Base (kW) | Peak addition (kW) | Active window | Weekend multiplier |
-|---|---:|---:|---|---:|
-| Office | 10 | 80 (dual peak, 10:00 & 15:00) | 08-18 weekdays | 0.1 |
-| Logistics | 20 | 120 AM / 150 PM | 06-09 & 17-20, Mon-Sat | 0.15 (Sun) |
-| Manufacturing | 80 | 220 (shifts 1-2) / 120 (night shift) | 3 shifts, weekdays | 0.15 |
-| EV (passenger) | 0 | 200 | 08:00-13:00 weekdays (unmanaged charging) | 0 |
-| EV (HGV) | 0 | 600 | 18:00-23:00 weekdays (depot charging) | 0 |
+| Sector         | Base (kW) |                   Peak addition (kW) | Active window                             | Weekend multiplier |
+| -------------- | --------: | -----------------------------------: | ----------------------------------------- | -----------------: |
+| Office         |        10 |        80 (dual peak, 10:00 & 15:00) | 08-18 weekdays                            |                0.1 |
+| Logistics      |        20 |                      120 AM / 150 PM | 06-09 & 17-20, Mon-Sat                    |         0.15 (Sun) |
+| Manufacturing  |        80 | 220 (shifts 1-2) / 120 (night shift) | 3 shifts, weekdays                        |               0.15 |
+| EV (passenger) |         0 |                                  200 | 08:00-13:00 weekdays (unmanaged charging) |                  0 |
+| EV (HGV)       |         0 |                                  600 | 18:00-23:00 weekdays (depot charging)     |                  0 |
 
 Total load is the sum of all five, clipped at zero; over the full series it peaks at 933 kW. Full per-sector equations (including the dual-Gaussian office curve and the shift step function) are in [`Load_Logic.md`](/EnergyForecasting/AI_Agent_Development_in_BESS/01_Load/Load_Logic.md).
 
 **PV.** ERA5 gives Surface Solar Radiation Downwards (SSRD, J/m²) per hour, converted to irradiance and scaled to a 50 MWp plant:
 
-$$G_{\text{avg}} = \frac{\text{SSRD}}{3600}\ \left[\text{W/m}^2\right], \qquad P_{\text{PV}}(t)\ [\text{kW}] = G_{\text{avg}} \times A_{\text{total}}\,\eta_{\text{PV}}\,\eta_{\text{system}}\,\eta_{\text{temp}} = G_{\text{avg}} \times 42.75$$
+$$
+G_{\text{avg}} = \frac{\text{SSRD}}{3600}\ \left[\text{W/m}^2\right], \qquad P_{\text{PV}}(t)\ [\text{kW}] = G_{\text{avg}} \times A_{\text{total}}\,\eta_{\text{PV}}\,\eta_{\text{system}}\,\eta_{\text{temp}} = G_{\text{avg}} \times 42.75
+$$
 
-| Parameter | Value |
-|---|---:|
-| Plant capacity | 50 MWp (100,000 x 500 Wp panels) |
-| Active panel area $A_{\text{total}}$ | 250,000 m² |
-| Module efficiency $\eta_{\text{PV}}$ | 20% |
-| System losses (inverter, cabling, soiling) | 10% |
-| Nordic temperature derating | 5% |
-| Combined scaling factor | 42.75 |
+| Parameter                                  |                            Value |
+| ------------------------------------------ | -------------------------------: |
+| Plant capacity                             | 50 MWp (100,000 x 500 Wp panels) |
+| Active panel area$A_{\text{total}}$      |                      250,000 m² |
+| Module efficiency$\eta_{\text{PV}}$      |                              20% |
+| System losses (inverter, cabling, soiling) |                              10% |
+| Nordic temperature derating                |                               5% |
+| Combined scaling factor                    |                            42.75 |
 
 At clear-sky peak (1000 W/m²) that's 42.75 MW; full derivation, plus a sample irradiance-to-output table, is in [`PV_50MW_Scaling_Logic.md`](/EnergyForecasting/AI_Agent_Development_in_BESS/02_PV_Generation/PV_50MW_Scaling_Logic.md).
 
@@ -61,16 +66,20 @@ At clear-sky peak (1000 W/m²) that's 42.75 MW; full derivation, plus a sample i
 
 LightGBM replaces the quantile regression forest used in an [earlier post in this series](/EnergyForecasting/PEPF_part1/), mainly for speed at this data volume. Rather than one recursive model, each lead time gets its own model, trained directly on the target $k$ hours ahead:
 
-$$\hat{P}(t+k) = f_k(X_t), \quad k \in \{1, \dots, 24\}$$
+$$
+\hat{P}(t+k) = f_k(X_t), \quad k \in \{1, \dots, 24\}
+$$
 
-| Feature group | Variables |
-|---|---|
-| Calendar | hour, day of week, month, weekend flag |
-| Autoregressive | price lag at $t-k$, $t-k-24$, $t-168$; 24h rolling mean |
+| Feature group  | Variables                                                    |
+| -------------- | ------------------------------------------------------------ |
+| Calendar       | hour, day of week, month, weekend flag                       |
+| Autoregressive | price lag at$t-k$, $t-k-24$, $t-168$; 24h rolling mean |
 
 Uncertainty comes from a binned residual bootstrap instead of a second set of quantile models: out-of-fold validation residuals are grouped into 15 bins by predicted price level, and a test prediction draws its P10/P90 offsets from the matching bin (5,000 bootstrap samples), so calm-period bands stay narrow and volatile-period bands stay wide:
 
-$$\hat{P}_{\text{P10}}(t+k) = \hat{P}_{\text{test}}(t+k) + q_{10}, \qquad \hat{P}_{\text{P90}}(t+k) = \hat{P}_{\text{test}}(t+k) + q_{90}$$
+$$
+\hat{P}_{\text{P10}}(t+k) = \hat{P}_{\text{test}}(t+k) + q_{10}, \qquad \hat{P}_{\text{P90}}(t+k) = \hat{P}_{\text{test}}(t+k) + q_{90}
+$$
 
 Full pipeline detail (the 15-bin edges, monotonicity correction) is in [`Forecasting_Logic.md`](/EnergyForecasting/AI_Agent_Development_in_BESS/04_Electricity_Price/Forecasting_Logic.md).
 
@@ -78,32 +87,34 @@ Full pipeline detail (the 15-bin edges, monotonicity correction) is in [`Forecas
 
 Before scheduling day to day, the battery needs a capacity. `bess_sizing.py` solves a Pyomo linear program, GLPK backend, once per candidate capacity, over the full 2024-01-01 to 2025-06-06 historical window:
 
-$$\min \sum_{t=1}^{T} \Big( \lambda_{\text{buy}}(t)\,P_{\text{import}}(t) + C_{\text{deg}}\big(P_{\text{ch}}(t) + P_{\text{dis}}(t)\big) - \lambda_{\text{sell}}(t)\,P_{\text{export}}(t) \Big)\,\Delta t$$
+$$
+\min \sum_{t=1}^{T} \Big( \lambda_{\text{buy}}(t)\,P_{\text{import}}(t) + C_{\text{deg}}\big(P_{\text{ch}}(t) + P_{\text{dis}}(t)\big) - \lambda_{\text{sell}}(t)\,P_{\text{export}}(t) \Big)\,\Delta t
+$$
 
 subject to the power balance, the grid import/export cap, and the state-of-charge dynamics $E(t) = E(t-1) + \big(P_{\text{ch}}(t)\eta_{\text{ch}} - P_{\text{dis}}(t)/\eta_{\text{dis}}\big)$:
 
-| Parameter | Value |
-|---|---:|
-| Candidate capacities tested | 250, 500, 1000, 1500, 2000 kWh |
-| Inverter power | 0.5C (e.g. 750 kW at 1500 kWh) |
-| SoC bounds | 15-95% |
-| Round-trip efficiency $\eta_{\text{ch}}\eta_{\text{dis}}$ | 90.25% (0.95 each way) |
-| Degradation penalty $C_{\text{deg}}$ | 0.40 DKK/kWh throughput |
-| Grid import/export cap | 500 kW |
+| Parameter                                                  |                          Value |
+| ---------------------------------------------------------- | -----------------------------: |
+| Candidate capacities tested                                | 250, 500, 1000, 1500, 2000 kWh |
+| Inverter power                                             | 0.5C (e.g. 750 kW at 1500 kWh) |
+| SoC bounds                                                 |                         15-95% |
+| Round-trip efficiency$\eta_{\text{ch}}\eta_{\text{dis}}$ |         90.25% (0.95 each way) |
+| Degradation penalty$C_{\text{deg}}$                      |        0.40 DKK/kWh throughput |
+| Grid import/export cap                                     |                         500 kW |
 
 The two smallest capacities came back infeasible: not enough discharge power to keep peak import under the 500 kW grid limit. Of the feasible sizes, 1500 kWh / 750 kW led on net annual benefit:
 
 | Capacity (kWh) | Power (kW) | CAPEX (DKK) | Annual OPEX (DKK) | Annual savings (DKK) | Payback (years) |
-|---:|---:|---:|---:|---:|---:|
-| 1500 | 750 | 2,797,500 | 41,962.50 | 239,508.59 | 11.68 |
-| 2000 | 1000 | 3,730,000 | 55,950.00 | 307,858.74 | 12.12 |
+| -------------: | ---------: | ----------: | ----------------: | -------------------: | --------------: |
+|           1500 |        750 |   2,797,500 |         41,962.50 |           239,508.59 |           11.68 |
+|           2000 |       1000 |   3,730,000 |         55,950.00 |           307,858.74 |           12.12 |
 
 Eleven and a half years, under a conservative 10-year straight-line amortization, is the honest number for pure spot-price arbitrage plus self-consumption. It moves with the financing assumptions actually used in industrial storage projects:
 
-| Adjustment | Effect on the 1500 kWh case |
-|---|---|
-| 15-year amortization (realistic cycle life vs. 10-year straight-line) | Net annual benefit turns positive: +11,046 DKK/year |
-| 40% CAPEX subsidy (common for EU storage/grid projects) | Payback drops to about 7.0 years |
+| Adjustment                                                                | Effect on the 1500 kWh case                                 |
+| ------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| 15-year amortization (realistic cycle life vs. 10-year straight-line)     | Net annual benefit turns positive: +11,046 DKK/year         |
+| 40% CAPEX subsidy (common for EU storage/grid projects)                   | Payback drops to about 7.0 years                            |
 | Registering for Nordic ancillary markets (FCR-D, FFR) on top of arbitrage | Revenue roughly doubles/triples; payback to about 4-6 years |
 
 None of these are modeled in the LP itself, they're back-of-envelope sensitivity from [`BESS_Optimization_and_Forecast_Logic.md`](/EnergyForecasting/AI_Agent_Development_in_BESS/05_Optimisation_and_Forecast/BESS_Optimization_and_Forecast_Logic.md), not a re-solve.
@@ -112,13 +123,13 @@ None of these are modeled in the LP itself, they're back-of-envelope sensitivity
 
 With the size fixed, `daily_optimization.py` solves a second Pyomo/GLPK model, a one-shot 168-hour LP over a rolling 7-day window, using the LightGBM price forecast (with its P10/P90 band) instead of historical actuals:
 
-| Metric (2025-06-07 to 2025-06-13) | Value |
-|---|---:|
-| Savings vs. no-BESS baseline | 2,064.49 DKK |
-| Grid import peak | 500 kW |
-| Grid export peak | 500 kW |
-| Total battery charging | 2,268.15 kWh |
-| Total battery discharging | 2,545.75 kWh |
+| Metric (2025-06-07 to 2025-06-13) |        Value |
+| --------------------------------- | -----------: |
+| Savings vs. no-BESS baseline      | 2,064.49 DKK |
+| Grid import peak                  |       500 kW |
+| Grid export peak                  |       500 kW |
+| Total battery charging            | 2,268.15 kWh |
+| Total battery discharging         | 2,545.75 kWh |
 
 ![7-day BESS dispatch schedule showing price, load, PV, and battery state of charge](/EnergyForecasting/AI_Agent_Development_in_BESS/05_Optimisation_and_Forecast/daily_schedule_7_days.png)
 *7-day dispatch schedule: spot price with its P10-P90 band on top, battery charge/discharge and state of charge below.*
