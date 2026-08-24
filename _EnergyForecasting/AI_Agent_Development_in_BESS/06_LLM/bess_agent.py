@@ -11,6 +11,24 @@ SCHEDULE_CSV = os.path.normpath(os.path.join(SCRIPT_DIR, "../05_Optimisation_and
 
 # --- 1. Tools Implementation ---
 
+def _current_price_context():
+    """Reads the price forecast (median + P10/P90) for the first hour of the solved
+    schedule, so tools that reason about charge/discharge timing can cite an explicit
+    uncertainty range and the schedule they're reading from, instead of a bare number."""
+    if not os.path.exists(SCHEDULE_CSV):
+        return None
+    df = pd.read_csv(SCHEDULE_CSV, parse_dates=["timestamp"])
+    if len(df) == 0 or "price_forecast_dkk_kwh" not in df.columns:
+        return None
+    row = df.iloc[0]
+    return {
+        "price_forecast_dkk_kwh": float(row["price_forecast_dkk_kwh"]),
+        "price_P10": float(row.get("price_P10", row["price_forecast_dkk_kwh"])),
+        "price_P90": float(row.get("price_P90", row["price_forecast_dkk_kwh"])),
+        "schedule_source": "day-ahead LP solve (daily_optimization.py, Pyomo/GLPK)",
+        "reference_timestamp": str(row["timestamp"]),
+    }
+
 def bess_simulator(current_soc, power_kw, duration_h=1.0):
     """Simulates BESS state transition and checks constraints.
     power_kw: Positive for charging, Negative for discharging.
@@ -20,30 +38,34 @@ def bess_simulator(current_soc, power_kw, duration_h=1.0):
     eta_dis = 0.95
     SoC_min = 0.15
     SoC_max = 0.95
-    
+
     current_energy = E_nom * (current_soc / 100.0)
-    
+
     # Calculate energy change
     if power_kw >= 0:
         energy_change = power_kw * eta_ch * duration_h
     else:
         energy_change = (power_kw / eta_dis) * duration_h
-        
+
     new_energy = current_energy + energy_change
     new_soc = (new_energy / E_nom) * 100.0
-    
+
     clamped_soc = max(SoC_min * 100.0, min(SoC_max * 100.0, new_soc))
     violation = False
     if new_soc < SoC_min * 100.0 or new_soc > SoC_max * 100.0:
         violation = True
-        
-    return {
+
+    result = {
         "initial_soc_percent": current_soc,
         "proposed_power_kw": power_kw,
         "new_soc_percent": np.round(clamped_soc, 2),
         "violation_detected": violation,
         "clamped_warning": "Warning: SoC bounds breached, action clamped!" if violation else "None"
     }
+    price_context = _current_price_context()
+    if price_context is not None:
+        result.update(price_context)
+    return result
 
 def self_consumption_calculator(start_time_str, end_time_str):
     """Calculates solar self-consumption rate (%) for the community."""
@@ -69,7 +91,8 @@ def self_consumption_calculator(start_time_str, end_time_str):
         "total_load_demand_kwh": np.round(total_load, 2),
         "solar_self_consumed_kwh": np.round(self_consumed_pv, 2),
         "self_consumption_rate_percent": np.round(self_consumption_rate, 2),
-        "surplus_solar_exported_kwh": np.round(total_export, 2)
+        "surplus_solar_exported_kwh": np.round(total_export, 2),
+        "schedule_source": "solved day-ahead schedule (daily_optimization.py, Pyomo/GLPK)",
     }
 
 def electricity_cost_estimator(start_time_str, end_time_str, use_bess=True):
@@ -96,7 +119,8 @@ def electricity_cost_estimator(start_time_str, end_time_str, use_bess=True):
                 
     return {
         "mode": "With BESS" if use_bess else "No BESS (Baseline)",
-        "estimated_net_cost_dkk": np.round(cost, 2)
+        "estimated_net_cost_dkk": np.round(cost, 2),
+        "schedule_source": "solved day-ahead schedule (daily_optimization.py, Pyomo/GLPK)",
     }
 
 # Dictionary mapping tool names to actual functions
@@ -162,13 +186,51 @@ def call_llm(messages, api_config):
         
     else:
         # Mock / Fallback Mode (So it runs immediately without keys)
-        last_msg = messages[-1]["content"].lower()
-        if "charge" in last_msg or "discharge" in last_msg or "next 2 hours" in last_msg:
+        last_msg = messages[-1]["content"]
+
+        # If this is the second call (after a tool observation), synthesize a grounded
+        # final answer from that observation instead of re-matching keywords on it --
+        # the observation text itself doesn't reliably contain "charge"/"discharge".
+        if last_msg.startswith("Observation from"):
+            tool_name, observation = last_msg.split(": ", 1)
+            tool_name = tool_name.replace("Observation from '", "").rstrip("'")
+            observation = json.loads(observation)
+            return _mock_synthesize_response(tool_name, observation)
+
+        query = last_msg.lower()
+        if "charge" in query or "discharge" in query or "next 2 hours" in query:
             return '{"tool": "bess_simulator", "parameters": {"current_soc": 50.0, "power_kw": -750.0, "duration_h": 2.0}}'
-        elif "self-consumption" in last_msg or "yesterday" in last_msg:
+        elif "self-consumption" in query or "yesterday" in query:
             return '{"tool": "self_consumption_calculator", "parameters": {"start_time_str": "2025-06-08 00:00:00", "end_time_str": "2025-06-08 23:00:00"}}'
         else:
             return "I am a BESS AI Agent. Please ask me about charging schedules or self-consumption rates."
+
+def _mock_synthesize_response(tool_name, obs):
+    """Stands in for what a real LLM would write from the tool observation, following
+    the same response contract given in the system prompt: state the exact figures,
+    cite the forecast uncertainty range where one exists, and name the schedule/model
+    the figures came from."""
+    if tool_name == "bess_simulator":
+        action = "discharging" if obs["proposed_power_kw"] < 0 else "charging" if obs["proposed_power_kw"] > 0 else "holding"
+        band = ""
+        if "price_forecast_dkk_kwh" in obs:
+            band = (f" Price is forecast at about {obs['price_forecast_dkk_kwh']} DKK/kWh, "
+                    f"range {obs['price_P10']}-{obs['price_P90']} DKK/kWh (P10-P90).")
+        warning = f" {obs['clamped_warning']}" if obs["violation_detected"] else ""
+        return (f"Recommend {action} at {obs['proposed_power_kw']} kW, moving SoC from "
+                f"{obs['initial_soc_percent']}% to {obs['new_soc_percent']}%.{band}{warning} "
+                f"(Per the {obs.get('schedule_source', 'day-ahead schedule')}.)")
+    elif tool_name == "self_consumption_calculator":
+        return (f"Self-consumption rate: {obs['self_consumption_rate_percent']}% "
+                f"({obs['solar_self_consumed_kwh']} kWh self-consumed out of "
+                f"{obs['total_solar_generated_kwh']} kWh generated; "
+                f"{obs['surplus_solar_exported_kwh']} kWh exported). Shifting battery charging "
+                f"into the highest-PV hours, rather than relying on cheap overnight import, "
+                f"would raise this further. (Per the {obs.get('schedule_source', 'solved schedule')}.)")
+    elif tool_name == "electricity_cost_estimator":
+        return (f"Net grid cost {obs['mode'].lower()}: {obs['estimated_net_cost_dkk']} DKK. "
+                f"(Per the {obs.get('schedule_source', 'solved schedule')}.)")
+    return json.dumps(obs)
 
 # --- 3. The Agent Reasoning & Tool-Use Execution Loop ---
 
@@ -188,7 +250,11 @@ class BESSAgentLoop:
             '{"tool": "tool_name", "parameters": {"param1": val1, ...}}\n'
             "Do NOT include any extra text before or after the JSON if you are calling a tool.\n\n"
             "Once you receive the tool's output observation, write your final response. "
-            "Explain your reasoning and state the exact figures clearly in DKK."
+            "Explain your reasoning and state the exact figures clearly in DKK. "
+            "If the observation includes a price forecast, state it as an explicit range "
+            "(e.g. 'expect about 0.5 DKK/kWh, range 0.2-0.8 DKK/kWh (P10-P90)'), never as a bare "
+            "point number. If the observation includes a schedule_source field, cite it "
+            "(e.g. 'per the day-ahead LP solve') so the user knows which model produced the figures."
         )
 
     def run(self, user_query):

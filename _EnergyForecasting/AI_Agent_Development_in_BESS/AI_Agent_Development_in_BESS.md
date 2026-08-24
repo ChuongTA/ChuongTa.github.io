@@ -82,11 +82,11 @@ Two required queries exercise the loop end to end:
 
 > "Should we charge or discharge the battery in the next two hours given the current conditions?"
 
-The agent calls `bess_simulator` with the current state of charge and a proposed power level, gets back the resulting SoC and any bound violation, and explains the recommendation against the price trajectory for the next two hours.
+The agent calls `bess_simulator` with the current state of charge and a proposed power level, gets back the resulting SoC, any bound violation, and the price context at that hour, and answers something like: *"Recommend discharging at 750 kW, moving SoC from 50% to 15%. Price is forecast at about 0.4 DKK/kWh, range 0.1-0.64 DKK/kWh (P10-P90). (Per the day-ahead LP solve.)"* The uncertainty range and the schedule citation aren't decoration, they're a fixed part of the response contract in the system prompt: a bare point number is treated as an incomplete answer.
 
 > "What was our self-consumption rate yesterday and how could it be improved?"
 
-The agent calls `self_consumption_calculator` over the requested day, reports the percentage, and suggests shifting battery charging toward the midday PV surplus rather than cheap overnight grid import as one lever to raise it.
+The agent calls `self_consumption_calculator` over the requested day, reports the percentage, suggests shifting battery charging toward the midday PV surplus rather than cheap overnight grid import as one lever to raise it, and again names the schedule the figures came from.
 
 ### Try it
 

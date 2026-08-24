@@ -260,8 +260,9 @@ function runQuery() {
 
         response = `Over the next ${hours} hour(s) (${timestamps[windowStart]} to ${timestamps[windowEnd]}), the day-ahead schedule calls for a net ${action} `
             + `(${round2(netDischarge)} kWh discharged, ${round2(netCharge)} kWh charged), moving SoC from ${startSoc}% to ${endSoc}%. `
-            + `Price is forecast to move from ${startPrice} to ${endPrice} DKK/kWh over that window. `
-            + (observation.violation_detected ? "Note: this would breach the battery's SoC bounds if taken as a single continuous action; the optimizer instead spreads it across the hour-by-hour schedule shown below." : "This stays within the 15-95% SoC bounds.");
+            + `Price is forecast at about ${startPrice} DKK/kWh at the start of this window, range ${p10[windowStart]}-${p90[windowStart]} DKK/kWh (P10-P90), moving toward about ${endPrice} DKK/kWh by the end. `
+            + (observation.violation_detected ? "Note: this would breach the battery's SoC bounds if taken as a single continuous action; the optimizer instead spreads it across the hour-by-hour schedule shown below. " : "This stays within the 15-95% SoC bounds. ")
+            + "(Per the 7-day Pyomo/GLPK day-ahead schedule, daily_optimization.py.)";
     } else if (routed.tool === "self_consumption_calculator") {
         const { i0, i1 } = routed.params;
         windowStart = i0; windowEnd = i1;
@@ -271,7 +272,8 @@ function runQuery() {
         response = `From ${timestamps[i0]} to ${timestamps[i1]}, the community generated ${observation.total_solar_generated_kwh} kWh of solar `
             + `against ${observation.total_load_demand_kwh} kWh of demand. Self-consumption came out to ${observation.self_consumption_rate_percent}%, `
             + `with ${observation.surplus_solar_exported_kwh} kWh exported to the grid. Shifting more battery charging into the highest-PV hours in this window, `
-            + `rather than relying on cheap overnight import, would raise this further.`;
+            + `rather than relying on cheap overnight import, would raise this further. `
+            + "(Per the 7-day Pyomo/GLPK day-ahead schedule, daily_optimization.py.)";
     } else if (routed.tool === "electricity_cost_estimator") {
         const { i0, i1 } = routed.params;
         windowStart = i0; windowEnd = i1;
@@ -281,7 +283,8 @@ function runQuery() {
         observation = { with_bess: withBess, no_bess: noBess, savings_dkk: round2(noBess.estimated_net_cost_dkk - withBess.estimated_net_cost_dkk) };
         trace += `<- [Observation]: ${JSON.stringify(observation)}\n`;
         response = `From ${timestamps[i0]} to ${timestamps[i1]}: net grid cost with the battery is ${withBess.estimated_net_cost_dkk} DKK, `
-            + `versus ${noBess.estimated_net_cost_dkk} DKK without it, a saving of ${observation.savings_dkk} DKK over this window.`;
+            + `versus ${noBess.estimated_net_cost_dkk} DKK without it, a saving of ${observation.savings_dkk} DKK over this window. `
+            + "(Per the 7-day Pyomo/GLPK day-ahead schedule, daily_optimization.py.)";
     }
 
     document.getElementById("trace").textContent = trace;
