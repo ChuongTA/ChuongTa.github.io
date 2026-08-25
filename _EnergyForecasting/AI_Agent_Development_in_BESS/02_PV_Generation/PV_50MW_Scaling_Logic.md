@@ -1,24 +1,56 @@
-# PV Power Plant Scaling Logic: 50 MW utility-scale solar generation from ERA5 meteorological data
+# PV Power Plant Data and Scaling Logic: 50 MW Utility-Scale Solar Generation from ERA5 Meteorological Data
 
-This document details the engineering logic, physical equations, and conversion factors required to simulate hourly generation profiles for a **50 MW (50,000 kWp) PV Power Plant** using historical or forecast Surface Solar Radiation Downwards (SSRD) from the ERA5 reanalysis dataset.
+This document details the data source, geographic scope, and physical conversion logic required to simulate hourly generation profiles for a **50 MW (50,000 kWp) PV Power Plant** using historical or forecast Surface Solar Radiation Downwards (SSRD) from the ERA5 reanalysis dataset.
 
 ---
 
-## Sizing & Area Sizing Logic
-To size a 50 MWp plant, we estimate the total required active module area ($A_{\text{total}}$). 
+## 1. Data Acquisition
 
-### 1. Panel Assumptions
+### 1.1 Data Source
+
+ERA5 is the fifth-generation atmospheric reanalysis produced by the European Centre for Medium-Range Weather Forecasts (ECMWF). It provides **historical** solar radiation data at hourly resolution, reconstructed from observations and numerical weather model assimilation.
+
+For forward-looking applications, ECMWF additionally publishes **forecast** products, notably the High-Resolution Forecast (HRES) and the Ensemble Forecast (ENS), covering the same radiation variables up to ten days ahead. This distinction underpins the historical-versus-forecast data strategy described in Section 1.3.
+
+### 1.2 Geographic Scope
+
+The geographic scope corresponds to the Jutland and Funen region of Denmark (the DK1 bidding zone), bounded by:
+
+| Boundary | Coordinate |
+|---|---:|
+| North | 57.5° N |
+| South | 54.5° N |
+| East | 11.5° E |
+| West | 7.0° E |
+
+### 1.3 Historical vs. Forecast Data Strategy
+
+The agent requires both a record of recent actual generation and a forward-looking forecast for near-term operational decisions. Since ERA5 is a historical reanalysis product, it is used to represent realized generation (e.g., the preceding day), while the corresponding HRES forecast product represents the forward-looking horizon (e.g., the next four hours) that the agent queries when reasoning about upcoming dispatch decisions.
+
+The prototype strategy is:
+
+1. Retrieve **ERA5** data for a recent past period as the source of realized ("real-time sensor") generation.
+2. Retrieve **HRES forecast** data for the current period as the source of the agent's look-ahead window.
+
+Under this scheme, a query such as "what does the PV forecast look like for the next four hours" is answered by slicing the latest HRES forecast file, reproducing the historical-versus-forecast data separation of an operational deployment without requiring a live forecast feed during prototyping.
+
+---
+
+## 2. Sizing & Area Sizing Logic
+To size a 50 MWp plant, we estimate the total required active module area ($A_{\text{total}}$).
+
+### 2.1 Panel Assumptions
 * **Peak Output ($P_{\text{module}}$)**: $400\text{ Wp}$ to $550\text{ Wp}$ per panel. We assume standard utility-scale monocrystalline panels of **$500\text{ Wp}$** ($0.5\text{ kWp}$).
 * **Module Dimensions**: Typically $2.2\text{ m} \times 1.1\text{ m} \approx 2.42\text{ m}^2$ per panel.
-* **Peak Output Density**: 
+* **Peak Output Density**:
   $$\frac{500\text{ Wp}}{2.42\text{ m}^2} \approx 206.6\text{ Wp/m}^2$$
 * **Area per kWp Rule of Thumb**:
   $$\frac{2.42\text{ m}^2}{0.5\text{ kWp}} \approx 4.84\text{ m}^2/\text{kWp}$$
   Using a conservative industry standard design value: **$5\text{ m}^2$ of active panel surface area is required per $1\text{ kWp}$**.
 
-### 2. Sizing Calculations
+### 2.2 Sizing Calculations
 For a **50 MWp** (or $50,000\text{ kWp}$) plant capacity:
-* **Number of Panels**: 
+* **Number of Panels**:
   $$N_{\text{panels}} = \frac{50,000\text{ kWp}}{0.5\text{ kWp/panel}} = 100,000\text{ panels}$$
 * **Total Active Aperture Area ($A_{\text{total}}$)**:
   $$A_{\text{total}} = 50,000\text{ kWp} \times 5\text{ m}^2/\text{kWp} = 250,000\text{ m}^2$$
@@ -26,15 +58,15 @@ For a **50 MWp** (or $50,000\text{ kWp}$) plant capacity:
 
 ---
 
-## The Solar Conversion Equation
+## 3. The Solar Conversion Equation
 
-### Step 1: Converting ERA5 SSRD to Irradiance ($G_{\text{avg}}$)
+### 3.1 Converting ERA5 SSRD to Irradiance ($G_{\text{avg}}$)
 ERA5 provides solar radiation as accumulated **Surface Solar Radiation Downwards (SSRD)** in Joules per square meter ($\text{J/m}^2$) over the hourly interval.
 
 Since $1\text{ Watt} = 1\text{ Joule/second}$, and there are $3600\text{ seconds}$ in an hour, the average hourly solar irradiance ($G_{\text{avg}}$ in $\text{W/m}^2$) is:
 $$G_{\text{avg}} = \frac{\text{SSRD}}{3600}\ \left[\text{W/m}^2\right]$$
 
-### Step 2: The PV Performance Model
+### 3.2 The PV Performance Model
 The electrical power output $P_{\text{PV}}(t)$ is given by the standard photo-thermal equations:
 $$P_{\text{PV}}(t) = G_{\text{avg}} \times A_{\text{total}} \times \eta_{\text{PV}} \times \eta_{\text{system}} \times \eta_{\text{temp}}$$
 
@@ -45,7 +77,7 @@ Where:
 4. **$\eta_{\text{system}}$**: System losses including inverter efficiency ($98\%$), AC/DC cabling losses ($3\%$), transformer losses ($1.5\%$), and soiling/dust losses ($2\%$). Combined: **$90\%$** ($0.90$).
 5. **$\eta_{\text{temp}}$**: Temperature-related losses. For cold climates like Sweden, the annual average temperature derating factor is low. Set to **$95\%$** ($0.95$).
 
-### Step 3: Simplifying the Scaling Factor
+### 3.3 Simplifying the Scaling Factor
 Let's combine all constants into a single parameter:
 $$\text{Factor} = A_{\text{total}} \times \eta_{\text{PV}} \times \eta_{\text{system}} \times \eta_{\text{temp}}$$
 $$\text{Factor} = 250,000 \times 0.20 \times 0.90 \times 0.95 = 42,750\ \left[\text{m}^2\right]$$
@@ -58,7 +90,7 @@ $$P_{\text{PV}}(t)\ [\text{MW}] = G_{\text{avg}} \times 0.04275$$
 
 ---
 
-## Sample Irradiance to Power Output Mapping
+## 4. Sample Irradiance to Power Output Mapping
 
 The table below demonstrates how the 50 MW plant behaves under different sky and meteorological conditions:
 
