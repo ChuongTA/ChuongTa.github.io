@@ -11,21 +11,28 @@ category: "Electricity Market"
 ---
 > This post answers Question 2 of the written assessment for a PhD candidate interview at Mälardalen University: [&#34;PhD Candidate Interview Questions: AI-Agent Development for Energy Systems&#34;](/EnergyForecasting/AI_Agent_Development_in_BESS/07_Submission/MDU_Written_Test_for_Interview.pdf). The [1-page architecture summary submitted for Part A](/EnergyForecasting/AI_Agent_Development_in_BESS/07_Submission/Chuong_Dang_Ta_Part_A_Architecture.pdf) is available for reference; this post is the write-up of Part B, the implementation prototype.
 
-## Why an agent, and not just an optimizer
+# 1. Why an Agent Instead of a Stand-Alone Optimiser
 
-A battery energy storage system (BESS) attached to a small energy community sits between three things that never quite agree: a load profile that peaks in the evening, solar generation that peaks at noon, and a spot price that does its own thing depending on wind and interconnector flows. An optimizer can schedule the battery against forecasts of all three. What it cannot do is explain itself to the person who has to sign off on the schedule, or answer a follow-up question in plain language when something looks off.
+A Battery energy storage system (BESS) in a small energy community must balance three misaligned signals:
+
+- Evening-peaking demand
+- Midday-peaking solar generation
+- Spot electricity price varies in the renewable electricity market nowadays
+
+A mathematical optimiser can schedule the BESS using forecasts of these variables. However, what it cannot do is explain its reasoning, justify its decisions, or address operator questions when the resulting plan appears unexpected. For example, charging battery when the prices are not low.  Because the optimizer expects a future high‑demand period and needs sufficient state‑of‑charge.
 
 That's the gap an LLM agent is meant to fill: not replacing the optimizer, but sitting on top of it, translating "should we discharge in the next two hours" into a tool call, and translating the tool's numeric output back into a sentence a non-specialist can act on. This post walks through a small end-to-end system built around that idea, from synthetic load and PV data through a day-ahead price forecaster, a Pyomo battery scheduler, and a provider-agnostic ReAct agent with three tools.
 
-## System overview
+
+# 2. Main Pipeline
 
 ![BESS AI agent architecture: time-series inputs feeding LightGBM price forecasting, a Pyomo BESS optimizer, and an LLM agent that routes user queries to tools](/EnergyForecasting/AI_Agent_Development_in_BESS/bess_agent_architecture.jpg)
 
-Reading the figure left to right: three time series (solar PV generation, community demand, and market price) feed LightGBM, which does both point and probabilistic forecasting. LightGBM's price forecast comes out as a P10/P50/P90 band; its load and PV forecasts feed forward too. Both go into the Pyomo BESS optimizer, which solves the LP and produces the optimal schedule (charge, discharge, or hold), which then drives the actual BESS operations.
+Above is the Graphical abstract for the main pipeline. First, three time series data (solar PV generation, community demand, and market price) feed LightGBM, which does both point and probabilistic forecasting (Boostrapped Bin Residual). LightGBM's price forecast comes out as a P10/P50/P90 band; its load and PV forecasts feed forward too. Both go into the Pyomo BESS optimizer, which solves the Linear Program (LP) and produces the optimal schedule (charge, discharge, or hold), which then drives the actual BESS operations.
 
 The LLM agent sits to one side of that pipeline, not inside it. A user query goes to the agent, which issues tool calls (BESS Simulator, Cost Estimator, in the diagram, mapping to `bess_simulator` and `electricity_cost_estimator` in the code) rather than answering from its own reasoning. Those tools read the optimizer's already-solved schedule, and their output flows back up into the agent so it can answer in plain language, grounded in whatever Pyomo actually decided rather than a guess.
 
-### Data
+## 2.1 Data
 
 Load and PV are synthetic, generated to look like a real energy community rather than pulled from a live meter. The one real dataset in the pipeline is the day-ahead spot price for the DK1 bidding zone: hourly, sourced from Denmark's Energi Data Service, 2024-01-01 through 2025-09-30 (15,336 hours).
 
@@ -37,13 +44,13 @@ $$
 
 A constant standby load plus a time-of-day shape, scaled down on weekends by $M_{\text{day}}(t)$, plus Gaussian noise $\epsilon(t)$. Each sector below just plugs its own base level, diurnal shape, and weekend multiplier into this same template.
 
-| Sector         | Base (kW) |                   Peak addition (kW) | Active window                             | Weekend multiplier |
-| -------------- | --------: | -----------------------------------: | ----------------------------------------- | -----------------: |
-| Office         |        10 |        80 (dual peak, 10:00 & 15:00) | 08-18 weekdays                            |                0.1 |
-| Logistics      |        20 |          +120 when AM / +150 when PM | 06-09 & 17-20, Mon-Sat                    |         0.15 (Sun) |
-| Manufacturing  |        80 | 220 (shifts 1-2) / 120 (night shift) | 3 shifts, weekdays                        |               0.15 |
-| EV (passenger) |         0 |                                  200 | 08:00-13:00 weekdays (unmanaged charging) |                  0 |
-| EV (HGV)       |         0 |                                  600 | 18:00-23:00 weekdays (depot charging)     |                  0 |
+| Sector         | Base (kW) |                          Peak addition (kW) | Active window                             | Weekend multiplier |
+| -------------- | --------: | ------------------------------------------: | ----------------------------------------- | -----------------: |
+| Office         |        10 |               80 (dual peak, 10:00 & 15:00) | 08-18 weekdays                            |                0.1 |
+| Logistics      |        20 | +120 in the morning / +150 in the afternoon | 06-09 & 17-20, Mon-Sat                    |         0.15 (Sun) |
+| Manufacturing  |        80 |        220 (shifts 1-2) / 120 (night shift) | 3 shifts, weekdays                        |               0.15 |
+| EV (passenger) |         0 |                                         200 | 08:00-13:00 weekdays (unmanaged charging) |                  0 |
+| EV (HGV)       |         0 |                                         600 | 18:00-23:00 weekdays (depot charging)     |                  0 |
 
 Total load is the sum of all five, clipped at zero; over the full series it peaks at 933 kW. Full per-sector equations (including the dual-Gaussian office curve and the shift step function) are in [`Load_Logic.md`](/EnergyForecasting/AI_Agent_Development_in_BESS/01_Load/Load_Logic.md).
 
@@ -58,15 +65,15 @@ SSRD is the energy that landed on each square meter over the hour (joules); divi
 | Parameter                                  |                            Value |
 | ------------------------------------------ | -------------------------------: |
 | Plant capacity                             | 50 MWp (100,000 x 500 Wp panels) |
-| Active panel area, $A_{\text{total}}$      |                      250,000 m² |
-| Module efficiency, $\eta_{\text{PV}}$      |                              20% |
+| Active panel area,$A_{\text{total}}$       |                       250,000 m² |
+| Module efficiency,$\eta_{\text{PV}}$       |                              20% |
 | System losses (inverter, cabling, soiling) |                              10% |
 | Nordic temperature derating                |                               5% |
 | Combined scaling factor                    |                            42.75 |
 
 At clear-sky peak (1000 W/m²) that's 42.75 MW; full derivation, plus a sample irradiance-to-output table, is in [`PV_50MW_Scaling_Logic.md`](/EnergyForecasting/AI_Agent_Development_in_BESS/02_PV_Generation/PV_50MW_Scaling_Logic.md).
 
-### Forecasting the price
+## 2.2 Forecasting the price
 
 LightGBM replaces the quantile regression forest used in an [earlier post in this series](/EnergyForecasting/PEPF_part1/), mainly for speed at this data volume. Rather than one recursive model, each lead time gets its own model, trained directly on the target $k$ hours ahead:
 
@@ -76,10 +83,10 @@ $$
 
 A separate model $f_k$ for each horizon, so the price 24 hours out is predicted directly from today's features $X_t$, not by chaining 24 one-hour-ahead predictions into each other and compounding their errors.
 
-| Feature group  | Variables                                                    |
-| -------------- | ------------------------------------------------------------ |
-| Calendar       | hour, day of week, month, weekend flag                       |
-| Autoregressive | price lags: $t-k$, $t-k-24$, $t-168$; 24h rolling mean |
+| Feature group  | Variables                                                   |
+| -------------- | ----------------------------------------------------------- |
+| Calendar       | hour, day of week, month, weekend flag                      |
+| Autoregressive | price lags:$t-k$, $t-k-24$, $t-168$; 24h rolling mean |
 
 Uncertainty comes from a binned residual bootstrap instead of a second set of quantile models: out-of-fold validation residuals are grouped into 15 bins by predicted price level, and a test prediction draws its P10/P90 offsets from the matching bin (5,000 bootstrap samples), so calm-period bands stay narrow and volatile-period bands stay wide:
 
@@ -91,7 +98,7 @@ $q_{10}$ and $q_{90}$ are the 10th and 90th percentile of the residuals bootstra
 
 Full pipeline detail (the 15-bin edges, monotonicity correction) is in [`Forecasting_Logic.md`](/EnergyForecasting/AI_Agent_Development_in_BESS/04_Electricity_Price/Forecasting_Logic.md).
 
-### Sizing the battery
+## 2.3 Sizing the battery
 
 Before scheduling day to day, the battery needs a capacity. `bess_sizing.py` solves a Pyomo linear program, GLPK backend, once per candidate capacity, over the full 2024-01-01 to 2025-06-06 historical window:
 
@@ -112,8 +119,8 @@ Next hour's stored energy is this hour's energy, plus what got charged in after 
 | Candidate capacities tested                                | 250, 500, 1000, 1500, 2000 kWh |
 | Inverter power                                             | 0.5C (e.g. 750 kW at 1500 kWh) |
 | SoC bounds                                                 |                         15-95% |
-| Round-trip efficiency $\eta_{\text{ch}}\eta_{\text{dis}}$ |         90.25% (0.95 each way) |
-| Degradation penalty $C_{\text{deg}}$                       |        0.40 DKK/kWh throughput |
+| Round-trip efficiency$\eta_{\text{ch}}\eta_{\text{dis}}$ |         90.25% (0.95 each way) |
+| Degradation penalty$C_{\text{deg}}$                      |        0.40 DKK/kWh throughput |
 | Grid import/export cap                                     |                         500 kW |
 
 The two smallest capacities came back infeasible: not enough discharge power to keep peak import under the 500 kW grid limit. Of the feasible sizes, 1500 kWh / 750 kW led on net annual benefit:
@@ -133,7 +140,7 @@ Eleven and a half years, under a conservative 10-year straight-line amortization
 
 None of these are modeled in the LP itself, they're back-of-envelope sensitivity from [`BESS_Optimization_and_Forecast_Logic.md`](/EnergyForecasting/AI_Agent_Development_in_BESS/05_Optimisation_and_Forecast/BESS_Optimization_and_Forecast_Logic.md), not a re-solve.
 
-### Scheduling the week
+## 2.4 Scheduling the week
 
 With the size fixed, `daily_optimization.py` solves a second Pyomo/GLPK model, a one-shot 168-hour LP over a rolling 7-day window, using the LightGBM price forecast (with its P10/P90 band) instead of historical actuals:
 
@@ -150,15 +157,15 @@ With the size fixed, `daily_optimization.py` solves a second Pyomo/GLPK model, a
 
 The script also writes a zoomable interactive HTML version with Plotly, useful for looking at any individual day up close rather than squinting at a week compressed into one static plot.
 
-## Putting an agent in front of it
+# 3. Putting an Agent in Front of It
 
 The scheduler produces a table, not an answer. The agent's job is to sit between a person's question and that table.
 
-### Design: fast advice, slow optimization
+## 3.1 Design: fast advice, slow optimization
 
 Instead of running the LP synchronously inside a chat turn, the design splits into two tiers. Advisory questions ("should we discharge now," "what was our self-consumption yesterday") read the already-solved schedule and answer in seconds. Anything that would require a fresh solve, a large forecast revision or a genuine what-if scenario, triggers an optimization run asynchronously, and the agent either answers from the last valid solution with a staleness note or tells the user it's recomputing. The optimizer runs on its own hourly cadence; the chat interface never blocks on it.
 
-### Three tools, one source of truth
+## 3.2 Three tools, one source of truth
 
 All three required tools read from the same solved schedule CSV, so their answers stay consistent with each other and traceable back to one optimizer run:
 
@@ -168,7 +175,7 @@ All three required tools read from the same solved schedule CSV, so their answer
 
 The LLM never computes any of these numbers itself. It emits a small JSON tool call, Python executes it deterministically, and the model's only job afterward is to explain the returned figures in plain language. That split is what keeps the agent's answers numerically trustworthy regardless of which LLM is behind it.
 
-### One agent, five providers
+## 3.3 One agent, five providers
 
 The agent loop (`bess_agent.py`) doesn't depend on LangChain or any particular vendor SDK. A small router function switches between OpenAI, Anthropic, Gemini, DeepSeek, and a local Ollama model based on which API key is set in the environment, plus a mock mode that runs the full reasoning loop with no key at all, useful for testing or for demoing the tool-call flow offline.
 
@@ -182,7 +189,7 @@ The agent calls `bess_simulator` with the current state of charge and a proposed
 
 The agent calls `self_consumption_calculator` over the requested day, reports the percentage, suggests shifting battery charging toward the midday PV surplus rather than cheap overnight grid import as one lever to raise it, and again names the schedule the figures came from.
 
-### Try it
+# 4. Demo
 
 GitHub Pages is static hosting, so there's no server here to run a live model against. What's embedded below is a client-side version of the three tools, running in JavaScript directly on this solved 7-day schedule. The "routing" step (deciding which tool a question needs) is a handful of regular expressions standing in for the LLM call, so it only recognizes the same three question shapes as the queries above. Everything downstream of that, the tool math and the numbers in the response, is the same logic as `bess_agent.py`, not a mock.
 
@@ -190,13 +197,13 @@ GitHub Pages is static hosting, so there's no server here to run a live model ag
 
 *If the embed doesn't load, [open the demo directly](/EnergyForecasting/AI_Agent_Development_in_BESS/06_LLM/bess_agent_demo.html).*
 
-## Limitation and Future Works
+# 5. Limitations and Future Work
 
 The battery-sizing and weekly-dispatch models use the real DK1 price series, but load and PV forecast error inside the scheduler is injected as synthetic Gaussian noise (5 percent on load, 12 percent on PV) rather than coming from trained load and PV forecasters. That's a reasonable simplification for a prototype meant to demonstrate the agent-to-optimizer interface, but it means the price forecast is the one component actually validated against real held-out data end to end.
 
 The dispatch model is also a single 7-day solve rather than a genuinely rolling one that re-optimizes each day as new forecasts arrive, and EV or heavy-goods charging flexibility, which would show up as additional shiftable load in the same LP, isn't wired in yet. Both are natural next steps if this moves past a prototype.
 
-## Code
+# 6. Code
 
 * [`01_Load/generate_load_profiles.py`](/EnergyForecasting/AI_Agent_Development_in_BESS/01_Load/generate_load_profiles.py) — synthesizes the community load profile (double-Gaussian diurnal peaks, weekday/weekend logistic modulation).
 * [`02_PV_Generation/simulate_pv_generation.py`](/EnergyForecasting/AI_Agent_Development_in_BESS/02_PV_Generation/simulate_pv_generation.py) — scales ERA5 irradiance to a 50 MW solar farm.
