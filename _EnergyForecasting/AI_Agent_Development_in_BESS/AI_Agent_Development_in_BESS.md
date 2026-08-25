@@ -157,41 +157,41 @@ With the size fixed, `daily_optimization.py` solves a second Pyomo/GLPK model, a
 
 The script also writes a zoomable interactive HTML version with Plotly, useful for looking at any individual day up close rather than squinting at a week compressed into one static plot.
 
-# 3. Putting an Agent in Front of It
+# 3. Agent Architecture and Integration
 
-The scheduler produces a table, not an answer. The agent's job is to sit between a person's question and that table.
+The scheduler produces a schedule, not an answer; the agent's role is to mediate between the two.
 
-## 3.1 Design: fast advice, slow optimization
+## 3.1 Response Latency Handling
 
-Instead of running the LP synchronously inside a chat turn, the design splits into two tiers. Advisory questions ("should we discharge now," "what was our self-consumption yesterday") read the already-solved schedule and answer in seconds. Anything that would require a fresh solve, a large forecast revision or a genuine what-if scenario, triggers an optimization run asynchronously, and the agent either answers from the last valid solution with a staleness note or tells the user it's recomputing. The optimizer runs on its own hourly cadence; the chat interface never blocks on it.
+- Advisory queries (e.g. "should we discharge now") are answered in seconds by reading the already-solved schedule.
+- Queries requiring a fresh solve (a large forecast revision, a genuine what-if scenario) trigger an asynchronous optimization run; the agent returns the last valid schedule with a staleness note, or reports that it is recomputing.
+- The optimizer runs on its own hourly cadence, independent of the chat interface, which never blocks on a solver call.
 
-## 3.2 Three tools, one source of truth
+## 3.2 Tool Definitions
 
-All three required tools read from the same solved schedule CSV, so their answers stay consistent with each other and traceable back to one optimizer run:
+All three tools read from the same solved schedule CSV, keeping their outputs consistent and traceable to a single optimizer run. The LLM never computes these figures itself: it emits a JSON tool call, Python executes it deterministically, and the model's role is limited to narrating the returned values.
 
-* **`bess_simulator`** checks a proposed charge or discharge action against the 15 to 95 percent SoC bounds and flags a violation instead of silently clamping past them.
-* **`self_consumption_calculator`** sums PV generation and load over a time window and reports what fraction of local solar was actually consumed on site versus exported.
-* **`electricity_cost_estimator`** computes the net grid bill in DKK over a window, with a `no_bess` mode for comparison against the baseline.
+- **`bess_simulator`**: validates a proposed charge/discharge action against the 15-95% SoC bounds; flags a violation rather than silently clamping it.
+- **`self_consumption_calculator`**: sums PV generation and load over a time window; reports the fraction of local solar consumed on site versus exported.
+- **`electricity_cost_estimator`**: computes net grid cost (DKK) over a window, with a `no_bess` mode for baseline comparison.
 
-The LLM never computes any of these numbers itself. It emits a small JSON tool call, Python executes it deterministically, and the model's only job afterward is to explain the returned figures in plain language. That split is what keeps the agent's answers numerically trustworthy regardless of which LLM is behind it.
+## 3.3 Multi-Provider Model Support
 
-## 3.3 One agent, five providers
-
-The agent loop (`bess_agent.py`) doesn't depend on LangChain or any particular vendor SDK. A small router function switches between OpenAI, Anthropic, Gemini, DeepSeek, and a local Ollama model based on which API key is set in the environment, plus a mock mode that runs the full reasoning loop with no key at all, useful for testing or for demoing the tool-call flow offline.
+- `bess_agent.py` is framework-independent: no LangChain, LlamaIndex, or other orchestration dependency.
+- Supported providers: OpenAI, Anthropic, Gemini, DeepSeek, and a local Ollama model, selected by environment API key, plus a key-free mock mode for offline testing.
+- Response contract: any price figure must be stated as an explicit uncertainty range (P10-P90), and the schedule source must be cited; a bare point number is treated as an incomplete answer.
 
 Two required queries exercise the loop end to end:
 
-> "Should we charge or discharge the battery in the next two hours given the current conditions?"
+- *"Should we charge or discharge the battery in the next two hours given the current conditions?"* → calls `bess_simulator`; response: *"Recommend discharging at 750 kW, moving SoC from 50% to 15%. Price is forecast at about 0.4 DKK/kWh, range 0.1-0.64 DKK/kWh (P10-P90). (Per the day-ahead LP solve.)"*
+- *"What was our self-consumption rate yesterday and how could it be improved?"* → calls `self_consumption_calculator`; reports the rate, recommends shifting charging into the midday PV surplus, and cites the schedule source.
 
-The agent calls `bess_simulator` with the current state of charge and a proposed power level, gets back the resulting SoC, any bound violation, and the price context at that hour, and answers something like: *"Recommend discharging at 750 kW, moving SoC from 50% to 15%. Price is forecast at about 0.4 DKK/kWh, range 0.1-0.64 DKK/kWh (P10-P90). (Per the day-ahead LP solve.)"* The uncertainty range and the schedule citation aren't decoration, they're a fixed part of the response contract in the system prompt: a bare point number is treated as an incomplete answer.
+# 4. Interactive Demonstration
 
-> "What was our self-consumption rate yesterday and how could it be improved?"
-
-The agent calls `self_consumption_calculator` over the requested day, reports the percentage, suggests shifting battery charging toward the midday PV surplus rather than cheap overnight grid import as one lever to raise it, and again names the schedule the figures came from.
-
-# 4. Demo
-
-GitHub Pages is static hosting, so there's no server here to run a live model against. What's embedded below is a client-side version of the three tools, running in JavaScript directly on this solved 7-day schedule. The "routing" step (deciding which tool a question needs) is a handful of regular expressions standing in for the LLM call, so it only recognizes the same three question shapes as the queries above. Everything downstream of that, the tool math and the numbers in the response, is the same logic as `bess_agent.py`, not a mock.
+- GitHub Pages is static hosting; no server is available to run a live model.
+- The embed below is a client-side JavaScript port of the three tools, running against the same solved 7-day schedule.
+- Query routing is regex-based rather than an LLM call, and recognizes only the three query shapes listed in Section 3.3.
+- All downstream computation (tool math, response figures) is identical to `bess_agent.py`, not a simplified mock.
 
 <iframe src="/EnergyForecasting/AI_Agent_Development_in_BESS/06_LLM/bess_agent_demo.html" width="100%" height="1150" style="border: 1px solid #ddd; border-radius: 8px;" loading="lazy" title="BESS agent demo, client-side with a fake LLM router"></iframe>
 
@@ -199,17 +199,17 @@ GitHub Pages is static hosting, so there's no server here to run a live model ag
 
 # 5. Limitations and Future Work
 
-The battery-sizing and weekly-dispatch models use the real DK1 price series, but load and PV forecast error inside the scheduler is injected as synthetic Gaussian noise (5 percent on load, 12 percent on PV) rather than coming from trained load and PV forecasters. That's a reasonable simplification for a prototype meant to demonstrate the agent-to-optimizer interface, but it means the price forecast is the one component actually validated against real held-out data end to end.
-
-The dispatch model is also a single 7-day solve rather than a genuinely rolling one that re-optimizes each day as new forecasts arrive, and EV or heavy-goods charging flexibility, which would show up as additional shiftable load in the same LP, isn't wired in yet. Both are natural next steps if this moves past a prototype.
+- Load and PV forecast error in the scheduler is synthetic Gaussian noise (5% load, 12% PV), not the output of a trained forecaster; the price forecast is the only component validated end to end against real held-out data.
+- The dispatch model is a single 7-day solve, not a rolling re-optimization that updates as new forecasts arrive.
+- EV and heavy-goods-vehicle charging flexibility is not yet modeled as shiftable load within the LP.
 
 # 6. Code
 
-* [`01_Load/generate_load_profiles.py`](/EnergyForecasting/AI_Agent_Development_in_BESS/01_Load/generate_load_profiles.py) — synthesizes the community load profile (double-Gaussian diurnal peaks, weekday/weekend logistic modulation).
-* [`02_PV_Generation/simulate_pv_generation.py`](/EnergyForecasting/AI_Agent_Development_in_BESS/02_PV_Generation/simulate_pv_generation.py) — scales ERA5 irradiance to a 50 MW solar farm.
-* [`05_Optimisation_and_Forecast/bess_sizing.py`](/EnergyForecasting/AI_Agent_Development_in_BESS/05_Optimisation_and_Forecast/bess_sizing.py) — Pyomo/GLPK capacity sizing sweep and financial feasibility report.
-* [`05_Optimisation_and_Forecast/daily_optimization.py`](/EnergyForecasting/AI_Agent_Development_in_BESS/05_Optimisation_and_Forecast/daily_optimization.py) — LightGBM price forecast plus binned residual bootstrap, 7-day Pyomo/GLPK dispatch schedule, static and interactive plots.
-* [`06_LLM/bess_agent.py`](/EnergyForecasting/AI_Agent_Development_in_BESS/06_LLM/bess_agent.py) — the ReAct tool-use agent loop and its three tools, with the multi-provider router.
-* [`06_LLM/bess_agent_demo.html`](/EnergyForecasting/AI_Agent_Development_in_BESS/06_LLM/bess_agent_demo.html) — the client-side demo above: the same three tools ported to JavaScript, with a regex router standing in for the LLM.
+- [`01_Load/generate_load_profiles.py`](/EnergyForecasting/AI_Agent_Development_in_BESS/01_Load/generate_load_profiles.py) — synthesizes the community load profile (double-Gaussian diurnal peaks, weekday/weekend logistic modulation).
+- [`02_PV_Generation/simulate_pv_generation.py`](/EnergyForecasting/AI_Agent_Development_in_BESS/02_PV_Generation/simulate_pv_generation.py) — scales ERA5 irradiance to a 50 MW solar farm.
+- [`05_Optimisation_and_Forecast/bess_sizing.py`](/EnergyForecasting/AI_Agent_Development_in_BESS/05_Optimisation_and_Forecast/bess_sizing.py) — Pyomo/GLPK capacity sizing sweep and financial feasibility report.
+- [`05_Optimisation_and_Forecast/daily_optimization.py`](/EnergyForecasting/AI_Agent_Development_in_BESS/05_Optimisation_and_Forecast/daily_optimization.py) — LightGBM price forecast plus binned residual bootstrap, 7-day Pyomo/GLPK dispatch schedule, static and interactive plots.
+- [`06_LLM/bess_agent.py`](/EnergyForecasting/AI_Agent_Development_in_BESS/06_LLM/bess_agent.py) — the ReAct tool-use agent loop and its three tools, with the multi-provider router.
+- [`06_LLM/bess_agent_demo.html`](/EnergyForecasting/AI_Agent_Development_in_BESS/06_LLM/bess_agent_demo.html) — the client-side demo above: the same three tools ported to JavaScript, with a regex router standing in for the LLM.
 
 The full project, including the synthetic data, the GLPK solver package, and every intermediate result file, lives in [this folder on GitHub](https://github.com/ChuongTA/ChuongTa.github.io/tree/master/_EnergyForecasting/AI_Agent_Development_in_BESS). GitHub's own directory download button there gets you a zip of everything at once, so it isn't duplicated as a separate download on this page.
