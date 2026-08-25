@@ -163,9 +163,7 @@ The scheduler produces a schedule, not an answer; the agent's role is to mediate
 
 ## 3.1 Response Latency Handling
 
-- Advisory queries (e.g. "should we discharge now") are answered in seconds by reading the already-solved schedule.
-- Queries requiring a fresh solve (a large forecast revision, a genuine what-if scenario) trigger an asynchronous optimization run; the agent returns the last valid schedule with a staleness note, or reports that it is recomputing.
-- The optimizer runs on its own hourly cadence, independent of the chat interface, which never blocks on a solver call.
+Advisory queries, such as asking whether to discharge now, are answered in seconds by reading the already-solved schedule; nothing gets recomputed on the request. A query that needs a fresh solve, a large forecast revision or a genuine what-if scenario, triggers an asynchronous optimization run instead: the agent replies immediately with the last valid schedule and a staleness note, or reports that it is recomputing, rather than making the user wait on the solver. The optimizer runs on its own hourly cadence, independent of the chat interface, which never blocks on a solver call.
 
 ## 3.2 Tool Definitions
 
@@ -177,9 +175,7 @@ All three tools read from the same solved schedule CSV, keeping their outputs co
 
 ## 3.3 Multi-Provider Model Support
 
-- `bess_agent.py` is framework-independent: no LangChain, LlamaIndex, or other orchestration dependency.
-- Supported providers: OpenAI, Anthropic, Gemini, DeepSeek, and a local Ollama model, selected by environment API key, plus a key-free mock mode for offline testing.
-- Response contract: any price figure must be stated as an explicit uncertainty range (P10-P90), and the schedule source must be cited; a bare point number is treated as an incomplete answer.
+`bess_agent.py` is framework-independent, with no LangChain, LlamaIndex, or other orchestration dependency in between. Provider selection runs off whichever API key is present in the environment, across OpenAI, Anthropic, Gemini, DeepSeek, or a local Ollama model, plus a key-free mock mode for offline testing. Every provider is held to the same response contract: any price figure must be stated as an explicit uncertainty range (P10-P90) with the schedule source cited, and a bare point number counts as an incomplete answer.
 
 Two required queries exercise the loop end to end:
 
@@ -188,10 +184,7 @@ Two required queries exercise the loop end to end:
 
 # 4. Interactive Demonstration
 
-- GitHub Pages is static hosting; no server is available to run a live model.
-- The embed below is a client-side JavaScript port of the three tools, running against the same solved 7-day schedule.
-- Query routing is regex-based rather than an LLM call, and recognizes only the three query shapes listed in Section 3.3.
-- All downstream computation (tool math, response figures) is identical to `bess_agent.py`, not a simplified mock.
+GitHub Pages is static hosting, so no server is available to run a live model. The embed below is a client-side JavaScript port of the three tools above, running against the same solved 7-day schedule; the tool math and response figures are identical to `bess_agent.py`, not a simplified mock. The one shortcut is query routing: it's regex-based rather than an LLM call, and recognizes only the three query shapes covered in Section 3.3.
 
 <iframe src="/EnergyForecasting/AI_Agent_Development_in_BESS/06_LLM/bess_agent_demo.html" width="100%" height="1150" style="border: 1px solid #ddd; border-radius: 8px;" loading="lazy" title="BESS agent demo, client-side with a fake LLM router"></iframe>
 
@@ -199,9 +192,7 @@ Two required queries exercise the loop end to end:
 
 # 5. Limitations and Future Work
 
-- Load and PV forecast error in the scheduler is synthetic Gaussian noise (5% load, 12% PV), not the output of a trained forecaster; the price forecast is the only component validated end to end against real held-out data.
-- The dispatch model is a single 7-day solve, not a rolling re-optimization that updates as new forecasts arrive.
-- EV and heavy-goods-vehicle charging flexibility is not yet modeled as shiftable load within the LP.
+The load and PV forecast error used in the scheduler is synthetic Gaussian noise (5% load, 12% PV), not the output of a trained forecaster; the price forecast is the only component validated end to end against real held-out data. The dispatch model is also a single 7-day solve rather than a rolling re-optimization that updates as new forecasts arrive, and EV and heavy-goods-vehicle charging flexibility isn't yet modeled as shiftable load within the LP.
 
 # 6. Code
 
