@@ -285,12 +285,179 @@ $$\text{Algorithm: } F \ R \ U \ R' \ U' \ F'$$
     </div>
 </div>
 
-### 5. Position the Yellow Corners (Permutation) 🔄
-Swap the corner positions so they sit in their correct corner slots (even if the colors are twisted). Keep repeating this sequence:
-$$\text{Algorithm: } U \ R \ U' \ L' \ U \ R' \ U' \ L$$
+### 5. Aligning the Yellow Cross (Make a Cross Correctly with the 2nd Layer Below) 🟨
+Once you have the yellow cross, you must align its side colors with the center pieces of the middle layer. 
 
-### 6. Orient the Yellow Corners (Final Solve) ✨
-Turn the cube upside down (white center faces up). Look at the bottom right corner (the yellow side). Repeat the **Sexy Move** ($R \ U \ R' \ U'$) until the yellow sticker faces down. Rotate the bottom layer to bring the next unsolved corner to the bottom right and repeat. *Do not rotate the whole cube, only the bottom layer!*
+Turn the top layer to match as many side colors to their corresponding centers as possible. 
+*   **If two adjacent edges match** (e.g., Back and Right): Hold the cube so the matching edges are at the **Back** and **Right** faces, then execute the algorithm (known as **Sune**):
+    $$\text{Algorithm: } R \ U \ R' \ U \ R \ U2 \ R' \ [U]$$
+*   **If two opposite edges match**: Hold them on the **Left** and **Right** faces, execute the algorithm once, then re-align and follow the adjacent edges rule.
+
+<div class="visual-net-container" style="gap: 20px; flex-wrap: wrap;">
+    <div style="text-align: center; font-size: 0.85rem; color: #cbd5e1; background: rgba(30, 41, 59, 0.4); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); width: 220px;">
+        <div style="font-weight: bold; margin-bottom: 8px; color: #38bdf8;">Aligned Cross Target</div>
+        <svg width="120" height="120" viewBox="0 0 100 100">
+            <!-- Top Face (Yellow Cross, corners grey/unsolved) -->
+            <!-- 0,0 (Grey) -->
+            <polygon points="50,15 60,20 50,25 40,20" fill="#475569" stroke="#000" stroke-width="1"/>
+            <!-- 0,1 (Yellow) -->
+            <polygon points="60,20 70,25 60,30 50,25" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <!-- 0,2 (Grey) -->
+            <polygon points="70,25 80,30 70,35 60,30" fill="#475569" stroke="#000" stroke-width="1"/>
+            <!-- 1,0 (Yellow) -->
+            <polygon points="40,20 50,25 40,30 30,25" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <!-- 1,1 (Center Yellow) -->
+            <polygon points="50,25 60,30 50,35 40,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <!-- 1,2 (Yellow) -->
+            <polygon points="60,30 70,35 60,40 50,35" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <!-- 2,0 (Grey) -->
+            <polygon points="30,25 40,30 30,35 20,30" fill="#475569" stroke="#000" stroke-width="1"/>
+            <!-- 2,1 (Yellow) -->
+            <polygon points="40,30 50,35 40,40 30,35" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <!-- 2,2 (Grey) -->
+            <polygon points="50,35 60,40 50,45 40,40" fill="#475569" stroke="#000" stroke-width="1"/>
+
+            <!-- Front Face (Green, corners grey) -->
+            <!-- 0,0 (Grey) -->
+            <polygon points="20,30 30,35 30,45 20,40" fill="#475569" stroke="#000" stroke-width="1"/>
+            <!-- 0,1 (Green - Aligned Edge) -->
+            <polygon points="30,35 40,40 40,50 30,45" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <!-- 0,2 (Grey) -->
+            <polygon points="40,40 50,45 50,55 40,50" fill="#475569" stroke="#000" stroke-width="1"/>
+            <!-- Center & lower layers all Green -->
+            <polygon points="20,40 30,45 30,55 20,50" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="30,45 40,50 40,60 30,55" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="40,50 50,55 50,65 40,60" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="20,50 30,55 30,65 20,60" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="30,55 40,60 40,70 30,65" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="40,60 50,65 50,75 40,70" fill="#009b48" stroke="#000" stroke-width="1"/>
+
+            <!-- Right Face (Red, corners grey) -->
+            <!-- 0,0 (Grey) -->
+            <polygon points="50,45 60,40 60,50 50,55" fill="#475569" stroke="#000" stroke-width="1"/>
+            <!-- 0,1 (Red - Aligned Edge) -->
+            <polygon points="60,40 70,35 70,45 60,50" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <!-- 0,2 (Grey) -->
+            <polygon points="70,35 80,30 80,40 70,45" fill="#475569" stroke="#000" stroke-width="1"/>
+            <!-- Center & lower layers all Red -->
+            <polygon points="50,55 60,50 60,60 50,65" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="60,50 70,45 70,55 60,60" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="70,45 80,40 80,50 70,55" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="50,65 60,60 60,70 50,75" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="60,60 70,55 70,65 60,70" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="70,55 80,60 80,60 70,65" fill="#b71234" stroke="#000" stroke-width="1"/>
+        </svg>
+        <div style="font-size: 0.75rem; margin-top: 5px; color: #a1a1aa;">Edges match the side centers correctly.</div>
+    </div>
+</div>
+
+### 6. Orienting the Yellow Corners (Corner: Put All the Yellow Up) 🟨
+Next, we orient the four corner pieces so that all their yellow stickers face upward, completing the yellow top face.
+
+*   Hold the cube with the yellow face on top.
+*   Identify an unsolved corner (yellow sticker not facing up) and move it to the **Front-Right-Top** slot by rotating only the top ($U$) layer.
+*   Execute this algorithm repeatedly (usually 2 or 4 times) until the yellow sticker faces up:
+    $$\text{Algorithm: } R' \ D' \ R \ D$$
+*   **CRITICAL:** The bottom layers will get scrambled during this process. Do not panic and **do not rotate the whole cube**. Just rotate the top ($U$) layer to bring the next unsolved corner to the **Front-Right-Top** position, and repeat the sequence. Once all corners are yellow-up, the rest of the cube will automatically resolve itself!
+
+<div class="visual-net-container" style="gap: 20px; flex-wrap: wrap;">
+    <div style="text-align: center; font-size: 0.85rem; color: #cbd5e1; background: rgba(30, 41, 59, 0.4); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); width: 220px;">
+        <div style="font-weight: bold; margin-bottom: 8px; color: #38bdf8;">Yellow Top Face Solved</div>
+        <svg width="120" height="120" viewBox="0 0 100 100">
+            <!-- Top Face (All Yellow) -->
+            <polygon points="50,15 60,20 50,25 40,20" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="60,20 70,25 60,30 50,25" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="70,25 80,30 70,35 60,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="40,20 50,25 40,30 30,25" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="50,25 60,30 50,35 40,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="60,30 70,35 60,40 50,35" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="30,25 40,30 30,35 20,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="40,30 50,35 40,40 30,35" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="50,35 60,40 50,45 40,40" fill="#ffd700" stroke="#000" stroke-width="1"/>
+
+            <!-- Front Face (Green, corners mismatched colors indicating unsolved permutation) -->
+            <!-- 0,0 (Red corner) -->
+            <polygon points="20,30 30,35 30,45 20,40" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <!-- 0,1 (Green Edge) -->
+            <polygon points="30,35 40,40 40,50 30,45" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <!-- 0,2 (Orange corner) -->
+            <polygon points="40,40 50,45 50,55 40,50" fill="#ff5800" stroke="#000" stroke-width="1"/>
+            <!-- Center & lower layers all Green -->
+            <polygon points="20,40 30,45 30,55 20,50" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="30,45 40,50 40,60 30,55" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="40,50 50,55 50,65 40,60" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="20,50 30,55 30,65 20,60" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="30,55 40,60 40,70 30,65" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="40,60 50,65 50,75 40,70" fill="#009b48" stroke="#000" stroke-width="1"/>
+
+            <!-- Right Face (Red, corners mismatched) -->
+            <!-- 0,0 (Orange corner) -->
+            <polygon points="50,45 60,40 60,50 50,55" fill="#ff5800" stroke="#000" stroke-width="1"/>
+            <!-- 0,1 (Red Edge) -->
+            <polygon points="60,40 70,35 70,45 60,50" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <!-- 0,2 (Green corner) -->
+            <polygon points="70,35 80,30 80,40 70,45" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <!-- Center & lower layers all Red -->
+            <polygon points="50,55 60,50 60,60 50,65" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="60,50 70,45 70,55 60,60" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="70,45 80,40 80,50 70,55" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="50,65 60,60 60,70 50,75" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="60,60 70,55 70,65 60,70" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="70,55 80,60 80,60 70,65" fill="#b71234" stroke="#000" stroke-width="1"/>
+        </svg>
+        <div style="font-size: 0.75rem; margin-top: 5px; color: #a1a1aa;">The top face is all yellow, but corners are scrambled on the sides.</div>
+    </div>
+</div>
+
+### 7. Positioning the Yellow Corners (Put the Corners Correctly) ✨
+The final step is to put the yellow corners into their correct positions relative to the side faces.
+
+*   Look for a corner piece that is in the correct slot (it aligns with the colors of its adjacent sides, even if it is rotated).
+*   Hold the cube so this correct corner is at the **Front-Right-Top** slot.
+*   Execute this algorithm to cycle the other three corners:
+    $$\text{Algorithm: } U \ R \ U' \ L' \ U \ R' \ U' \ L$$
+*   If no corners are initially in the correct slot, execute the algorithm once from any angle to position at least one corner, then repeat. Once all corners are in their correct slots, perform step 6 again if any corners need orientation, and your Rubik's cube is solved!
+
+<div class="visual-net-container" style="gap: 20px; flex-wrap: wrap;">
+    <div style="text-align: center; font-size: 0.85rem; color: #cbd5e1; background: rgba(30, 41, 59, 0.4); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); width: 220px;">
+        <div style="font-weight: bold; margin-bottom: 8px; color: #10b981;">Fully Solved Cube!</div>
+        <svg width="120" height="120" viewBox="0 0 100 100">
+            <!-- Top Face (All Yellow) -->
+            <polygon points="50,15 60,20 50,25 40,20" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="60,20 70,25 60,30 50,25" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="70,25 80,30 70,35 60,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="40,20 50,25 40,30 30,25" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="50,25 60,30 50,35 40,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="60,30 70,35 60,40 50,35" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="30,25 40,30 30,35 20,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="40,30 50,35 40,40 30,35" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="50,35 60,40 50,45 40,40" fill="#ffd700" stroke="#000" stroke-width="1"/>
+
+            <!-- Front Face (All Green) -->
+            <polygon points="20,30 30,35 30,45 20,40" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="30,35 40,40 40,50 30,45" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="40,40 50,45 50,55 40,50" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="20,40 30,45 30,55 20,50" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="30,45 40,50 40,60 30,55" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="40,50 50,55 50,65 40,60" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="20,50 30,55 30,65 20,60" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="30,55 40,60 40,70 30,65" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="40,60 50,65 50,75 40,70" fill="#009b48" stroke="#000" stroke-width="1"/>
+
+            <!-- Right Face (All Red) -->
+            <polygon points="50,45 60,40 60,50 50,55" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="60,40 70,35 70,45 60,50" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="70,35 80,30 80,40 70,45" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="50,55 60,50 60,60 50,65" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="60,50 70,45 70,55 60,60" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="70,45 80,40 80,50 70,55" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="50,65 60,60 60,70 50,75" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="60,60 70,55 70,65 60,70" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="70,55 80,60 80,60 70,65" fill="#b71234" stroke="#000" stroke-width="1"/>
+        </svg>
+        <div style="font-size: 0.75rem; margin-top: 5px; color: #10b981;">All layers and sides are aligned and solved.</div>
+    </div>
+</div>
 
 ---
 
