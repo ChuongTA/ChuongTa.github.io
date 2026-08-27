@@ -400,14 +400,14 @@ Xoay tầng trên cùng để khớp nhiều cạnh nhất có thể với các 
 *   **Nếu hai cạnh đối diện khớp**: Giữ chúng ở mặt bên **Trái** và mặt bên **Phải**, thực hiện công thức một lần, sau đó xoay căn chỉnh lại tầng trên và áp dụng quy tắc của hai cạnh liền kề.
 </div>
 
-<div class="visual-net-container" style="gap: 20px; flex-wrap: wrap;">
+<div class="visual-net-container" style="gap: 20px; flex-wrap: wrap; justify-content: center;">
+    <!-- Step 5 Before -->
     <div style="text-align: center; font-size: 0.85rem; color: #cbd5e1; background: rgba(30, 41, 59, 0.4); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); width: 220px;">
-        <div style="font-weight: bold; margin-bottom: 8px; color: #38bdf8;">
-            <span class="lang-en">Aligned Cross Target</span>
-            <span class="lang-vi" style="display: none;">Mục Tiêu Khớp Chữ Thập</span>
+        <div style="font-weight: bold; margin-bottom: 8px; color: #f43f5e;">
+            <span class="lang-en">Before: Mismatched Edges</span>
+            <span class="lang-vi" style="display: none;">Trước: Cạnh Chưa Khớp</span>
         </div>
         <svg width="120" height="120" viewBox="0 0 100 100">
-            <!-- Top Face (Yellow Cross, corners grey/unsolved) -->
             <polygon points="50,15 60,20 50,25 40,20" fill="#475569" stroke="#000" stroke-width="1"/>
             <polygon points="60,20 70,25 60,30 50,25" fill="#ffd700" stroke="#000" stroke-width="1"/>
             <polygon points="70,25 80,30 70,35 60,30" fill="#475569" stroke="#000" stroke-width="1"/>
@@ -417,8 +417,6 @@ Xoay tầng trên cùng để khớp nhiều cạnh nhất có thể với các 
             <polygon points="30,25 40,30 30,35 20,30" fill="#475569" stroke="#000" stroke-width="1"/>
             <polygon points="40,30 50,35 40,40 30,35" fill="#ffd700" stroke="#000" stroke-width="1"/>
             <polygon points="50,35 60,40 50,45 40,40" fill="#475569" stroke="#000" stroke-width="1"/>
-
-            <!-- Front Face (Green, corners grey) -->
             <polygon points="20,30 30,35 30,45 20,40" fill="#475569" stroke="#000" stroke-width="1"/>
             <polygon points="30,35 40,40 40,50 30,45" fill="#009b48" stroke="#000" stroke-width="1"/>
             <polygon points="40,40 50,45 50,55 40,50" fill="#475569" stroke="#000" stroke-width="1"/>
@@ -428,8 +426,46 @@ Xoay tầng trên cùng để khớp nhiều cạnh nhất có thể với các 
             <polygon points="20,50 30,55 30,65 20,60" fill="#009b48" stroke="#000" stroke-width="1"/>
             <polygon points="30,55 40,60 40,70 30,65" fill="#009b48" stroke="#000" stroke-width="1"/>
             <polygon points="40,60 50,65 50,75 40,70" fill="#009b48" stroke="#000" stroke-width="1"/>
-
-            <!-- Right Face (Red, corners grey) -->
+            <polygon points="50,45 60,40 60,50 50,55" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="60,40 70,35 70,45 60,50" fill="#ff5800" stroke="#000" stroke-width="1"/>
+            <polygon points="70,35 80,30 80,40 70,45" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="50,55 60,50 60,60 50,65" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="60,50 70,45 70,55 60,60" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="70,45 80,40 80,50 70,55" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="50,65 60,60 60,70 50,75" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="60,60 70,55 70,65 60,70" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="70,55 80,50 80,60 70,65" fill="#b71234" stroke="#000" stroke-width="1"/>
+        </svg>
+        <div style="font-size: 0.75rem; margin-top: 5px; color: #a1a1aa;">
+            <span class="lang-en">Right edge (Orange) does not match center (Red).</span>
+            <span class="lang-vi" style="display: none;">Cạnh bên phải (Cam) lệch so với tâm (Đỏ).</span>
+        </div>
+    </div>
+    <!-- Step 5 After -->
+    <div style="text-align: center; font-size: 0.85rem; color: #cbd5e1; background: rgba(30, 41, 59, 0.4); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); width: 220px;">
+        <div style="font-weight: bold; margin-bottom: 8px; color: #10b981;">
+            <span class="lang-en">After: Aligned Cross</span>
+            <span class="lang-vi" style="display: none;">Sau: Khớp Chữ Thập</span>
+        </div>
+        <svg width="120" height="120" viewBox="0 0 100 100">
+            <polygon points="50,15 60,20 50,25 40,20" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="60,20 70,25 60,30 50,25" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="70,25 80,30 70,35 60,30" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="40,20 50,25 40,30 30,25" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="50,25 60,30 50,35 40,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="60,30 70,35 60,40 50,35" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="30,25 40,30 30,35 20,30" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="40,30 50,35 40,40 30,35" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="50,35 60,40 50,45 40,40" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="20,30 30,35 30,45 20,40" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="30,35 40,40 40,50 30,45" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="40,40 50,45 50,55 40,50" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="20,40 30,45 30,55 20,50" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="30,45 40,50 40,60 30,55" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="40,50 50,55 50,65 40,60" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="20,50 30,55 30,65 20,60" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="30,55 40,60 40,70 30,65" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="40,60 50,65 50,75 40,70" fill="#009b48" stroke="#000" stroke-width="1"/>
             <polygon points="50,45 60,40 60,50 50,55" fill="#475569" stroke="#000" stroke-width="1"/>
             <polygon points="60,40 70,35 70,45 60,50" fill="#b71234" stroke="#000" stroke-width="1"/>
             <polygon points="70,35 80,30 80,40 70,45" fill="#475569" stroke="#000" stroke-width="1"/>
@@ -438,7 +474,7 @@ Xoay tầng trên cùng để khớp nhiều cạnh nhất có thể với các 
             <polygon points="70,45 80,40 80,50 70,55" fill="#b71234" stroke="#000" stroke-width="1"/>
             <polygon points="50,65 60,60 60,70 50,75" fill="#b71234" stroke="#000" stroke-width="1"/>
             <polygon points="60,60 70,55 70,65 60,70" fill="#b71234" stroke="#000" stroke-width="1"/>
-            <polygon points="70,55 80,60 80,60 70,65" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="70,55 80,50 80,60 70,65" fill="#b71234" stroke="#000" stroke-width="1"/>
         </svg>
         <div style="font-size: 0.75rem; margin-top: 5px; color: #a1a1aa;">
             <span class="lang-en">Edges match the side centers correctly.</span>
@@ -468,14 +504,54 @@ Tiếp theo, chúng ta định hướng 4 viên góc sao cho tất cả các nh�
 *   **QUAN TRỌNG:** Tầng dưới cùng sẽ bị xáo trộn trong khi thực hiện công thức này. Đừng lo lắng và **tuyệt đối không xoay cả khối rubik**. Chỉ xoay duy nhất tầng trên ($U$) để đưa góc chưa định hướng tiếp theo vào vị trí góc **Trước-Phải-Trên**, rồi lặp lại công thức trên. Khi giải xong toàn bộ các góc, các tầng dưới sẽ tự động được xếp lại đúng chuẩn!
 </div>
 
-<div class="visual-net-container" style="gap: 20px; flex-wrap: wrap;">
+<div class="visual-net-container" style="gap: 20px; flex-wrap: wrap; justify-content: center;">
+    <!-- Step 6 Before -->
     <div style="text-align: center; font-size: 0.85rem; color: #cbd5e1; background: rgba(30, 41, 59, 0.4); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); width: 220px;">
-        <div style="font-weight: bold; margin-bottom: 8px; color: #38bdf8;">
-            <span class="lang-en">Yellow Top Face Solved</span>
-            <span class="lang-vi" style="display: none;">Đã Hoàn Thành Mặt Vàng</span>
+        <div style="font-weight: bold; margin-bottom: 8px; color: #f43f5e;">
+            <span class="lang-en">Before: Twisted Corners</span>
+            <span class="lang-vi" style="display: none;">Trước: Góc Bị Xoay Lệch</span>
         </div>
         <svg width="120" height="120" viewBox="0 0 100 100">
-            <!-- Top Face (All Yellow) -->
+            <polygon points="50,15 60,20 50,25 40,20" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="60,20 70,25 60,30 50,25" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="70,25 80,30 70,35 60,30" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="40,20 50,25 40,30 30,25" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="50,25 60,30 50,35 40,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="60,30 70,35 60,40 50,35" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="30,25 40,30 30,35 20,30" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="40,30 50,35 40,40 30,35" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="50,35 60,40 50,45 40,40" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="20,30 30,35 30,45 20,40" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="30,35 40,40 40,50 30,45" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="40,40 50,45 50,55 40,50" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="20,40 30,45 30,55 20,50" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="30,45 40,50 40,60 30,55" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="40,50 50,55 50,65 40,60" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="20,50 30,55 30,65 20,60" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="30,55 40,60 40,70 30,65" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="40,60 50,65 50,75 40,70" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="50,45 60,40 60,50 50,55" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="60,40 70,35 70,45 60,50" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="70,35 80,30 80,40 70,45" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="50,55 60,50 60,60 50,65" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="60,50 70,45 70,55 60,60" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="70,45 80,40 80,50 70,55" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="50,65 60,60 60,70 50,75" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="60,60 70,55 70,65 60,70" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="70,55 80,50 80,60 70,65" fill="#b71234" stroke="#000" stroke-width="1"/>
+        </svg>
+        <div style="font-size: 0.75rem; margin-top: 5px; color: #a1a1aa;">
+            <span class="lang-en">Top corners are Grey; Yellow stickers are on the side faces.</span>
+            <span class="lang-vi" style="display: none;">Các góc trên cùng màu Xám; các miếng dán Vàng nằm ở mặt bên.</span>
+        </div>
+    </div>
+    <!-- Step 6 After -->
+    <div style="text-align: center; font-size: 0.85rem; color: #cbd5e1; background: rgba(30, 41, 59, 0.4); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); width: 220px;">
+        <div style="font-weight: bold; margin-bottom: 8px; color: #10b981;">
+            <span class="lang-en">After: Yellow Top Face</span>
+            <span class="lang-vi" style="display: none;">Sau: Phủ Vàng Mặt Trên</span>
+        </div>
+        <svg width="120" height="120" viewBox="0 0 100 100">
             <polygon points="50,15 60,20 50,25 40,20" fill="#ffd700" stroke="#000" stroke-width="1"/>
             <polygon points="60,20 70,25 60,30 50,25" fill="#ffd700" stroke="#000" stroke-width="1"/>
             <polygon points="70,25 80,30 70,35 60,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
@@ -485,8 +561,6 @@ Tiếp theo, chúng ta định hướng 4 viên góc sao cho tất cả các nh�
             <polygon points="30,25 40,30 30,35 20,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
             <polygon points="40,30 50,35 40,40 30,35" fill="#ffd700" stroke="#000" stroke-width="1"/>
             <polygon points="50,35 60,40 50,45 40,40" fill="#ffd700" stroke="#000" stroke-width="1"/>
-
-            <!-- Front Face (Green, corners mismatched) -->
             <polygon points="20,30 30,35 30,45 20,40" fill="#b71234" stroke="#000" stroke-width="1"/>
             <polygon points="30,35 40,40 40,50 30,45" fill="#009b48" stroke="#000" stroke-width="1"/>
             <polygon points="40,40 50,45 50,55 40,50" fill="#ff5800" stroke="#000" stroke-width="1"/>
@@ -496,8 +570,6 @@ Tiếp theo, chúng ta định hướng 4 viên góc sao cho tất cả các nh�
             <polygon points="20,50 30,55 30,65 20,60" fill="#009b48" stroke="#000" stroke-width="1"/>
             <polygon points="30,55 40,60 40,70 30,65" fill="#009b48" stroke="#000" stroke-width="1"/>
             <polygon points="40,60 50,65 50,75 40,70" fill="#009b48" stroke="#000" stroke-width="1"/>
-
-            <!-- Right Face (Red, corners mismatched) -->
             <polygon points="50,45 60,40 60,50 50,55" fill="#ff5800" stroke="#000" stroke-width="1"/>
             <polygon points="60,40 70,35 70,45 60,50" fill="#b71234" stroke="#000" stroke-width="1"/>
             <polygon points="70,35 80,30 80,40 70,45" fill="#009b48" stroke="#000" stroke-width="1"/>
@@ -506,7 +578,7 @@ Tiếp theo, chúng ta định hướng 4 viên góc sao cho tất cả các nh�
             <polygon points="70,45 80,40 80,50 70,55" fill="#b71234" stroke="#000" stroke-width="1"/>
             <polygon points="50,65 60,60 60,70 50,75" fill="#b71234" stroke="#000" stroke-width="1"/>
             <polygon points="60,60 70,55 70,65 60,70" fill="#b71234" stroke="#000" stroke-width="1"/>
-            <polygon points="70,55 80,60 80,60 70,65" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="70,55 80,50 80,60 70,65" fill="#b71234" stroke="#000" stroke-width="1"/>
         </svg>
         <div style="font-size: 0.75rem; margin-top: 5px; color: #a1a1aa;">
             <span class="lang-en">The top face is all yellow, but corners are scrambled on the sides.</span>
@@ -536,14 +608,14 @@ Bước cuối cùng là hoán đổi các góc màu vàng về đúng vị trí
 *   Nếu ban đầu không góc nào đúng vị trí, hãy thực hiện công thức này từ góc độ bất kỳ một lần để tạo ra ít nhất một góc đúng, rồi lặp lại các bước trên. Khi các góc đã đúng vị trí và hướng mặt vàng lên trên, khối Rubik của bạn đã hoàn thành hoàn toàn!
 </div>
 
-<div class="visual-net-container" style="gap: 20px; flex-wrap: wrap;">
+<div class="visual-net-container" style="gap: 20px; flex-wrap: wrap; justify-content: center;">
+    <!-- Step 7 Before -->
     <div style="text-align: center; font-size: 0.85rem; color: #cbd5e1; background: rgba(30, 41, 59, 0.4); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); width: 220px;">
-        <div style="font-weight: bold; margin-bottom: 8px; color: #10b981;">
-            <span class="lang-en">Fully Solved Cube!</span>
-            <span class="lang-vi" style="display: none;">Hoàn Thành Giải Rubik!</span>
+        <div style="font-weight: bold; margin-bottom: 8px; color: #f43f5e;">
+            <span class="lang-en">Before: Scrambled Corners</span>
+            <span class="lang-vi" style="display: none;">Trước: Các Góc Bị Lệch Vị Trí</span>
         </div>
         <svg width="120" height="120" viewBox="0 0 100 100">
-            <!-- Top Face (All Yellow) -->
             <polygon points="50,15 60,20 50,25 40,20" fill="#ffd700" stroke="#000" stroke-width="1"/>
             <polygon points="60,20 70,25 60,30 50,25" fill="#ffd700" stroke="#000" stroke-width="1"/>
             <polygon points="70,25 80,30 70,35 60,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
@@ -553,8 +625,46 @@ Bước cuối cùng là hoán đổi các góc màu vàng về đúng vị trí
             <polygon points="30,25 40,30 30,35 20,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
             <polygon points="40,30 50,35 40,40 30,35" fill="#ffd700" stroke="#000" stroke-width="1"/>
             <polygon points="50,35 60,40 50,45 40,40" fill="#ffd700" stroke="#000" stroke-width="1"/>
-
-            <!-- Front Face (All Green) -->
+            <polygon points="20,30 30,35 30,45 20,40" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="30,35 40,40 40,50 30,45" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="40,40 50,45 50,55 40,50" fill="#ff5800" stroke="#000" stroke-width="1"/>
+            <polygon points="20,40 30,45 30,55 20,50" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="30,45 40,50 40,60 30,55" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="40,50 50,55 50,65 40,60" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="20,50 30,55 30,65 20,60" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="30,55 40,60 40,70 30,65" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="40,60 50,65 50,75 40,70" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="50,45 60,40 60,50 50,55" fill="#ff5800" stroke="#000" stroke-width="1"/>
+            <polygon points="60,40 70,35 70,45 60,50" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="70,35 80,30 80,40 70,45" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="50,55 60,50 60,60 50,65" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="60,50 70,45 70,55 60,60" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="70,45 80,40 80,50 70,55" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="50,65 60,60 60,70 50,75" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="60,60 70,55 70,65 60,70" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="70,55 80,50 80,60 70,65" fill="#b71234" stroke="#000" stroke-width="1"/>
+        </svg>
+        <div style="font-size: 0.75rem; margin-top: 5px; color: #a1a1aa;">
+            <span class="lang-en">Corners are out of place relative to the sides.</span>
+            <span class="lang-vi" style="display: none;">Các viên góc chưa khớp đúng mặt màu bên cạnh.</span>
+        </div>
+    </div>
+    <!-- Step 7 After -->
+    <div style="text-align: center; font-size: 0.85rem; color: #cbd5e1; background: rgba(30, 41, 59, 0.4); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); width: 220px;">
+        <div style="font-weight: bold; margin-bottom: 8px; color: #10b981;">
+            <span class="lang-en">After: Fully Solved!</span>
+            <span class="lang-vi" style="display: none;">Sau: Giải Hoàn Tất!</span>
+        </div>
+        <svg width="120" height="120" viewBox="0 0 100 100">
+            <polygon points="50,15 60,20 50,25 40,20" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="60,20 70,25 60,30 50,25" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="70,25 80,30 70,35 60,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="40,20 50,25 40,30 30,25" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="50,25 60,30 50,35 40,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="60,30 70,35 60,40 50,35" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="30,25 40,30 30,35 20,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="40,30 50,35 40,40 30,35" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="50,35 60,40 50,45 40,40" fill="#ffd700" stroke="#000" stroke-width="1"/>
             <polygon points="20,30 30,35 30,45 20,40" fill="#009b48" stroke="#000" stroke-width="1"/>
             <polygon points="30,35 40,40 40,50 30,45" fill="#009b48" stroke="#000" stroke-width="1"/>
             <polygon points="40,40 50,45 50,55 40,50" fill="#009b48" stroke="#000" stroke-width="1"/>
@@ -564,8 +674,6 @@ Bước cuối cùng là hoán đổi các góc màu vàng về đúng vị trí
             <polygon points="20,50 30,55 30,65 20,60" fill="#009b48" stroke="#000" stroke-width="1"/>
             <polygon points="30,55 40,60 40,70 30,65" fill="#009b48" stroke="#000" stroke-width="1"/>
             <polygon points="40,60 50,65 50,75 40,70" fill="#009b48" stroke="#000" stroke-width="1"/>
-
-            <!-- Right Face (All Red) -->
             <polygon points="50,45 60,40 60,50 50,55" fill="#b71234" stroke="#000" stroke-width="1"/>
             <polygon points="60,40 70,35 70,45 60,50" fill="#b71234" stroke="#000" stroke-width="1"/>
             <polygon points="70,35 80,30 80,40 70,45" fill="#b71234" stroke="#000" stroke-width="1"/>
