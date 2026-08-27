@@ -6,9 +6,10 @@ author_profile: true
 permalink: /EnergyForecasting/RL_heat_pump/HeatPump_Storage_Environment/
 usemathjax: true
 date: 2026-08-10 12:00:00
-categories:
-  - "District Heating and Cooling"
+tags:
   - "Heat Pump"
+  - "Reinforcement Learning"
+  - "Digital Twin"
 image: "/EnergyForecasting/RL_heat_pump/02_RL_Digital_Twins_Heat_Pump/Images/graphical_abstract.png"
 ---
 

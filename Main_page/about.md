@@ -17,7 +17,7 @@ Hi! My name is Chuong Dang Ta. [translate:Chương] is my Vietnamese name, and y
   </a>
 </div>
 
-Currently, I am pursuing a Master's degree in Decentralised Smart Energy Systems ([DENSYS](https://densys.univ-lorraine.fr/)), studying at Université de Lorraine, Nancy, France and Politecnico di Torino, Italy. I expect to graduate in September 2026. I am currently working as a Junior Data Scientist at [rebase.energy](https://rebase.energy) in Stockholm, developing power forecasting models for Wave Energy Converters by benchmarking Ridge Regression, Random Forest, and LightGBM against deep learning architectures (BiLSTM, TCN). Previously, from February to July 2026, I carried out my Master's thesis here, forecasting wind turbine icing power losses using an extended IEA Wind Task 19 framework and a two-stage LightGBM classifier-regressor. Professionally, I'm driven by challenges in Offshore Wind, Wave Energy, and Power-to-X, a passion amplified by the time I worked as Junior Researcher at VPI - Vietnam's Petroleum Institute — contributing to Vietnam's national hydrogen roadmap. My goal is to return and help advance this transformation.
+Currently, I am pursuing a Master's degree in Decentralised Smart Energy Systems ([DENSYS](https://densys.univ-lorraine.fr/)), studying at Université de Lorraine, Nancy, France and Politecnico di Torino, Italy. I expect to graduate in September 2026. I am currently working as a Junior Data Scientist at [rebase.energy](https://rebase.energy) in Stockholm, developing autoregressive power forecasting models for Wave Energy Converters with a Multi-Ridge Regression stack, and forecasting wave energy flux from ERA5 ocean wave data by benchmarking regularised and tree-based models against probabilistic methods (Quantile Regression, Quantile Regression Forests, bootstrapped residuals). Previously, from February to July 2026, I carried out my Master's thesis here, forecasting wind turbine icing power losses using an extended IEA Wind Task 19 framework and a two-stage LightGBM classifier-regressor. Professionally, I'm driven by challenges in Offshore Wind, Wave Energy, and Power-to-X, a passion amplified by the time I worked as Junior Researcher at VPI - Vietnam's Petroleum Institute — contributing to Vietnam's national hydrogen roadmap. My goal is to return and help advance this transformation.
 
 Last year, I watched a great video on how to learn machine learning, and it made me realize that most people skip the fundamentals and jump straight into a bootcamp. Here's a meme that captures this tendency. Personally, I really enjoy learning from textbooks on topics that interest me, it's one of the best ways to build a concrete foundation of understanding! For instance, I am currently reading the book [Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow](http://14.139.161.31/OddSem-0822-1122/Hands-On_Machine_Learning-Keras-and-TensorFlow-2nd-Edition-Aurelien-Geron.pdf) and expect to finish it by the mid of September.
 
@@ -51,7 +51,7 @@ I have hands-on experience with [PyWake](https://topfarm.pages.windenergy.dtu.dk
     </div>
   </div>
   <p style="margin-top: 0.75em; margin-bottom: 0; color: var(--global-text-color-light); font-size: 0.95em;">
-    <strong>Selected Coursework:</strong> Wind and Ocean Energy Plants, Data and Forecasting in Microgrids, Optimal Local Design Energy Networks, Smart Electricity Systems, Chemical and Electrochemical Processes<br>
+    <strong>Selected Coursework:</strong> Wind and Ocean Energy Plants, Data and Forecasting in Microgrids, Optimal Local Design Energy Networks, Polygeneration and Advanced Energy Systems, Smart Electricity Systems, Chemical and Electrochemical Processes<br>
     <strong>Key Projects:</strong> ML-Enhanced LCA of a North Sea Offshore Wind Farm (12,600× computational acceleration, R²=98.5%); Techno-economic and environmental assessment of algae-based SAF pathways.<br>
     <strong>Master's Thesis:</strong> Icing and power loss forecasting for cold-climate wind farms using SCADA and NWP data (rebase.energy, Stockholm, Feb–Jul 2026)
   </p>
@@ -84,7 +84,7 @@ I have hands-on experience with [PyWake](https://topfarm.pages.windenergy.dtu.dk
   <h3 style="margin: 0 0 0.5em 0; font-size: 1.15em; font-weight: bold;">Junior Data Scientist, rebase.energy</h3>
   <p style="font-weight: 600;">Jul 2026 – Present, Stockholm, Sweden</p>
   <p style="color: var(--global-text-color-light); margin: 0.5em 0;">
-    Developing power forecasting models for Wave Energy Converters, benchmarking multiple ridge-regularised and tree-based models (Ridge Regression, Random Forest, LightGBM) against deep learning architectures (BiLSTM, TCN) for time-series power prediction.
+    Autoregressive power forecasting for Wave Energy Converters via a Multi-Ridge Regression stack (Elastic Net and LightGBM), and forecasting wave energy flux from ERA5 ocean wave data, benchmarking regularised and tree-based models (Elastic Net, Random Forest, LightGBM) against probabilistic methods (Quantile Regression, Quantile Regression Forests, bootstrapped residuals).
   </p>
 </div>
 
@@ -92,7 +92,7 @@ I have hands-on experience with [PyWake](https://topfarm.pages.windenergy.dtu.dk
   <h3 style="margin: 0 0 0.5em 0; font-size: 1.15em; font-weight: bold;">Master Thesis Student, rebase.energy</h3>
   <p style="font-weight: 600;">Feb 2026 – Jul 2026, Stockholm, Sweden</p>
   <p style="color: var(--global-text-color-light); margin: 0.5em 0;">
-    Established wind turbine icing labels on multi-year Swedish SCADA data using an extended IEA Wind Task 19 framework, correcting biases via Quantile Mapping and LightGBM. Built a two-stage LightGBM classifier-regressor to forecast wind power icing losses at 1-36 hour lead times using SCADA and NWP meteorological inputs.
+    Labeled icing events on multi-year Swedish turbine SCADA data using an extended IEA Wind Task 19 Sigmoid Performance Ratio framework, corrected SCADA-ERA5-Land biases with Quantile Mapping, and used Spearman/SHAP screening to select stable predictors. Built a two-stage LightGBM classifier-regressor with walk-forward cross-validation to forecast icing losses at 1-36 hour lead times, showing SCADA signals dominate near-term skill while NWP forecasts matter more for longer horizons.
   </p>
 </div>
 
@@ -111,6 +111,16 @@ I have hands-on experience with [PyWake](https://topfarm.pages.windenergy.dtu.dk
     Modeled solar/wind/BESS hybrid power systems using HOMER Pro and Python. Analyzed performance and policy impacts in Vietnam and Thailand, contributing to stakeholder reports on renewable integration and energy security.
   </p>
 </div>
+
+---
+## Selected Projects
+
+See the full write-ups at [chuongta.github.io/EnergyForecasting](https://chuongta.github.io/EnergyForecasting/).
+
+- **[LLM Assistant for Operational BESS Dispatch](https://chuongta.github.io/EnergyForecasting/AI_Agent_Development_in_BESS/)** — Integrated LightGBM day-ahead price forecasting with a Pyomo scheduling model, using a local LLM agent to query and explain optimal battery dispatch schedules.
+- **[Probabilistic Electricity Price Forecasting](https://chuongta.github.io/EnergyForecasting/PEPF_part1/)** — Developed day-ahead price forecasting models (Quantile Regression, Quantile Regression Forests, and bootstrapped residuals) on Danish DK1 data, evaluated with walk-forward validation.
+- **[Smart Heat Pump Control](https://chuongta.github.io/EnergyForecasting/RL_heat_pump/HeatPump_Storage_Environment/)** — Built a physical model and Gradient Boosting digital twin of a heat pump, using Reinforcement Learning (PPO) to optimize thermal storage dispatch for price arbitrage.
+- **[Stochastic Storage Optimisation](https://chuongta.github.io/EnergyForecasting/StochasticOptimisation_part1/)** — Developed a two-stage stochastic battery scheduling model in Pyomo, using probabilistic forecasts to optimize dispatch under price uncertainty.
 
 ---
 ## Publications
@@ -140,8 +150,9 @@ I have hands-on experience with [PyWake](https://topfarm.pages.windenergy.dtu.dk
 ---
 ## Technical Skills
 
-- **Data Science & Optimisation**: Developing hybrid, physics-informed ML models for energy system forecasting and predictive maintenance; applied MILP, MINLP, and heuristic algorithms (e.g., genetic algorithms) in Pyomo to optimize renewable energy systems.
-- **Technical Toolset**: Python (PyTorch, Scikit-learn, TensorFlow, Pyomo, PyWake), MATLAB/Simulink, Modelica, QBlade, HOMER Pro, GIS, Aspen Plus, Typst, LaTeX.
+- **Machine Learning**: Supervised, unsupervised, and reinforcement learning; hybrid, physics-informed models for energy system forecasting and predictive maintenance.
+- **Data Science & Optimisation**: Applied MILP, MINLP, and heuristic algorithms (e.g., genetic algorithms) in Pyomo to optimize renewable energy systems.
+- **Technical Toolset**: Python (PyTorch, Scikit-learn, TensorFlow, Pyomo, PyWake), Ollama (local LLM), Git, MATLAB/Simulink, Modelica, QBlade, HOMER Pro, GIS, Aspen Plus, Typst, LaTeX.
 
 ---
 ## Honors & Awards

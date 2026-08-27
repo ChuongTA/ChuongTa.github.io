@@ -6,8 +6,9 @@ author_profile: true
 permalink: /EnergyForecasting/Renewable_in_Electriicy_Market_Course/
 usemathjax: true
 date: 2026-08-12
-categories:
+tags:
   - "Electricity Market"
+  - "Course Notes"
 image: "/EnergyForecasting/Renewable_in_Electriicy_Market_Course/1_Intro/Introduction_graphical_abstract.png"
 ---
 # Self-Directed Learning: Renewables in Electricity Markets

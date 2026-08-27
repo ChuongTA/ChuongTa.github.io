@@ -1,0 +1,42 @@
+---
+layout: default
+author_profile: false
+---
+
+<div id="main" role="main">
+  {% include sidebar.html %}
+
+  <div class="archive">
+    <h1 class="page__title">{{ page.title }}</h1>
+    {% include base_path %}
+
+    {% comment %}
+      Scoped to the EnergyForecasting collection only: these posts use
+      tags: (displayed as "Keywords") instead of categories:, grouped by
+      hand here since site.tags only aggregates the built-in _posts collection.
+    {% endcomment %}
+    {% assign all_docs = site.EnergyForecasting | sort: "date" | reverse %}
+
+    {% assign keyword_names = "" | split: "" %}
+    {% for doc in all_docs %}
+      {% for kw in doc.tags %}
+        {% assign keyword_names = keyword_names | push: kw %}
+      {% endfor %}
+    {% endfor %}
+    {% assign keyword_names = keyword_names | uniq | sort %}
+
+    {% if keyword_names.size == 0 %}
+      <p>No keywords yet.</p>
+    {% endif %}
+
+    {% for kw in keyword_names %}
+      <h2 id="{{ kw | slugify }}" class="archive__subtitle">{{ kw }}</h2>
+      {% for doc in all_docs %}
+        {% if doc.tags contains kw %}
+          {% assign post = doc %}
+          {% include archive-single.html %}
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  </div>
+</div>

@@ -7,8 +7,10 @@ permalink: /EnergyForecasting/PEPF_part1/
 usemathjax: true
 image: "/EnergyForecasting/PEPF_part1/Fig1.png"
 date: 2026-07-01
-categories:
+tags:
+  - "Energy Forecasting"
   - "Electricity Market"
+  - "Probabilistic Forecasting"
 ---
 
 > **Series:** Probabilistic Electricity Price Forecasting | **Part:** 1 (Theory)

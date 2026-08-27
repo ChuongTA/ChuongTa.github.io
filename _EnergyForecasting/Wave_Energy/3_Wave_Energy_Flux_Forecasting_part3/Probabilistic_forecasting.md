@@ -7,8 +7,10 @@ permalink: /EnergyForecasting/Wave_Energy/Wave_Energy_Flux_Forecasting_part3/
 usemathjax: true
 image: "/EnergyForecasting/Wave_Energy/3_Wave_Energy_Flux_Forecasting_part3/5_Bootstrap_Residuals_Probabilistic/Results/bootstrap_forecast_swh_48h.png"
 date: 2026-08-10 08:00:00
-categories:
+tags:
   - "Wave Energy"
+  - "Energy Forecasting"
+  - "Probabilistic Forecasting"
 ---
 
 > **Series:** Wave Energy | **Part:** 4 (Flux Forecasting: Probabilistic Forecasting)

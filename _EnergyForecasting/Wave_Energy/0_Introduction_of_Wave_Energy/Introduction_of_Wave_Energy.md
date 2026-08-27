@@ -7,7 +7,7 @@ permalink: /EnergyForecasting/Wave_Energy/Introduction_of_Wave_Energy/
 usemathjax: true
 image: "/EnergyForecasting/Wave_Energy/0_Introduction_of_Wave_Energy/Images/Fig0.png"
 date: 2026-08-07
-categories:
+tags:
   - "Wave Energy"
 ---
 > **Series:** Wave Energy | **Part:** 1 (Introduction)

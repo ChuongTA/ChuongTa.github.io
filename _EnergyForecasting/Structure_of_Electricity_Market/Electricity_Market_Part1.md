@@ -6,7 +6,7 @@ author_profile: true
 permalink: /EnergyForecasting/Structure_of_Electricity_Market/Electricity_Market_Part1/
 usemathjax: true
 date: 2026-08-12
-categories:
+tags:
   - "Electricity Market"
 image: "/EnergyForecasting/Structure_of_Electricity_Market/Images/Fig1.png"
 ---

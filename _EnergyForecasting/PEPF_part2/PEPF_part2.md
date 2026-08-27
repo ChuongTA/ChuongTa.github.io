@@ -7,8 +7,10 @@ permalink: /EnergyForecasting/PEPF_part2/
 usemathjax: true
 image: "/EnergyForecasting/PEPF_part2/QRQRF_forecast_24h.png"
 date: 2026-08-02
-categories:
+tags:
+  - "Energy Forecasting"
   - "Electricity Market"
+  - "Probabilistic Forecasting"
 ---
 
 > **Series:** Probabilistic Electricity Price Forecasting | **Part:** 2 (Implementation and Results)

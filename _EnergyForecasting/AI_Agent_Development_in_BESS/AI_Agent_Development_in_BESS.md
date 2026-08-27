@@ -7,7 +7,10 @@ permalink: /EnergyForecasting/AI_Agent_Development_in_BESS/
 usemathjax: true
 image: "/EnergyForecasting/AI_Agent_Development_in_BESS/bess_agent_architecture.jpg"
 date: 2026-08-24
-categories:
+tags:
+  - "Energy Forecasting"
+  - "AI Agent"
+  - "BESS"
   - "Electricity Market"
 ---
 > This post answers Question 2 of the written assessment for a PhD candidate interview at Mälardalen University: [&#34;PhD Candidate Interview Questions: AI-Agent Development for Energy Systems&#34;](/EnergyForecasting/AI_Agent_Development_in_BESS/07_Submission/MDU_Written_Test_for_Interview.pdf). The [1-page architecture summary submitted for Part A](/EnergyForecasting/AI_Agent_Development_in_BESS/07_Submission/Chuong_Dang_Ta_Part_A_Architecture.pdf) is available for reference; this post is the write-up of Part B, the implementation prototype.

@@ -13,9 +13,10 @@ author_profile: false
     {% comment %}
       site.categories only aggregates the built-in _posts collection, and this
       site keeps its content in custom collections instead, so the grouping is
-      built by hand from every collection that outputs pages.
+      built by hand from every collection that outputs pages. EnergyForecasting
+      is excluded: that collection uses tags: (Keywords, see /tags/) instead.
     {% endcomment %}
-    {% assign all_docs = site.EnergyForecasting | concat: site.WindEnergy | concat: site.MscProjects | concat: site.MachineLearningProjects | concat: site.posts %}
+    {% assign all_docs = site.WindEnergy | concat: site.MscProjects | concat: site.MachineLearningProjects | concat: site.posts %}
     {% assign all_docs = all_docs | sort: "date" | reverse %}
 
     {% assign category_names = "" | split: "" %}
