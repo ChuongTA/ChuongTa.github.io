@@ -49,18 +49,19 @@ author_profile: true
         {% endif %}
         
         <!-- Action Buttons / Badges -->
-        <div style="display: flex; gap: 0.5em; margin-top: 0.8em; align-items: center;">
+        <div style="display: flex; gap: 0.5em; margin-top: 0.8em; align-items: center; flex-wrap: wrap;">
           <a href="{{ post.url | relative_url }}" style="text-decoration: none; color: var(--global-text-color); border: 1px solid var(--global-border-color); padding: 0.3em 0.8em; border-radius: 4px; font-size: 0.8em; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.background='rgba(122,132,136,0.1)'" onmouseout="this.style.background='transparent'">
             READ ARTICLE
           </a>
-          <span style="font-size: 0.8em; color: var(--global-text-color-light); background: rgba(122,132,136,0.08); padding: 0.3em 0.6em; border-radius: 4px;">
-            Keywords:
-            {% for kw in post.tags %}
-              <a href="{{ '/tags/' | relative_url }}#{{ kw | slugify }}" style="color: inherit; text-decoration: underline;">{{ kw | upcase }}</a>{% unless forloop.last %}, {% endunless %}
-            {% else %}
+          {% for kw in post.tags %}
+            <a href="{{ '/tags/' | relative_url }}#{{ kw | slugify }}" style="text-decoration: none; color: var(--global-text-color-light); background: rgba(122,132,136,0.08); border: 1px solid var(--global-border-color); padding: 0.25em 0.6em; border-radius: 4px; font-size: 0.75em; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.background='rgba(122,132,136,0.18)'" onmouseout="this.style.background='rgba(122,132,136,0.08)'">
+              {{ kw | upcase }}
+            </a>
+          {% else %}
+            <span style="color: var(--global-text-color-light); background: rgba(122,132,136,0.08); border: 1px solid var(--global-border-color); padding: 0.25em 0.6em; border-radius: 4px; font-size: 0.75em; font-weight: 600;">
               ENERGY FORECASTING
-            {% endfor %}
-          </span>
+            </span>
+          {% endfor %}
         </div>
       </div>
 
