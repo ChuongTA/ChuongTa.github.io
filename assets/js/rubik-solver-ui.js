@@ -6,6 +6,68 @@ let currentScramble = "";
 let solveMovesQueue = [];
 let isPlaybackPaused = false;
 
+const TRANSLATIONS = {
+  en: {
+    scrambleSeq: "Scramble sequence:",
+    readySolved: "Ready. Cube is Solved.",
+    scrambleFirst: "Scramble the cube first!",
+    solvingInverse: "Solving using inverse algorithm...",
+    remaining: "Remaining:",
+    resume: "▶️ Resume",
+    pause: "⏸️ Pause",
+    executing: "Executing:",
+    solvedDouble: "Solved! Double-checked matching.",
+    manualMove: "Manual move:",
+    scrambleBtn: "🎲 Scramble",
+    solveBtn: "✨ Solve"
+  },
+  vi: {
+    scrambleSeq: "Chuỗi trộn:",
+    readySolved: "Sẵn sàng. Rubik đã được giải.",
+    scrambleFirst: "Xáo trộn khối rubik trước!",
+    solvingInverse: "Đang giải bằng thuật toán nghịch đảo...",
+    remaining: "Còn lại:",
+    resume: "▶️ Tiếp tục",
+    pause: "⏸️ Tạm dừng",
+    executing: "Đang thực hiện:",
+    solvedDouble: "Giải xong! Đã đối chiếu hoàn tất.",
+    manualMove: "Xoay thủ công:",
+    scrambleBtn: "🎲 Xáo Trộn",
+    solveBtn: "✨ Giải Rubik"
+  }
+};
+
+function getTxt(key) {
+  const lang = window.currentLanguage || 'en';
+  return TRANSLATIONS[lang][key] || TRANSLATIONS['en'][key];
+}
+
+function updateSolverUI() {
+  const btnPlayPause = document.getElementById('btn-play-pause');
+  if (btnPlayPause) {
+    btnPlayPause.innerText = isPlaybackPaused ? getTxt('resume') : getTxt('pause');
+  }
+  
+  const statusBox = document.getElementById('status-box');
+  if (statusBox) {
+    // Refresh text of active status dynamically based on current queue or scramble
+    if (solveMovesQueue.length > 0) {
+      const activeMove = window.activePlaybackMove || "";
+      if (activeMove) {
+        statusBox.innerHTML = `<span class="status-solved">${getTxt('executing')} ${activeMove}</span><br>${getTxt('remaining')} ${solveMovesQueue.join(' ')}`;
+      } else {
+        statusBox.innerHTML = `<span class="status-solved">${getTxt('solvingInverse')}</span><br>${getTxt('remaining')} ${solveMovesQueue.join(' ')}`;
+      }
+    } else if (currentScramble) {
+      statusBox.innerHTML = `<span class="status-scrambled">${getTxt('scrambleSeq')}</span><br>${currentScramble}`;
+    } else if (window.isCubeCurrentlySolved) {
+      statusBox.innerHTML = `<span class="status-solved">${getTxt('readySolved')}</span>`;
+    }
+  }
+}
+
+window.updateSolverUI = updateSolverUI;
+
 function init3D() {
   const container = document.getElementById('canvas-container');
   if (!container) return;
@@ -39,6 +101,7 @@ function init3D() {
   scene.add(dirLight2);
   
   createCube();
+  window.isCubeCurrentlySolved = true;
   
   const loader = document.getElementById('canvas-loader');
   if (loader) {
@@ -96,7 +159,7 @@ function animate() {
   if (renderer && scene && camera) renderer.render(scene, camera);
 }
 
-function rotateLayer(axis, targetVal, angle, duration) {
+async function rotateLayer(axis, targetVal, angle, duration) {
   return new Promise((resolve) => {
     const rotatingGroup = new THREE.Group();
     scene.add(rotatingGroup);
@@ -165,7 +228,8 @@ function setupListeners() {
       if (isAnimating || solveMovesQueue.length > 0) return;
       const scramble = window.RubikLogic.generateScramble();
       currentScramble = scramble;
-      if (statusBox) statusBox.innerHTML = `<span class="status-scrambled">Scramble sequence:</span><br>${scramble}`;
+      window.isCubeCurrentlySolved = false;
+      if (statusBox) statusBox.innerHTML = `<span class="status-scrambled">${getTxt('scrambleSeq')}</span><br>${scramble}`;
       const moves = scramble.split(' ');
       for (let m of moves) {
         await performMove(m);
@@ -177,10 +241,12 @@ function setupListeners() {
     btnReset.addEventListener('click', () => {
       if (isAnimating) return;
       solveMovesQueue = [];
+      window.activePlaybackMove = "";
       currentScramble = "";
+      window.isCubeCurrentlySolved = true;
       scene.remove(cubeGroup);
       createCube();
-      if (statusBox) statusBox.innerHTML = `<span class="status-solved">Ready. Cube is Solved.</span>`;
+      if (statusBox) statusBox.innerHTML = `<span class="status-solved">${getTxt('readySolved')}</span>`;
     });
   }
   
@@ -188,13 +254,14 @@ function setupListeners() {
     btnSolve.addEventListener('click', async () => {
       if (isAnimating || solveMovesQueue.length > 0) return;
       if (!currentScramble) {
-        if (statusBox) statusBox.innerHTML = `<span>Scramble the cube first!</span>`;
+        if (statusBox) statusBox.innerHTML = `<span>${getTxt('scrambleFirst')}</span>`;
         return;
       }
       const inverseSolve = window.RubikLogic.getInverseSolve(currentScramble);
       solveMovesQueue = inverseSolve.split(' ');
       currentScramble = "";
-      if (statusBox) statusBox.innerHTML = `<span class="status-solved">Solving using inverse algorithm...</span><br>Remaining: ${solveMovesQueue.join(' ')}`;
+      window.isCubeCurrentlySolved = false;
+      if (statusBox) statusBox.innerHTML = `<span class="status-solved">${getTxt('solvingInverse')}</span><br>${getTxt('remaining')} ${solveMovesQueue.join(' ')}`;
       playbackLoop();
     });
   }
@@ -202,7 +269,7 @@ function setupListeners() {
   if (btnPlayPause) {
     btnPlayPause.addEventListener('click', () => {
       isPlaybackPaused = !isPlaybackPaused;
-      btnPlayPause.innerText = isPlaybackPaused ? "▶️ Resume" : "⏸️ Pause";
+      btnPlayPause.innerText = isPlaybackPaused ? getTxt('resume') : getTxt('pause');
       if (!isPlaybackPaused) {
         playbackLoop();
       }
@@ -213,11 +280,14 @@ function setupListeners() {
 async function playbackLoop() {
   if (isPlaybackPaused || solveMovesQueue.length === 0 || isAnimating) return;
   const currentMove = solveMovesQueue.shift();
+  window.activePlaybackMove = currentMove;
   const statusBox = document.getElementById('status-box');
-  if (statusBox) statusBox.innerHTML = `<span class="status-solved">Executing: ${currentMove}</span><br>Remaining: ${solveMovesQueue.join(' ')}`;
+  if (statusBox) statusBox.innerHTML = `<span class="status-solved">${getTxt('executing')} ${currentMove}</span><br>${getTxt('remaining')} ${solveMovesQueue.join(' ')}`;
   await performMove(currentMove);
   if (solveMovesQueue.length === 0) {
-    if (statusBox) statusBox.innerHTML = `<span class="status-solved">Solved! Double-checked matching.</span>`;
+    window.isCubeCurrentlySolved = true;
+    window.activePlaybackMove = "";
+    if (statusBox) statusBox.innerHTML = `<span class="status-solved">${getTxt('solvedDouble')}</span>`;
   } else {
     setTimeout(playbackLoop, 50);
   }
@@ -225,8 +295,9 @@ async function playbackLoop() {
 
 async function applyManualMove(move) {
   if (isAnimating || solveMovesQueue.length > 0) return;
+  window.isCubeCurrentlySolved = false;
   const statusBox = document.getElementById('status-box');
-  if (statusBox) statusBox.innerHTML = `<span>Manual move: ${move}</span>`;
+  if (statusBox) statusBox.innerHTML = `<span>${getTxt('manualMove')} ${move}</span>`;
   await performMove(move);
 }
 

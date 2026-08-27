@@ -13,38 +13,59 @@ category: "Machine learning projects"
 <link rel="stylesheet" href="{{ '/assets/css/rubik-style.css' | relative_url }}">
 
 <div class="rubik-container">
-    <div class="rubik-title">Rubik's Cube Simulator & Solver</div>
+    <div class="rubik-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 15px;">
+        <div class="rubik-title" style="margin-bottom: 0;">
+            <span class="lang-en">Rubik's Cube Simulator & Solver</span>
+            <span class="lang-vi" style="display: none;">Mô Phỏng & Giải Rubik's Cube</span>
+        </div>
+        <button class="rubik-btn rubik-btn-secondary" id="btn-lang-toggle" onclick="toggleLanguage()" style="font-size: 0.85rem; padding: 8px 16px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.15);">
+            🌐 <span class="lang-en">Vietnamese / Tiếng Việt</span><span class="lang-vi" style="display: none;">English / Tiếng Anh</span>
+        </button>
+    </div>
     
     <div class="rubik-grid">
         <!-- Interactive 3D Canvas -->
         <div class="rubik-canvas-container" id="canvas-container">
             <div class="loader-container" id="canvas-loader">
                 <div class="spinner"></div>
-                <div style="font-weight: 500; font-size: 0.95rem;">Initializing 3D Environment...</div>
+                <div style="font-weight: 500; font-size: 0.95rem;">
+                    <span class="lang-en">Initializing 3D Environment...</span>
+                    <span class="lang-vi" style="display: none;">Đang khởi tạo môi trường 3D...</span>
+                </div>
             </div>
         </div>
         
         <!-- Controls & Panel -->
         <div class="rubik-panel">
             <div class="rubik-controls-row">
-                <button class="rubik-btn" id="btn-scramble">🎲 Scramble</button>
-                <button class="rubik-btn rubik-btn-accent" id="btn-solve">✨ Solve</button>
+                <button class="rubik-btn" id="btn-scramble">
+                    🎲 <span class="lang-en">Scramble</span><span class="lang-vi" style="display: none;">Xáo Trộn</span>
+                </button>
+                <button class="rubik-btn rubik-btn-accent" id="btn-solve">
+                    ✨ <span class="lang-en">Solve</span><span class="lang-vi" style="display: none;">Giải Rubik</span>
+                </button>
             </div>
             
             <div class="rubik-controls-row">
-                <button class="rubik-btn rubik-btn-secondary" id="btn-play-pause">⏸️ Pause</button>
-                <button class="rubik-btn rubik-btn-secondary" id="btn-reset">🔄 Reset</button>
+                <button class="rubik-btn rubik-btn-secondary" id="btn-play-pause">
+                    <span class="lang-en">⏸️ Pause</span><span class="lang-vi" style="display: none;">⏸️ Tạm Dừng</span>
+                </button>
+                <button class="rubik-btn rubik-btn-secondary" id="btn-reset">
+                    🔄 <span class="lang-en">Reset</span><span class="lang-vi" style="display: none;">Đặt Lại</span>
+                </button>
             </div>
 
             <div>
                 <label style="font-size: 0.85rem; font-weight: 600; color: #94a3b8; display: block; margin-bottom: 6px;">
-                    Rotation Speed
+                    <span class="lang-en">Rotation Speed</span><span class="lang-vi" style="display: none;">Tốc Độ Xoay</span>
                 </label>
                 <input type="range" id="speed-slider" min="100" max="1000" value="300" style="width: 100%; accent-color: #38bdf8;">
             </div>
 
             <div>
-                <div style="font-size: 0.85rem; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">Manual Moves</div>
+                <div style="font-size: 0.85rem; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">
+                    <span class="lang-en">Manual Moves</span><span class="lang-vi" style="display: none;">Xoay Thủ Công</span>
+                </div>
                 <div class="rubik-moves-grid">
                     <button class="rubik-move-btn" onclick="applyManualMove('R')">R</button>
                     <button class="rubik-move-btn" onclick="applyManualMove('L')">L</button>
@@ -62,51 +83,77 @@ category: "Machine learning projects"
             </div>
 
             <div>
-                <div style="font-size: 0.85rem; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">Status / Move Feed</div>
+                <div style="font-size: 0.85rem; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">
+                    <span class="lang-en">Status / Move Feed</span><span class="lang-vi" style="display: none;">Trạng Thái / Các Bước</span>
+                </div>
                 <div class="rubik-status-box" id="status-box">
-                    <span class="status-solved">Ready. Cube is Solved.</span>
+                    <span class="status-solved">
+                        <span class="lang-en">Ready. Cube is Solved.</span>
+                        <span class="lang-vi" style="display: none;">Sẵn sàng. Rubik đã được giải.</span>
+                    </span>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-## How It Works
+## <span class="lang-en">How It Works</span><span class="lang-vi" style="display: none;">Nguyên Lý Hoạt Động</span>
 
+<div class="lang-en">
 Solving a Rubik's Cube programmatically is a classic problem in computer science. There are two primary ways algorithms solve this puzzle:
 1. **Rule-Based Search (Kociemba's Algorithm)**: Solves the Rubik's cube in 20 moves or less by breaking down the $4.3 \times 10^{19}$ states into subgroups.
 2. **Reinforcement Learning (RL)**: Using deep neural networks to learn representations of state orientation and using **Deep Q-Learning** or **Pathfinding with Value Iteration** to find optimal paths back to the solved state.
+</div>
+<div class="lang-vi" style="display: none;">
+Giải khối Rubik bằng lập trình là một bài toán kinh điển trong khoa học máy tính. Có hai phương pháp chính mà các thuật toán sử dụng để giải câu đố này:
+1. **Tìm kiếm dựa trên luật lệ (Thuật toán Kociemba)**: Giải khối Rubik trong tối đa 20 bước xoay bằng cách chia nhỏ $4.3 \times 10^{19}$ trạng thái thành các nhóm con.
+2. **Học Tăng Cường (Reinforcement Learning - RL)**: Sử dụng mạng nơ-ron sâu để học cách biểu diễn định hướng trạng thái và sử dụng **Deep Q-Learning** hoặc **Tìm đường với Lặp giá trị (Value Iteration)** để tìm đường đi tối ưu đưa rubik về trạng thái đã giải.
+</div>
 
 ---
 
-## The Python Desktop App (Option B)
+## <span class="lang-en">The Python Desktop App (Option B)</span><span class="lang-vi" style="display: none;">Ứng Dụng Desktop Bằng Python (Tùy chọn B)</span>
 
+<div class="lang-en">
 If you want to train your own Reinforcement Learning Agent or run a native interactive solver on your computer, check out our Python implementation inside the `python_app` subdirectory.
 
 To get started, clone the repository and run:
+</div>
+<div class="lang-vi" style="display: none;">
+Nếu bạn muốn tự huấn luyện Agent Học Tăng Cường của riêng mình hoặc chạy trình giải tương tác gốc trên máy tính, hãy xem phần triển khai mã nguồn Python của chúng tôi trong thư mục con `python_app`.
+
+Để bắt đầu, hãy nhân bản kho lưu trữ và chạy lệnh:
+</div>
+
 ```bash
 cd _MachineLearningProjects/05_Rubik/python_app
 pip install -r requirements.txt
 python gui.py
 ```
 
-### Reinforcement Learning Implementation Details
+### <span class="lang-en">Reinforcement Learning Implementation Details</span><span class="lang-vi" style="display: none;">Chi Tiết Triển Khai Học Tăng Cường</span>
+
+<div class="lang-en">
 We define the Rubik's Cube state space as a flattened vector representing color mapping of stickers.
 The reward structure:
 * **Solved State**: $+100$
 * **Non-solved State**: $-1$ per move to encourage finding the shortest path.
 
 Using Deep Q-Networks (DQN) or double-DQN with experience replay, the agent learns sequence behaviors to untangle the cube.
+</div>
+<div class="lang-vi" style="display: none;">
+Chúng tôi định nghĩa không gian trạng thái của Rubik dưới dạng một vectơ phẳng đại diện cho bản đồ màu của các nhãn dán.
+Cấu trúc phần thưởng:
+* **Trạng thái Đã Giải**: $+100$
+* **Trạng thái Chưa Giải**: $-1$ cho mỗi bước di chuyển để khuyến khích tìm đường đi ngắn nhất.
+
+Sử dụng Mạng Q Sâu (DQN) hoặc double-DQN với lưu trữ trải nghiệm (experience replay), tác nhân (agent) sẽ học các hành vi chuỗi để gỡ rối khối rubik.
+</div>
 
 ---
 
 ## 📘 Step-by-Step Guide to Solving a Rubik's Cube (Beginner's Method)
 
-<div class="lang-switch-container" style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
-    <button class="rubik-btn rubik-btn-secondary" id="btn-lang-toggle" onclick="toggleLanguage()" style="font-size: 0.85rem; padding: 8px 16px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.15);">
-        🌐 <span class="lang-en">Translate to Vietnamese / Tiếng Việt</span><span class="lang-vi" style="display: none;">Dịch sang Tiếng Anh / English</span>
-    </button>
-</div>
 
 ### <span class="lang-en">Understanding Cube Notation 📖</span><span class="lang-vi" style="display: none;">Tìm Hiểu Ký Hiệu Rubik 📖</span>
 
