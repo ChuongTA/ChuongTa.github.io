@@ -18,7 +18,7 @@ tags:
 
 ## Introduction
 
-"Multi-ridge regression," or stacking with a ridge regression meta-model, means using L2-regularized linear regression to combine the predictions of several base machine learning models. In this part, the base models are Ridge Regression, Random Forest, and LightGBM. For background on the individual techniques, see the [Machine Learning Projects](/MachineLearningProjects/) section of this site.
+"Multi-ridge regression," or stacking with a ridge regression meta-model, means using L2-regularized linear regression to combine the predictions of several base machine learning models. In this part, the base models are Ridge Regression, Random Forest, and LightGBM. For background on the individual techniques, see the [Machine Learning](/MachineLearningProjects/) section of this site.
 
 <figure>
   <img src="/EnergyForecasting/Wave_Energy/2_Wave_Energy_Flux_Forecsating_part2/2_Stacking_Ensemble/images/Fig1_Main_Pipeline.png" alt="Stacking ensemble pipeline: Ridge, Random Forest, and LightGBM as base models feeding a ridge meta-model">
