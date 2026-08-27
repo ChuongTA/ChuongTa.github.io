@@ -15,18 +15,11 @@ import cdsapi
 import xarray as xr
 import pandas as pd
 
-# ---------------------------------------------------------------------------
-# CDS API credentials
-# ---------------------------------------------------------------------------
-# Prefer keeping credentials in %USERPROFILE%\.cdsapirc instead of hardcoding
-# them here. They are set explicitly below only because they were provided
-# directly for this script.
-CDS_URL = "https://cds.climate.copernicus.eu/api"
-CDS_KEY = "620297c7-e85b-4f77-ace0-c81008de38f2"
 
-# ---------------------------------------------------------------------------
-# Configuration
-# ---------------------------------------------------------------------------
+CDS_URL = "https://cds.climate.copernicus.eu/api"
+CDS_KEY = "YOUR API KEY"
+
+
 PRESSURE_DATASET = "reanalysis-era5-pressure-levels"
 
 PRESSURE_VARIABLES = [
@@ -48,7 +41,7 @@ SINGLE_LEVEL_VARIABLES = [
     "snowfall",
 ]
 
-# Option 2 DK1 bounding box: North, West, South, East
+# DK1 bounding box: North, West, South, East
 AREA = [57.5, 7.0, 54.5, 11.5]
 
 TIMES = [f"{h:02d}:00" for h in range(24)]

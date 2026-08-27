@@ -85,10 +85,14 @@ Manufacturing facilities operate continuously during weekdays with specific bloc
   * Weekday Multiplier ($M_{\text{weekday}}$): $1.0$
   * Weekend Multiplier ($M_{\text{weekend}}$): $0.15$ (maintenance cooling/standby, total $\approx 15\text{ kW}$).
 * **Diurnal Equation** ($P_{\text{diurnal}}(h)$ where $h$ is hour 0–23):
-  $$P_{\text{diurnal}}(h) = \begin{cases} 
-        220 & \text{if } 6 \le h < 22\ \text{(Shift 1 & 2)} \\
-        120 & \text{if } h < 6\ \text{or}\ h \ge 22\ \text{(Shift 3)}
-     \end{cases}$$
+$$
+P_{\text{diurnal}}(h) =
+\begin{cases}
+220 & \text{if } 6 \le h < 22 \ \text{(Shift 1 and 2)} \\
+120 & \text{if } h < 6 \ \text{or} \ h \ge 22 \ \text{(Shift 3)}
+\end{cases}
+$$
+
 * **Noise**:
   $$\epsilon(t) \sim \mathcal{N}(0, 6^2)\ \text{(Standard deviation } \sigma = 6\text{ kW)}$$
 

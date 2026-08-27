@@ -34,7 +34,7 @@ To ensure the system is model-agnostic, we implement a **custom Tool-Use (Functi
 
 ---
 
-## 2. Model Adapter Configurator
+## 2. Model Adapter Configuration
 
 The agent script uses a standard adapter interface to switch between APIs by reading environmental variables:
 

@@ -28,17 +28,19 @@ This course provides a comprehensive overview of electricity markets, covering b
 ## I. System and Market Perspective
 
 ### Lecture 0: Introduction of the Course *(Completed)*
-- [Lecture Slides (PDF)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/1_Intro/46755%20%E2%80%93%20Renewables%20in%20Electricity%20Markets%20Lecture%200-compressed.pdf)
-- [Study Notes (Markdown)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/1_Intro/Introduction%20of%20renewable%20in%20electricity%20market.md)
+
+- [Lecture Slides (PDF)](</EnergyForecasting/Renewable_in_Electriicy_Market_Course/1_Intro/46755%20%E2%80%93%20Renewables%20in%20Electricity%20Markets%20Lecture%200-compressed.pdf>)
+- [Study Notes (Markdown)](</EnergyForecasting/Renewable_in_Electriicy_Market_Course/1_Intro/Introduction%20of%20renewable%20in%20electricity%20market.md>)
 - 8 Objectives of learning the course
 - Introduction of 2 assignments:
-  - **Course Assignment 1: System Perspective:** The assignment sheet can be viewed in [Assignment 1 Description (PDF)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/Assignment/01_Assignment/46755%20%E2%80%93%20Renewables%20in%20Electricity%20Markets%20%20-%20Asignment%201.pdf) (rubric: [Rubric Table (PDF)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/Assignment/01_Assignment/46755%20%E2%80%93%20Renewables%20in%20Electricity%20Markets%20%20-%20Asignment%201%20-%20Rubric%20table.pdf)). The assignment will be solved in this [Assignment 1 Solutions (Markdown)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/Assignment/01_Assignment/assignment.md) file.
-  - **Course Assignment 2: Stakeholder Perspective:** The assignment sheet can be viewed in [Assignment 2 Description (PDF)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/Assignment/02_Assignment/46755,%20Assignmen2,%202025.pdf). The assignment will be solved in this [Assignment 2 Solutions (Markdown)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/Assignment/02_Assignment/assignment.md) file.
+  - **Course Assignment 1: System Perspective:** The assignment sheet can be viewed in [Assignment 1 Description (PDF)](</EnergyForecasting/Renewable_in_Electriicy_Market_Course/Assignment/01_Assignment/46755%20%E2%80%93%20Renewables%20in%20Electricity%20Markets%20%20-%20Asignment%201.pdf>) (rubric: [Rubric Table (PDF)](</EnergyForecasting/Renewable_in_Electriicy_Market_Course/Assignment/01_Assignment/46755%20%E2%80%93%20Renewables%20in%20Electricity%20Markets%20%20-%20Asignment%201%20-%20Rubric%20table.pdf>)). The assignment will be solved in this [Assignment 1 Solutions (Markdown)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/Assignment/01_Assignment/assignment.md) file.
+  - **Course Assignment 2: Stakeholder Perspective:** The assignment sheet can be viewed in [Assignment 2 Description (PDF)](</EnergyForecasting/Renewable_in_Electriicy_Market_Course/Assignment/02_Assignment/46755,%20Assignmen2,%202025.pdf>). The assignment will be solved in this [Assignment 2 Solutions (Markdown)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/Assignment/02_Assignment/assignment.md) file.
 
 ### Lecture 1: Introduction to electricity markets *(Completed)*
-- [Lecture Slides (PDF)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/Lecture1/46755%20%E2%80%93%20Renewables%20in%20Electricity%20Markets%20Lecture%201.pdf)
-- [Study Notes (Markdown)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/Lecture1/Lecture%201%20_%20Introduction%20to%20electricity%20markets.md)
-- [Study Notes (PDF)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/Lecture1/Lecture%201%20_%20Introduction%20to%20electricity%20markets.pdf)
+
+- [Lecture Slides (PDF)](</EnergyForecasting/Renewable_in_Electriicy_Market_Course/Lecture1/46755%20%E2%80%93%20Renewables%20in%20Electricity%20Markets%20Lecture%201.pdf>)
+- [Study Notes (Markdown)](</EnergyForecasting/Renewable_in_Electriicy_Market_Course/Lecture1/Lecture%201%20_%20Introduction%20to%20electricity%20markets.md>)
+- [Study Notes (PDF)](</EnergyForecasting/Renewable_in_Electriicy_Market_Course/Lecture1/Lecture%201%20_%20Introduction%20to%20electricity%20markets.pdf>)
 - **Quick Summary:**
   - Learned about shifting from centralized TSO dispatch to decentralized power markets (modeled using Game Theory).
   - Covered uniform pricing (settling at the Market Clearing Price) vs. pay-as-bid schemes.
@@ -46,9 +48,10 @@ This course provides a comprehensive overview of electricity markets, covering b
   - Played a super fun 🎮 Kahoot quiz on calculating social welfare and supplier profits (still Notworking! 😜)
 
 ### Lecture 2: Fundamentals of Electricity Market *(Completed)*
-- [Lecture Slides (PDF)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/Lecture2/46755%20%E2%80%93%20Renewables%20in%20Electricity%20Markets%20Lecture%202.pdf)
-- [Study Notes (Markdown)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/Lecture2/Lecture%202%20-%20Fundamentals%20of%20Electricity%20Market.md)
-- [Study Notes (PDF)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/Lecture2/Lecture%202%20-%20Fundamentals%20of%20Electricity%20Market.pdf)
+
+- [Lecture Slides (PDF)](</EnergyForecasting/Renewable_in_Electriicy_Market_Course/Lecture2/46755%20%E2%80%93%20Renewables%20in%20Electricity%20Markets%20Lecture%202.pdf>)
+- [Study Notes (Markdown)](</EnergyForecasting/Renewable_in_Electriicy_Market_Course/Lecture2/Lecture%202%20-%20Fundamentals%20of%20Electricity%20Market.md>)
+- [Study Notes (PDF)](</EnergyForecasting/Renewable_in_Electriicy_Market_Course/Lecture2/Lecture%202%20-%20Fundamentals%20of%20Electricity%20Market.pdf>)
 - **Quick Summary:**
   - Classified power market actors (consumers, retailers, market operators, TSOs, DSOs, regulators, BRPs, and flexibility aggregators).
   - Explored energy market timelines (futures, day-ahead/spot, intraday, and balancing) and ancillary services (FCR, aFRR, mFRR).
@@ -59,12 +62,13 @@ This course provides a comprehensive overview of electricity markets, covering b
 
 - Market clearing as an optimization problem
 - Market clearing as a competitive equilibrium problem
-- Definitions of Nash equilibrium and mixed complementarity problems
+- Definitions of Nash equili, quitrium and mixed complementarity problems
 
 ### Lecture 3: Day-Ahead Market *(Completed)*
-- [Lecture Slides (PDF)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/lecture3/46755%20%E2%80%93%20Renewables%20in%20Electricity%20Markets%20Lecture%203.pdf)
-- [Study Notes (Markdown)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/lecture3/Lecture%203_%20Day%20Ahead%20market.md)
-- [Study Notes (PDF)](/EnergyForecasting/Renewable_in_Electriicy_Market_Course/lecture3/Lecture%203_%20Day%20Ahead%20market.pdf)
+
+- [Lecture Slides (PDF)](</EnergyForecasting/Renewable_in_Electriicy_Market_Course/lecture3/46755%20%E2%80%93%20Renewables%20in%20Electricity%20Markets%20Lecture%203.pdf>)
+- [Study Notes (Markdown)](</EnergyForecasting/Renewable_in_Electriicy_Market_Course/lecture3/Lecture%203_%20Day%20Ahead%20market.md>)
+- [Study Notes (PDF)](</EnergyForecasting/Renewable_in_Electriicy_Market_Course/lecture3/Lecture%203_%20Day%20Ahead%20market.pdf>)
 - **Quick Summary:**
   - Explored Single Day-Ahead Coupling (SDAC) in Europe using the EUPHEMIA hybrid market integration algorithm.
   - Analyzed network effects on clearing outcomes, price distribution, and congestion rent collection.

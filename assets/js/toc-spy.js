@@ -94,10 +94,18 @@
 
       li.appendChild(link);
       list.appendChild(li);
-      items.push({ li: li, h: h });
+      items.push({ li: li, h: h, link: link });
     });
 
     panel.appendChild(list);
+
+    /* ── Re-sync link labels when heading text changes (e.g. language toggle) ── */
+    function refresh() {
+      items.forEach(function (obj) {
+        obj.link.textContent = obj.h.textContent.trim();
+      });
+    }
+    window.TocSpy = { refresh: refresh };
 
     /* ── Floating toggle button (shown when panel is hidden) ── */
     var toggle = document.createElement("button");
@@ -182,6 +190,7 @@
   /* ── Boot ────────────────────────────────────────────────── */
   function init() {
     if (document.body.classList.contains('homepage-layout')) return;
+    if (document.getElementById('toc-panel')) return;   // already built, avoid duplicates
     var headings = Array.from(document.querySelectorAll(HEADING_SELECTOR));
     if (headings.length < MIN_HEADINGS) return;   // not worth showing
     buildTOC(headings);

@@ -461,6 +461,27 @@ Xoay tầng trên cùng để khớp nhiều cạnh nhất có thể với các 
             <polygon points="30,35 40,40 40,50 30,45" fill="#009b48" stroke="#000" stroke-width="1"/>
             <polygon points="40,40 50,45 50,55 40,50" fill="#475569" stroke="#000" stroke-width="1"/>
             <polygon points="20,40 30,45 30,55 20,50" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="30,45 40,50 40,60 30,55" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="40,50 50,55 50,65 40,60" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="20,50 30,55 30,65 20,60" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="30,55 40,60 40,70 30,65" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="40,60 50,65 50,75 40,70" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="50,45 60,40 60,50 50,55" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="60,40 70,35 70,45 60,50" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="70,35 80,30 80,40 70,45" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="50,55 60,50 60,60 50,65" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="60,50 70,45 70,55 60,60" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="70,45 80,40 80,50 70,55" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="50,65 60,60 60,70 50,75" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="60,60 70,55 70,65 60,70" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="70,55 80,60 80,60 70,65" fill="#b71234" stroke="#000" stroke-width="1"/>
+        </svg>
+        <div style="font-size: 0.75rem; margin-top: 5px; color: #a1a1aa;">
+            <span class="lang-en">Top face shows a solved yellow cross; side colors not yet aligned.</span>
+            <span class="lang-vi" style="display: none;">Mặt trên đã có chữ thập vàng; các màu mặt bên chưa được căn chỉnh.</span>
+        </div>
+    </div>
+    <!-- Step 5 After Edges -->
     <div style="text-align: center; font-size: 0.85rem; color: #cbd5e1; background: rgba(30, 41, 59, 0.4); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); width: 220px;">
         <div style="font-weight: bold; margin-bottom: 8px; color: #10b981;">
             <span class="lang-en">After: Aligned Edges</span>

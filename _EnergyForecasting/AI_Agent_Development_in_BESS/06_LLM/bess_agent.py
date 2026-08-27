@@ -301,18 +301,10 @@ def main():
     # --- CONFIGURE YOUR API HERE ---
     # Set to "openai", "anthropic", "gemini", "deepseek", "ollama", or "mock"
     api_config = {
-        "provider": "mock", # Change this to connect a live model!
-        "model": "gpt-4o",  # e.g., "claude-3-5-sonnet", "gemini-1.5-pro", "deepseek-chat"
-        "api_key": os.environ.get("OPENAI_API_KEY") # Sourced from env or hardcode here
+        "provider": "ollama",
+        "model": "qwen2.5-coder",
+        "api_key": None
     }
-    
-    # Auto-detect live API keys in environment to save manual setup
-    for p in ["openai", "anthropic", "gemini", "deepseek"]:
-        key = os.environ.get(f"{p.upper()}_API_KEY")
-        if key:
-            api_config = {"provider": p, "model": "gpt-4o" if p == "openai" else "claude-3-5-sonnet" if p == "anthropic" else "gemini-1.5-pro" if p == "gemini" else "deepseek-chat", "api_key": key}
-            print(f"Auto-detected environment config: Active Provider = '{p}'")
-            break
 
     print("=========================================================")
     print(f"      BESS AI AGENT TOOL-USE LOOP (Active: {api_config['provider'].upper()})")
@@ -320,17 +312,22 @@ def main():
     
     agent = BESSAgentLoop(api_config)
     
-    # Run Query 1
-    q1 = "Should we charge or discharge the battery in the next 2 hours given the current conditions?"
-    ans1 = agent.run(q1)
-    print(f"\nFinal Agent Response:\n{ans1}\n")
-    print("-" * 57 + "\n")
-    
-    # Run Query 2
-    q2 = "What was our self-consumption rate yesterday and how could it be improved?"
-    ans2 = agent.run(q2)
-    print(f"\nFinal Agent Response:\n{ans2}\n")
-    print("=========================================================")
+    while True:
+        try:
+            user_input = input("Enter your query (or type 'exit' to quit): ").strip()
+            if not user_input:
+                continue
+            if user_input.lower() in ["exit", "quit"]:
+                print("Exiting BESS Agent. Goodbye!")
+                break
+                
+            print("-" * 57)
+            response = agent.run(user_input)
+            print(f"\nFinal Agent Response:\n{response}")
+            print("-" * 57 + "\n")
+        except (KeyboardInterrupt, EOFError):
+            print("\nExiting BESS Agent. Goodbye!")
+            break
 
 if __name__ == "__main__":
     main()
