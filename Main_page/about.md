@@ -152,7 +152,7 @@ See the full write-ups at [chuongta.github.io/EnergyForecasting](https://chuongt
 
 - **Machine Learning**: Supervised, unsupervised, and reinforcement learning; hybrid, physics-informed models for energy system forecasting and predictive maintenance.
 - **Data Science & Optimisation**: Applied MILP, MINLP, and heuristic algorithms (e.g., genetic algorithms) in Pyomo to optimize renewable energy systems.
-- **Technical Toolset**: Python (PyTorch, Scikit-learn, TensorFlow, Pyomo, PyWake), Ollama (local LLM), Git, MATLAB/Simulink, Modelica, QBlade, HOMER Pro, GIS, Aspen Plus, Typst, LaTeX.
+- **Technical Toolset**: Python (PyTorch, Scikit-learn, TensorFlow, Pyomo, PyWake), Ollama (local LLM), Git, Julia, MATLAB/Simulink, Modelica, QBlade, HOMER Pro, GIS, Aspen Plus, Typst, LaTeX.
 
 ---
 ## Honors & Awards
