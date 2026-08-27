@@ -97,7 +97,7 @@ category: "Machine learning projects"
     </div>
 </div>
 
-## <span class="lang-en">How It Works</span><span class="lang-vi" style="display: none;">Nguyên Lý Hoạt Động</span>
+## How It Works
 
 <div class="lang-en">
 Solving a Rubik's Cube programmatically is a classic problem in computer science. There are two primary ways algorithms solve this puzzle:
@@ -112,7 +112,7 @@ Giải khối Rubik bằng lập trình là một bài toán kinh điển trong 
 
 ---
 
-## <span class="lang-en">The Python Desktop App (Option B)</span><span class="lang-vi" style="display: none;">Ứng Dụng Desktop Bằng Python (Tùy chọn B)</span>
+## The Python Desktop App (Option B)
 
 <div class="lang-en">
 If you want to train your own Reinforcement Learning Agent or run a native interactive solver on your computer, check out our Python implementation inside the `python_app` subdirectory.
@@ -131,7 +131,7 @@ pip install -r requirements.txt
 python gui.py
 ```
 
-### <span class="lang-en">Reinforcement Learning Implementation Details</span><span class="lang-vi" style="display: none;">Chi Tiết Triển Khai Học Tăng Cường</span>
+### Reinforcement Learning Implementation Details
 
 <div class="lang-en">
 We define the Rubik's Cube state space as a flattened vector representing color mapping of stickers.
@@ -155,7 +155,7 @@ Sử dụng Mạng Q Sâu (DQN) hoặc double-DQN với lưu trữ trải nghi�
 ## 📘 Step-by-Step Guide to Solving a Rubik's Cube (Beginner's Method)
 
 
-### <span class="lang-en">Understanding Cube Notation 📖</span><span class="lang-vi" style="display: none;">Tìm Hiểu Ký Hiệu Rubik 📖</span>
+### Understanding Cube Notation 📖
 
 <div class="lang-en">
 To follow Rubik's Cube algorithms, you need to understand **Singmaster Notation**. Each letter represents a **$90^\circ$ clockwise rotation** of a specific face (as if you are looking directly at that face):
@@ -244,7 +244,7 @@ Nếu bạn muốn tự tay giải khối Rubik, dưới đây là chi tiết ph
 
 ---
 
-### <span class="lang-en">1. The White Cross ⬜</span><span class="lang-vi" style="display: none;">1. Chữ Thập Trắng ⬜</span>
+### 1. The White Cross ⬜
 
 <div class="lang-en">
 Find the yellow center piece. Move the 4 white edge pieces around the yellow center to form a "daisy". Then, align the non-white color of each edge with its matching center piece and rotate that layer $180^\circ$ (a double turn) down to form a clean white cross on the bottom where the white edges match their side centers.
@@ -284,7 +284,7 @@ Tìm viên tâm màu vàng ở mặt trên. Di chuyển 4 viên cạnh màu tr�
     </div>
 </div>
 
-### <span class="lang-en">2. The First Layer Corners 🧩</span><span class="lang-vi" style="display: none;">2. Giải Góc Tầng Đầu Tiên 🧩</span>
+### 2. The First Layer Corners 🧩
 
 <div class="lang-en">
 Find white corner pieces on the top layer. Position them above the slot they belong to (determined by the other two colors of the corner). Execute the key algorithm (the **Sexy Move**) until the corner is correctly placed:
@@ -318,7 +318,7 @@ $$\text{Công thức: } R \ U \ R' \ U'$$
     </div>
 </div>
 
-### <span class="lang-en">3. Middle Layer (Second Layer Edges) 🟩</span><span class="lang-vi" style="display: none;">3. Tầng Giữa (Cạnh Tầng Hai) 🟩</span>
+### 3. Middle Layer (Second Layer Edges) 🟩
 
 <div class="lang-en">
 Find edge pieces on the top layer that do not contain yellow. Align the front color of the edge with its matching center. 
@@ -335,7 +335,7 @@ Tìm các viên cạnh ở tầng trên cùng mà không chứa màu vàng. Xoay
   $$\text{Công thức: } U' \ L' \ U' \ L \ U \ F \ U \ F'$$
 </div>
 
-### <span class="lang-en">4. Yellow Cross (Orienting Edges) 🟨</span><span class="lang-vi" style="display: none;">4. Chữ Thập Vàng (Định Hướng Cạnh) 🟨</span>
+### 4. Yellow Cross (Orienting Edges) 🟨
 
 <div class="lang-en">
 Look at the top face. You will have a dot, an 'L' shape, a horizontal line, or a cross. Repeat this algorithm to progress towards the cross:
@@ -381,7 +381,7 @@ $$\text{Công thức: } F \ R \ U \ R' \ U' \ F'$$
     </div>
 </div>
 
-### <span class="lang-en">5. Aligning the Yellow Cross (Make a Cross Correctly with the 2nd Layer Below) 🟨</span><span class="lang-vi" style="display: none;">5. Căn Chỉnh Chữ Thập Vàng (Làm Đúng Chữ Thập Với Tầng 2 Bên Dưới) 🟨</span>
+### 5. Aligning the Yellow Cross (Make a Cross Correctly with the 2nd Layer Below) 🟨
 
 <div class="lang-en">
 Once you have the yellow cross, you must align its side colors with the center pieces of the middle layer. 
@@ -447,7 +447,7 @@ Xoay tầng trên cùng để khớp nhiều cạnh nhất có thể với các 
     </div>
 </div>
 
-### <span class="lang-en">6. Orienting the Yellow Corners (Corner: Put All the Yellow Up) 🟨</span><span class="lang-vi" style="display: none;">6. Định Hướng Góc Vàng (Góc: Đưa Tất Cả Mặt Vàng Lên Trên) 🟨</span>
+### 6. Orienting the Yellow Corners (Corner: Put All the Yellow Up) 🟨
 
 <div class="lang-en">
 Next, we orient the four corner pieces so that all their yellow stickers face upward, completing the yellow top face.
@@ -515,7 +515,7 @@ Tiếp theo, chúng ta định hướng 4 viên góc sao cho tất cả các nh�
     </div>
 </div>
 
-### <span class="lang-en">7. Positioning the Yellow Corners (Put the Corners Correctly) ✨</span><span class="lang-vi" style="display: none;">7. Hoán Vị Góc Vàng (Đặt Các Góc Đúng Vị Trí) ✨</span>
+### 7. Positioning the Yellow Corners (Put the Corners Correctly) ✨
 
 <div class="lang-en">
 The final step is to put the yellow corners into their correct positions relative to the side faces.
@@ -594,14 +594,57 @@ Bước cuối cùng là hoán đổi các góc màu vàng về đúng vị trí
 <script src="{{ '/assets/js/rubik-solver-ui.js' | relative_url }}"></script>
 
 <script>
+window.currentLanguage = 'en';
+
+const HEADING_TRANSLATIONS = {
+  "How It Works": "Nguyên Lý Hoạt Động",
+  "The Python Desktop App (Option B)": "Ứng Dụng Desktop Bằng Python (Tùy chọn B)",
+  "Reinforcement Learning Implementation Details": "Chi Tiết Triển Khai Học Tăng Cường",
+  "Understanding Cube Notation 📖": "Tìm Hiểu Ký Hiệu Rubik 📖",
+  "1. The White Cross ⬜": "1. Chữ Thập Trắng ⬜",
+  "2. The First Layer Corners 🧩": "2. Giải Góc Tầng Đầu Tiên 🧩",
+  "3. Middle Layer (Second Layer Edges) 🟩": "3. Tầng Giữa (Cạnh Tầng Hai) 🟩",
+  "4. Yellow Cross (Orienting Edges) 🟨": "4. Chữ Thập Vàng (Định Hướng Cạnh) 🟨",
+  "5. Aligning the Yellow Cross (Make a Cross Correctly with the 2nd Layer Below) 🟨": "5. Căn Chỉnh Chữ Thập Vàng (Làm Đúng Chữ Thập Với Tầng 2 Bên Dưới) 🟨",
+  "6. Orienting the Yellow Corners (Corner: Put All the Yellow Up) 🟨": "6. Định Hướng Góc Vàng (Góc: Đưa Tất Cả Mặt Vàng Lên Trên) 🟨",
+  "7. Positioning the Yellow Corners (Put the Corners Correctly) ✨": "7. Hoán Vị Góc Vàng (Đặt Các Góc Đúng Vị Trí) ✨"
+};
+
+const HEADING_TRANSLATIONS_REV = {};
+for (const key in HEADING_TRANSLATIONS) {
+  HEADING_TRANSLATIONS_REV[HEADING_TRANSLATIONS[key]] = key;
+}
+
+function translateHeadings(toLang) {
+  const dict = toLang === 'vi' ? HEADING_TRANSLATIONS : HEADING_TRANSLATIONS_REV;
+  
+  // Translate headings
+  const headings = document.querySelectorAll('h2, h3');
+  headings.forEach(h => {
+    const text = h.textContent.trim();
+    if (dict[text]) {
+      h.textContent = dict[text];
+    }
+  });
+  
+  // Translate TOC links
+  const links = document.querySelectorAll('a, .toc a, .nav a');
+  links.forEach(a => {
+    const text = a.textContent.trim();
+    if (dict[text]) {
+      a.textContent = dict[text];
+    }
+  });
+}
+
 function toggleLanguage() {
+    window.currentLanguage = window.currentLanguage === 'vi' ? 'en' : 'vi';
     const enElements = document.querySelectorAll('.lang-en');
     const viElements = document.querySelectorAll('.lang-vi');
     
-    // Check current state based on first English element's visibility
-    const isEn = enElements[0].style.display !== 'none';
+    const isEn = window.currentLanguage === 'en';
     
-    if (isEn) {
+    if (!isEn) {
         enElements.forEach(el => el.style.display = 'none');
         viElements.forEach(el => {
             if (el.tagName === 'SPAN') {
@@ -612,6 +655,7 @@ function toggleLanguage() {
                 el.style.display = 'block';
             }
         });
+        translateHeadings('vi');
     } else {
         enElements.forEach(el => {
             if (el.tagName === 'SPAN') {
@@ -623,6 +667,11 @@ function toggleLanguage() {
             }
         });
         viElements.forEach(el => el.style.display = 'none');
+        translateHeadings('en');
+    }
+    
+    if (typeof window.updateSolverUI === 'function') {
+        window.updateSolverUI();
     }
 }
 </script>
