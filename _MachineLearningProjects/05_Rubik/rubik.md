@@ -461,6 +461,25 @@ Xoay tầng trên cùng để khớp nhiều cạnh nhất có thể với các 
             <polygon points="30,35 40,40 40,50 30,45" fill="#009b48" stroke="#000" stroke-width="1"/>
             <polygon points="40,40 50,45 50,55 40,50" fill="#475569" stroke="#000" stroke-width="1"/>
             <polygon points="20,40 30,45 30,55 20,50" fill="#009b48" stroke="#000" stroke-width="1"/>
+    <div style="text-align: center; font-size: 0.85rem; color: #cbd5e1; background: rgba(30, 41, 59, 0.4); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); width: 220px;">
+        <div style="font-weight: bold; margin-bottom: 8px; color: #10b981;">
+            <span class="lang-en">After: Aligned Edges</span>
+            <span class="lang-vi" style="display: none;">Sau: Khớp Cạnh</span>
+        </div>
+        <svg width="120" height="120" viewBox="0 0 100 100">
+            <polygon points="50,15 60,20 50,25 40,20" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="60,20 70,25 60,30 50,25" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="70,25 80,30 70,35 60,30" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="40,20 50,25 40,30 30,25" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="50,25 60,30 50,35 40,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="60,30 70,35 60,40 50,35" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="30,25 40,30 30,35 20,30" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="40,30 50,35 40,40 30,35" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="50,35 60,40 50,45 40,40" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="20,30 30,35 30,45 20,40" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="30,35 40,40 40,50 30,45" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="40,40 50,45 50,55 40,50" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="20,40 30,45 30,55 20,50" fill="#009b48" stroke="#000" stroke-width="1"/>
             <polygon points="30,45 40,50 40,60 30,55" fill="#009b48" stroke="#000" stroke-width="1"/>
             <polygon points="40,50 50,55 50,65 40,60" fill="#009b48" stroke="#000" stroke-width="1"/>
             <polygon points="20,50 30,55 30,65 20,60" fill="#009b48" stroke="#000" stroke-width="1"/>
@@ -477,55 +496,81 @@ Xoay tầng trên cùng để khớp nhiều cạnh nhất có thể với các 
             <polygon points="70,55 80,50 80,60 70,65" fill="#b71234" stroke="#000" stroke-width="1"/>
         </svg>
         <div style="font-size: 0.75rem; margin-top: 5px; color: #a1a1aa;">
-            <span class="lang-en">Edges match the side centers correctly.</span>
-            <span class="lang-vi" style="display: none;">Các cạnh đã khớp đúng với tâm bên.</span>
+            <span class="lang-en">All four edge colors match their corresponding side centers.</span>
+            <span class="lang-vi" style="display: none;">Cả 4 cạnh đã trùng khớp màu hoàn hảo với mặt bên.</span>
         </div>
     </div>
 </div>
 
-### 6. Orienting the Yellow Corners (Corner: Put All the Yellow Up) 🟨
+---
+
+### Step 3: Position the Corners 🧩
 
 <div class="lang-en" markdown="1">
-Next, we orient the four corner pieces so that all their yellow stickers face upward, completing the yellow top face.
+Now, look at the yellow corners. The goal in this step is to get all four corners into their correct positions, even if they are not rotated facing the correct way (for example, a corner is in the correct spot if its three colors match the three surrounding side colors).
 
-#### 🫳 How to Hold the Cube:
-1. **Top Face (U)**: Yellow.
-2. **Bottom Face (D)**: White.
-3. **Front Face (F)**: Pick one side color (e.g., Green) and keep facing it throughout this entire step. **Never rotate the whole cube.**
+**Standard Formula:** $$U \ R \ U' \ L' \ U \ R' \ U' \ L$$
+*   **What it means:** Top left, Right up, Top right, Left up, Top left, Right down, Top right, Left down
 
-#### 🎯 Targeting and Solving:
-1. Look at the Top-Right-Front corner (the **UFR** slot). If this corner is already yellow-up, turn the top ($U$) layer clockwise to bring a corner that is NOT yellow-up into this slot.
-2. Execute the orienting algorithm repeatedly (either 2 or 4 times) until the yellow sticker on this corner face is pointing straight up:
-   $$\text{Algorithm: } R' \ D' \ R \ D$$
-3. **CRITICAL WARNING:** The bottom layers of the cube will look scrambled during this process. Do not panic! Keep holding the cube exactly the same way.
-4. Rotate **only the top ($U$) layer** to bring the next unsolved corner into the **UFR** slot.
-5. Repeat the algorithm ($R' \ D' \ R \ D$) until this corner is also yellow-up.
-6. Continue this process for any remaining unsolved corners. Once the final corner is oriented, the bottom layers will automatically re-align themselves!
+#### How to apply it:
+*   **If zero corners are in the correct place:** Hold the cube in any rotation (with yellow on top) and perform the formula once. This will place at least one corner in the correct spot.
+*   **If one corner is in the correct place:** Rotate the cube so that this correct corner is positioned in the **bottom-right of the yellow top face** (which is the Front-Right-Top / **UFR** slot). Perform the formula again. Check if all corners are in the correct place; if not, repeat the formula one more time with the correct corner still in the bottom-right.
 </div>
 <div class="lang-vi" style="display: none;" markdown="1">
-Tiếp theo, chúng ta định hướng 4 viên góc sao cho tất cả các nhãn dán màu vàng đều hướng lên trên, hoàn thành mặt màu vàng ở phía trên cùng.
+Bây giờ, hãy nhìn vào các góc màu vàng. Mục tiêu của bước này là đưa cả 4 viên góc về đúng vị trí (khe) của chúng, ngay cả khi chúng chưa xoay đúng mặt màu (ví dụ, một góc nằm đúng chỗ nếu 3 màu của nó khớp với 3 màu mặt tâm xung quanh).
 
-#### 🫳 Cách Cầm Khối Rubik:
-1. **Mặt Trên (U)**: Màu Vàng.
-2. **Mặt Dưới (D)**: Màu Trắng.
-3. **Mặt Trước (F)**: Chọn một màu mặt bên (ví dụ: Xanh lá) và giữ cố định mặt này hướng vào bạn trong suốt quá trình thực hiện bước này. **Tuyệt đối không xoay cả khối rubik.**
+**Công thức chuẩn:** $$U \ R \ U' \ L' \ U \ R' \ U' \ L$$
+*   **Ý nghĩa:** Mặt trên sang trái, Mặt phải hướng lên, Mặt trên sang phải, Mặt trái hướng lên, Mặt trên sang trái, Mặt phải hướng xuống, Mặt trên sang phải, Mặt trái hướng xuống.
 
-#### 🎯 Cách Xác Định và Giải Góc:
-1. Nhìn vào vị trí góc Trên-Phải-Trước (vị trí **UFR**). Nếu góc này đã có mặt vàng hướng lên, hãy xoay tầng trên ($U$) theo chiều kim đồng hồ để đưa một góc CHƯA có mặt vàng hướng lên vào vị trí này.
-2. Thực hiện công thức dưới đây liên tục (thường là 2 hoặc 4 lần) cho đến khi mặt màu vàng của góc đó hướng thẳng lên trên:
-   $$\text{Công thức: } R' \ D' \ R \ D$$
-3. **CẢNH BÁO QUAN TRỌNG:** Các tầng dưới của khối rubik sẽ bị xáo trộn trong khi thực hiện công thức này. Đừng lo lắng! Tiếp tục giữ khối rubik cố định hướng ban đầu.
-4. Xoay **chỉ riêng tầng trên ($U$)** để đưa góc chưa được giải tiếp theo vào vị trí góc **UFR**.
-5. Tiếp tục lặp lại công thức ($R' \ D' \ R \ D$) cho đến khi góc này cũng có mặt vàng hướng lên.
-6. Lặp lại quá trình này cho tất cả các góc chưa giải còn lại. Khi góc cuối cùng được định hướng xong, các tầng bên dưới sẽ tự động khớp lại đúng vị trí!
+#### Cách áp dụng:
+*   **Nếu không có góc nào đúng vị trí:** Giữ khối rubik ở bất kỳ hướng xoay nào (mặt vàng ở trên) và thực hiện công thức một lần. Điều này sẽ đưa ít nhất một góc về đúng chỗ.
+*   **Nếu có một góc đúng vị trí:** Xoay khối rubik để viên góc đúng này nằm ở **phía dưới bên phải của mặt vàng trên cùng** (chính là góc Trước-Phải-Trên / vị trí **UFR**). Thực hiện công thức thêm lần nữa. Kiểm tra xem tất cả các góc đã về đúng vị trí chưa; nếu chưa, lặp lại công thức một lần nữa với viên góc đúng vẫn giữ ở phía dưới bên phải.
 </div>
 
 <div class="visual-net-container" style="gap: 20px; flex-wrap: wrap; justify-content: center;">
-    <!-- Step 6 Before -->
     <div style="text-align: center; font-size: 0.85rem; color: #cbd5e1; background: rgba(30, 41, 59, 0.4); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); width: 220px;">
         <div style="font-weight: bold; margin-bottom: 8px; color: #f43f5e;">
-            <span class="lang-en">Before: Twisted Corners</span>
-            <span class="lang-vi" style="display: none;">Trước: Góc Bị Xoay Lệch</span>
+            <span class="lang-en">Before: Scrambled Corners</span>
+            <span class="lang-vi" style="display: none;">Trước: Các Góc Sai Vị Trí</span>
+        </div>
+        <svg width="120" height="120" viewBox="0 0 100 100">
+            <polygon points="50,15 60,20 50,25 40,20" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="60,20 70,25 60,30 50,25" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="70,25 80,30 70,35 60,30" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="40,20 50,25 40,30 30,25" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="50,25 60,30 50,35 40,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="60,30 70,35 60,40 50,35" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="30,25 40,30 30,35 20,30" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="40,30 50,35 40,40 30,35" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="50,35 60,40 50,45 40,40" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="20,30 30,35 30,45 20,40" fill="#ff5800" stroke="#000" stroke-width="1"/>
+            <polygon points="30,35 40,40 40,50 30,45" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="40,40 50,45 50,55 40,50" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="20,40 30,45 30,55 20,50" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="30,45 40,50 40,60 30,55" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="40,50 50,55 50,65 40,60" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="20,50 30,55 30,65 20,60" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="30,55 40,60 40,70 30,65" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="40,60 50,65 50,75 40,70" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="50,45 60,40 60,50 50,55" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="60,40 70,35 70,45 60,50" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="70,35 80,30 80,40 70,45" fill="#ff5800" stroke="#000" stroke-width="1"/>
+            <polygon points="50,55 60,50 60,60 50,65" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="60,50 70,45 70,55 60,60" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="70,45 80,40 80,50 70,55" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="50,65 60,60 60,70 50,75" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="60,60 70,55 70,65 60,70" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="70,55 80,50 80,60 70,65" fill="#b71234" stroke="#000" stroke-width="1"/>
+        </svg>
+        <div style="font-size: 0.75rem; margin-top: 5px; color: #a1a1aa;">
+            <span class="lang-en">Corners are in the wrong slots (e.g. Green face corner is Orange).</span>
+            <span class="lang-vi" style="display: none;">Các viên góc nằm sai khe (ví dụ: góc ở mặt Xanh có màu Cam).</span>
+        </div>
+    </div>
+    <div style="text-align: center; font-size: 0.85rem; color: #cbd5e1; background: rgba(30, 41, 59, 0.4); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); width: 220px;">
+        <div style="font-weight: bold; margin-bottom: 8px; color: #10b981;">
+            <span class="lang-en">After: Corners in Correct Slots</span>
+            <span class="lang-vi" style="display: none;">Sau: Góc Đúng Vị Trí Khe</span>
         </div>
         <svg width="120" height="120" viewBox="0 0 100 100">
             <polygon points="50,15 60,20 50,25 40,20" fill="#475569" stroke="#000" stroke-width="1"/>
@@ -557,114 +602,81 @@ Tiếp theo, chúng ta định hướng 4 viên góc sao cho tất cả các nh�
             <polygon points="70,55 80,50 80,60 70,65" fill="#b71234" stroke="#000" stroke-width="1"/>
         </svg>
         <div style="font-size: 0.75rem; margin-top: 5px; color: #a1a1aa;">
-            <span class="lang-en">Top corners are Grey; Yellow stickers are on the side faces.</span>
-            <span class="lang-vi" style="display: none;">Các góc trên cùng màu Xám; các miếng dán Vàng nằm ở mặt bên.</span>
-        </div>
-    </div>
-    <!-- Step 6 After -->
-    <div style="text-align: center; font-size: 0.85rem; color: #cbd5e1; background: rgba(30, 41, 59, 0.4); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); width: 220px;">
-        <div style="font-weight: bold; margin-bottom: 8px; color: #10b981;">
-            <span class="lang-en">After: Yellow Top Face</span>
-            <span class="lang-vi" style="display: none;">Sau: Phủ Vàng Mặt Trên</span>
-        </div>
-        <svg width="120" height="120" viewBox="0 0 100 100">
-            <polygon points="50,15 60,20 50,25 40,20" fill="#ffd700" stroke="#000" stroke-width="1"/>
-            <polygon points="60,20 70,25 60,30 50,25" fill="#ffd700" stroke="#000" stroke-width="1"/>
-            <polygon points="70,25 80,30 70,35 60,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
-            <polygon points="40,20 50,25 40,30 30,25" fill="#ffd700" stroke="#000" stroke-width="1"/>
-            <polygon points="50,25 60,30 50,35 40,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
-            <polygon points="60,30 70,35 60,40 50,35" fill="#ffd700" stroke="#000" stroke-width="1"/>
-            <polygon points="30,25 40,30 30,35 20,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
-            <polygon points="40,30 50,35 40,40 30,35" fill="#ffd700" stroke="#000" stroke-width="1"/>
-            <polygon points="50,35 60,40 50,45 40,40" fill="#ffd700" stroke="#000" stroke-width="1"/>
-            <polygon points="20,30 30,35 30,45 20,40" fill="#b71234" stroke="#000" stroke-width="1"/>
-            <polygon points="30,35 40,40 40,50 30,45" fill="#009b48" stroke="#000" stroke-width="1"/>
-            <polygon points="40,40 50,45 50,55 40,50" fill="#ff5800" stroke="#000" stroke-width="1"/>
-            <polygon points="20,40 30,45 30,55 20,50" fill="#009b48" stroke="#000" stroke-width="1"/>
-            <polygon points="30,45 40,50 40,60 30,55" fill="#009b48" stroke="#000" stroke-width="1"/>
-            <polygon points="40,50 50,55 50,65 40,60" fill="#009b48" stroke="#000" stroke-width="1"/>
-            <polygon points="20,50 30,55 30,65 20,60" fill="#009b48" stroke="#000" stroke-width="1"/>
-            <polygon points="30,55 40,60 40,70 30,65" fill="#009b48" stroke="#000" stroke-width="1"/>
-            <polygon points="40,60 50,65 50,75 40,70" fill="#009b48" stroke="#000" stroke-width="1"/>
-            <polygon points="50,45 60,40 60,50 50,55" fill="#ff5800" stroke="#000" stroke-width="1"/>
-            <polygon points="60,40 70,35 70,45 60,50" fill="#b71234" stroke="#000" stroke-width="1"/>
-            <polygon points="70,35 80,30 80,40 70,45" fill="#009b48" stroke="#000" stroke-width="1"/>
-            <polygon points="50,55 60,50 60,60 50,65" fill="#b71234" stroke="#000" stroke-width="1"/>
-            <polygon points="60,50 70,45 70,55 60,60" fill="#b71234" stroke="#000" stroke-width="1"/>
-            <polygon points="70,45 80,40 80,50 70,55" fill="#b71234" stroke="#000" stroke-width="1"/>
-            <polygon points="50,65 60,60 60,70 50,75" fill="#b71234" stroke="#000" stroke-width="1"/>
-            <polygon points="60,60 70,55 70,65 60,70" fill="#b71234" stroke="#000" stroke-width="1"/>
-            <polygon points="70,55 80,50 80,60 70,65" fill="#b71234" stroke="#000" stroke-width="1"/>
-        </svg>
-        <div style="font-size: 0.75rem; margin-top: 5px; color: #a1a1aa;">
-            <span class="lang-en">The top face is all yellow, but corners are scrambled on the sides.</span>
-            <span class="lang-vi" style="display: none;">Mặt trên đã vàng hoàn toàn, nhưng các góc bên cạnh vẫn bị lệch.</span>
+            <span class="lang-en">Corners belong to these slots (colors match), but are twisted.</span>
+            <span class="lang-vi" style="display: none;">Các góc đã về đúng vị trí khe khớp màu, nhưng đang bị xoay lệch.</span>
         </div>
     </div>
 </div>
 
-### 7. Positioning the Yellow Corners (Put the Corners Correctly) ✨
+---
+
+### Step 4: Solve the Corners (The Core 4-Move Formula) ✨
 
 <div class="lang-en" markdown="1">
-The final step is to put the yellow corners into their correct positions relative to the side faces.
+In this final step, you will rotate the corner pieces to face the correct way, solving the entire cube. Make sure the yellow cross is still matched up and all corners are in their correct positions before starting.
 
-#### 🫳 How to Hold the Cube:
-1. **Top Face (U)**: Yellow.
-2. **Bottom Face (D)**: White.
+**The Formula (The "Four Moves"):**
+1.  Right side down ($R'$)
+2.  Bottom to the left ($D'$)
+3.  Right side up ($R$)
+4.  Bottom to the right ($D$)
 
-#### 🎯 Targeting and Solving:
-1. Find a corner piece that is in the correct slot (it aligns with the colors of its adjacent side faces, even if it is rotated/twisted). For example, the Yellow-Green-Red corner should sit between the Yellow, Green, and Red center pieces.
-2. **If you find one correct corner**: Hold the cube so this correct corner is at the **Front-Right-Top (UFR)** position. 
-3. Execute the algorithm below. This formula preserves the corner at UFR while cycling the other three corners:
-   $$\text{Algorithm: } U \ R \ U' \ L' \ U \ R' \ U' \ L$$
-4. **If no corners are initially in the correct slot**: Execute the algorithm once from any angle. This will place at least one corner in its correct slot. Locate that correct corner, rotate the cube to position it at **UFR**, and execute the algorithm again.
-5. If the corners are in their correct slots but need to be twisted, repeat **Step 6** to orient the yellow faces upward. Your Rubik's cube is now solved!
+#### How to apply it:
+*   **Step A:** Position one unsolved yellow corner in the **front-right spot** of the yellow top face (the **UFR** slot).
+*   **Step B:** Perform the 4-move formula twice ($2\times$) and check if that corner is solved (with yellow facing up). If it is not solved, perform the 4-move formula another two times (making four times total).
+*   **Step C:** **Do not rotate the entire cube.** Once the first corner is solved, rotate **only the top layer** ($U$ or $U'$) to bring the next unsolved yellow corner into that exact same front-right spot.
+*   **Step D:** Repeat the 4-move formula (either 2 or 4 times) for this corner until it is solved.
+*   **Step E:** Continue rotating the top layer to bring any remaining unsolved corners into the front-right spot and apply the formula until all corners are solved.
+
+Finally, rotate the top layer to align the sides, and your Rubik's Cube is fully solved!
 </div>
 <div class="lang-vi" style="display: none;" markdown="1">
-Bước cuối cùng là hoán đổi các góc màu vàng về đúng vị trí tương đối của chúng so với các mặt bên cạnh.
+Trong bước cuối cùng này, bạn sẽ xoay các viên góc để hướng đúng mặt màu lên trên, hoàn thành giải toàn bộ khối rubik. Đảm bảo chữ thập màu vàng vẫn khớp màu và tất cả các viên góc đã nằm đúng vị trí khe trước khi bắt đầu.
 
-#### 🫳 Cách Cầm Khối Rubik:
-1. **Mặt Trên (U)**: Màu Vàng.
-2. **Mặt Dưới (D)**: Màu Trắng.
+**Công thức ("Bốn Bước Xoay"):**
+1.  Mặt phải hướng xuống ($R'$)
+2.  Mặt đáy sang trái ($D'$)
+3.  Mặt phải hướng lên ($R$)
+4.  Mặt đáy sang phải ($D$)
 
-#### 🎯 Cách Xác Định và Giải Góc:
-1. Tìm một góc đã nằm ở đúng vị trí góc của nó (nằm giữa 3 màu của các mặt bên tương ứng, ngay cả khi nó đang bị xoay ngược). Ví dụ: Viên góc Vàng-Xanh lá-Đỏ phải nằm giữa các mặt tâm Vàng, Xanh lá và Đỏ.
-2. **Nếu có một góc đúng**: Hãy giữ khối rubik sao cho viên góc đúng này nằm ở vị trí **Trước-Phải-Trên (UFR)**.
-3. Thực hiện công thức dưới đây. Công thức này sẽ giữ nguyên góc ở vị trí UFR và hoán vị xoay vòng 3 góc còn lại:
-   $$\text{Công thức: } U \ R \ U' \ L' \ U \ R' \ U' \ L$$
-4. **Nếu ban đầu không có góc nào ở đúng vị trí**: Hãy thực hiện công thức này một lần từ bất kỳ mặt nào. Việc này sẽ đưa ít nhất một góc về đúng vị trí. Tìm viên góc đúng đó, xoay khối rubik để đặt nó vào vị trí **UFR**, và thực hiện lại công thức.
-5. Nếu các góc đã đúng vị trí nhưng mặt vàng chưa hướng lên trên, hãy thực hiện lại **Bước 6** để định hướng lại góc. Khối Rubik của bạn sẽ được hoàn thành hoàn toàn!
+#### Cách áp dụng:
+*   **Bước A:** Đặt một viên góc màu vàng chưa giải vào **vị trí trước-phải** của mặt vàng trên cùng (vị trí **UFR**).
+*   **Bước B:** Thực hiện công thức 4 bước xoay trên 2 lần ($2\times$) và kiểm tra xem góc đó đã được giải chưa (mặt vàng hướng lên trên). Nếu chưa giải xong, thực hiện tiếp công thức 4 bước trên thêm 2 lần nữa (tổng cộng là 4 lần).
+*   **Bước C:** **Tuyệt đối không xoay cả khối rubik.** Khi góc đầu tiên đã giải xong, hãy xoay **chỉ riêng tầng trên cùng** ($U$ hoặc $U'$) để đưa góc vàng chưa giải tiếp theo vào đúng vị trí trước-phải đó.
+*   **Bước D:** Lặp lại công thức 4 bước xoay (2 hoặc 4 lần) cho viên góc này cho đến khi nó được giải xong.
+*   **Bước E:** Tiếp tục xoay tầng trên cùng để đưa các góc chưa giải còn lại vào vị trí trước-phải và áp dụng công thức cho đến khi tất cả các góc được giải.
+
+Cuối cùng, xoay tầng trên cùng để căn chỉnh trùng khớp các mặt bên, khối Rubik của bạn đã được giải hoàn toàn!
 </div>
 
 <div class="visual-net-container" style="gap: 20px; flex-wrap: wrap; justify-content: center;">
-    <!-- Step 7 Before -->
     <div style="text-align: center; font-size: 0.85rem; color: #cbd5e1; background: rgba(30, 41, 59, 0.4); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); width: 220px;">
         <div style="font-weight: bold; margin-bottom: 8px; color: #f43f5e;">
-            <span class="lang-en">Before: Scrambled Corners</span>
-            <span class="lang-vi" style="display: none;">Trước: Các Góc Bị Lệch Vị Trí</span>
+            <span class="lang-en">Before: Twisted Corners</span>
+            <span class="lang-vi" style="display: none;">Trước: Các Góc Bị Xoay Lệch</span>
         </div>
         <svg width="120" height="120" viewBox="0 0 100 100">
-            <polygon points="50,15 60,20 50,25 40,20" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="50,15 60,20 50,25 40,20" fill="#475569" stroke="#000" stroke-width="1"/>
             <polygon points="60,20 70,25 60,30 50,25" fill="#ffd700" stroke="#000" stroke-width="1"/>
-            <polygon points="70,25 80,30 70,35 60,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="70,25 80,30 70,35 60,30" fill="#475569" stroke="#000" stroke-width="1"/>
             <polygon points="40,20 50,25 40,30 30,25" fill="#ffd700" stroke="#000" stroke-width="1"/>
             <polygon points="50,25 60,30 50,35 40,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
             <polygon points="60,30 70,35 60,40 50,35" fill="#ffd700" stroke="#000" stroke-width="1"/>
-            <polygon points="30,25 40,30 30,35 20,30" fill="#ffd700" stroke="#000" stroke-width="1"/>
+            <polygon points="30,25 40,30 30,35 20,30" fill="#475569" stroke="#000" stroke-width="1"/>
             <polygon points="40,30 50,35 40,40 30,35" fill="#ffd700" stroke="#000" stroke-width="1"/>
-            <polygon points="50,35 60,40 50,45 40,40" fill="#ffd700" stroke="#000" stroke-width="1"/>
-            <polygon points="20,30 30,35 30,45 20,40" fill="#b71234" stroke="#000" stroke-width="1"/>
+            <polygon points="50,35 60,40 50,45 40,40" fill="#475569" stroke="#000" stroke-width="1"/>
+            <polygon points="20,30 30,35 30,45 20,40" fill="#ffd700" stroke="#000" stroke-width="1"/>
             <polygon points="30,35 40,40 40,50 30,45" fill="#009b48" stroke="#000" stroke-width="1"/>
-            <polygon points="40,40 50,45 50,55 40,50" fill="#ff5800" stroke="#000" stroke-width="1"/>
+            <polygon points="40,40 50,45 50,55 40,50" fill="#009b48" stroke="#000" stroke-width="1"/>
             <polygon points="20,40 30,45 30,55 20,50" fill="#009b48" stroke="#000" stroke-width="1"/>
             <polygon points="30,45 40,50 40,60 30,55" fill="#009b48" stroke="#000" stroke-width="1"/>
             <polygon points="40,50 50,55 50,65 40,60" fill="#009b48" stroke="#000" stroke-width="1"/>
             <polygon points="20,50 30,55 30,65 20,60" fill="#009b48" stroke="#000" stroke-width="1"/>
             <polygon points="30,55 40,60 40,70 30,65" fill="#009b48" stroke="#000" stroke-width="1"/>
             <polygon points="40,60 50,65 50,75 40,70" fill="#009b48" stroke="#000" stroke-width="1"/>
-            <polygon points="50,45 60,40 60,50 50,55" fill="#ff5800" stroke="#000" stroke-width="1"/>
+            <polygon points="50,45 60,40 60,50 50,55" fill="#ffd700" stroke="#000" stroke-width="1"/>
             <polygon points="60,40 70,35 70,45 60,50" fill="#b71234" stroke="#000" stroke-width="1"/>
-            <polygon points="70,35 80,30 80,40 70,45" fill="#009b48" stroke="#000" stroke-width="1"/>
+            <polygon points="70,35 80,30 80,40 70,45" fill="#b71234" stroke="#000" stroke-width="1"/>
             <polygon points="50,55 60,50 60,60 50,65" fill="#b71234" stroke="#000" stroke-width="1"/>
             <polygon points="60,50 70,45 70,55 60,60" fill="#b71234" stroke="#000" stroke-width="1"/>
             <polygon points="70,45 80,40 80,50 70,55" fill="#b71234" stroke="#000" stroke-width="1"/>
@@ -673,11 +685,10 @@ Bước cuối cùng là hoán đổi các góc màu vàng về đúng vị trí
             <polygon points="70,55 80,50 80,60 70,65" fill="#b71234" stroke="#000" stroke-width="1"/>
         </svg>
         <div style="font-size: 0.75rem; margin-top: 5px; color: #a1a1aa;">
-            <span class="lang-en">Corners are out of place relative to the sides.</span>
-            <span class="lang-vi" style="display: none;">Các viên góc chưa khớp đúng mặt màu bên cạnh.</span>
+            <span class="lang-en">Corners are correct on sides, but yellow face points sideways.</span>
+            <span class="lang-vi" style="display: none;">Các góc đúng khe ở mặt bên, nhưng mặt vàng hướng sang bên.</span>
         </div>
     </div>
-    <!-- Step 7 After -->
     <div style="text-align: center; font-size: 0.85rem; color: #cbd5e1; background: rgba(30, 41, 59, 0.4); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); width: 220px;">
         <div style="font-weight: bold; margin-bottom: 8px; color: #10b981;">
             <span class="lang-en">After: Fully Solved!</span>
@@ -740,10 +751,10 @@ const HEADING_TRANSLATIONS = {
   "1. The White Cross ⬜": "1. Chữ Thập Trắng ⬜",
   "2. The First Layer Corners 🧩": "2. Giải Góc Tầng Đầu Tiên 🧩",
   "3. Middle Layer (Second Layer Edges) 🟩": "3. Tầng Giữa (Cạnh Tầng Hai) 🟩",
-  "4. Yellow Cross (Orienting Edges) 🟨": "4. Chữ Thập Vàng (Định Hướng Cạnh) 🟨",
-  "5. Aligning the Yellow Cross (Make a Cross Correctly with the 2nd Layer Below) 🟨": "5. Căn Chỉnh Chữ Thập Vàng (Làm Đúng Chữ Thập Với Tầng 2 Bên Dưới) 🟨",
-  "6. Orienting the Yellow Corners (Corner: Put All the Yellow Up) 🟨": "6. Định Hướng Góc Vàng (Góc: Đưa Tất Cả Mặt Vàng Lên Trên) 🟨",
-  "7. Positioning the Yellow Corners (Put the Corners Correctly) ✨": "7. Hoán Vị Góc Vàng (Đặt Các Góc Đúng Vị Trí) ✨"
+  "Step 1: Solve the Yellow Cross 🟨": "Bước 1: Giải Chữ Thập Vàng 🟨",
+  "Step 2: Match the Edges with the Side Colors 🟨": "Bước 2: Khớp Cạnh Với Màu Mặt Bên 🟨",
+  "Step 3: Position the Corners 🧩": "Bước 3: Hoán Vị Góc (Đưa Góc Về Đúng Vị Trí) 🧩",
+  "Step 4: Solve the Corners (The Core 4-Move Formula) ✨": "Bước 4: Giải Góc (Công Thức 4 Bước Cốt Lõi) ✨"
 };
 
 const HEADING_TRANSLATIONS_REV = {};
