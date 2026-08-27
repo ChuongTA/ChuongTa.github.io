@@ -4,9 +4,11 @@ category: densys
 excerpt: "Multi-criteria evaluation and future deployment scenario modeling of biomass-to-liquid (BtL) conversion technologies."
 layout: single
 author_profile: true
-permalink: /MasterProgramProjects/Biomass_to_Liquid/
+permalink: /MscProjects/Biomass_to_Liquid/
+redirect_from:
+  - /MasterProgramProjects/Biomass_to_Liquid/
 date: 2025-01-15
-image: "/MasterProgramProjects/Biomass_to_Liquid/Graphical_Abstract.png"
+image: "/MscProjects/Biomass_to_Liquid/Graphical_Abstract.png"
 ---
 
 **ENSYS Biomass-to-Liquid Project — January 2025**
@@ -31,8 +33,8 @@ This project evaluates diverse biomass-to-liquid (BtL) conversion pathways for s
 
 ## Documentation
 
-- [Download project report (PDF, written in LaTeX)](/MasterProgramProjects/Biomass_to_Liquid/BiomasstoLiquid_Chuong_Elisalome_DENSYS_2024_Submisison.pdf)
-- [Download LaTex code](/MasterProgramProjects/Biomass_to_Liquid/LaTex_code_Chuong_Elisalome_DENSYS_2024.zip)
+- [Download project report (PDF, written in LaTeX)](/MscProjects/Biomass_to_Liquid/BiomasstoLiquid_Chuong_Elisalome_DENSYS_2024_Submisison.pdf)
+- [Download LaTex code](/MscProjects/Biomass_to_Liquid/LaTex_code_Chuong_Elisalome_DENSYS_2024.zip)
 
 ## Technologies and Skills Used
 

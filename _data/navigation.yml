@@ -14,7 +14,7 @@ main:
     url: /WindEnergy/
   - title: "Energy Forecasting"
     url: /EnergyForecasting/
-  - title: "Master Program Projects"
-    url: /MasterProgramProjects/
+  - title: "MSc Projects"
+    url: /MscProjects/
   - title: "Machine Learning Projects"
     url: /MachineLearningProjects/

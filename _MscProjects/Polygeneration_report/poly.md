@@ -4,12 +4,14 @@ category: densys
 excerpt: "Feasibility study of 120 kW SOFC system achieving 116.88 kW net output with 16.33-year payback for Novara WWTP biogas valorization."
 layout: single
 author_profile: true
-permalink: /MasterProgramProjects/Polygeneration_report/
-image: "/MasterProgramProjects/Polygeneration_report/WWTP.png"
+permalink: /MscProjects/Polygeneration_report/
+redirect_from:
+  - /MasterProgramProjects/Polygeneration_report/
+image: "/MscProjects/Polygeneration_report/WWTP.png"
 date: 2026-02-15
 ---
 
-![Figure 1. Schematic illustration of a WWTP integrated with Biogas-fed SOFC plant](/MasterProgramProjects/Polygeneration_report/WWTP.png)
+![Figure 1. Schematic illustration of a WWTP integrated with Biogas-fed SOFC plant](/MscProjects/Polygeneration_report/WWTP.png)
 
 ## Team
 **Group members — A.Y. 2025/26**
@@ -35,7 +37,7 @@ The project demonstrates **technical feasibility but operates within narrow econ
 
 ## System Overview
 
-![Figure 2. Working Principle of a Biogas-Fed SOFC System](/MasterProgramProjects/Polygeneration_report/flow_diagram.png)
+![Figure 2. Working Principle of a Biogas-Fed SOFC System](/MscProjects/Polygeneration_report/flow_diagram.png)
 
 The integrated plant converts raw biogas from the Novara WWTP into high-grade energy through three stages [file:59][file:60]:
 
@@ -69,7 +71,7 @@ The integrated plant converts raw biogas from the Novara WWTP into high-grade en
 
 ### Base Case Performance
 
-![Figure 5. Cumulative cash flow diagram](/MasterProgramProjects/Polygeneration_report/NPV_PBT_base_case.png)
+![Figure 5. Cumulative cash flow diagram](/MscProjects/Polygeneration_report/NPV_PBT_base_case.png)
 
 The cumulative cash flow analysis reveals initial investment of €944,155 with negative cash flow for the first 16 years, including periodic €252,000 stack replacements every 5 years.
 
@@ -77,20 +79,20 @@ The cumulative cash flow analysis reveals initial investment of €944,155 with 
 
 ### Sensitivity Analysis
 
-![Figure 6. Sensitivity analysis of key parameters on NPV](/MasterProgramProjects/Polygeneration_report/sensitivity_analysis_NPV.png)
+![Figure 6. Sensitivity analysis of key parameters on NPV](/MscProjects/Polygeneration_report/sensitivity_analysis_NPV.png)
 
 Energy prices demonstrate the strongest influence on project economics, with steep blue line indicating dramatic NPV shifts from -1,000 k€ to +2,500 k€ across tested range.
 
-![Figure 7. Sensitivity analysis of parameters on Payback Period](/MasterProgramProjects/Polygeneration_report/sensitivity_analysis_PBT.png)
+![Figure 7. Sensitivity analysis of parameters on Payback Period](/MscProjects/Polygeneration_report/sensitivity_analysis_PBT.png)
 
 Payback period analysis confirms energy prices as most critical parameter, with base case at 16.33 years extending beyond 20-year lifetime at -50% prices while dropping to 3-4 years at +100% prices.
 
 ---
 
 ## Documentation
-- [Download Full Report (PDF)](/MasterProgramProjects/Polygeneration_report/Polygeneration_report_v5.pdf)
-- [Download coding (Python)](/MasterProgramProjects/Polygeneration_report/Polygeneration_code.ipynb)
-- [Download simulation file (Aspen Plus)](/MasterProgramProjects/Polygeneration_report/PAES_Lab_Aspen_file.apwz)
+- [Download Full Report (PDF)](/MscProjects/Polygeneration_report/Polygeneration_report_v5.pdf)
+- [Download coding (Python)](/MscProjects/Polygeneration_report/Polygeneration_code.ipynb)
+- [Download simulation file (Aspen Plus)](/MscProjects/Polygeneration_report/PAES_Lab_Aspen_file.apwz)
 ---
 
 ## System Performance

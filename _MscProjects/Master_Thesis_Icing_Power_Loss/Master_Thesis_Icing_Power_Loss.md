@@ -4,9 +4,11 @@ category: densys
 excerpt: "MSc thesis at rebase.energy (Stockholm): forecasting wind turbine icing power losses at 1-36 hour lead times using SCADA and ERA5-Land data, an extended IEA Wind Task 19 framework, and a two-stage LightGBM classifier-regressor."
 layout: single
 author_profile: true
-permalink: /MasterProgramProjects/Master_Thesis_Icing_Power_Loss/
+permalink: /MscProjects/Master_Thesis_Icing_Power_Loss/
+redirect_from:
+  - /MasterProgramProjects/Master_Thesis_Icing_Power_Loss/
 date: 2026-07-29
-image: "/MasterProgramProjects/Master_Thesis_Icing_Power_Loss/Graphical_Abstract.png"
+image: "/MscProjects/Master_Thesis_Icing_Power_Loss/Graphical_Abstract.png"
 ---
 
 **Master Thesis, DENSYS Erasmus Mundus Joint Master Degree**
@@ -28,7 +30,7 @@ Evaluation on a blind winter test set spans several scenarios: Persistence, Orac
 
 ## Documentation
 
-- [Download partial thesis (PDF)](/MasterProgramProjects/Master_Thesis_Icing_Power_Loss/Partial_Ms_thesis_compressed.pdf)
+- [Download partial thesis (PDF)](/MscProjects/Master_Thesis_Icing_Power_Loss/Partial_Ms_thesis_compressed.pdf)
 - [LinkedIn announcement post](https://www.linkedin.com/posts/chuongta_icingabrpowerabrloss-machineabrlearning-densys-ugcPost-7478380902612525057-Be_d/)
 
 ## Next Steps

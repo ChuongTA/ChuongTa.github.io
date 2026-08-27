@@ -2,14 +2,16 @@
 title: "Liège Projects"
 category: densys
 excerpt: "Operational planning, sizing, and optimization assignment for Université de Liège; my favorite DENSYS course that sparked my love for programming!"
-image: /MasterProgramProjects/Liege_Projects/Liege_class.jpg
+image: /MscProjects/Liege_Projects/Liege_class.jpg
 layout: single
 author_profile: true
-permalink: /MasterProgramProjects/Liege_Projects/
+permalink: /MscProjects/Liege_Projects/
+redirect_from:
+  - /MasterProgramProjects/Liege_Projects/
 date: 2024-06-01
 ---
 
-![Liège Assignment](/MasterProgramProjects/Liege_Projects/Liege_class.jpg)
+![Liège Assignment](/MscProjects/Liege_Projects/Liege_class.jpg)
 
 About this course: Data and Forecasting in Microgrids is my favourite course in DENSYS. From this I started to love programming, which was something I was very scared of in the past. Now, I enjoy it 😊.
 
@@ -31,8 +33,8 @@ This project was completed as part of the Energy Systems module, taught by:
 
 ## Documentation
 
-- [Download assignment report (PDF)](/MasterProgramProjects/Liege_Projects/Report_Liege_Niayesh_Chuong_Andras.pdf)
-- [Download project code (ZIP)](/MasterProgramProjects/Liege_Projects/Densys_LiegeReport2_András_Niayesh_Chuong.zip)
+- [Download assignment report (PDF)](/MscProjects/Liege_Projects/Report_Liege_Niayesh_Chuong_Andras.pdf)
+- [Download project code (ZIP)](/MscProjects/Liege_Projects/Densys_LiegeReport2_András_Niayesh_Chuong.zip)
 
 ## Technologies Used
 

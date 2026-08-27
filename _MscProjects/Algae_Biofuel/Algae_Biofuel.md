@@ -2,14 +2,16 @@
 title: "Algae-Based Biofuel for Sustainable Aviation (CBM Module)"
 category: densys
 excerpt: "Case-Based Module: Evaluating algae-derived Sustainable Aviation Fuel (SAF) pathways; comprehensive study for aviation decarbonization."
-image: /MasterProgramProjects/Algae_Biofuel/SAF.png
+image: /MscProjects/Algae_Biofuel/SAF.png
 layout: single
 author_profile: true
-permalink: /MasterProgramProjects/Algae_Biofuel/
+permalink: /MscProjects/Algae_Biofuel/
+redirect_from:
+  - /MasterProgramProjects/Algae_Biofuel/
 date: 2024-06-01
 year: "2024"
 ---
-![Algae SAF Project](/MasterProgramProjects/Algae_Biofuel/SAF.png)
+![Algae SAF Project](/MscProjects/Algae_Biofuel/SAF.png)
 
 **Case-Based Module Assignment: Decarbonizing Aviation with Algae-Based SAF**
 
@@ -31,7 +33,7 @@ This project, part of the DENSYS Master's program, assessed sustainable aviation
 
 ## Documentation
 
-- [Download full report (PDF)](/MasterProgramProjects/Algae_Biofuel/Final_Report_CBM.pdf)
+- [Download full report (PDF)](/MscProjects/Algae_Biofuel/Final_Report_CBM.pdf)
 
 ## Technologies and Methods Used
 

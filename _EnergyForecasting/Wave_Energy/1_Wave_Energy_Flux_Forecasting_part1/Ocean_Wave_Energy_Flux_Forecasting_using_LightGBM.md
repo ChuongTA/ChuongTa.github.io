@@ -7,7 +7,8 @@ permalink: /EnergyForecasting/Wave_Energy/Wave_Energy_Flux_Forecasting_part1/
 usemathjax: true
 image: "/EnergyForecasting/Wave_Energy/1_Wave_Energy_Flux_Forecasting_part1/02_Images/Fig4_Theoretical_wave_power_surface.png"
 date: 2026-08-07
-category: "Wave Energy"
+categories:
+  - "Wave Energy"
 ---
 > **Series:** Wave Energy | **Part:** 2 (Flux Forecasting — LightGBM)
 

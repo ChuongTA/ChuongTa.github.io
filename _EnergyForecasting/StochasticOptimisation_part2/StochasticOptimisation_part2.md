@@ -7,7 +7,8 @@ permalink: /EnergyForecasting/StochasticOptimisation_part2/
 usemathjax: true
 image: "/EnergyForecasting/StochasticOptimisation_part2/Results/fig_dispatch_comparison.png"
 date: 2026-08-06
-category: "Electricity Market"
+categories:
+  - "Electricity Market"
 ---
 
 > **Series:** Stochastic Optimisation for Energy Storage | **Part:** 2 (Implementation)

@@ -7,7 +7,8 @@ permalink: /EnergyForecasting/Wave_Energy/Introduction_of_Wave_Energy/
 usemathjax: true
 image: "/EnergyForecasting/Wave_Energy/0_Introduction_of_Wave_Energy/Images/Fig0.png"
 date: 2026-08-07
-category: "Wave Energy"
+categories:
+  - "Wave Energy"
 ---
 > **Series:** Wave Energy | **Part:** 1 (Introduction)
 
@@ -75,7 +76,7 @@ where *a* is amplitude and *H* is wave height.
 
 ### Influence of Water Depth
 
-Water particle motion decreases exponentially with depth. If depth exceeds λ/2, the bottom has no influence on the wave — this is *deep water*. More finely:
+Water particle motion decreases exponentially with depth. If depth exceeds λ/2, the bottom has no influence on the wave, this is *deep water*. More finely:
 
 - **Deep:** h > λ/4
 - **Transitional depth:** λ/25 < h < λ/4

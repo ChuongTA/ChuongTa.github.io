@@ -1,0 +1,55 @@
+---
+layout: default
+author_profile: false
+---
+
+<div id="main" role="main">
+  {% include sidebar.html %}
+
+  <div class="archive">
+    <h1 class="page__title">{{ page.title }}</h1>
+    {% include base_path %}
+
+    {% comment %}
+      site.categories only aggregates the built-in _posts collection, and this
+      site keeps its content in custom collections instead, so the grouping is
+      built by hand from every collection that outputs pages.
+    {% endcomment %}
+    {% assign all_docs = site.EnergyForecasting | concat: site.WindEnergy | concat: site.MscProjects | concat: site.MachineLearningProjects | concat: site.posts %}
+    {% assign all_docs = all_docs | sort: "date" | reverse %}
+
+    {% assign category_names = "" | split: "" %}
+    {% for doc in all_docs %}
+      {% assign doc_cats = doc.categories %}
+      {% if doc_cats == nil or doc_cats == empty %}
+        {% if doc.category %}
+          {% assign doc_cats = doc.category | split: "@@@" %}
+        {% endif %}
+      {% endif %}
+      {% for cat in doc_cats %}
+        {% assign category_names = category_names | push: cat %}
+      {% endfor %}
+    {% endfor %}
+    {% assign category_names = category_names | uniq | sort %}
+
+    {% if category_names.size == 0 %}
+      <p>No categories yet.</p>
+    {% endif %}
+
+    {% for cat in category_names %}
+      <h2 id="{{ cat | slugify }}" class="archive__subtitle">{{ cat }}</h2>
+      {% for doc in all_docs %}
+        {% assign doc_cats = doc.categories %}
+        {% if doc_cats == nil or doc_cats == empty %}
+          {% if doc.category %}
+            {% assign doc_cats = doc.category | split: "@@@" %}
+          {% endif %}
+        {% endif %}
+        {% if doc_cats contains cat %}
+          {% assign post = doc %}
+          {% include archive-single.html %}
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  </div>
+</div>

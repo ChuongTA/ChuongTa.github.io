@@ -1,7 +1,9 @@
 ---
 layout: archive
-title: "Master Program Projects"
-permalink: /MasterProgramProjects/
+title: "MSc Projects"
+permalink: /MscProjects/
+redirect_from:
+  - /MasterProgramProjects/
 author_profile: true
 ---
 
@@ -12,7 +14,7 @@ author_profile: true
 <hr style="border: 0; border-top: 1px solid var(--global-border-color); margin: 2em 0;" />
 
 <div class="master-projects-list">
-  {% assign ordered_posts = site.MasterProgramProjects | sort: "date" | reverse %}
+  {% assign ordered_posts = site.MscProjects | sort: "date" | reverse %}
 
   {% assign last_year = "" %}
   {% for post in ordered_posts %}

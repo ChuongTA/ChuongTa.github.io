@@ -7,7 +7,8 @@ permalink: /EnergyForecasting/StochasticOptimisation_part1/
 usemathjax: true
 image: "/EnergyForecasting/StochasticOptimisation_part1/fig_deterministic_vs_stochastic.png"
 date: 2026-08-06
-category: "Electricity Market"
+categories:
+  - "Electricity Market"
 ---
 > **Series:** Stochastic Optimisation for Energy Storage | **Part:** 1 (Theory)
 
@@ -31,7 +32,7 @@ $$
 
 where $x$ is the decision variable, $c$ the cost weights, and $Ax = b$ the fixed constraints, capacity limits, balance equations, and so on. Everything in this formulation is known ahead of time; nothing is random.
 
-This is the same logic behind classical optimisation methods such as linear and mixed-integer programming, and it also matches the structure of classic inventory control problems: a resource is held in stock, and decisions are made period by period to use it optimally. It is also the approach behind a project completed as part of the DENSYS Energy Systems module at Université de Liège: sizing and operating a microgrid (PV, battery, grid connection, generator, EV charging) using mixed-integer nonlinear programming (MINLP) in Pyomo, minimising operating cost under fixed assumptions about future load, tariffs, and generation ([project summary and report](/MasterProgramProjects/Liege_Projects/)).
+This is the same logic behind classical optimisation methods such as linear and mixed-integer programming, and it also matches the structure of classic inventory control problems: a resource is held in stock, and decisions are made period by period to use it optimally. It is also the approach behind a project completed as part of the DENSYS Energy Systems module at Université de Liège: sizing and operating a microgrid (PV, battery, grid connection, generator, EV charging) using mixed-integer nonlinear programming (MINLP) in Pyomo, minimising operating cost under fixed assumptions about future load, tariffs, and generation ([project summary and report](/MscProjects/Liege_Projects/)).
 
 Applied to a battery, a deterministic model assumes the full price and demand path for the planning horizon is known ahead of time, and solves for the one charge/discharge schedule that maximises profit against that fixed path.
 
@@ -98,7 +99,7 @@ The battery's physical characteristics, power rating, energy capacity, charge an
 - Kraft, E., Russo, M., Keles, D., & Bertsch, V. (2021). *Stochastic Optimization of Trading Strategies in Sequential Electricity Markets*. Working Paper Series in Production and Energy, No. 58, Karlsruhe Institute of Technology.
 - Arandia Goettsch, R. M. (2024). *Optimization of Bidding Strategies for a Battery Storage System in the Energy Market*. MSc thesis, University of Groningen.
 - Yurdakul, O., & Billimoria, F. (n.d.). *Risk-Averse Self-Scheduling of Storage in Decentralized Markets*. Argonne National Laboratory, Technical University of Berlin, and University of Oxford.
-- Université de Liège, DENSYS Programme. [Operational Planning and Sizing of a Microgrid](/MasterProgramProjects/Liege_Projects/) — academic project summary and report.
+- Université de Liège, DENSYS Programme. [Operational Planning and Sizing of a Microgrid](/MscProjects/Liege_Projects/) — academic project summary and report.
 
 ## Code
 

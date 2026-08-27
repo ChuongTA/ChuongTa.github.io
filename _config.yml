@@ -229,7 +229,7 @@ collections:
   EnergyForecasting:
     output: true
     permalink: /:collection/:path/
-  MasterProgramProjects:
+  MscProjects:
     output: true
     permalink: /:collection/:path/
   MachineLearningProjects:
@@ -274,10 +274,10 @@ defaults:
       layout: single
       author_profile: true
       share: true
-  #_MasterProgramProjects
+  #_MscProjects
   - scope:
       path: ""
-      type: MasterProgramProjects
+      type: MscProjects
     values:
       layout: single
       author_profile: true

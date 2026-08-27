@@ -7,7 +7,8 @@ permalink: /EnergyForecasting/Wave_Energy/Wave_Energy_Flux_Forecasting_part2/
 usemathjax: true
 image: "/EnergyForecasting/Wave_Energy/2_Wave_Energy_Flux_Forecsating_part2/2_Stacking_Ensemble/images/Fig1_Main_Pipeline.png"
 date: 2026-08-08
-category: "Wave Energy"
+categories:
+  - "Wave Energy"
 ---
 
 > **Series:** Wave Energy | **Part:** 3 (Flux Forecasting: Stacking Ensemble)
