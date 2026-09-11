@@ -1,15 +1,31 @@
 import os
 import json
+import re
+import getpass
 import numpy as np
 import pandas as pd
 import warnings
 warnings.filterwarnings("ignore")
 
+def _strip_code_fence(text):
+    """Strip a surrounding ```json ... ``` or ``` ... ``` fence, if present."""
+    match = re.match(r"^```(?:json)?\s*(.*?)\s*```$", text.strip(), re.DOTALL)
+    return match.group(1) if match else text
+
 # Define paths
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 SCHEDULE_CSV = os.path.normpath(os.path.join(SCRIPT_DIR, "../05_Optimisation_and_Forecast/bess_schedule_tomorrow.csv"))
 
+# Fixed reference "today" for this demo, matching the date the schedule CSV was solved
+# for -- not the machine's real clock, so answers stay consistent with the demo data
+# regardless of when the script is actually run.
+DEMO_TODAY = "2025-06-08"
+
 # --- 1. Tools Implementation ---
+
+def current_date():
+    """Returns the reference date/time this demo is running against."""
+    return {"today": DEMO_TODAY, "note": "Reference date for this demo's schedule and price data."}
 
 def _current_price_context():
     """Reads the price forecast (median + P10/P90) for the first hour of the solved
@@ -127,7 +143,8 @@ def electricity_cost_estimator(start_time_str, end_time_str, use_bess=True):
 TOOLS = {
     "bess_simulator": bess_simulator,
     "self_consumption_calculator": self_consumption_calculator,
-    "electricity_cost_estimator": electricity_cost_estimator
+    "electricity_cost_estimator": electricity_cost_estimator,
+    "current_date": current_date
 }
 
 # --- 2. Multi-LLM API Connectors ---
@@ -245,7 +262,9 @@ class BESSAgentLoop:
             "2. Tool: self_consumption_calculator(start_time_str, end_time_str)\n"
             "   - Input: start_time_str (str, 'YYYY-MM-DD HH:MM:SS'), end_time_str (str)\n"
             "3. Tool: electricity_cost_estimator(start_time_str, end_time_str, use_bess)\n"
-            "   - Input: start_time_str (str), end_time_str (str), use_bess (bool)\n\n"
+            "   - Input: start_time_str (str), end_time_str (str), use_bess (bool)\n"
+            "4. Tool: current_date()\n"
+            "   - Input: none. Returns the reference date this demo is running against.\n\n"
             "If you need to call a tool, you MUST respond ONLY with a single JSON block of the format:\n"
             '{"tool": "tool_name", "parameters": {"param1": val1, ...}}\n'
             "Do NOT include any extra text before or after the JSON if you are calling a tool.\n\n"
@@ -271,7 +290,7 @@ class BESSAgentLoop:
         
         # Step 2: Check if LLM requested a tool call
         try:
-            tool_call = json.loads(response)
+            tool_call = json.loads(_strip_code_fence(response))
             tool_name = tool_call.get("tool")
             params = tool_call.get("parameters", {})
             
@@ -280,36 +299,74 @@ class BESSAgentLoop:
                 # Execute Python Function
                 observation = TOOLS[tool_name](**params)
                 print(f"<- [Observation Output]: {observation}")
-                
-                # Append tool call and observation to message history
                 messages.append({"role": "assistant", "content": response})
                 messages.append({"role": "user", "content": f"Observation from '{tool_name}': {json.dumps(observation)}"})
-                
-                # Step 3: Call LLM again with tool results to generate final human explanation
-                print("Agent: (Formulating final answer...)")
-                final_response = call_llm(messages, self.api_config)
-                return final_response
             else:
-                return response
+                print(f"-> [AI requested unknown tool]: '{tool_name}'")
+                available = ", ".join(TOOLS.keys())
+                messages.append({"role": "assistant", "content": response})
+                messages.append({"role": "user", "content": (
+                    f"There is no tool named '{tool_name}'. Available tools: {available}. "
+                    "If none of them can answer the question, say so directly in plain text "
+                    "instead of requesting a tool."
+                )})
+
+            # Step 3: Call LLM again with tool results (or the error) to generate the final answer
+            print("Agent: (Formulating final answer...)")
+            final_response = call_llm(messages, self.api_config)
+            return final_response
         except json.JSONDecodeError:
             # If the response is not JSON, it is the final answer directly
             return response
 
 # --- 4. Main Demonstration Execution ---
 
-def main():
-    # --- CONFIGURE YOUR API HERE ---
-    # Set to "openai", "anthropic", "gemini", "deepseek", "ollama", or "mock"
-    api_config = {
-        "provider": "ollama",
-        "model": "qwen2.5-coder",
-        "api_key": None
-    }
+CLOUD_PROVIDERS = {
+    "1": ("openai", "ChatGPT (OpenAI)", "gpt-4o"),
+    "2": ("gemini", "Gemini (Google)", "gemini-2.0-flash"),
+    "3": ("anthropic", "Claude (Anthropic)", "claude-sonnet-5"),
+    "4": ("deepseek", "DeepSeek", "deepseek-chat"),
+}
 
+def configure_api():
+    """Ask the user which AI engine to use: a cloud provider (needs an API key)
+    or a local Ollama model. Returns an api_config dict for call_llm()."""
     print("=========================================================")
-    print(f"      BESS AI AGENT TOOL-USE LOOP (Active: {api_config['provider'].upper()})")
+    print("        BESS AI AGENT - CHOOSE YOUR AI ENGINE")
+    print("=========================================================")
+    print("1) Cloud AI  (ChatGPT, Gemini, Claude, DeepSeek) - add your API key")
+    print("2) Local AI  (Ollama - Qwen2.5-Coder) - runs on your machine, no key needed")
+    print()
+
+    choice = input("Select an option [1/2]: ").strip()
+
+    if choice == "1":
+        print()
+        print("Which cloud provider?")
+        for key, (_, label, _) in CLOUD_PROVIDERS.items():
+            print(f"  {key}) {label}")
+        provider_choice = input("Select [1-4]: ").strip()
+        provider, _, default_model = CLOUD_PROVIDERS.get(provider_choice, CLOUD_PROVIDERS["1"])
+
+        model = input(f"Model name [default: {default_model}]: ").strip() or default_model
+        api_key = getpass.getpass(f"Enter your {provider.upper()} API key: ").strip()
+
+        return {"provider": provider, "model": model, "api_key": api_key}
+
+    else:
+        model = input("Local model name [default: qwen2.5-coder]: ").strip() or "qwen2.5-coder"
+        return {"provider": "ollama", "model": model, "api_key": None}
+
+def main():
+    print(f"Today: {DEMO_TODAY} (fixed reference date for this demo's schedule and price data)\n")
+
+    api_config = configure_api()
+
+    print()
+    print("=========================================================")
+    print(f"      BESS AI AGENT TOOL-USE LOOP (Active: {api_config['provider'].upper()} - {api_config['model']})")
     print("=========================================================\n")
-    
+
     agent = BESSAgentLoop(api_config)
     
     while True:
