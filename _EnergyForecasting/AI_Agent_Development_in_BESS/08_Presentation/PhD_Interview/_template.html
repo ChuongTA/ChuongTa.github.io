@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PhD Interview · TA Dang Chuong | Mälardalen University</title>
+<style>
+:root{
+  --navy:#146356;        /* lighter forest green (was navy blue) */
+  --navy-2:#1f8f74;      /* lighter mid teal-green */
+  --ink:#122a22;         /* near-black with a green cast */
+  --muted:#5b7568;       /* slate-green for secondary text */
+  --line:#dbe8e2;        /* pale green-gray hairlines */
+  --paper:#ffffff;
+  --wash:#f2f8f5;        /* faint green-tinted card wash */
+  --purple:#189863;      /* lighter green (was violet) */
+  --blue:#2fb08f;        /* lighter teal-green (was blue) */
+  --cyan:#5cc4b0;        /* rebase.energy brand teal (was cyan) */
+  --green:#34d399;       /* bright mint (was emerald) */
+  --red:#149462;         /* lighter vivid green accent (was crimson) */
+  --teal:#5cc4b0;        /* rebase.energy */
+  --dot:rgba(13,59,48,.14);      /* dot-grid on light panels */
+  --dot-dark:rgba(255,255,255,.16); /* dot-grid on dark panels */
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:#20303f;
+  font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  color:var(--ink);
+  overflow:hidden;
+}
+
+/* ---------- deck scaffolding ---------- */
+#stage{
+  position:fixed; inset:0;
+  display:flex; align-items:center; justify-content:center;
+}
+#deck{
+  width:1280px; height:720px;
+  position:relative;
+  transform-origin:center center;
+}
+.slide{
+  position:absolute; inset:0;
+  background:
+    radial-gradient(circle, var(--dot) 1px, transparent 1px) 0 0/16px 16px,
+    var(--paper);
+  border-radius:10px;
+  box-shadow:0 18px 60px rgba(0,0,0,.45);
+  overflow:hidden;
+  display:none;
+  padding:44px 52px 46px;
+}
+.slide.active{display:block;}
+
+/* gradient hairline at the top of every slide */
+.slide::before{
+  content:""; position:absolute; top:0; left:0; right:0; height:5px;
+  background:linear-gradient(90deg,var(--purple),var(--blue),var(--cyan),var(--green));
+}
+
+/* ---------- shared chrome ---------- */
+.eyebrow{
+  font-size:12.5px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--muted); font-weight:700;
+}
+.eyebrow b{color:var(--red);}
+.slide-no{
+  position:absolute; right:26px; bottom:18px;
+  font-size:12px; color:#9aa8b6; font-variant-numeric:tabular-nums;
+}
+.footline{
+  position:absolute; left:52px; right:52px; bottom:18px;
+  border-top:1px solid var(--line); padding-top:8px;
+  font-size:11.5px; color:#8d9aa8;
+  display:flex; justify-content:space-between;
+}
+
+/* ---------- slide 1: title ---------- */
+#s1{padding:0;}
+.title-wrap{
+  height:100%; display:grid; grid-template-columns:1fr 360px;
+}
+.title-left{
+  padding:52px 20px 52px 60px;
+  display:flex; flex-direction:column; justify-content:center;
+}
+.title-right{
+  background:
+    radial-gradient(circle, var(--dot-dark) 1px, transparent 1px) 0 0/16px 16px,
+    linear-gradient(160deg,var(--navy) 0%,var(--navy-2) 60%,#3fae90 100%);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:26px; padding:40px 28px;
+}
+.avatar{
+  width:196px; height:196px; border-radius:50%;
+  object-fit:cover; background:#cfd6e2;
+  box-shadow:0 0 0 5px rgba(255,255,255,.9), 0 10px 34px rgba(0,0,0,.35);
+}
+.avatar-name{
+  color:#fff; text-align:center; font-size:21px; font-weight:700; letter-spacing:.01em;
+}
+.avatar-sub{
+  color:#a9c6dc; text-align:center; font-size:12.5px; margin-top:6px; line-height:1.6;
+}
+.contact-row{display:flex; align-items:center; justify-content:center; gap:6px; margin-top:3px;}
+.cicon{width:12.5px; height:12.5px; flex:none; opacity:.85;}
+.logo-strip{
+  display:flex; align-items:center; gap:18px;
+  background:rgba(255,255,255,.94); border-radius:10px; padding:10px 16px;
+}
+.logo-strip img{height:34px; width:auto; display:block;}
+.logo-strip .sep{width:1px; height:30px; background:#d5dde5;}
+
+h1.big{
+  margin:14px 0 0;
+  font-size:56px; line-height:1.04; font-weight:800; letter-spacing:-.02em;
+  color:var(--navy);
+}
+h1.big em{
+  font-style:normal;
+  background:linear-gradient(90deg,var(--purple),var(--blue),var(--cyan));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.subtitle{
+  margin-top:18px; font-size:19px; line-height:1.45; color:#33475b; max-width:660px;
+}
+.subtitle b{color:var(--navy);}
+.rule{
+  width:96px; height:4px; border-radius:2px; margin:26px 0 22px;
+  background:linear-gradient(90deg,var(--red),var(--purple));
+}
+.meta-line{font-size:14.5px; color:var(--muted); line-height:1.85;}
+.meta-line b{color:var(--ink);}
+.title-foot{
+  margin-top:auto; padding-top:26px;
+  font-size:13px; color:#8d9aa8; letter-spacing:.04em;
+}
+.chips{display:flex; gap:10px; flex-wrap:wrap; margin-top:30px; max-width:660px;}
+.chip{
+  background:var(--wash); border:1px solid var(--line); border-radius:8px;
+  padding:9px 13px; font-size:12.6px; line-height:1.4; color:#31414f;
+}
+.chip b{display:block; font-size:13.4px; color:var(--navy); margin-bottom:1px;}
+.framing{
+  margin-top:24px; max-width:660px;
+  border-left:3px solid var(--purple); padding:4px 0 4px 13px;
+  font-size:14px; line-height:1.55; color:#33475b; font-style:italic;
+}
+
+/* ---------- section headers on content slides ---------- */
+h2.slide-title{
+  margin:8px 0 4px; font-size:32px; font-weight:800; letter-spacing:-.01em; color:var(--navy);
+}
+.slide-title-sub{font-size:14px; color:var(--muted); margin-bottom:16px;}
+.hr{height:2px; background:linear-gradient(90deg,var(--purple),var(--blue),var(--cyan),var(--green));
+    border-radius:2px; margin:0 0 18px; opacity:.75;}
+
+/* ---------- generic card ---------- */
+.card{
+  background:var(--wash); border:1px solid var(--line); border-radius:9px;
+  padding:13px 15px 14px;
+}
+.card.tight{padding:11px 13px 12px;}
+.card h3{
+  margin:0 0 9px; font-size:11.5px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--navy); font-weight:800;
+  display:flex; align-items:center; gap:8px;
+}
+.card h3 .dot{width:8px; height:8px; border-radius:50%; background:var(--blue); flex:none;}
+.card h3 .dot.p{background:var(--purple);}
+.card h3 .dot.c{background:var(--cyan);}
+.card h3 .dot.g{background:var(--green);}
+.card h3 .dot.r{background:var(--red);}
+
+ul.clean{margin:0; padding:0; list-style:none;}
+ul.clean li{
+  position:relative; padding-left:14px; margin-bottom:7px;
+  font-size:13.2px; line-height:1.5; color:#31414f;
+}
+ul.clean li:last-child{margin-bottom:0;}
+ul.clean li::before{
+  content:""; position:absolute; left:0; top:8px;
+  width:5px; height:5px; border-radius:50%; background:#9fb2c4;
+}
+ul.clean li b{color:var(--navy);}
+.sm{font-size:12.2px;}
+.sm li{font-size:11.6px; line-height:1.45; margin-bottom:5px;}
+.note{font-size:11.6px; color:var(--muted); line-height:1.5;}
+
+/* ---------- slide 2 ---------- */
+.grid-2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+.grid-3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px;}
+
+.timeline{margin:0; padding:0; list-style:none;}
+.timeline li{
+  position:relative; padding-left:19px; margin-bottom:11px;
+}
+.timeline li:last-child{margin-bottom:0;}
+.timeline li::before{
+  content:""; position:absolute; left:3px; top:5px;
+  width:9px; height:9px; border-radius:50%;
+  background:#fff; border:2.5px solid var(--blue);
+}
+.timeline li::after{
+  content:""; position:absolute; left:7px; top:16px; bottom:-9px; width:2px; background:var(--line);
+}
+.timeline li:last-child::after{display:none;}
+.tl-head{font-size:13.6px; font-weight:700; color:var(--navy); line-height:1.35;}
+.tl-when{font-size:11.4px; color:var(--muted); font-weight:600; letter-spacing:.02em;}
+.tl-body{font-size:12.3px; color:#41525f; line-height:1.5; margin-top:2px;}
+.star{color:#e0a106; font-weight:800;}
+
+.skills-grid{display:grid; grid-template-columns:1fr 1fr; gap:6px 22px;}
+.skillrow{display:flex; gap:9px; align-items:flex-start; margin-bottom:0;}
+.skilltag{
+  flex:none; width:104px; font-size:11px; font-weight:800; letter-spacing:.05em;
+  text-transform:uppercase; color:#fff; text-align:center;
+  padding:4px 5px; border-radius:5px; line-height:1.25;
+}
+.t-ml{background:var(--purple);}
+.t-opt{background:var(--blue);}
+.t-dom{background:#0e8f7a;}
+.t-llm{background:#2fae7e;}
+.t-eng{background:#6b8a7a;}
+.t-lang{background:#2fb08f;}
+.skilltxt{font-size:12.3px; line-height:1.5; color:#31414f; padding-top:2px;}
+.skilltxt b{color:var(--navy);}
+
+.kpi-strip{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:14px;
+}
+.kpi{
+  background:linear-gradient(160deg,var(--navy),var(--navy-2));
+  color:#fff; border-radius:9px; padding:11px 13px;
+}
+.kpi .n{font-size:25px; font-weight:800; line-height:1; letter-spacing:-.01em;}
+.kpi .n small{font-size:13px; font-weight:700; opacity:.85;}
+.kpi .l{font-size:11px; color:#a9c6dc; margin-top:5px; line-height:1.4;}
+
+/* ---------- slide 3 ---------- */
+.compact h2.slide-title{font-size:27px; margin:6px 0 3px;}
+.compact .slide-title-sub{font-size:12.5px; margin-bottom:11px;}
+.compact .hr{margin:0 0 12px;}
+.compact .col-head{font-size:10.8px; margin-bottom:7px; padding-bottom:5px;}
+.col-head{
+  font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; font-weight:800;
+  color:var(--navy); margin:0 0 9px;
+  padding-bottom:6px; border-bottom:2px solid var(--line);
+}
+.proj{margin-bottom:9px;}
+.proj:last-child{margin-bottom:0;}
+.proj .p-name{font-size:12.5px; font-weight:700; color:var(--navy); line-height:1.35;}
+.proj .p-name .badge{
+  display:inline-block; font-size:9.5px; font-weight:800; letter-spacing:.08em;
+  text-transform:uppercase; color:#fff; background:var(--red);
+  padding:2px 6px; border-radius:4px; margin-left:6px; vertical-align:1px;
+}
+.proj .p-body{font-size:11.4px; line-height:1.45; color:#41525f; margin-top:2px;}
+.proj .p-body b{color:var(--navy);}
+
+.motiv{
+  background:
+    radial-gradient(circle, var(--dot-dark) 0.9px, transparent 0.9px) 0 0/14px 14px,
+    linear-gradient(160deg,var(--navy),var(--navy-2) 70%,#3fae90);
+  color:#fff; border-radius:9px; padding:12px 14px 13px;
+  height:100%; overflow:hidden;
+}
+.motiv .col-head{color:#8fd0e8; border-bottom-color:rgba(255,255,255,.18);}
+.motiv ul.clean li{color:#dbe7f1; font-size:11.3px; line-height:1.44; margin-bottom:6px;}
+.motiv ul.clean li::before{background:var(--cyan);}
+.motiv ul.clean li b{color:#fff;}
+.motiv .mini-head{
+  font-size:10.2px; letter-spacing:.13em; text-transform:uppercase; font-weight:800;
+  color:#8fd0e8; margin:10px 0 5px;
+}
+.closer{
+  margin-top:10px; padding:8px 11px; border-radius:7px;
+  background:rgba(255,255,255,.09); border-left:3px solid var(--cyan);
+  font-size:11.4px; line-height:1.45; color:#eaf3fa; font-style:italic;
+}
+
+.award{
+  display:flex; gap:7px; align-items:baseline; margin-bottom:5px; font-size:11.4px; line-height:1.42;
+}
+.award:last-child{margin-bottom:0;}
+.award .ic{flex:none; width:15px; text-align:center; color:var(--red); font-weight:800;}
+.award b{color:var(--navy);}
+
+/* ---------- slide 4: closing ---------- */
+#s4{
+  padding:0;
+  background:
+    radial-gradient(circle, var(--dot) 1.4px, transparent 1.4px) 0 0/20px 20px,
+    var(--paper);
+}
+.closing-wrap{
+  height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center;
+}
+.closing-eyebrow{
+  font-size:13px; letter-spacing:.18em; text-transform:uppercase; font-weight:700;
+  color:var(--muted);
+}
+.closing-title{
+  margin:16px 0 0; font-size:76px; font-weight:800; letter-spacing:-.02em; line-height:1;
+  background:linear-gradient(90deg,var(--purple),var(--blue),var(--cyan));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.closing-sub{
+  margin-top:10px; font-size:22px; color:#33475b; font-weight:400;
+}
+.qa-rule{
+  width:110px; height:4px; border-radius:2px; margin:34px 0 22px;
+  background:linear-gradient(90deg,var(--red),var(--purple));
+}
+.qa-tag{
+  font-size:20px; font-weight:700; color:var(--navy); letter-spacing:.03em;
+}
+.closing-contact{
+  margin-top:40px; font-size:14px; color:var(--muted); letter-spacing:.02em;
+  display:flex; align-items:center; justify-content:center; gap:9px; flex-wrap:wrap;
+}
+.cc-item{display:inline-flex; align-items:center; gap:6px;}
+.cc-item .cicon{width:14px; height:14px; opacity:.8;}
+.cc-sep{opacity:.45;}
+
+/* ---------- nav ---------- */
+#nav{
+  position:fixed; bottom:16px; left:50%; transform:translateX(-50%);
+  display:flex; gap:8px; align-items:center;
+  background:rgba(15,39,64,.85); border:1px solid rgba(255,255,255,.16);
+  border-radius:999px; padding:6px 10px; z-index:20;
+  font-size:12px; color:#cfe0ee;
+}
+#nav button{
+  background:transparent; border:0; color:#cfe0ee; cursor:pointer;
+  font-size:15px; line-height:1; padding:4px 8px; border-radius:999px;
+}
+#nav button:hover{background:rgba(255,255,255,.14); color:#fff;}
+.dots{display:flex; gap:6px; margin:0 4px;}
+.dots i{
+  width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.3);
+  cursor:pointer; display:block;
+}
+.dots i.on{background:var(--cyan);}
+#hint{
+  position:fixed; top:14px; right:16px; z-index:20;
+  font-size:11.5px; color:rgba(255,255,255,.5);
+}
+
+/* ---------- print / PDF export ---------- */
+@page{size:1280px 720px; margin:0;}
+@media print{
+  body{background:#fff; overflow:visible;}
+  #nav,#hint{display:none !important;}
+  #stage{position:static; display:block;}
+  #deck{width:1280px; height:auto; transform:none !important;}
+  .slide{
+    display:block !important; position:relative; inset:auto;
+    width:1280px; height:720px;
+    border-radius:0; box-shadow:none;
+    page-break-after:always; break-after:page;
+  }
+  .slide:last-child{page-break-after:auto; break-after:auto;}
+}
+</style>
+</head>
+<body>
+
+<div id="hint">← / → or Space to navigate · F fullscreen · P print to PDF</div>
+
+<div id="stage">
+<div id="deck">
+
+<!-- ============ SLIDE 1 · TITLE ============ -->
+<section class="slide active" id="s1">
+  <div class="title-wrap">
+    <div class="title-left">
+      <div class="eyebrow">Mälardalen University &nbsp;|&nbsp; <b>PhD Interview</b></div>
+
+      <h1 class="big">AI for<br><em>Energy Decision Support</em></h1>
+
+      <div class="subtitle">
+        PhD Student in <b>Energy and Environmental Engineering</b><br>
+        Future Energy Center · Mälardalen University, Västerås
+      </div>
+
+      <div class="rule"></div>
+
+      <div class="meta-line">
+        <b>Chuong Dang TA</b> &nbsp;·&nbsp; MSc DENSYS (Erasmus Mundus)<br>
+        Ex-Junior Data Scientist @ rebase.energy, Stockholm<br>
+        Supervisors: Chang Su &amp; Hailong Li &nbsp;·&nbsp; Ref. 2026/1019
+      </div>
+
+      <div class="title-foot">Candidate Self-Presentation &nbsp;|&nbsp; 11 September 2026</div>
+    </div>
+
+    <div class="title-right">
+      <img class="avatar" src="__AVATAR__" alt="Chuong Dang TA">
+      <div>
+        <div class="avatar-name">Chuong Dang TA</div>
+        <div class="avatar-sub">
+          <div class="contact-row">
+            <svg class="cicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg>
+            <span>Stockholm, Sweden</span>
+          </div>
+          <div class="contact-row">
+            <svg class="cicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+            <span>chuong.tadang.hust@gmail.com</span>
+          </div>
+          <div class="contact-row">
+            <svg class="cicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.4 2.4 3.8 5.6 3.8 9s-1.4 6.6-3.8 9c-2.4-2.4-3.8-5.6-3.8-9s1.4-6.6 3.8-9z"/></svg>
+            <span>chuongta.github.io</span>
+          </div>
+        </div>
+      </div>
+      <div class="logo-strip">
+        <img src="__DENSYS__" alt="DENSYS">
+        <span class="sep"></span>
+        <img src="__REBASE__" alt="rebase.energy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 2 · BACKGROUND & COMPETENCIES ============ -->
+<section class="slide" id="s2">
+  <div class="eyebrow">01 &nbsp;·&nbsp; Who I am</div>
+  <h2 class="slide-title">Academic &amp; Professional Background</h2>
+  <div class="slide-title-sub">Thermal engineering foundation → European energy-systems master → data science in the Swedish energy sector</div>
+  <div class="hr"></div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3><span class="dot p"></span>Education</h3>
+      <ul class="timeline">
+        <li>
+          <div class="tl-when">2024 – 2026</div>
+          <div class="tl-head">MSc DENSYS · Erasmus Mundus Joint Master (120 ECTS)</div>
+          <div class="tl-body">
+            Université de Lorraine (FR) &amp; Politecnico di Torino (IT) · modelling and optimisation
+            of decentralised, renewable energy systems.<br>
+            <i>Forecasting in Microgrids · Smart Electricity Systems · Polygeneration</i>
+          </div>
+        </li>
+        <li>
+          <div class="tl-when">2018 – 2023</div>
+          <div class="tl-head">BSc Thermal Engineering · HUST, Vietnam</div>
+          <div class="tl-body">
+            <span class="star">★</span> <b>Ranked 1st of 218 graduates</b>, CGPA 3.54/4.00 ·
+            Vietnam's leading technical university.
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3><span class="dot g"></span>Professional experience</h3>
+      <ul class="timeline">
+        <li>
+          <div class="tl-when">Jul 2026 – present</div>
+          <div class="tl-head">Junior Data Scientist · rebase.energy, Stockholm</div>
+          <div class="tl-body">
+            Wave energy converter power forecasting (multi-ridge stack: Elastic Net + LightGBM).
+          </div>
+        </li>
+        <li>
+          <div class="tl-when">Feb – Jul 2026</div>
+          <div class="tl-head">MSc Thesis Student · rebase.energy, Stockholm</div>
+          <div class="tl-body">
+            Forecasting wind-turbine icing power losses from multi-year Swedish SCADA data.
+          </div>
+        </li>
+        <li>
+          <div class="tl-when">2023 – 2024 &nbsp;(~1 year)</div>
+          <div class="tl-head">Junior Researcher · HUST, Vietnam</div>
+          <div class="tl-body">
+            Techno-economic analysis of hydrogen and gas power systems → <b>2 Q1 journal publications</b>.
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:10px; padding-bottom:10px;">
+    <h3><span class="dot c"></span>Key competencies &amp; expertise</h3>
+    <div class="skills-grid">
+      <div class="skillrow">
+        <span class="skilltag t-ml">ML / Forecasting</span>
+        <span class="skilltxt">Supervised, deep &amp; reinforcement learning · time-series &amp; <b>probabilistic forecasting</b> · LightGBM, Elastic Net, QRF, bootstrapped residuals, LSTM</span>
+      </div>
+      <div class="skillrow">
+        <span class="skilltag t-llm">LLM / AI agents</span>
+        <span class="skilltxt"><b>ReAct tool-use agents</b>, function calling · local LLMs via Ollama · fluent with AI coding agents (Claude Code, Gemini Flash)</span>
+      </div>
+      <div class="skillrow">
+        <span class="skilltag t-opt">Optimisation</span>
+        <span class="skilltxt"><b>MILP / MINLP</b>, LP scheduling in Pyomo · two-stage stochastic programming</span>
+      </div>
+      <div class="skillrow">
+        <span class="skilltag t-eng">Engineering Toolkit</span>
+        <span class="skilltxt">Python (scikit-learn, PyTorch, Pyomo, PyWake) · Git, Julia, MATLAB/Simulink, Modelica, Aspen Plus, GIS, Typst/LaTeX</span>
+      </div>
+      <div class="skillrow">
+        <span class="skilltag t-dom">Energy domain</span>
+        <span class="skilltxt">Wind &amp; PV resource modelling · <b>BESS physics and degradation</b> · heat pumps and thermal storage · day-ahead / intraday / balancing markets</span>
+      </div>
+      <div class="skillrow">
+        <span class="skilltag t-lang">Languages</span>
+        <span class="skilltxt">Vietnamese (native) · English (IELTS 7.5) · German A2 · French A1</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footline">
+    <span>Chuong Dang TA · PhD Interview, Mälardalen University</span>
+    <span>Background &amp; Competencies</span>
+  </div>
+  <div class="slide-no">2</div>
+</section>
+
+<!-- ============ SLIDE 3 · RESEARCH, OUTCOMES & MOTIVATION ============ -->
+<section class="slide compact" id="s3">
+  <div class="eyebrow">02 &nbsp;·&nbsp; What I have done &amp; why MDU</div>
+  <h2 class="slide-title">Research, Outcomes &amp; Motivation</h2>
+  <div class="slide-title-sub">Physics-grounded models · calibrated uncertainty · optimisation · LLM agents that explain their reasoning</div>
+  <div class="hr"></div>
+
+  <div style="display:grid; grid-template-columns:1.15fr 1fr 1.05fr; gap:13px; height:505px;">
+
+    <!-- column 1: research & projects -->
+    <div class="card tight">
+      <div class="col-head">Research &amp; project experience</div>
+
+      <div class="proj">
+        <div class="p-name">MSc Thesis · Wind turbine icing power-loss forecasting</div>
+        <div class="p-body">
+          Extended <b>IEA Wind Task 19</b> icing framework + <b>quantile-mapped</b> SCADA/ERA5 bias
+          correction; two-stage <b>LightGBM classifier–regressor</b>, <b>1–36 h</b> horizons.
+          <i>SCADA dominates near-term skill; NWP dominates longer horizons.</i>
+        </div>
+      </div>
+
+      <div class="proj">
+        <div class="p-name">LLM agent for operational BESS dispatch<span class="badge">MDU test</span></div>
+        <div class="p-body">
+          LightGBM price forecast with <b>P10/P50/P90</b> bands → <b>24 h LP scheduler</b> →
+          <b>ReAct agent</b> with 3 deterministic tools. Numbers always computed in code, never by the LLM.
+        </div>
+      </div>
+
+      <div class="proj">
+        <div class="p-name">Wave energy converter forecasting · rebase.energy</div>
+        <div class="p-body">
+          Multi-ridge autoregressive forecasting benchmarked against quantile regression, QRF
+          and bootstrapped residuals on ERA5 ocean-wave data.
+        </div>
+      </div>
+
+      <div class="proj">
+        <div class="p-name">Hydrogen systems research · HUST</div>
+        <div class="p-body">
+          Techno-economic analysis: hydrogen co-firing in Vietnam's gas fleet (2035–2050) and
+          large-scale hydrogen export to Asia.
+        </div>
+      </div>
+
+      <div class="proj">
+        <div class="p-name">Self-directed portfolio</div>
+        <div class="p-body">
+          Probabilistic price forecasting · stochastic battery scheduling · PPO heat-pump control.
+          <b>chuongta.github.io/EnergyForecasting</b>
+        </div>
+      </div>
+    </div>
+
+    <!-- column 2: outcomes -->
+    <div style="display:flex; flex-direction:column; gap:14px;">
+      <div class="card tight" style="flex:none;">
+        <div class="col-head">Major outcomes</div>
+        <div class="award"><span class="ic">▮</span><span><b>2 first-author Q1 papers</b> · IF 11.8 &amp; 9.2</span></div>
+        <div class="award"><span class="ic">▮</span><span><b>1 manuscript in prep</b> · farm-scale icing forecasting</span></div>
+        <div class="award"><span class="ic">★</span><span><b>Erasmus Mundus scholarship</b> (DENSYS)</span></div>
+        <div class="award"><span class="ic">★</span><span><b>JNED Award</b> (2023)</span></div>
+        <div class="award"><span class="ic">★</span><span><b>Ranked 1st of 218</b> · BSc, HUST</span></div>
+        <div class="award"><span class="ic">▮</span><span>Public, reproducible <b>project portfolio</b></span></div>
+      </div>
+
+      <div class="card tight" style="flex:1;">
+        <div class="col-head">What I bring to the project</div>
+        <ul class="clean sm">
+          <li><b>Energy &amp; electricity forecasting</b> · ML time-series, load &amp; price models</li>
+          <li><b>2 first-author Q1 papers</b> · proven research and publication record</li>
+          <li><b>Startup background</b> · small team, high autonomy, efficient workflow</li>
+          <li><b>Multicultural experience</b> · comfortable in international PhD teams</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- column 3: motivation -->
+    <div class="motiv">
+      <div class="col-head">Motivation &amp; expectations · Future Energy Center</div>
+      <ul class="clean">
+        <li><b>AI for decision support</b> · deepen knowledge in decision support methods during the PhD</li>
+        <li><b>Research &amp; supervision</b> · work with Chang Su and Hailong Li at Future Energy Center</li>
+        <li><b>Västerås &amp; MDU connection</b> · visited the city and campus, glad to spend the next 3 years here</li>
+      </ul>
+
+      <div class="mini-head">What I expect from the PhD</div>
+      <ul class="clean">
+        <li><b>3–4 journal papers</b> in decision-support AI</li>
+        <li>Supervision by <b>Chang Su</b> and <b>Hailong Li</b></li>
+        <li><b>Teaching (up to 20%)</b> · enjoy explaining technical topics</li>
+        <li><b>Industrial &amp; international stays</b> with FEC partners</li>
+      </ul>
+
+      <div class="closer">
+        Visited Västerås &amp; MDU — ready for the next 3 years here.
+      </div>
+    </div>
+  </div>
+
+  <div class="footline">
+    <span>Chuong Dang TA · PhD Interview, Mälardalen University</span>
+    <span>Research · Outcomes · Motivation</span>
+  </div>
+  <div class="slide-no">3</div>
+</section>
+
+<!-- ============ SLIDE 4 · THANK YOU / Q&A ============ -->
+<section class="slide" id="s4">
+  <div class="closing-wrap">
+    <div class="closing-eyebrow">Mälardalen University &nbsp;|&nbsp; PhD Interview</div>
+    <h1 class="closing-title">Thank You</h1>
+    <div class="closing-sub">for listening</div>
+    <div class="qa-rule"></div>
+    <div class="qa-tag">Questions &amp; Discussion</div>
+    <div class="closing-contact">
+      <span class="cc-item">Chuong Dang TA</span>
+      <span class="cc-sep">·</span>
+      <span class="cc-item">
+        <svg class="cicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+        chuong.tadang.hust@gmail.com
+      </span>
+      <span class="cc-sep">·</span>
+      <span class="cc-item">
+        <svg class="cicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.4 2.4 3.8 5.6 3.8 9s-1.4 6.6-3.8 9c-2.4-2.4-3.8-5.6-3.8-9s1.4-6.6 3.8-9z"/></svg>
+        chuongta.github.io
+      </span>
+    </div>
+  </div>
+  <div class="slide-no">4</div>
+</section>
+
+</div>
+</div>
+
+<div id="nav">
+  <button id="prev" title="Previous (←)">‹</button>
+  <span class="dots" id="dots"></span>
+  <span id="counter">1 / 3</span>
+  <button id="next" title="Next (→)">›</button>
+</div>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var i = 0;
+  var deck = document.getElementById('deck');
+  var dots = document.getElementById('dots');
+  var counter = document.getElementById('counter');
+
+  slides.forEach(function(_, k){
+    var d = document.createElement('i');
+    d.addEventListener('click', function(){ go(k); });
+    dots.appendChild(d);
+  });
+  var dotEls = Array.prototype.slice.call(dots.children);
+
+  function go(k){
+    i = Math.max(0, Math.min(slides.length - 1, k));
+    slides.forEach(function(s, n){ s.classList.toggle('active', n === i); });
+    dotEls.forEach(function(d, n){ d.classList.toggle('on', n === i); });
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    try { location.hash = 's' + (i + 1); } catch(e){}
+  }
+
+  function fit(){
+    var pad = 30;
+    var s = Math.min((window.innerWidth - pad) / 1280, (window.innerHeight - pad) / 720);
+    deck.style.transform = 'scale(' + s + ')';
+  }
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); go(i + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(i - 1); }
+    else if (e.key === 'Home') { go(0); }
+    else if (e.key === 'End') { go(slides.length - 1); }
+    else if (e.key === 'f' || e.key === 'F') {
+      if (document.fullscreenElement) { document.exitFullscreen(); }
+      else { document.documentElement.requestFullscreen(); }
+    }
+    else if (e.key === 'p' || e.key === 'P') { window.print(); }
+  });
+
+  document.getElementById('next').addEventListener('click', function(){ go(i + 1); });
+  document.getElementById('prev').addEventListener('click', function(){ go(i - 1); });
+  window.addEventListener('resize', fit);
+
+  var m = /^#s(\d+)$/.exec(location.hash || '');
+  fit();
+  go(m ? parseInt(m[1], 10) - 1 : 0);
+})();
+</script>
+</body>
+</html>

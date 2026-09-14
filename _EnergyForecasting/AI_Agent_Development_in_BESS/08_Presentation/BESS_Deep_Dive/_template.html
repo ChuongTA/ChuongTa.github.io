@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BESS AI-Agent · Implementation Deep Dive | Chuong Dang TA</title>
+<style>
+:root{
+  --navy:#146356;
+  --navy-2:#1f8f74;
+  --navy-3:#3fae90;
+  --ink:#122a22;
+  --muted:#5b7568;
+  --line:#dbe8e2;
+  --paper:#ffffff;
+  --wash:#f2f8f5;
+  --purple:#189863;
+  --blue:#2fb08f;
+  --cyan:#5cc4b0;
+  --green:#34d399;
+  --red:#149462;
+  --amber:#c17a1f;
+  --dot:rgba(13,59,48,.14);
+  --dot-dark:rgba(255,255,255,.16);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:#20303f;
+  font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  color:var(--ink);
+  overflow:hidden;
+}
+#stage{position:fixed; inset:0; display:flex; align-items:center; justify-content:center;}
+#deck{width:1280px; height:720px; position:relative; transform-origin:center center;}
+.slide{
+  position:absolute; inset:0;
+  background:
+    radial-gradient(circle, var(--dot) 1px, transparent 1px) 0 0/16px 16px,
+    var(--paper);
+  border-radius:10px;
+  box-shadow:0 18px 60px rgba(0,0,0,.45);
+  overflow:hidden;
+  display:none;
+  padding:40px 50px 44px;
+}
+.slide.active{display:block;}
+.slide::before{
+  content:""; position:absolute; top:0; left:0; right:0; height:5px;
+  background:linear-gradient(90deg,var(--purple),var(--blue),var(--cyan),var(--green));
+}
+.eyebrow{font-size:12.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); font-weight:700;}
+.eyebrow b{color:var(--red);}
+.slide-no{position:absolute; right:26px; bottom:16px; font-size:12px; color:#9aa8b6; font-variant-numeric:tabular-nums;}
+.footline{
+  position:absolute; left:50px; right:50px; bottom:16px;
+  border-top:1px solid var(--line); padding-top:7px;
+  font-size:11.3px; color:#8d9aa8;
+  display:flex; justify-content:space-between;
+}
+h2.slide-title{margin:6px 0 3px; font-size:29px; font-weight:800; letter-spacing:-.01em; color:var(--navy);}
+.slide-title-sub{font-size:13px; color:var(--muted); margin-bottom:13px;}
+.hr{height:2px; background:linear-gradient(90deg,var(--purple),var(--blue),var(--cyan),var(--green));
+    border-radius:2px; margin:0 0 15px; opacity:.75;}
+
+.card{background:var(--wash); border:1px solid var(--line); border-radius:9px; padding:12px 14px 13px;}
+.card h3{
+  margin:0 0 8px; font-size:11px; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--navy); font-weight:800; display:flex; align-items:center; gap:7px;
+}
+.card h3 .dot{width:7px; height:7px; border-radius:50%; background:var(--blue); flex:none;}
+.card h3 .dot.p{background:var(--purple);}
+.card h3 .dot.c{background:var(--cyan);}
+.card h3 .dot.g{background:var(--green);}
+.card h3 .dot.a{background:var(--amber);}
+
+ul.clean{margin:0; padding:0; list-style:none;}
+ul.clean li{position:relative; padding-left:13px; margin-bottom:6px; font-size:12.3px; line-height:1.46; color:#31414f;}
+ul.clean li:last-child{margin-bottom:0;}
+ul.clean li::before{content:""; position:absolute; left:0; top:7px; width:5px; height:5px; border-radius:50%; background:#9fb2c4;}
+ul.clean li b{color:var(--navy);}
+
+.eq{
+  font-family:"Cambria Math","Georgia",serif; font-size:13.5px; color:var(--navy);
+  background:#fff; border:1px dashed var(--line); border-radius:6px; padding:7px 10px;
+  margin:6px 0; line-height:1.5;
+}
+table.tbl{width:100%; border-collapse:collapse; font-size:11.3px;}
+table.tbl th, table.tbl td{padding:4px 6px; text-align:right; border-bottom:1px solid var(--line);}
+table.tbl th:first-child, table.tbl td:first-child{text-align:left;}
+table.tbl th{color:var(--navy); font-weight:700; font-size:10.4px; text-transform:uppercase; letter-spacing:.03em;}
+table.tbl tr.hl td{background:#e3f3ec; font-weight:700; color:var(--navy);}
+
+.badge{display:inline-block; font-size:9.3px; font-weight:800; letter-spacing:.07em; text-transform:uppercase;
+  color:#fff; padding:2px 6px; border-radius:4px; vertical-align:1px;}
+.badge.charge{background:var(--green); color:#0d3b30;}
+.badge.discharge{background:var(--amber);}
+.badge.hold{background:#9fb2c4;}
+
+/* ---------- slide 1: title ---------- */
+#s1{padding:0;}
+.title-wrap{height:100%; display:grid; grid-template-columns:1fr 340px;}
+.title-left{padding:48px 20px 48px 56px; display:flex; flex-direction:column; justify-content:center;}
+.title-right{
+  background:
+    radial-gradient(circle, var(--dot-dark) 1px, transparent 1px) 0 0/16px 16px,
+    linear-gradient(160deg,var(--navy) 0%,var(--navy-2) 60%,var(--navy-3) 100%);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:16px; padding:36px 26px;
+}
+.spec{
+  width:100%; background:rgba(255,255,255,.94); border-radius:9px; padding:10px 14px;
+  display:flex; justify-content:space-between; align-items:baseline;
+}
+.spec .n{font-size:21px; font-weight:800; color:var(--navy);}
+.spec .l{font-size:10.6px; color:var(--muted); text-align:right; line-height:1.3; max-width:150px;}
+h1.big{margin:12px 0 0; font-size:46px; line-height:1.06; font-weight:800; letter-spacing:-.02em; color:var(--navy);}
+h1.big em{
+  font-style:normal;
+  background:linear-gradient(90deg,var(--purple),var(--blue),var(--cyan));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.subtitle{margin-top:14px; font-size:16.5px; line-height:1.42; color:#33475b; max-width:640px;}
+.subtitle b{color:var(--navy);}
+.rule{width:90px; height:4px; border-radius:2px; margin:20px 0 16px; background:linear-gradient(90deg,var(--red),var(--purple));}
+.meta-line{font-size:13.5px; color:var(--muted); line-height:1.75;}
+.meta-line b{color:var(--ink);}
+.chips{display:flex; gap:9px; flex-wrap:wrap; margin-top:18px; max-width:640px;}
+.chip{background:var(--wash); border:1px solid var(--line); border-radius:8px; padding:7px 11px; font-size:11.8px; color:#31414f;}
+.chip b{display:block; font-size:12.6px; color:var(--navy);}
+.framing{
+  margin-top:18px; max-width:640px; border-left:3px solid var(--purple); padding:3px 0 3px 12px;
+  font-size:12.8px; line-height:1.5; color:#33475b; font-style:italic;
+}
+.title-foot{margin-top:auto; padding-top:18px; font-size:12px; color:#8d9aa8; letter-spacing:.03em;}
+.title-right-cap{color:#dbe7f1; text-align:center; font-size:12px; line-height:1.55; margin-top:2px;}
+
+/* ---------- nav / print (shared) ---------- */
+#nav{
+  position:fixed; bottom:16px; left:50%; transform:translateX(-50%);
+  display:flex; gap:8px; align-items:center;
+  background:rgba(15,39,64,.85); border:1px solid rgba(255,255,255,.16);
+  border-radius:999px; padding:6px 10px; z-index:20; font-size:12px; color:#cfe0ee;
+}
+#nav button{background:transparent; border:0; color:#cfe0ee; cursor:pointer; font-size:15px; line-height:1; padding:4px 8px; border-radius:999px;}
+#nav button:hover{background:rgba(255,255,255,.14); color:#fff;}
+.dots{display:flex; gap:6px; margin:0 4px;}
+.dots i{width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.3); cursor:pointer; display:block;}
+.dots i.on{background:var(--cyan);}
+#hint{position:fixed; top:14px; right:16px; z-index:20; font-size:11.5px; color:rgba(255,255,255,.5);}
+
+@page{size:1280px 720px; margin:0;}
+@media print{
+  body{background:#fff; overflow:visible;}
+  #nav,#hint{display:none !important;}
+  #stage{position:static; display:block;}
+  #deck{width:1280px; height:auto; transform:none !important;}
+  .slide{display:block !important; position:relative; inset:auto; width:1280px; height:720px; border-radius:0; box-shadow:none; page-break-after:always; break-after:page;}
+  .slide:last-child{page-break-after:auto; break-after:auto;}
+}
+
+/* ---------- slide 2: architecture ---------- */
+.arch-grid{display:grid; grid-template-columns:300px 1fr; gap:14px; height:520px;}
+.arch-img-card{
+  background:#0f2a24; border-radius:9px; padding:8px; display:flex; align-items:center; justify-content:center;
+}
+.arch-img-card img{width:100%; border-radius:6px; display:block;}
+.tier{display:flex; gap:9px; align-items:flex-start; margin-bottom:9px;}
+.tier:last-child{margin-bottom:0;}
+.tier .tnum{
+  flex:none; width:22px; height:22px; border-radius:50%; background:var(--navy); color:#fff;
+  font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center;
+}
+.tier .ttxt{font-size:12.3px; line-height:1.48; color:#31414f;}
+.tier .ttxt b{color:var(--navy);}
+
+/* ---------- slide 3: data & forecasting ---------- */
+.grid-3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;}
+
+/* ---------- slide 4: sizing & scheduling ---------- */
+.grid-2{display:grid; grid-template-columns:1.1fr .9fr; gap:14px;}
+
+/* ---------- slide 5: interactive dispatch ---------- */
+.dash{display:grid; grid-template-columns:1fr 300px; gap:14px; height:520px;}
+.chartcard{background:var(--wash); border:1px solid var(--line); border-radius:9px; padding:14px;}
+.slider-row{display:flex; align-items:center; gap:12px; margin-top:8px;}
+.slider-row input[type=range]{flex:1; accent-color:var(--navy-2); height:6px;}
+.hour-readout{
+  flex:none; width:78px; text-align:center; font-weight:800; font-size:15px; color:var(--navy);
+  background:#fff; border:1px solid var(--line); border-radius:7px; padding:6px 4px;
+}
+.stat-panel{background:linear-gradient(160deg,var(--navy),var(--navy-2) 80%,var(--navy-3)); border-radius:9px; padding:14px 15px; color:#fff;}
+.stat-panel .col-head{font-size:10.6px; letter-spacing:.13em; text-transform:uppercase; font-weight:800; color:#bfe9dc; margin-bottom:9px;}
+.stat-row{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,.14);}
+.stat-row:last-of-type{border-bottom:none;}
+.stat-row .k{font-size:11.6px; color:#dbe7f1;}
+.stat-row .v{font-size:14px; font-weight:800; color:#fff;}
+.action-badge{
+  display:inline-block; margin-top:6px; padding:5px 12px; border-radius:999px; font-size:12px; font-weight:800;
+  letter-spacing:.04em; text-transform:uppercase; text-align:center; width:100%;
+}
+.note-sm{font-size:10.6px; color:var(--muted); margin-top:8px; line-height:1.5;}
+
+/* ---------- slide 6: agent & tools ---------- */
+.flow{display:flex; align-items:center; gap:6px; font-size:11.6px; font-weight:700; color:var(--navy); flex-wrap:wrap;}
+.flow .fnode{background:#fff; border:1px solid var(--line); border-radius:7px; padding:6px 10px;}
+.flow .farrow{color:#9fb2c4; font-weight:400;}
+.provider-row{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;}
+.provider-chip{
+  display:flex; align-items:center; gap:6px; background:#fff; border:1px solid var(--line); border-radius:999px;
+  padding:5px 11px 5px 6px; font-size:11.5px; font-weight:600; color:#31414f;
+}
+.provider-chip.local{border-color:var(--navy-2); background:var(--wash);}
+.ollama-icon{width:18px; height:18px; flex:none;}
+.query-box{background:#fff; border:1px solid var(--line); border-left:3px solid var(--navy-2); border-radius:6px; padding:8px 11px; margin-bottom:8px; font-size:11.6px; line-height:1.48;}
+.query-box:last-child{margin-bottom:0;}
+.query-box .q{color:var(--navy); font-weight:700; font-style:italic;}
+.query-box .a{color:#41525f; margin-top:3px;}
+</style>
+</head>
+<body>
+
+<div id="hint">← / → or Space to navigate · F fullscreen · P print to PDF</div>
+
+<div id="stage">
+<div id="deck">
+
+<!-- ============ SLIDE 1 · TITLE ============ -->
+<section class="slide active" id="s1">
+  <div class="title-wrap">
+    <div class="title-left">
+      <div class="eyebrow">GitHub Project &nbsp;|&nbsp; <b>Part B Deep Dive</b></div>
+
+      <h1 class="big">Operational AI-Agent<br>for <em>BESS Dispatch</em></h1>
+
+      <div class="subtitle">
+        Energy-community battery scheduling: <b>LightGBM</b> price forecasting,
+        a <b>Pyomo</b> LP scheduler, and a provider-agnostic <b>ReAct</b> agent on top.
+      </div>
+
+      <div class="rule"></div>
+
+      <div class="meta-line">
+        <b>Chuong Dang TA</b> · Answer to MDU's Question 2 written test, built into a working pipeline<br>
+        chuongta.github.io/EnergyForecasting/AI_Agent_Development_in_BESS
+      </div>
+
+      <div class="chips">
+        <div class="chip"><b>P10 / P50 / P90</b>Binned-residual bootstrap</div>
+        <div class="chip"><b>1500 kWh / 750 kW</b>Sized via Pyomo/GLPK sweep</div>
+        <div class="chip"><b>3 deterministic tools</b>No LLM-computed numbers</div>
+      </div>
+
+      <div class="framing">
+        Not a mock-up: every number on these slides comes from the same CSVs and scripts
+        that <code>bess_agent.py</code> runs against.
+      </div>
+
+      <div class="title-foot">Companion Walkthrough &nbsp;|&nbsp; Implementation Prototype</div>
+    </div>
+
+    <div class="title-right">
+      <div class="spec"><span class="n">24 h</span><span class="l">rolling day-ahead scheduling horizon</span></div>
+      <div class="spec"><span class="n">1500 kWh</span><span class="l">battery capacity, 750 kW inverter</span></div>
+      <div class="spec"><span class="n">90.25%</span><span class="l">round-trip efficiency (0.95 each way)</span></div>
+      <div class="spec"><span class="n">3</span><span class="l">tools: simulate · self-consume · cost</span></div>
+      <div class="title-right-cap">Office · Logistics · Manufacturing<br>+ EV &amp; HGV charging</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 2 · WHY AN AGENT + ARCHITECTURE ============ -->
+<section class="slide" id="s2">
+  <div class="eyebrow">01 &nbsp;·&nbsp; Motivation &amp; Pipeline</div>
+  <h2 class="slide-title">Why an Agent, Not Just an Optimiser</h2>
+  <div class="slide-title-sub">A Pyomo LP can schedule the battery · it cannot explain the schedule to an operator</div>
+  <div class="hr"></div>
+
+  <div class="arch-grid">
+    <div>
+      <div class="card" style="margin-bottom:10px;">
+        <h3><span class="dot p"></span>The gap</h3>
+        <ul class="clean">
+          <li>Three misaligned signals: evening-peaking demand, midday-peaking PV, and a volatile spot price</li>
+          <li>The optimiser can schedule around them · but not justify an unexpected decision, e.g. <i>charging when price isn't low, because a high-demand period is coming</i></li>
+          <li>The agent sits <b>beside</b> the optimiser, translating a question into a tool call and a tool's output back into a sentence</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="dot c"></span>Latency tiers</h3>
+        <div class="tier">
+          <div class="tnum">1</div>
+          <div class="ttxt"><b>Advisory (seconds)</b> · reads the already-solved schedule, nothing recomputed per query</div>
+        </div>
+        <div class="tier">
+          <div class="tnum">2</div>
+          <div class="ttxt"><b>Re-optimise (async)</b> · a large forecast revision or what-if triggers a background solve; the agent answers with the last valid schedule and a staleness note meanwhile</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arch-img-card">
+      <img src="__ARCH__" alt="BESS AI agent architecture diagram">
+    </div>
+  </div>
+
+  <div class="footline">
+    <span>Chuong Dang TA · BESS AI-Agent Deep Dive</span>
+    <span>Motivation &amp; Pipeline</span>
+  </div>
+  <div class="slide-no">2</div>
+</section>
+
+<!-- ============ SLIDE 3 · DATA & FORECASTING ============ -->
+<section class="slide" id="s3">
+  <div class="eyebrow">02 &nbsp;·&nbsp; Inputs &amp; Price Model</div>
+  <h2 class="slide-title">Data &amp; Forecasting</h2>
+  <div class="slide-title-sub">Synthetic load and PV, real DK1 spot price · LightGBM, one model per lead time</div>
+  <div class="hr"></div>
+
+  <div class="grid-3">
+    <div class="card">
+      <h3><span class="dot p"></span>Community load</h3>
+      <div class="eq">P<sub>load</sub>(t) = (P<sub>base</sub> + P<sub>diurnal</sub>(t)) × M<sub>day</sub>(t) + ε(t)</div>
+      <ul class="clean">
+        <li>5 sectors summed: office, logistics, manufacturing, EV (passenger), EV/HGV (depot)</li>
+        <li>Each: base level + time-of-day shape + weekend multiplier + Gaussian noise</li>
+        <li>Full series peaks at <b>933 kW</b></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3><span class="dot c"></span>PV generation</h3>
+      <div class="eq">P<sub>PV</sub>(t) = (SSRD / 3600) × 42.75</div>
+      <ul class="clean">
+        <li>ERA5 irradiance (SSRD) scaled to a <b>50 MWp</b> plant</li>
+        <li>Module 20% · system losses 10% · Nordic derating 5% → combined factor 42.75</li>
+        <li>Clear-sky peak ≈ <b>42.75 MW</b></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3><span class="dot g"></span>Price forecast</h3>
+      <div class="eq">P̂(t+k) = f<sub>k</sub>(X<sub>t</sub>),&nbsp; k ∈ {1 … 24}</div>
+      <ul class="clean">
+        <li>One <b>LightGBM</b> model per lead time · not a recursive chain</li>
+        <li>Features: hour/DoW/month, price lags (t−k, t−k−24, t−168), 24 h rolling mean</li>
+        <li><b>Uncertainty:</b> 15-bin residual bootstrap (5,000 samples) → P10/P90 that widen in volatile regimes</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px;">
+    <h3><span class="dot a"></span>Real data, real horizon</h3>
+    <ul class="clean" style="columns:2; column-gap:24px;">
+      <li>DK1 day-ahead spot price, Energi Data Service, <b>2024-01-01 → 2025-09-30</b> (15,336 hourly rows) · the one component validated end-to-end against real held-out data</li>
+      <li>Load and PV are synthetic by design · the point is demonstrating agent/tool integration, not a production forecaster</li>
+    </ul>
+  </div>
+
+  <div class="footline">
+    <span>Chuong Dang TA · BESS AI-Agent Deep Dive</span>
+    <span>Data &amp; Forecasting</span>
+  </div>
+  <div class="slide-no">3</div>
+</section>
+
+<!-- ============ SLIDE 4 · SIZING & SCHEDULING ============ -->
+<section class="slide" id="s4">
+  <div class="eyebrow">03 &nbsp;·&nbsp; Battery Sizing &amp; LP Schedule</div>
+  <h2 class="slide-title">Sizing the Battery, Then Scheduling It</h2>
+  <div class="slide-title-sub">Two Pyomo/GLPK linear programs: a capacity sweep, then a rolling dispatch solve</div>
+  <div class="hr"></div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3><span class="dot p"></span>Capacity sweep · net benefit, 2024-01 → 2025-06</h3>
+      <div class="eq" style="font-size:12.3px;">min Σ ( λ<sub>buy</sub>·P<sub>import</sub> + C<sub>deg</sub>(P<sub>ch</sub>+P<sub>dis</sub>) − λ<sub>sell</sub>·P<sub>export</sub> )</div>
+      <table class="tbl">
+        <tr><th>Capacity</th><th>Power</th><th>CAPEX (DKK)</th><th>Annual savings</th><th>Payback</th></tr>
+        <tr><td>1000 kWh</td><td>500 kW</td><td colspan="3" style="color:#9fb2c4;">infeasible · can't hold 500 kW import cap</td></tr>
+        <tr class="hl"><td>1500 kWh ★</td><td>750 kW</td><td>2,797,500</td><td>239,509</td><td>11.68 y</td></tr>
+        <tr><td>2000 kWh</td><td>1000 kW</td><td>3,730,000</td><td>307,859</td><td>12.12 y</td></tr>
+      </table>
+      <ul class="clean" style="margin-top:8px;">
+        <li>SoC bounds 15–95% · round-trip 90.25% · degradation 0.40 DKK/kWh throughput · grid cap 500 kW</li>
+        <li>Sensitivity (not re-solved): 15-yr amortization → net-positive; 40% CAPEX subsidy → ~7.0 y; ancillary markets (FCR-D/FFR) → ~4–6 y</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3><span class="dot c"></span>7-day rolling dispatch · 2025-06-07 → 06-13</h3>
+      <table class="tbl">
+        <tr><td>Savings vs. no-BESS baseline</td><td>2,064.49 DKK</td></tr>
+        <tr><td>Grid import / export peak</td><td>500 / 500 kW</td></tr>
+        <tr><td>Total charging</td><td>2,268.15 kWh</td></tr>
+        <tr><td>Total discharging</td><td>2,545.75 kWh</td></tr>
+      </table>
+      <ul class="clean" style="margin-top:10px;">
+        <li>168-hour one-shot LP, using the LightGBM forecast (+P10/P90) instead of historical actuals</li>
+        <li>State-of-charge dynamics: E(t) = E(t−1) + P<sub>ch</sub>η<sub>ch</sub> − P<sub>dis</sub>/η<sub>dis</sub></li>
+        <li>Also written as a zoomable interactive Plotly HTML for any single day</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footline">
+    <span>Chuong Dang TA · BESS AI-Agent Deep Dive</span>
+    <span>Sizing &amp; Scheduling</span>
+  </div>
+  <div class="slide-no">4</div>
+</section>
+
+<!-- ============ SLIDE 5 · INTERACTIVE DISPATCH ============ -->
+<section class="slide" id="s5">
+  <div class="eyebrow">04 &nbsp;·&nbsp; Live Data · Drag the Slider</div>
+  <h2 class="slide-title">One Real Day of Dispatch, Hour by Hour</h2>
+  <div class="slide-title-sub">bess_schedule_tomorrow.csv, 2025-06-08 · the exact CSV the agent's tools read</div>
+  <div class="hr"></div>
+
+  <div class="dash">
+    <div class="chartcard">
+      <svg id="chartSvg" viewBox="0 0 1000 380" style="width:100%; height:330px;"></svg>
+      <div class="slider-row">
+        <span style="font-size:11px; color:var(--muted); font-weight:700;">00:00</span>
+        <input type="range" id="hourSlider" min="0" max="23" step="1" value="8">
+        <span style="font-size:11px; color:var(--muted); font-weight:700;">23:00</span>
+        <div class="hour-readout" id="hourReadout">08:00</div>
+      </div>
+      <div class="note-sm">Teal = price forecast (DKK/kWh, P10–P90 shaded) · green = battery SoC (%). Drag or click the track to move through the day.</div>
+    </div>
+
+    <div class="stat-panel">
+      <div class="col-head">Selected hour</div>
+      <div class="stat-row"><span class="k">Price forecast</span><span class="v" id="v-price">–</span></div>
+      <div class="stat-row"><span class="k">P10 – P90 band</span><span class="v" id="v-band" style="font-size:11.5px;">–</span></div>
+      <div class="stat-row"><span class="k">Community load</span><span class="v" id="v-load">–</span></div>
+      <div class="stat-row"><span class="k">PV generation</span><span class="v" id="v-pv">–</span></div>
+      <div class="stat-row"><span class="k">Grid import / export</span><span class="v" id="v-grid" style="font-size:12.5px;">–</span></div>
+      <div class="stat-row"><span class="k">Battery SoC</span><span class="v" id="v-soc">–</span></div>
+      <div id="v-action" class="action-badge badge hold">Hold</div>
+      <div class="note-sm" style="color:#bfe9dc;">This is the same row <code>bess_simulator</code> and <code>electricity_cost_estimator</code> would read for this hour.</div>
+    </div>
+  </div>
+
+  <div class="footline">
+    <span>Chuong Dang TA · BESS AI-Agent Deep Dive</span>
+    <span>Interactive Dispatch</span>
+  </div>
+  <div class="slide-no">5</div>
+</section>
+
+<!-- ============ SLIDE 6 · AGENT, TOOLS & CLOSING ============ -->
+<section class="slide" id="s6">
+  <div class="eyebrow">05 &nbsp;·&nbsp; ReAct Agent &amp; Tools</div>
+  <h2 class="slide-title">The Agent Layer</h2>
+  <div class="slide-title-sub">Framework-free ReAct loop · deterministic tools · any provider, including a local model</div>
+  <div class="hr"></div>
+
+  <div class="grid-3" style="align-items:stretch;">
+    <div class="card">
+      <h3><span class="dot p"></span>ReAct loop</h3>
+      <div class="flow" style="margin-bottom:8px;">
+        <span class="fnode">Query</span><span class="farrow">→</span>
+        <span class="fnode">Thought</span><span class="farrow">→</span>
+        <span class="fnode">Tool call</span>
+      </div>
+      <div class="flow">
+        <span class="fnode">Observation</span><span class="farrow">→</span>
+        <span class="fnode">Response</span>
+      </div>
+      <ul class="clean" style="margin-top:10px;">
+        <li>The LLM emits a JSON tool call; Python executes it deterministically</li>
+        <li>The model only narrates the returned values · it never computes a figure itself</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3><span class="dot c"></span>Three tools</h3>
+      <ul class="clean">
+        <li><b>bess_simulator</b> · validates a charge/discharge action against 15–95% SoC bounds, flags violations</li>
+        <li><b>self_consumption_calculator</b> · PV vs. load over a window, % consumed on-site vs. exported</li>
+        <li><b>electricity_cost_estimator</b> · net grid cost (DKK) over a window, with a no-BESS baseline mode</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3><span class="dot g"></span>Multi-provider router</h3>
+      <p style="font-size:12px; color:#41525f; margin:0 0 6px; line-height:1.45;">No LangChain/LlamaIndex · provider picked from whichever API key is present:</p>
+      <div class="provider-row">
+        <span class="provider-chip">OpenAI</span>
+        <span class="provider-chip">Anthropic</span>
+        <span class="provider-chip">Gemini</span>
+        <span class="provider-chip">DeepSeek</span>
+        <span class="provider-chip local">
+          <svg class="ollama-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11 14.5C11 9.5 13.2 5 16 5c2.8 0 5 4.5 5 9.5 0 2-.4 3.8-1 5.2.9.5 1.5 1.5 1.5 2.6 0 1.7-1.3 3-3 3h-.2c-.4 1.5-1.3 2.7-2.3 2.7s-1.9-1.2-2.3-2.7H13.5c-1.7 0-3-1.3-3-3 0-1.1.6-2.1 1.5-2.6-.6-1.4-1-3.2-1-5.2Z"
+              stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            <circle cx="13.6" cy="14.2" r="1.15" fill="currentColor"/>
+            <circle cx="18.4" cy="14.2" r="1.15" fill="currentColor"/>
+          </svg>
+          Ollama (local)
+        </span>
+        <span class="provider-chip">Mock (offline)</span>
+      </div>
+      <p style="font-size:11.3px; color:var(--muted); margin:10px 0 0; line-height:1.45;">
+        Same response contract everywhere: a price figure must carry an explicit P10–P90 range and cite the schedule source, or it counts as incomplete.
+      </p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:11px;">
+    <h3><span class="dot a"></span>Two required queries, run end to end</h3>
+    <div class="query-box">
+      <div class="q">"Should we charge or discharge in the next 2 hours given current conditions?"</div>
+      <div class="a">→ calls <b>bess_simulator</b>: "Discharge at 750 kW, SoC 50% → 15%. Price ≈ 0.4 DKK/kWh, range 0.1–0.64 (P10–P90). Per the day-ahead LP solve."</div>
+    </div>
+    <div class="query-box">
+      <div class="q">"What was our self-consumption rate yesterday, and how could it improve?"</div>
+      <div class="a">→ calls <b>self_consumption_calculator</b>: reports the rate, recommends shifting charging into the midday PV surplus, cites the schedule source.</div>
+    </div>
+  </div>
+
+  <div class="footline">
+    <span>Chuong Dang TA · chuongta.github.io/EnergyForecasting/AI_Agent_Development_in_BESS</span>
+    <span>Agent &amp; Tools</span>
+  </div>
+  <div class="slide-no">6</div>
+</section>
+
+</div>
+</div>
+
+<div id="nav">
+  <button id="prev" title="Previous (←)">‹</button>
+  <span class="dots" id="dots"></span>
+  <span id="counter">1 / 6</span>
+  <button id="next" title="Next (→)">›</button>
+</div>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var i = 0;
+  var deck = document.getElementById('deck');
+  var dots = document.getElementById('dots');
+  var counter = document.getElementById('counter');
+
+  slides.forEach(function(_, k){
+    var d = document.createElement('i');
+    d.addEventListener('click', function(){ go(k); });
+    dots.appendChild(d);
+  });
+  var dotEls = Array.prototype.slice.call(dots.children);
+
+  function go(k){
+    i = Math.max(0, Math.min(slides.length - 1, k));
+    slides.forEach(function(s, n){ s.classList.toggle('active', n === i); });
+    dotEls.forEach(function(d, n){ d.classList.toggle('on', n === i); });
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    try { location.hash = 's' + (i + 1); } catch(e){}
+  }
+
+  function fit(){
+    var pad = 30;
+    var s = Math.min((window.innerWidth - pad) / 1280, (window.innerHeight - pad) / 720);
+    deck.style.transform = 'scale(' + s + ')';
+  }
+
+  document.addEventListener('keydown', function(e){
+    var tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT') return;
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); go(i + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(i - 1); }
+    else if (e.key === 'Home') { go(0); }
+    else if (e.key === 'End') { go(slides.length - 1); }
+    else if (e.key === 'f' || e.key === 'F') {
+      if (document.fullscreenElement) { document.exitFullscreen(); }
+      else { document.documentElement.requestFullscreen(); }
+    }
+    else if (e.key === 'p' || e.key === 'P') { window.print(); }
+  });
+
+  document.getElementById('next').addEventListener('click', function(){ go(i + 1); });
+  document.getElementById('prev').addEventListener('click', function(){ go(i - 1); });
+  window.addEventListener('resize', fit);
+
+  var m = /^#s(\d+)$/.exec(location.hash || '');
+  fit();
+  go(m ? parseInt(m[1], 10) - 1 : 0);
+})();
+</script>
+
+<!-- ============ SLIDE 5 DATA + CHART LOGIC ============ -->
+<script>
+(function(){
+  // real 24-hour rows from 05_Optimisation_and_Forecast/bess_schedule_tomorrow.csv (2025-06-08)
+  var DATA = [
+    {t:"00:00", price:0.40, p10:0.10, p90:0.64, load:22.95, pv:0.00,     imp:22.95, exp:0.00,   soc:50.0},
+    {t:"01:00", price:0.44, p10:0.13, p90:0.68, load:37.90, pv:0.00,     imp:37.90, exp:0.00,   soc:50.0},
+    {t:"02:00", price:0.41, p10:0.10, p90:0.65, load:41.84, pv:0.00,     imp:41.84, exp:0.00,   soc:50.0},
+    {t:"03:00", price:0.41, p10:0.10, p90:0.64, load:46.46, pv:41.10,    imp:5.36,  exp:0.00,   soc:50.0},
+    {t:"04:00", price:0.41, p10:0.10, p90:0.65, load:46.34, pv:997.28,   imp:0.00,  exp:500.00, soc:50.0},
+    {t:"05:00", price:0.39, p10:0.08, p90:0.63, load:36.71, pv:3105.99,  imp:0.00,  exp:500.00, soc:50.0},
+    {t:"06:00", price:0.31, p10:0.07, p90:0.51, load:59.96, pv:6311.61,  imp:0.00,  exp:500.00, soc:50.0},
+    {t:"07:00", price:0.19, p10:-0.06,p90:0.38, load:63.32, pv:13830.63, imp:0.00,  exp:500.00, soc:50.0},
+    {t:"08:00", price:0.06, p10:-0.19,p90:0.25, load:67.24, pv:15191.37, imp:0.00,  exp:500.00, soc:50.0},
+    {t:"09:00", price:0.01, p10:-0.23,p90:0.21, load:69.26, pv:16890.95, imp:0.00,  exp:500.00, soc:50.0},
+    {t:"10:00", price:-0.01,p10:-0.26,p90:0.18, load:45.45, pv:24121.26, imp:500.00,exp:0.00,   soc:50.0},
+    {t:"11:00", price:-0.04,p10:-0.29,p90:0.15, load:40.45, pv:19731.12, imp:500.00,exp:0.00,   soc:50.0},
+    {t:"12:00", price:-0.04,p10:-0.29,p90:0.15, load:45.66, pv:24632.92, imp:500.00,exp:0.00,   soc:50.0},
+    {t:"13:00", price:-0.04,p10:-0.29,p90:0.15, load:54.68, pv:18048.36, imp:500.00,exp:0.00,   soc:50.0},
+    {t:"14:00", price:-0.03,p10:-0.27,p90:0.16, load:52.31, pv:18765.27, imp:500.00,exp:0.00,   soc:50.0},
+    {t:"15:00", price:0.11, p10:-0.14,p90:0.30, load:45.10, pv:21174.10, imp:0.00,  exp:500.00, soc:50.0},
+    {t:"16:00", price:0.46, p10:0.15, p90:0.70, load:52.58, pv:19184.49, imp:0.00,  exp:500.00, soc:50.0},
+    {t:"17:00", price:0.55, p10:0.26, p90:0.77, load:79.57, pv:14264.54, imp:0.00,  exp:500.00, soc:50.0},
+    {t:"18:00", price:0.70, p10:0.41, p90:0.94, load:56.03, pv:8469.29,  imp:0.00,  exp:500.00, soc:50.0},
+    {t:"19:00", price:0.69, p10:0.40, p90:0.93, load:60.85, pv:4234.68,  imp:0.00,  exp:500.00, soc:50.0},
+    {t:"20:00", price:0.63, p10:0.35, p90:0.87, load:58.10, pv:843.96,   imp:0.00,  exp:500.00, soc:50.0},
+    {t:"21:00", price:0.53, p10:0.24, p90:0.75, load:47.57, pv:4.69,     imp:42.88, exp:0.00,   soc:50.0},
+    {t:"22:00", price:0.58, p10:0.29, p90:0.80, load:26.50, pv:0.00,     imp:0.00,  exp:306.00, soc:15.0, discharge:332.5},
+    {t:"23:00", price:0.51, p10:0.22, p90:0.73, load:31.13, pv:0.00,     imp:31.13, exp:0.00,   soc:15.0}
+  ];
+
+  var W = 1000, H = 380, padL = 34, padR = 10, padT = 14, padB = 30;
+  var plotW = W - padL - padR, plotH = H - padT - padB;
+  var n = DATA.length;
+  function xAt(idx){ return padL + (idx / (n - 1)) * plotW; }
+
+  var priceVals = [];
+  DATA.forEach(function(d){ priceVals.push(d.p10, d.p90, d.price); });
+  var pMin = Math.min.apply(null, priceVals), pMax = Math.max.apply(null, priceVals);
+  var pPad = (pMax - pMin) * 0.12;
+  pMin -= pPad; pMax += pPad;
+  function yPrice(v){ return padT + (1 - (v - pMin) / (pMax - pMin)) * (plotH * 0.62); }
+
+  var socTop = padT + plotH * 0.68, socH = plotH * 0.32;
+  function ySoc(v){ return socTop + (1 - (v - 10) / (60 - 10)) * socH; }
+
+  function fmt(n, d){ return n.toFixed(d == null ? 2 : d); }
+
+  function buildPath(fn){
+    var s = "";
+    for (var k = 0; k < n; k++){ s += (k === 0 ? "M" : "L") + xAt(k).toFixed(1) + "," + fn(DATA[k]).toFixed(1) + " "; }
+    return s;
+  }
+  function buildBand(){
+    var top = "", bot = "";
+    for (var k = 0; k < n; k++){ top += (k === 0 ? "M" : "L") + xAt(k).toFixed(1) + "," + yPrice(DATA[k].p90).toFixed(1) + " "; }
+    for (var k2 = n - 1; k2 >= 0; k2--){ bot += "L" + xAt(k2).toFixed(1) + "," + yPrice(DATA[k2].p10).toFixed(1) + " "; }
+    return top + bot + "Z";
+  }
+
+  var svg = document.getElementById('chartSvg');
+  var svgNS = "http://www.w3.org/2000/svg";
+  function el(tag, attrs){
+    var e = document.createElementNS(svgNS, tag);
+    for (var k in attrs){ e.setAttribute(k, attrs[k]); }
+    return e;
+  }
+
+  // gridlines
+  for (var gy = 0; gy <= 4; gy++){
+    var yy = padT + (gy / 4) * (plotH * 0.62);
+    svg.appendChild(el('line', {x1:padL, x2:W-padR, y1:yy.toFixed(1), y2:yy.toFixed(1), stroke:'#dbe8e2', 'stroke-width':1}));
+  }
+  // hour axis labels (every 4h)
+  for (var hx = 0; hx < n; hx += 4){
+    var lab = el('text', {x:xAt(hx).toFixed(1), y:H-8, 'font-size':10, fill:'#5b7568', 'text-anchor':'middle'});
+    lab.textContent = DATA[hx].t;
+    svg.appendChild(lab);
+  }
+
+  svg.appendChild(el('path', {d:buildBand(), fill:'#5cc4b0', opacity:0.22, stroke:'none'}));
+  svg.appendChild(el('path', {d:buildPath(function(d){return yPrice(d.price);}), fill:'none', stroke:'#12967d', 'stroke-width':2.4}));
+  svg.appendChild(el('path', {d:buildPath(function(d){return ySoc(d.soc);}), fill:'none', stroke:'#189863', 'stroke-width':2.4, 'stroke-dasharray':'5,3'}));
+
+  var priceLbl = el('text', {x:padL+2, y:padT+10, 'font-size':10, fill:'#12967d', 'font-weight':700}); priceLbl.textContent = 'Price (DKK/kWh)';
+  var socLbl = el('text', {x:padL+2, y:socTop-4, 'font-size':10, fill:'#189863', 'font-weight':700}); socLbl.textContent = 'Battery SoC (%)';
+  svg.appendChild(priceLbl); svg.appendChild(socLbl);
+
+  var marker = el('line', {x1:0, x2:0, y1:padT, y2:H-padB, stroke:'#0d3b30', 'stroke-width':1.4, 'stroke-dasharray':'3,3'});
+  var dotPrice = el('circle', {r:4.5, fill:'#12967d', stroke:'#fff', 'stroke-width':1.5});
+  var dotSoc = el('circle', {r:4.5, fill:'#189863', stroke:'#fff', 'stroke-width':1.5});
+  svg.appendChild(marker); svg.appendChild(dotPrice); svg.appendChild(dotSoc);
+
+  var slider = document.getElementById('hourSlider');
+  var vPrice = document.getElementById('v-price');
+  var vBand = document.getElementById('v-band');
+  var vLoad = document.getElementById('v-load');
+  var vPv = document.getElementById('v-pv');
+  var vGrid = document.getElementById('v-grid');
+  var vSoc = document.getElementById('v-soc');
+  var vAction = document.getElementById('v-action');
+  var hourReadout = document.getElementById('hourReadout');
+
+  function render(idx){
+    var d = DATA[idx];
+    var x = xAt(idx);
+    marker.setAttribute('x1', x); marker.setAttribute('x2', x);
+    dotPrice.setAttribute('cx', x); dotPrice.setAttribute('cy', yPrice(d.price));
+    dotSoc.setAttribute('cx', x); dotSoc.setAttribute('cy', ySoc(d.soc));
+
+    hourReadout.textContent = d.t;
+    vPrice.textContent = fmt(d.price) + ' DKK/kWh';
+    vBand.textContent = fmt(d.p10) + ' – ' + fmt(d.p90) + ' DKK/kWh';
+    vLoad.textContent = fmt(d.load, 1) + ' kW';
+    vPv.textContent = (d.pv >= 1000 ? fmt(d.pv/1000, 2) + ' MW' : fmt(d.pv, 1) + ' kW');
+    vGrid.textContent = fmt(d.imp, 1) + ' kW in / ' + fmt(d.exp, 1) + ' kW out';
+    vSoc.textContent = fmt(d.soc, 1) + ' %';
+
+    vAction.classList.remove('charge', 'discharge', 'hold');
+    if (d.discharge){ vAction.textContent = 'Discharge – ' + fmt(d.discharge,1) + ' kW'; vAction.classList.add('discharge'); }
+    else { vAction.textContent = 'Hold'; vAction.classList.add('hold'); }
+  }
+
+  slider.addEventListener('input', function(){ render(parseInt(slider.value, 10)); });
+  render(parseInt(slider.value, 10));
+})();
+</script>
+</body>
+</html>
