@@ -4,6 +4,13 @@ This document outlines the official requirements and checklist for **Question 2*
 
 ---
 
+## Interview Presentation Decks
+
+* [PhD Interview – Self-Presentation](/EnergyForecasting/AI_Agent_Development_in_BESS/08_Presentation/PhD_Interview/PhD%20Interview%20-%20TA%20Dang%20Chuong.html) — candidate background, competencies, research, and motivation for the Future Energy Center at MDU.
+* [BESS AI-Agent – Implementation Deep Dive](/EnergyForecasting/AI_Agent_Development_in_BESS/08_Presentation/BESS_Deep_Dive/BESS%20AI-Agent%20-%20Implementation%20Deep%20Dive.html) — walkthrough of the Part B prototype: forecasting, LP scheduling, and the ReAct tool-use agent.
+
+---
+
 ## Submission Guidelines & Status
 
 * **Format**: PDF document containing written responses. Code demonstration submitted as separate `.py` files or a GitHub repository link.
